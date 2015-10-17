@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,8 +22,12 @@ import java.util.Random;
 
 import static com.google.android.gms.common.api.GoogleApiClient.*;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
-        ConnectionCallbacks, OnConnectionFailedListener
+public class MapsActivity extends FragmentActivity
+        implements
+        OnMapReadyCallback,
+        ConnectionCallbacks,
+        OnConnectionFailedListener,
+        GoogleMap.OnMyLocationButtonClickListener
 {
     // LogCat tag
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -35,10 +40,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
 
+    // These settings are the same as the settings for the map. They will in fact give updates
+    // at the maximal rates currently possible.
+    private static final LocationRequest REQUEST = LocationRequest.create()
+            .setInterval(5000)         // 5 seconds
+            .setFastestInterval(16)    // 16ms = 60fps
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -80,34 +94,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * installed Google Play services and returned to the app.
      */
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(GoogleMap googleMap)
+    {
         mMap = googleMap;
 
         mMap.setMyLocationEnabled(true);
-
-        mLastLocation = LocationServices.FusedLocationApi
-                .getLastLocation(mGoogleApiClient);
-
-        if(mLastLocation != null)
-        {
-            double latitude = mLastLocation.getLatitude();
-            double longitude = mLastLocation.getLatitude();
-
-            Random random = new Random();
-
-            LatLng marker = new LatLng(latitude + random.nextDouble(),
-                    longitude + random.nextDouble());
-
-            mMap.addMarker(new MarkerOptions().position(marker).title("Marker in somewhere"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
-        }
-        else
-        {
-            // Add a marker in Sydney and move the camera
-            LatLng sydney = new LatLng(-34, 151);
-            mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        }
+        mMap.setOnMyLocationButtonClickListener(this);
     }
 
     /**
@@ -116,14 +108,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected synchronized void buildGoogleApiClient()
     {
         mGoogleApiClient = new Builder(this)
+                .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
                 .build();
     }
 
     /**
-     * Method that verify the digestibility of the google play services
+     * Method that verify the availability of the google play services
      */
     protected boolean checkPlayServices()
     {
@@ -168,5 +160,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     {
         Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = "
                 + connectionResult.getErrorCode());
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick()
+    {
+        if (mGoogleApiClient.isConnected()) {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+            if (mLastLocation != null)
+            {
+                // introduction of randomness
+                Random random = new Random();
+
+                // conversion of the location into a LatLng
+                double latitude = mLastLocation.getLatitude();
+                double longitude = mLastLocation.getLongitude();
+                double zoomScale = 1.0 / 60.0;
+                LatLng markerLatLng = new LatLng(latitude + random.nextDouble() * zoomScale - 0.5 * zoomScale,
+                        longitude + random.nextDouble() * zoomScale - 0.5 * zoomScale);
+
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(markerLatLng);
+                markerOptions.title("Marker in somewhere !");
+
+                mMap.clear();
+                mMap.addMarker(markerOptions);
+            }
+        }
+
+        // Return false so that we don't consume the event and the default behavior still occurs
+        // (the camera animates to the user's current position).
+        return false;
     }
 }
