@@ -5,4 +5,5 @@
     <string name="title_activity_calendar">CalendarActivity</string>
     <string name="title_activity_event">EventActivity</string>
     <string name="title_activity_maps">Map</string>
+    <string name="signing_in">Signing in...</string>
 </resources>
