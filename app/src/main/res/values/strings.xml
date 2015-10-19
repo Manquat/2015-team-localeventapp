@@ -9,4 +9,5 @@
     <string name="tab_messages">Eventline</string>
     <string name="tab_notifications">Notifications</string>
     <string name="action_contact">Contact</string>
+    <string name="signing_in">Signing in...</string>
 </resources>
