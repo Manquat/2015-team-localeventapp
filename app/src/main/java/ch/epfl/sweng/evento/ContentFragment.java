@@ -34,8 +34,6 @@ import java.util.regex.Pattern;
 public class ContentFragment extends Fragment {
 
     private static final String KEY_TITLE = "title";
-    private static final String KEY_INDICATOR_COLOR = "indicator_color";
-    private static final String KEY_DIVIDER_COLOR = "divider_color";
     private static ArrayList<ImageButton> image = new ArrayList<ImageButton>();
     /**
      * @return a new instance of {@link ContentFragment}, adding the parameters into a bundle and
@@ -46,8 +44,6 @@ public class ContentFragment extends Fragment {
             int dividerColor) {
         Bundle bundle = new Bundle();
         bundle.putCharSequence(KEY_TITLE, title);
-        bundle.putInt(KEY_INDICATOR_COLOR, indicatorColor);
-        bundle.putInt(KEY_DIVIDER_COLOR, dividerColor);
 
         ContentFragment fragment = new ContentFragment();
         fragment.setArguments(bundle);
