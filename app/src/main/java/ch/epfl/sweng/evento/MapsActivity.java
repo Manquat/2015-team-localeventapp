@@ -4,6 +4,9 @@ import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -11,11 +14,11 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Random;
@@ -27,21 +30,25 @@ public class MapsActivity extends FragmentActivity
         OnMapReadyCallback,
         ConnectionCallbacks,
         OnConnectionFailedListener,
-        GoogleMap.OnMyLocationButtonClickListener
+        GoogleMap.OnMyLocationButtonClickListener,
+        GoogleMap.InfoWindowAdapter
 {
     // LogCat tag
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private GoogleMap mMap;
-    private Location mLastLocation;
+    private GoogleMap   mMap;
+    private Location    mLastLocation;
+    private Event       mEvent;
 
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
 
-    // These settings are the same as the settings for the map. They will in fact give updates
-    // at the maximal rates currently possible.
+    /**
+     * These settings are the same as the settings for the map. They will in fact give updates
+     * at the maximal rates currently possible.
+     */
     private static final LocationRequest REQUEST = LocationRequest.create()
             .setInterval(5000)         // 5 seconds
             .setFastestInterval(16)    // 16ms = 60fps
@@ -57,6 +64,9 @@ public class MapsActivity extends FragmentActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //TODO get the event(s) from the database
+        mEvent = new Event(1,"Event1","This is a first event",1.1,1.1,"1 long street","alfredo");
 
         // First we need to check availability of play services
         if (checkPlayServices())
@@ -100,6 +110,7 @@ public class MapsActivity extends FragmentActivity
 
         mMap.setMyLocationEnabled(true);
         mMap.setOnMyLocationButtonClickListener(this);
+        mMap.setInfoWindowAdapter(this);
     }
 
     /**
@@ -162,6 +173,10 @@ public class MapsActivity extends FragmentActivity
                 + connectionResult.getErrorCode());
     }
 
+    /**
+     * Callback for the MyLocation button
+     * @return null to conserve the normal behavior (zoom on the user)
+     */
     @Override
     public boolean onMyLocationButtonClick()
     {
@@ -182,7 +197,8 @@ public class MapsActivity extends FragmentActivity
 
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(markerLatLng);
-                markerOptions.title("Marker in somewhere !");
+                markerOptions.title(mEvent.Title());
+                markerOptions.snippet(mEvent.Description());
 
                 mMap.clear();
                 mMap.addMarker(markerOptions);
@@ -192,5 +208,34 @@ public class MapsActivity extends FragmentActivity
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
         return false;
+    }
+
+    @Override
+    public View getInfoWindow(Marker marker)
+    {
+        // return null to let's the default view display or a view that will be used instead
+        return null;
+    }
+
+    /**
+     * Personalise the info pop-up of the marker
+     * @param marker the marker where the user have click
+     * @return The view that represent the info bubble
+     */
+    @Override
+    public View getInfoContents(Marker marker)
+    {
+        // return null to let's the default view display or a view that will be display inside the
+        // default view
+
+        View view = getLayoutInflater().inflate(R.layout.infomarker_event, null);
+
+        TextView tvTitle = (TextView) view.findViewById(R.id.info_title);
+        tvTitle.setText(mEvent.Title());
+
+        TextView tvDescription = (TextView) view.findViewById(R.id.info_description);
+        tvDescription.setText(mEvent.Description());
+
+        return view;
     }
 }
