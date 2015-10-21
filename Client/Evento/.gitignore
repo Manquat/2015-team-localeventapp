@@ -6,3 +6,5 @@
 /captures
 /gradlew
 /*.bat
+*.iml
+/gradle

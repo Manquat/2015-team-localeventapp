@@ -10,4 +10,5 @@
     <string name="tab_notifications">Notifications</string>
     <string name="action_contact">Contact</string>
     <string name="signing_in">Signing in...</string>
+    <string name="google_maps_key">AIzaSyDd4lxH46Q5baX8ktzdVjL09qPtZa65aJw</string>
 </resources>
