@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import ch.epfl.sweng.evento.tabsFragment.CalendarTabs;
 import ch.epfl.sweng.evento.tabsFragment.MapsFragment;
@@ -38,7 +39,7 @@ public class ViewPageAdapter extends FragmentStatePagerAdapter
             case 2:
                 return new CalendarTabs();
             default:
-                return new CalendarTabs();
+                return ContentFragment.newInstance("Event", 0, 0);
         }
     }
 
