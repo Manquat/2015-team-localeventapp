@@ -6,4 +6,5 @@
     <color name="red">#ff3831</color>
     <color name="white">#ffffff</color>
     <color name="background_window">#FFE5E5E5</color>
+    <color name="tabsScrollColor">#8a140e</color>
 </resources>
