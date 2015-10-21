@@ -17,15 +17,19 @@
 
 package ch.epfl.sweng.evento;
 
-import android.app.ActionBar;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
-import android.widget.ViewAnimator;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
 
 /**
  * A simple launcher activity containing a summary sample description, sample log and a custom
@@ -34,25 +38,54 @@ import android.widget.ViewAnimator;
  * For devices with displays with a width of 720dp or greater, the sample log is always visible,
  * on other devices it's visibility is controlled by an item on the Action Bar.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+{
 
     public static final String TAG = "MainActivity";
-    private Toolbar toolbar;
+    private static Toolbar         mToolbar;
+    private static ViewPager       mPager;
+    private static ViewPageAdapter mAdaptater;
+    private static SlidingTabLayout mTabs;
+    private static ArrayList<CharSequence> mTitles = new ArrayList<CharSequence>(
+            Arrays.asList("Maps", "Events", "Calendar"));
+    private static FragmentManager mFragmentManager;
+
+    public static FragmentManager getFragManager()
+    {
+        return mFragmentManager;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
-        setSupportActionBar(toolbar);
+        // Creating the Toolbar and setting it as the Toolbar for the activity
+        mToolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(mToolbar);
 
-        if (savedInstanceState == null) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            SlidingTabsColorsFragment fragment = new SlidingTabsColorsFragment();
-            transaction.replace(R.id.sample_content_fragment, fragment);
-            transaction.commit();
-        }
+        // Creating the ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs.
+        mFragmentManager = getSupportFragmentManager();
+        mAdaptater = new ViewPageAdapter(mFragmentManager, mTitles);
+
+        // Assigning ViewPager View and setting the adapter
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setAdapter(mAdaptater);
+
+        // Assigning the Sliding Tab Layout View
+        mTabs = (SlidingTabLayout) findViewById(R.id.tabs);
+        mTabs.setDistributeEvenly(true); // This makes the tabs Space Evenly in Available width
+
+        // Setting Custom Color for the Scroll bar indicator of the Tab View
+        mTabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return ContextCompat.getColor(getApplicationContext(), R.color.tabsScrollColor);
+            }
+        });
+
+        // Setting the ViewPager For the SlidingTabsLayout
+        mTabs.setViewPager(mPager);
     }
 
     @Override
