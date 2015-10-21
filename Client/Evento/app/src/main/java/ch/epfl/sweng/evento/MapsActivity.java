@@ -1,3 +1,4 @@
+/*
 package ch.epfl.sweng.evento;
 
 import android.location.Location;
@@ -45,10 +46,12 @@ public class MapsActivity extends FragmentActivity
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
 
-    /**
+    */
+/**
      * These settings are the same as the settings for the map. They will in fact give updates
      * at the maximal rates currently possible.
-     */
+     *//*
+
     private static final LocationRequest REQUEST = LocationRequest.create()
             .setInterval(5000)         // 5 seconds
             .setFastestInterval(16)    // 16ms = 60fps
@@ -94,7 +97,8 @@ public class MapsActivity extends FragmentActivity
     }
 
 
-    /**
+    */
+/**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
      * This is where we can add markers or lines, add listeners or move the camera. In this case,
@@ -102,7 +106,8 @@ public class MapsActivity extends FragmentActivity
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
-     */
+     *//*
+
     @Override
     public void onMapReady(GoogleMap googleMap)
     {
@@ -113,9 +118,11 @@ public class MapsActivity extends FragmentActivity
         mMap.setInfoWindowAdapter(this);
     }
 
-    /**
+    */
+/**
      * Create the Google API client object
-     */
+     *//*
+
     protected synchronized void buildGoogleApiClient()
     {
         mGoogleApiClient = new Builder(this)
@@ -125,9 +132,11 @@ public class MapsActivity extends FragmentActivity
                 .build();
     }
 
-    /**
+    */
+/**
      * Method that verify the availability of the google play services
-     */
+     *//*
+
     protected boolean checkPlayServices()
     {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
@@ -151,9 +160,11 @@ public class MapsActivity extends FragmentActivity
 
     //----------------------------------------------------------------------------------------------
 
-    /**
+    */
+/**
      * Google API callback
-     */
+     *//*
+
     @Override
     public void onConnected(Bundle bundle)
     {
@@ -173,10 +184,12 @@ public class MapsActivity extends FragmentActivity
                 + connectionResult.getErrorCode());
     }
 
-    /**
+    */
+/**
      * Callback for the MyLocation button
      * @return null to conserve the normal behavior (zoom on the user)
-     */
+     *//*
+
     @Override
     public boolean onMyLocationButtonClick()
     {
@@ -217,11 +230,13 @@ public class MapsActivity extends FragmentActivity
         return null;
     }
 
-    /**
+    */
+/**
      * Personalise the info pop-up of the marker
      * @param marker the marker where the user have click
      * @return The view that represent the info bubble
-     */
+     *//*
+
     @Override
     public View getInfoContents(Marker marker)
     {
@@ -239,3 +254,4 @@ public class MapsActivity extends FragmentActivity
         return view;
     }
 }
+*/
