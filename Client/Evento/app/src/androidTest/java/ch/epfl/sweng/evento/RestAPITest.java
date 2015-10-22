@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 
@@ -26,13 +28,31 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class GetTaskTest {
+public class RestAPITest {
     private GetTask getTask;
     private static final String JSON_CONTENT_TYPE = "application/json; charset=utf-8";
     private static final int ASCII_SPACE = 0x20;
     private HttpURLConnection connection;
     private NetworkProvider networkProvider;
     private static final String wrongUrl = "wrongurl";
+
+    private static final Parser parser = new Parser();
+    private static final String PROPER_JSON_STRING = "{\n"
+            + "  \"id\": 17005,\n"
+            + "  \"title\": \"My football game\",\n"
+            + "  \"description\": \n"
+            + "    \"Okay guys, let's play a little game this evening at dorigny. Remember: no doping allowed!\" ,\n"
+            + "  \"xLocation\": 46.519428,\n"
+            + "  \"yLocation\": 6.580847,\n"
+            + "  \"address\": \"Terrain de football de Dorigny\",\n "
+            + "  \"creator\": \"Micheal Jackson\"\n"
+            + "}\n";
+    private static final Event PROPER_EVENT_RESULT = new Event(17005,
+            "My football game",
+            "Okay guys, let's play a little game this evening at dorigny. Remember: no doping allowed!",
+            46.519428, 6.580847,
+            "Terrain de football de Dorigny",
+            "Micheal Jackson");
 
 
     @Before
@@ -83,4 +103,27 @@ public class GetTaskTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testGetEvent() throws IOException {
+        configureResponse(HttpURLConnection.HTTP_OK, PROPER_JSON_STRING, JSON_CONTENT_TYPE);
+        RestApi restApi = new RestApi(networkProvider);
+        ArrayList<Event> eventArrayList = new ArrayList<Event>();
+
+        restApi.getEvent(eventArrayList);
+
+        // TODO: a best way to test the end of the asyctask called by RestApi
+        try {
+            Thread.sleep(1000);                 //1000 milliseconds is one second.
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+
+        assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
+        assertEquals("id", eventArrayList.get(0).ID(), PROPER_EVENT_RESULT.ID());
+        assertEquals("title", eventArrayList.get(0).Title(), PROPER_EVENT_RESULT.Title());
+        assertEquals("description", eventArrayList.get(0).Description(), PROPER_EVENT_RESULT.Description());
+
+    }
+
 }

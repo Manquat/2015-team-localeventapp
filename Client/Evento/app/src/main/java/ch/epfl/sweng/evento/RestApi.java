@@ -1,19 +1,26 @@
 package ch.epfl.sweng.evento;
 
 /**
- * Created by cerschae on 15/10/2015.
+ * Created by jmuth on 15/10/2015.
  */
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.PasswordAuthentication;
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Entry point into the API. Joachim
  *
+ * ONLY GETTASK IS WORKING =D
  * TODO: know the server protocol to provide correct String to GetTask and PostTask
  */
 public class RestApi{
     NetworkProvider networkProvider;
+    String restUrl = "http://exemple.server.com";
 
     public RestApi(NetworkProvider networkProvider){
         this.networkProvider = networkProvider;
@@ -27,16 +34,23 @@ public class RestApi{
      * Request new events to display in the app, according with the position and the filter
      * preferences of the user
      *
-     * @param filter the filters of which events we want to get (inculding position and tag)
-     * @param callback Callback to execute when the profile is available.
+     * @param eventArrayList the ArrayList where you want to push the loaded event.
      */
-    public void getEvents(EventFilter filter, final GetResponseCallback callback){
-        String restUrl = Serializer.filter(filter);
+    public void getEvent(final ArrayList<Event> eventArrayList){
+
         new GetTask(restUrl, networkProvider, new RestTaskCallback (){
             @Override
-            public void onTaskComplete(String response){
-                ArrayList<Event> events = Parser.events(response);
-                callback.onDataReceived(events);
+            public void onTaskComplete(String response) {
+                JSONObject JSONresponse = null;
+                Event event;
+                try {
+                    JSONresponse = new JSONObject(response);
+                    event = Parser.parseFromJSON(JSONresponse);
+                    eventArrayList.add(event);
+                } catch (JSONException e) {
+                    // TODO: Manage the exception
+                    e.printStackTrace();
+                }
             }
         }).execute();
     }
