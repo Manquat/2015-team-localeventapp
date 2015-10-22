@@ -20,8 +20,8 @@ import ch.epfl.sweng.evento.NetworkProvider;
  * TODO: know the server protocol to provide correct String to GetTask and PostTask
  */
 public class RestApi{
-    NetworkProvider networkProvider;
-    String restUrl = "http://exemple.server.com";
+    private NetworkProvider networkProvider;
+    private String urlServer = "http://exemple.server.com";
 
     public RestApi(NetworkProvider networkProvider){
         this.networkProvider = networkProvider;
@@ -38,7 +38,7 @@ public class RestApi{
      * @param eventArrayList the ArrayList where you want to push the loaded event.
      */
     public void getEvent(final ArrayList<Event> eventArrayList){
-
+        String restUrl = UrlMaker.get(urlServer);
         new GetTask(restUrl, networkProvider, new RestTaskCallback (){
             @Override
             public void onTaskComplete(String response) {
@@ -62,9 +62,9 @@ public class RestApi{
      * @param callback The callback to execute when submission status is available.
      */
     public void postEvent(Event event, final PostCallback callback){
-        String restUrl = Serializer.event(event);
+        String restUrl = UrlMaker.put(urlServer);
         String requestBody = Serializer.event(event);
-        new PostTask(networkProvider, restUrl, requestBody, new RestTaskCallback(){
+        new PutTask(restUrl, networkProvider, requestBody, new RestTaskCallback(){
             public void onTaskComplete(String response){
                 callback.onPostSuccess();
             }
@@ -79,9 +79,9 @@ public class RestApi{
      *
      */
     public void updateEvent(Event event, final PutCallback callback){
-        String restUrl = Serializer.event(event);
+        String restUrl = UrlMaker.post(urlServer);
         String requestBody = Serializer.event(event);
-        new PostTask(networkProvider, restUrl, requestBody, new RestTaskCallback(){
+        new PostTask(restUrl, networkProvider, requestBody, new RestTaskCallback(){
             public void onTaskComplete(String response){
                 callback.onPostSuccess();
             }
@@ -93,12 +93,11 @@ public class RestApi{
      * @param callback The callback to execute when submission status is available.
      */
     public void deleteEvent(Event event, final DeleteResponseCallback callback){
-        String restUrl = Serializer.event(event);
+        String restUrl = UrlMaker.delete(urlServer);
         String requestBody = Serializer.event(event);
-        new PostTask(networkProvider, restUrl, requestBody, new RestTaskCallback (){
-            @Override
+        new DeleteTask(restUrl, networkProvider, requestBody, new RestTaskCallback(){
             public void onTaskComplete(String response){
-                callback.onDeleteSucced();
+                callback.onDeleteSuccess();
             }
         }).execute();
     }

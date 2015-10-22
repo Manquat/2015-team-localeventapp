@@ -17,27 +17,27 @@ import ch.epfl.sweng.evento.NetworkProvider;
  * An AsyncTask implementation for performing POSTs.
  */
 public class PostTask extends AsyncTask<String, String, String> {
-    private final NetworkProvider mNetworkProvider;
-    private String mRestUrl;
-    private RestTaskCallback mCallback;
-    private String mRequestBody;
+    private final NetworkProvider networkProvider;
+    private String restUrl;
+    private RestTaskCallback callback;
+    private String requestBody;
 
     /**
      * Creates a new instance of PostTask with the specified URL, callback, and
      * request body.
      *
-     * @param mNetworkProvider
+     * @param networkProvider
      * @param restUrl The URL for the REST API.
      * @param requestBody The body of the POST request.
      * @param callback The callback to be invoked when the HTTP request
 *            completes.
      *
      */
-    public PostTask(NetworkProvider mNetworkProvider, String restUrl, String requestBody, RestTaskCallback callback){
-        this.mNetworkProvider = mNetworkProvider;
-        this.mRestUrl = restUrl;
-        this.mRequestBody = requestBody;
-        this.mCallback = callback;
+    public PostTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback){
+        this.networkProvider = networkProvider;
+        this.restUrl = restUrl;
+        this.requestBody = requestBody;
+        this.callback = callback;
     }
 
     @Override
@@ -45,11 +45,11 @@ public class PostTask extends AsyncTask<String, String, String> {
         URL url = null;
         String response = null;
         try {
-            url = new URL(mRestUrl);
+            url = new URL(restUrl);
 
 
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            HttpURLConnection conn = mNetworkProvider.getConnection(url);
+            HttpURLConnection conn = networkProvider.getConnection(url);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -61,7 +61,7 @@ public class PostTask extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        mCallback.onTaskComplete(result);
+        callback.onTaskComplete(result);
         super.onPostExecute(result);
     }
 }
