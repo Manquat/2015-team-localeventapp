@@ -41,19 +41,15 @@ import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
 public class MainActivity extends AppCompatActivity
 {
 
-    public static final String TAG = "MainActivity";
-    private static Toolbar         mToolbar;
-    private static ViewPager       mPager;
-    private static ViewPageAdapter mAdaptater;
-    private static SlidingTabLayout mTabs;
+    public static final String          TAG = "MainActivity";
+    private static Toolbar              mToolbar;
+    private static ViewPager            mPager;
+    private static ViewPageAdapter      mAdaptater;
+    private static SlidingTabLayout     mTabs;
     private static ArrayList<CharSequence> mTitles = new ArrayList<CharSequence>(
             Arrays.asList("Maps", "Events", "Calendar"));
-    private static FragmentManager mFragmentManager;
+    private static final int            MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
 
-    public static FragmentManager getFragManager()
-    {
-        return mFragmentManager;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +61,14 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(mToolbar);
 
         // Creating the ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs.
-        mFragmentManager = getSupportFragmentManager();
-        mAdaptater = new ViewPageAdapter(mFragmentManager, mTitles);
+        mAdaptater = new ViewPageAdapter(getSupportFragmentManager(), mTitles);
 
         // Assigning ViewPager View and setting the adapter
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mAdaptater);
+
+        // Set the mosaic as the first launched screen
+        mPager.setCurrentItem(MOSAIC_POSITION);
 
         // Assigning the Sliding Tab Layout View
         mTabs = (SlidingTabLayout) findViewById(R.id.tabs);
