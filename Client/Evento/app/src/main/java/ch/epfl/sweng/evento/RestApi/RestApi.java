@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.RestApi;
 
 /**
  * Created by jmuth on 15/10/2015.
@@ -8,9 +8,10 @@ package ch.epfl.sweng.evento;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.PasswordAuthentication;
 import java.util.ArrayList;
-import java.util.Set;
+
+import ch.epfl.sweng.evento.Event;
+import ch.epfl.sweng.evento.NetworkProvider;
 
 /**
  * Entry point into the API. Joachim

@@ -2,7 +2,6 @@ package ch.epfl.sweng.evento;
 
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.util.Log;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,9 +14,13 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
+
+import ch.epfl.sweng.evento.RestApi.Parser;
+import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.RestApi.RestTaskCallback;
+import ch.epfl.sweng.evento.RestApi.GetTask;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -90,7 +93,7 @@ public class RestAPITest {
         configureResponse(HttpURLConnection.HTTP_OK, testString, JSON_CONTENT_TYPE);
 
         getTask = new GetTask("http://example.com", networkProvider,
-                new RestTaskCallback (){
+                new RestTaskCallback(){
                     public void onTaskComplete(String response){
                         assertEquals(testString + "\n", response);
                     }});

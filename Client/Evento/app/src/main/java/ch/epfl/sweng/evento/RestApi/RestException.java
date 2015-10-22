@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.RestApi;
 
 /**
  * Created by joachimmuth on 16.10.15.

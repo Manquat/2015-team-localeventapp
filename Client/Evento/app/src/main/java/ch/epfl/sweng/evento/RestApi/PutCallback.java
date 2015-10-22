@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.RestApi;
 
 /**
  * Created by cerschae on 15/10/2015.
@@ -9,7 +9,7 @@ package ch.epfl.sweng.evento;
  * submission is available.
  *
  */
-public abstract class PostCallback{
+public abstract class PutCallback {
     /**
      * Called when a POST success response is received. <br/>
      * This method is guaranteed to execute on the UI thread.

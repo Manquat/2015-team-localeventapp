@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.RestApi;
 
 /**
  * Created by cerschae on 15/10/2015.
@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import ch.epfl.sweng.evento.NetworkProvider;
 
 /**
  * An AsyncTask implementation for performing GETs.

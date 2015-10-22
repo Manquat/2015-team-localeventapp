@@ -1,16 +1,13 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.RestApi;
 
 /**
- * Created by cerschae on 15/10/2015.
+ * Created by jmuth on 15/10/2015.
  */
-
-import java.util.ArrayList;
-
 /**
  * Class definition for a callback to be invoked when the response data for the
  * GET call is available.
  */
-public abstract class GetResponseCallback{
+public abstract class DeleteResponseCallback {
 
     /**
      * Called when the response data for the REST call is ready. <br/>
@@ -18,7 +15,7 @@ public abstract class GetResponseCallback{
      *
      * @param event The {@code event} that was received from the server.
      */
-    abstract void onDataReceived(ArrayList<Event> event);
+    abstract void onDeleteSucced();
 
     /*
      * Additional methods like onPreGet() or onFailure() can be added with default implementations.
