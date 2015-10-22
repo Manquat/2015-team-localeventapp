@@ -1,7 +1,7 @@
 package ch.epfl.sweng.evento;
 
 /**
- * Created by cerschae on 15/10/2015.
+ * Created by jmuth on 15/10/2015.
  */
 /**
  * Class definition for a callback to be invoked when the response data for the
