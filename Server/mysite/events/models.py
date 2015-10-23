@@ -6,10 +6,11 @@ from datetime import timedelta
 
 class Event(models.Model):
     Event_name = models.CharField(max_length=200, default='No Name!')
+    creator = models.CharField(max_length=200, default='Ben!')
     description = models.TextField(default='No Description!')
     latitude = models.FloatField(default=0.00000)
     longitude = models.FloatField(default=0.00000)
-    adress = models.CharField(max_length=200, default='Sidney!')
+    address = models.CharField(max_length=200, default='Sidney!')
     date = models.DateTimeField("date", default=timezone.now())
     duration = models.DurationField("duration", default=timedelta())
     tags = models.CharField(max_length=200, default='Foot!')

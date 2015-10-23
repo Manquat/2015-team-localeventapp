@@ -8,4 +8,4 @@ from django.utils import timezone
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ('id', 'Event_name', 'description', 'latitude', 'longitude', 'adress', 'date', 'duration', 'tags')
+        fields = ('id', 'Event_name', 'creator', 'description', 'latitude', 'longitude', 'address', 'date', 'duration', 'tags')
