@@ -4,8 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 import ch.epfl.sweng.evento.tabsFragment.CalendarTabs;
 import ch.epfl.sweng.evento.tabsFragment.MapsFragment;
@@ -15,15 +14,12 @@ import ch.epfl.sweng.evento.tabsFragment.MapsFragment;
  */
 public class ViewPageAdapter extends FragmentStatePagerAdapter
 {
-    private static ArrayList<CharSequence> mTitles; // This will Store the Titles of the Tabs
-    private static FragmentManager mFragmentManager;
+    private List<CharSequence> mTitles; // This will Store the Titles of the Tabs
 
     // Build a Constructor and assign the passed Values to appropriate values in the class
-    public ViewPageAdapter(FragmentManager fragmentManager, ArrayList<CharSequence> titles)
+    public ViewPageAdapter(FragmentManager fragmentManager, List<CharSequence> titles)
     {
         super(fragmentManager);
-
-        mFragmentManager = fragmentManager;
 
         mTitles = titles;
     }
