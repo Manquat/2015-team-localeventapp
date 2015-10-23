@@ -6,11 +6,12 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from events.models import Event
 from events.serializers import EventSerializer
+import datetime
 
 @api_view(['GET', 'POST'])
 def event_list(request, format=None):
     """
-    List all code snippets, or create a new snippet.
+    List all events, or create an event.
     """
     if request.method == 'GET':
         events = Event.objects.all()
@@ -27,7 +28,7 @@ def event_list(request, format=None):
 @api_view(['GET', 'PUT', 'DELETE'])
 def event_detail(request, pk, format=None):
     """
-    Retrieve, update or delete a code snippet.
+    Retrieve, update or delete an event.
     """
     try:
         event = Event.objects.get(pk=pk)
@@ -48,3 +49,21 @@ def event_detail(request, pk, format=None):
     elif request.method == 'DELETE':
         event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def event_request(request, fromdate, todate, format=None):
+    """
+    Retrieve 5 events in time frame asked
+    """
+
+    tdate = datetime.datetime.fromtimestamp(float(todate))
+    idate = datetime.datetime.fromtimestamp(float(fromdate))
+
+    try:
+        event = Event.objects.filter(date__range=[idate, tdate])
+    except Event.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    #event = Event.objects.all()
+    if request.method == 'GET':
+        serializer = EventSerializer(event, many=True)
+        return Response(serializer.data)
