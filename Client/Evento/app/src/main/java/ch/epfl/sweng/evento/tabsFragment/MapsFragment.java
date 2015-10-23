@@ -20,11 +20,14 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -45,8 +48,9 @@ public class MapsFragment extends SupportMapFragment implements
         OnMyLocationButtonClickListener,
         InfoWindowAdapter
 {
-    // LogCat tag
-    private static final String TAG = MapsFragment.class.getSimpleName();
+    private static final String TAG = MapsFragment.class.getSimpleName();   // LogCat tag
+    private static final int NUMBER_OF_MARKERS = 100;                       // Number of marker that will be displayed
+    private static final float ZOOM_LEVEL = 15.0f;                          // Zoom level of the map at the beginning
 
     private GoogleMap   mMap;
     private Event       mEvent;
@@ -115,12 +119,21 @@ public class MapsFragment extends SupportMapFragment implements
         mMap.setMyLocationEnabled(true);
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setInfoWindowAdapter(this);
+
+        if (mGoogleApiClient.isConnected())
+        {
+            zoomOnUser();
+        }
     }
 
     @Override
     public void onConnected(Bundle bundle)
     {
         // TODO do something
+        if (mMap != null)
+        {
+            zoomOnUser();
+        }
     }
 
     @Override
@@ -153,18 +166,37 @@ public class MapsFragment extends SupportMapFragment implements
     @Override
     public boolean onMyLocationButtonClick()
     {
-        if (mGoogleApiClient.isConnected()) {
-            Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mGoogleApiClient.isConnected())
+        {
+            zoomOnUser();
+        }
 
-            if (lastLocation != null)
+        // Return false so that we don't consume the event and the default behavior still occurs
+        // (the camera animates to the user's current position).
+        return false;
+    }
+
+    /**
+     * Zoom on the the position of the user and draw some markers
+     */
+    private void zoomOnUser()
+    {
+        Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        if (lastLocation != null)
+        {
+            // introduction of randomness
+            Random random = new Random();
+
+            // conversion of the location into a LatLng
+            double latitude = lastLocation.getLatitude();
+            double longitude = lastLocation.getLongitude();
+            double zoomScale = 1.0 / 60.0;
+
+            mMap.clear();
+
+            for (int i=0; i < NUMBER_OF_MARKERS; i++)
             {
-                // introduction of randomness
-                Random random = new Random();
-
-                // conversion of the location into a LatLng
-                double latitude = lastLocation.getLatitude();
-                double longitude = lastLocation.getLongitude();
-                double zoomScale = 1.0 / 60.0;
                 LatLng markerLatLng = new LatLng(latitude + random.nextDouble() * zoomScale - 0.5 * zoomScale,
                         longitude + random.nextDouble() * zoomScale - 0.5 * zoomScale);
 
@@ -173,14 +205,15 @@ public class MapsFragment extends SupportMapFragment implements
                 markerOptions.title(mEvent.Title());
                 markerOptions.snippet(mEvent.Description());
 
-                mMap.clear();
                 mMap.addMarker(markerOptions);
             }
-        }
 
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
-        return false;
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(latitude, longitude))
+                    .zoom(ZOOM_LEVEL)
+                    .build();
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        }
     }
 
     @Override

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.tabsFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,10 +22,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+
+import ch.epfl.sweng.evento.R;
 
 /**
  * Simple Fragment used to display some meaningful content for each page in the sample's

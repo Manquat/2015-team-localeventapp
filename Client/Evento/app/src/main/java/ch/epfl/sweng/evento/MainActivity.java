@@ -41,14 +41,14 @@ import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
 public class MainActivity extends AppCompatActivity
 {
 
-    public static final String          TAG = "MainActivity";
-    private static Toolbar              mToolbar;
-    private static ViewPager            mPager;
-    private static ViewPageAdapter      mAdaptater;
-    private static SlidingTabLayout     mTabs;
-    private static ArrayList<CharSequence> mTitles = new ArrayList<CharSequence>(
+    public final String          TAG = "MainActivity";
+    private Toolbar              mToolbar;
+    private ViewPager            mPager;
+    private ViewPageAdapter      mAdaptater;
+    private SlidingTabLayout     mTabs;
+    private ArrayList<CharSequence> mTitles = new ArrayList<CharSequence>(
             Arrays.asList("Maps", "Events", "Calendar"));
-    private static final int            MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
+    private final int            MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
 
 
     @Override
