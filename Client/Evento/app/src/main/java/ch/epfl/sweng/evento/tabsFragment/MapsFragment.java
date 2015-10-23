@@ -47,6 +47,7 @@ public class MapsFragment extends SupportMapFragment implements
 {
     // LogCat tag
     private static final String TAG = MapsFragment.class.getSimpleName();
+    private static final int NUMBER_OF_MARKERS = 100;
 
     private GoogleMap   mMap;
     private Event       mEvent;
@@ -165,16 +166,21 @@ public class MapsFragment extends SupportMapFragment implements
                 double latitude = lastLocation.getLatitude();
                 double longitude = lastLocation.getLongitude();
                 double zoomScale = 1.0 / 60.0;
-                LatLng markerLatLng = new LatLng(latitude + random.nextDouble() * zoomScale - 0.5 * zoomScale,
-                        longitude + random.nextDouble() * zoomScale - 0.5 * zoomScale);
-
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(markerLatLng);
-                markerOptions.title(mEvent.Title());
-                markerOptions.snippet(mEvent.Description());
 
                 mMap.clear();
-                mMap.addMarker(markerOptions);
+
+                for (int i=0; i < NUMBER_OF_MARKERS; i++)
+                {
+                    LatLng markerLatLng = new LatLng(latitude + random.nextDouble() * zoomScale - 0.5 * zoomScale,
+                            longitude + random.nextDouble() * zoomScale - 0.5 * zoomScale);
+
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(markerLatLng);
+                    markerOptions.title(mEvent.Title());
+                    markerOptions.snippet(mEvent.Description());
+
+                    mMap.addMarker(markerOptions);
+                }
             }
         }
 
