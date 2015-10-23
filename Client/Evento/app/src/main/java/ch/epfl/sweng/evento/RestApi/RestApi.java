@@ -26,7 +26,9 @@ import ch.epfl.sweng.evento.NetworkProvider;
  */
 public class RestApi{
     private NetworkProvider networkProvider;
-    private String urlServer = "http://127.0.0.1:8000/";
+    private String urlServer = "http://10.0.2.2:8000/";
+    private Boolean onWork = false;  // ugly trick to wait for REST terminates, while testing
+    // TODO: find a better way
 
     public RestApi(NetworkProvider networkProvider){
         this.networkProvider = networkProvider;
@@ -36,6 +38,8 @@ public class RestApi{
 //        //Choose an appropriate creation strategy.
 //    }
 
+    public Boolean isWorking() { return onWork; };
+
     /**
      * Request new events to display in the app, according with the position and the filter
      * preferences of the user
@@ -43,6 +47,7 @@ public class RestApi{
      * @param eventArrayList the ArrayList where you want to push the loaded event.
      */
     public void getEvent(final ArrayList<Event> eventArrayList){
+        onWork = true;
         String restUrl = UrlMaker.get(urlServer);
         new GetTask(restUrl, networkProvider, new RestTaskCallback (){
             @Override
@@ -53,9 +58,11 @@ public class RestApi{
                     JSONresponse = new JSONObject(response);
                     event = Parser.parseFromJSON(JSONresponse);
                     eventArrayList.add(event);
+                    onWork = false;
                 } catch (JSONException e) {
                     // TODO: Manage the exception
                     e.printStackTrace();
+                    onWork = false;
                 }
             }
         }).execute();

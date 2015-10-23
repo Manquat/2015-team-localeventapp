@@ -25,7 +25,7 @@ public class Parser {
         // Check that jsonObject have requiered field
         // TODO: choose whether other fields are requiered or optional
         if (!(jsonObject.get("id") instanceof Integer)
-                || !(jsonObject.get("title") instanceof String)
+                || !(jsonObject.get("Event_name") instanceof String)
                 ) {
             throw new JSONException("Invalid question structure");
         }
@@ -43,12 +43,14 @@ public class Parser {
 
         try {
             return new Event(jsonObject.getInt("id"),
-                    jsonObject.getString("title"),
+                    jsonObject.getString("Event_name"),
                     jsonObject.getString("description"),
-                    jsonObject.getDouble("xLocation"),
-                    jsonObject.getDouble("yLocation"),
-                    jsonObject.getString("address"),
-                    jsonObject.getString("creator"));
+                    jsonObject.getDouble("latitude"),
+                    jsonObject.getDouble("longitude"),
+                    jsonObject.getString("adress"),
+                    "Missing creator");
+                    // TODO: correct the typo adress and add creator and tags
+                    //jsonObject.getString("creator"))
         } catch (IllegalArgumentException e) {
             throw new JSONException("Invalid question structure");
         } catch (NullPointerException e) {

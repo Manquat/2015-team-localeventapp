@@ -42,12 +42,12 @@ public class RestApiLocalTest {
     private static final Parser parser = new Parser();
     private static final String PROPER_JSON_STRING = "{\n"
             + "  \"id\": 17005,\n"
-            + "  \"title\": \"My football game\",\n"
+            + "  \"Event_name\": \"My football game\",\n"
             + "  \"description\": \n"
             + "    \"Okay guys, let's play a little game this evening at dorigny. Remember: no doping allowed!\" ,\n"
-            + "  \"xLocation\": 46.519428,\n"
-            + "  \"yLocation\": 6.580847,\n"
-            + "  \"address\": \"Terrain de football de Dorigny\",\n "
+            + "  \"latitude\": 46.519428,\n"
+            + "  \"longitude\": 6.580847,\n"
+            + "  \"adress\": \"Terrain de football de Dorigny\",\n "
             + "  \"creator\": \"Micheal Jackson\"\n"
             + "}\n";
     private static final Event PROPER_EVENT_RESULT = new Event(17005,
@@ -116,10 +116,12 @@ public class RestApiLocalTest {
         restApi.getEvent(eventArrayList);
 
         // TODO: a best way to test the end of the asyctask called by RestApi
-        try {
-            Thread.sleep(1000);                 //1000 milliseconds is one second.
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
+        while(restApi.isWorking()) {
+            try {
+                Thread.sleep(100);                 //1000 milliseconds is one second.
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
         }
 
         assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
