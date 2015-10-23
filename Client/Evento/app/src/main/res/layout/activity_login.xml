@@ -1,23 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    tools:context=".LoginActivity"
-    android:baselineAligned="false"
-    android:orientation="vertical">
+<?xml version="1.0" ?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        tools:ignore="ContentDescription"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:src="@mipmap/eventologo" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/Slogan"
+        android:gravity="center_horizontal"
+        android:id="@+id/textView3" />
+    <!--The G+ sign in Button-->
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="@string/Username"
+        android:ems="10"
+        android:id="@+id/editText2"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="0dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:text="@string/Password"
+        android:id="@+id/editText"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="0dp" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
-        android:layout_width="386dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal" />
-
-<!--<ImageView
         android:layout_width="match_parent"
-        android:layout_height="503dp"
-        android:src="@mipmap-hdpi/LoginScreen_Slogan.png"
-        android:layout_gravity="center_horizontal"></ImageView>-->
-
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_marginBottom="5dp" />
+    <!--Futur facebook login button
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp" />
+        -->
 </LinearLayout>

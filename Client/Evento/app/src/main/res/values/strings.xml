@@ -12,4 +12,7 @@
     <string name="signing_in">Signing in...</string>
     <string name="google_maps_key">AIzaSyDd4lxH46Q5baX8ktzdVjL09qPtZa65aJw</string>
     <string name="text">You are in a tab</string>
+    <string name="Slogan">This slogan will make you buy our premium features</string>
+    <string name="Username">Username</string>
+    <string name="Password">Password</string>
 </resources>
