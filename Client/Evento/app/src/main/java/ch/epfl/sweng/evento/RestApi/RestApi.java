@@ -5,10 +5,15 @@ package ch.epfl.sweng.evento.RestApi;
  */
 
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 
 import ch.epfl.sweng.evento.Event;
 import ch.epfl.sweng.evento.NetworkProvider;
@@ -21,7 +26,7 @@ import ch.epfl.sweng.evento.NetworkProvider;
  */
 public class RestApi{
     private NetworkProvider networkProvider;
-    private String urlServer = "http://exemple.server.com";
+    private String urlServer = "http://127.0.0.1:8000/";
 
     public RestApi(NetworkProvider networkProvider){
         this.networkProvider = networkProvider;
@@ -55,6 +60,7 @@ public class RestApi{
             }
         }).execute();
     }
+
 
     /**
      * Submit a Event to the server.

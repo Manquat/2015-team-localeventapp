@@ -31,12 +31,12 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class RestAPITest {
+public class RestApiLocalTest {
     private GetTask getTask;
     private static final String JSON_CONTENT_TYPE = "application/json; charset=utf-8";
     private static final int ASCII_SPACE = 0x20;
     private HttpURLConnection connection;
-    private NetworkProvider networkProvider;
+    private NetworkProvider networkProviderMockito;
     private static final String wrongUrl = "wrongurl";
 
     private static final Parser parser = new Parser();
@@ -61,8 +61,8 @@ public class RestAPITest {
     @Before
     public void setUp() throws Exception {
         connection = Mockito.mock(HttpURLConnection.class);
-        networkProvider = Mockito.mock(NetworkProvider.class);
-        Mockito.doReturn(connection).when(networkProvider).getConnection(Mockito.any(URL.class));
+        networkProviderMockito = Mockito.mock(NetworkProvider.class);
+        Mockito.doReturn(connection).when(networkProviderMockito).getConnection(Mockito.any(URL.class));
         }
 
     private void configureResponse(int status, String content, String contentType)
@@ -92,7 +92,7 @@ public class RestAPITest {
         final String testString = "test string";
         configureResponse(HttpURLConnection.HTTP_OK, testString, JSON_CONTENT_TYPE);
 
-        getTask = new GetTask("http://example.com", networkProvider,
+        getTask = new GetTask("http://example.com", networkProviderMockito,
                 new RestTaskCallback(){
                     public void onTaskComplete(String response){
                         assertEquals(testString + "\n", response);
@@ -110,7 +110,7 @@ public class RestAPITest {
     @Test
     public void testGetEvent() throws IOException {
         configureResponse(HttpURLConnection.HTTP_OK, PROPER_JSON_STRING, JSON_CONTENT_TYPE);
-        RestApi restApi = new RestApi(networkProvider);
+        RestApi restApi = new RestApi(networkProviderMockito);
         ArrayList<Event> eventArrayList = new ArrayList<Event>();
 
         restApi.getEvent(eventArrayList);
@@ -128,5 +128,6 @@ public class RestAPITest {
         assertEquals("description", eventArrayList.get(0).Description(), PROPER_EVENT_RESULT.Description());
 
     }
+
 
 }
