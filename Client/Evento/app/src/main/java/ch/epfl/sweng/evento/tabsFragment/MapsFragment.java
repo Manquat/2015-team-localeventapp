@@ -2,12 +2,9 @@ package ch.epfl.sweng.evento.tabsFragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +17,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
@@ -31,7 +27,9 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
 
+import java.util.Collection;
 import java.util.Random;
 
 import ch.epfl.sweng.evento.Event;
@@ -40,6 +38,8 @@ import ch.epfl.sweng.evento.R;
 
 /**
  * Created by Gautier on 21/10/2015.
+ *
+ * Fragment that hold the Google map.
  */
 public class MapsFragment extends SupportMapFragment implements
         OnMapReadyCallback,
@@ -52,13 +52,16 @@ public class MapsFragment extends SupportMapFragment implements
     private static final int NUMBER_OF_MARKERS = 100;                       // Number of marker that will be displayed
     private static final float ZOOM_LEVEL = 15.0f;                          // Zoom level of the map at the beginning
 
-    private GoogleMap   mMap;
-    private Event       mEvent;
+    private GoogleMap           mMap;
+    private Location            mLastLocation;
+    private Event               mEvent;             // a mock event that would be replicated all over the map
+    private Collection<LatLng>  mMarkersLocations;  // the positions of the mock events
+    private ClusterManager<Event> mClusterManager;  // Manage the clustering of the marker
 
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
 
-    private Activity mActivity;
+    private Activity mActivity;                     // not really useful but I think it's more efficient
 
     /**
      * Constructor by default mandatory for fragment class
@@ -120,9 +123,17 @@ public class MapsFragment extends SupportMapFragment implements
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setInfoWindowAdapter(this);
 
+        // Initialize the manager with the context and the map.
+        mClusterManager = new ClusterManager<Event>(mActivity.getApplicationContext(), mMap);
+
+        // Point the map's listeners at the listeners implemented by the cluster manager.
+        mMap.setOnCameraChangeListener(mClusterManager);
+        mMap.setOnMarkerClickListener(mClusterManager);
+
         if (mGoogleApiClient.isConnected())
         {
             zoomOnUser();
+            addEventsMarker();
         }
     }
 
@@ -133,6 +144,7 @@ public class MapsFragment extends SupportMapFragment implements
         if (mMap != null)
         {
             zoomOnUser();
+            addEventsMarker();
         }
     }
 
@@ -152,11 +164,6 @@ public class MapsFragment extends SupportMapFragment implements
             Log.e(TAG, "" + connectionResult.getErrorCode());
             return;
         }
-
-        /*if (!mIntentInProgress)
-        {
-            mConnectionResult = connectionResult;
-        }*/
     }
 
     /**
@@ -169,6 +176,7 @@ public class MapsFragment extends SupportMapFragment implements
         if (mGoogleApiClient.isConnected())
         {
             zoomOnUser();
+            addEventsMarker();
         }
 
         // Return false so that we don't consume the event and the default behavior still occurs
@@ -181,38 +189,42 @@ public class MapsFragment extends SupportMapFragment implements
      */
     private void zoomOnUser()
     {
-        Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-        if (lastLocation != null)
+        if (mLastLocation != null)
         {
-            // introduction of randomness
-            Random random = new Random();
-
-            // conversion of the location into a LatLng
-            double latitude = lastLocation.getLatitude();
-            double longitude = lastLocation.getLongitude();
-            double zoomScale = 1.0 / 60.0;
-
-            mMap.clear();
-
-            for (int i=0; i < NUMBER_OF_MARKERS; i++)
-            {
-                LatLng markerLatLng = new LatLng(latitude + random.nextDouble() * zoomScale - 0.5 * zoomScale,
-                        longitude + random.nextDouble() * zoomScale - 0.5 * zoomScale);
-
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(markerLatLng);
-                markerOptions.title(mEvent.Title());
-                markerOptions.snippet(mEvent.Description());
-
-                mMap.addMarker(markerOptions);
-            }
-
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(latitude, longitude))
+                    .target(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
                     .zoom(ZOOM_LEVEL)
                     .build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        }
+    }
+
+    private void addEventsMarker()
+    {
+        if (mLastLocation == null)
+        {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        }
+
+        // introduction of randomness
+        Random random = new Random();
+
+        // conversion of the location into a LatLng
+        double latitude = mLastLocation.getLatitude();
+        double longitude = mLastLocation.getLongitude();
+        double zoomScale = 1.0 / 60.0;
+
+        mMap.clear();
+
+        for (int i=0; i < NUMBER_OF_MARKERS; i++)
+        {
+            double tempLatitude = latitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
+            double tempLongitude = longitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
+
+            mClusterManager.addItem(new Event(mEvent.ID(), mEvent.Title(),mEvent.Description(),
+                    tempLatitude, tempLongitude, mEvent.Address(), mEvent.Creator()));
         }
     }
 
