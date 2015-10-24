@@ -3,6 +3,9 @@ package ch.epfl.sweng.evento;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * Created by Val on 15.10.2015.
  */
@@ -14,9 +17,9 @@ public class Event implements ClusterItem {
     private final LatLng _location;
     private final String _address;
     private final String _creator;//might be replaced by some kind of User class
+    private final Set<String> mTags;
 
-
-    public Event(int id, String title, String description, double latitude, double longitude, String address, String creator)
+    public Event(int id, String title, String description, double latitude, double longitude, String address, String creator, Set<String> tags)
     {
         _ID = id;
         _title = title;
@@ -24,6 +27,7 @@ public class Event implements ClusterItem {
         _location = new LatLng(latitude, longitude);
         _address = address;
         _creator = creator;
+        mTags = tags;
     }
 
     public int ID()
@@ -64,6 +68,8 @@ public class Event implements ClusterItem {
     {
         return _creator;
     }
+
+    public Set<String> Tags() { return mTags; }
 
 
     @Override
