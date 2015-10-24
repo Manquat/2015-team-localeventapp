@@ -217,6 +217,7 @@ public class MapsFragment extends SupportMapFragment implements
         double zoomScale = 1.0 / 60.0;
 
         mMap.clear();
+        mClusterManager.clearItems();
 
         for (int i=0; i < NUMBER_OF_MARKERS; i++)
         {
