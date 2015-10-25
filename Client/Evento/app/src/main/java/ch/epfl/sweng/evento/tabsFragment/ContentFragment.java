@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import java.util.ArrayList;
+import java.util.Vector;
 import java.util.regex.Pattern;
 
 import ch.epfl.sweng.evento.R;
@@ -34,23 +35,16 @@ import ch.epfl.sweng.evento.R;
  */
 public class ContentFragment extends Fragment {
 
-    private static final String KEY_TITLE = "title";
-    private static ArrayList<ImageButton> image = new ArrayList<ImageButton>();
+    private static Vector<ImageButton> m_mosaicVector = new Vector<ImageButton>();
     /**
      * @return a new instance of {@link ContentFragment}, adding the parameters into a bundle and
      * setting them as arguments.
      */
-
-    public static ContentFragment newInstance(CharSequence title, int indicatorColor,
-            int dividerColor) {
+    public ContentFragment(){
         Bundle bundle = new Bundle();
-        bundle.putCharSequence(KEY_TITLE, title);
 
-        ContentFragment fragment = new ContentFragment();
-        fragment.setArguments(bundle);
+        this.setArguments(bundle);
 
-
-        return fragment;
     }
 
     @Override
@@ -64,28 +58,6 @@ public class ContentFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Bundle args = getArguments();
-        image.add((ImageButton) view.findViewById(R.id.button1));
-        if (args != null) {
-            String fragName = args.getString(KEY_TITLE);
-            if (Pattern.compile(Pattern.quote("Map"), Pattern.CASE_INSENSITIVE).matcher(fragName).find()) {
 
-                image.get(image.size()-1).setVisibility(view.INVISIBLE);
-            }
-            else {
-                image.get(0).setVisibility(view.VISIBLE);
-            }
-            /*TextView title = (TextView) view.findViewById(R.id.item_title);
-            title.setText("Title: " + );
-
-            int indicatorColor = args.getInt(KEY_INDICATOR_COLOR);
-            TextView indicatorColorView = (TextView) view.findViewById(R.id.item_indicator_color);
-            indicatorColorView.setText("Indicator: #" + Integer.toHexString(indicatorColor));
-            indicatorColorView.setTextColor(indicatorColor);
-
-            int dividerColor = args.getInt(KEY_DIVIDER_COLOR);
-            TextView dividerColorView = (TextView) view.findViewById(R.id.item_divider_color);
-            dividerColorView.setText("Divider: #" + Integer.toHexString(dividerColor));
-            dividerColorView.setTextColor(dividerColor);*/
-        }
     }
 }

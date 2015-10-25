@@ -206,15 +206,19 @@ public class MapsFragment extends SupportMapFragment implements
     {
         if (mLastLocation == null)
         {
-            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient); //may return null in case of non connected device
         }
 
         // introduction of randomness
         Random random = new Random();
 
         // conversion of the location into a LatLng
-        double latitude = mLastLocation.getLatitude();
-        double longitude = mLastLocation.getLongitude();
+        double latitude = 0.;
+        double longitude = 0.;
+        if (mLastLocation != null){
+            latitude = mLastLocation.getLatitude();
+            longitude = mLastLocation.getLongitude();
+        }
         double zoomScale = 1.0 / 60.0;
 
         mMap.clear();
