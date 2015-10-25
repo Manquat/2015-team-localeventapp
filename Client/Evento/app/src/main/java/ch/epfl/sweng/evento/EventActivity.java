@@ -11,9 +11,9 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import android.widget.Toast;
+
+import ch.epfl.sweng.evento.Events.Event;
 
 public class EventActivity extends AppCompatActivity implements
     GestureDetector.OnGestureListener{

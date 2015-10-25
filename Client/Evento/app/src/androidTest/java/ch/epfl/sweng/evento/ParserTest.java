@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.RestApi.Parser;
 
 import static junit.framework.Assert.assertEquals;
@@ -46,8 +47,8 @@ public class ParserTest{
         assertEquals("id correctly parsed", event.ID(), eventFromJson.ID());
         assertEquals("title correctly parsed", event.Title(), eventFromJson.Title());
         assertEquals("description correctly parsed", event.Description(), eventFromJson.Description());
-        assertEquals("xLoc correctly parsed", event.X(), eventFromJson.X());
-        assertEquals("yLoc correctly parsed", event.Y(), eventFromJson.Y());
+        assertEquals("xLoc correctly parsed", event.Latitude(), eventFromJson.Latitude());
+        assertEquals("yLoc correctly parsed", event.Longitude(), eventFromJson.Longitude());
         assertEquals("address correctly parsed", event.Address(), eventFromJson.Address());
         assertEquals("creator correctly parsed", event.Creator(), eventFromJson.Creator());
 

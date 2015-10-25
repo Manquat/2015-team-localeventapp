@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.Events;
 
 import com.google.android.gms.maps.model.LatLng;
 
