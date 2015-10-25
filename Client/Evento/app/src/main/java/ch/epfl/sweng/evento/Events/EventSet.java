@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.Events;
 
 import android.location.Location;
 

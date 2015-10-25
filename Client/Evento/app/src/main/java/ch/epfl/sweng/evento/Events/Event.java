@@ -1,9 +1,8 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.Events;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
-import java.util.List;
 import java.util.Set;
 
 /**

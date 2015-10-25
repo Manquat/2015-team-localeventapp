@@ -1,15 +1,12 @@
 package ch.epfl.sweng.evento.RestApi;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
-import ch.epfl.sweng.evento.Event;
+import ch.epfl.sweng.evento.Events.Event;
 
 /**
  * Created by joachimmuth on 16.10.15.

@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import ch.epfl.sweng.evento.Event;
+import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.NetworkProvider;
 
 /**
