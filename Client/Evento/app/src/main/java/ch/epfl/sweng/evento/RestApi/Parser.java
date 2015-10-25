@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import ch.epfl.sweng.evento.Event;
@@ -48,7 +49,8 @@ public class Parser {
                     jsonObject.getDouble("xLocation"),
                     jsonObject.getDouble("yLocation"),
                     jsonObject.getString("address"),
-                    jsonObject.getString("creator"));
+                    jsonObject.getString("creator"),
+                    new HashSet<String>());
         } catch (IllegalArgumentException e) {
             throw new JSONException("Invalid question structure");
         } catch (NullPointerException e) {

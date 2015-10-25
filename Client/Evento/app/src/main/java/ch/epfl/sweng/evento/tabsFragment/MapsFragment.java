@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Random;
 
 import ch.epfl.sweng.evento.Event;
@@ -86,7 +87,7 @@ public class MapsFragment extends SupportMapFragment implements
 
         getMapAsync(this);
 
-        mEvent = new Event(1,"Event1","This is a first event",1.1,1.1,"1 long street","alfredo");
+        mEvent = new Event(1,"Event1","This is a first event",1.1,1.1,"1 long street","alfredo", new HashSet<String>());
 
         mGoogleApiClient = new GoogleApiClient.Builder(view.getContext())
                 .addApi(LocationServices.API)
@@ -225,7 +226,7 @@ public class MapsFragment extends SupportMapFragment implements
             double tempLongitude = longitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
 
             mClusterManager.addItem(new Event(mEvent.ID(), mEvent.Title(),mEvent.Description(),
-                    tempLatitude, tempLongitude, mEvent.Address(), mEvent.Creator()));
+                    tempLatitude, tempLongitude, mEvent.Address(), mEvent.Creator(), mEvent.Tags()));
         }
     }
 
