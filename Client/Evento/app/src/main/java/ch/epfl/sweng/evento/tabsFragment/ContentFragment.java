@@ -16,76 +16,130 @@
 
 package ch.epfl.sweng.evento.tabsFragment;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Vector;
 import java.util.regex.Pattern;
 
+import ch.epfl.sweng.evento.EventActivity;
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 
 /**
  * Simple Fragment used to display some meaningful content for each page in the sample's
  * {@link android.support.v4.view.ViewPager}.
  */
-public class ContentFragment extends Fragment {
+public class ContentFragment extends Fragment implements MyView.OnToggledListener {
 
-    private static final String KEY_TITLE = "title";
-    private static ArrayList<ImageButton> image = new ArrayList<ImageButton>();
+    final int PADDING = 5;
+    private static Vector<ImageButton> m_mosaicVector = new Vector<ImageButton>();
+
+    private GridLayout m_gridLayout;
+    private Activity mActivity;
+    private int m_numberOfRow;
+    private int m_numberOfColumn;
+    private MyView[] m_myViews;
+
     /**
      * @return a new instance of {@link ContentFragment}, adding the parameters into a bundle and
      * setting them as arguments.
      */
-
-    public static ContentFragment newInstance(CharSequence title, int indicatorColor,
-            int dividerColor) {
-        Bundle bundle = new Bundle();
-        bundle.putCharSequence(KEY_TITLE, title);
-
-        ContentFragment fragment = new ContentFragment();
-        fragment.setArguments(bundle);
-
-
-        return fragment;
+    public ContentFragment(){
+        super();
+        m_numberOfColumn = 3;
+        m_numberOfRow = 3;
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        mActivity = getActivity();
+    }
+
+    @Override
+    public void OnToggled(MyView v, boolean touchOn) {
+        Intent intent = new Intent(mActivity, EventActivity.class);
+        mActivity.startActivity(intent);
+
+        //This toast may be useful
+        /*String idString = v.getIdX() + ":" + v.getIdY();
+
+        Toast.makeText(mActivity,
+                "Toogled:\n" +
+                        idString + "\n" +
+                        touchOn,
+                Toast.LENGTH_SHORT).show();*/
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.pager_item, container, false);
+        View view = inflater.inflate(R.layout.fragment_mosaic, container, false);
+
+        m_gridLayout = (GridLayout) view.findViewById(R.id.gridLayout);
+        m_gridLayout.setRowCount(m_numberOfRow);
+        m_gridLayout.setColumnCount(m_numberOfColumn);
+
+        m_myViews = new MyView[m_numberOfRow*m_numberOfColumn];
+
+        for(int yPos=0; yPos<m_numberOfRow; yPos++){
+            for(int xPos=0; xPos<m_numberOfColumn; xPos++){
+                MyView tView = new MyView(view.getContext(), xPos, yPos);
+                tView.setOnToggledListener(this);
+                m_myViews[yPos*m_numberOfColumn + xPos] = tView;
+                m_gridLayout.addView(tView);
+            }
+        }
+
+        //Rescale
+        m_gridLayout.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener(){
+
+                    @Override
+                    public void onGlobalLayout() {
+                        int pWidth = m_gridLayout.getWidth();
+                        int pHeight = m_gridLayout.getHeight();
+                        int widthColumn = pWidth/m_numberOfColumn;
+                        int heightRow = pHeight/m_numberOfRow;
+
+                        for(int yPos=0; yPos<m_numberOfRow; yPos++){
+                            for(int xPos=0; xPos<m_numberOfColumn; xPos++){
+                                GridLayout.LayoutParams params =
+                                        (GridLayout.LayoutParams)m_myViews[yPos*m_numberOfColumn + xPos].getLayoutParams();
+                                params.width = widthColumn - 2*PADDING;
+                                params.height = heightRow - 2*PADDING;
+                                params.setMargins(PADDING, PADDING, PADDING, PADDING);
+                                m_myViews[yPos*m_numberOfColumn + xPos].setLayoutParams(params);
+                            }
+                        }
+
+                    }});
+
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Bundle args = getArguments();
-        image.add((ImageButton) view.findViewById(R.id.button1));
-        if (args != null) {
-            String fragName = args.getString(KEY_TITLE);
-            if (Pattern.compile(Pattern.quote("Map"), Pattern.CASE_INSENSITIVE).matcher(fragName).find()) {
-
-                image.get(image.size()-1).setVisibility(view.INVISIBLE);
-            }
-            else {
-                image.get(0).setVisibility(view.VISIBLE);
-            }
-            /*TextView title = (TextView) view.findViewById(R.id.item_title);
-            title.setText("Title: " + );
-
-            int indicatorColor = args.getInt(KEY_INDICATOR_COLOR);
-            TextView indicatorColorView = (TextView) view.findViewById(R.id.item_indicator_color);
-            indicatorColorView.setText("Indicator: #" + Integer.toHexString(indicatorColor));
-            indicatorColorView.setTextColor(indicatorColor);
-
-            int dividerColor = args.getInt(KEY_DIVIDER_COLOR);
-            TextView dividerColorView = (TextView) view.findViewById(R.id.item_divider_color);
-            dividerColorView.setText("Divider: #" + Integer.toHexString(dividerColor));
-            dividerColorView.setTextColor(dividerColor);*/
-        }
     }
+
 }

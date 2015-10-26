@@ -36,7 +36,7 @@ public class ViewPageAdapter extends FragmentStatePagerAdapter
             case 2:
                 return new CalendarTabs();
             default:
-                return ContentFragment.newInstance("Event", 0, 0);
+                return new ContentFragment();
         }
     }
 

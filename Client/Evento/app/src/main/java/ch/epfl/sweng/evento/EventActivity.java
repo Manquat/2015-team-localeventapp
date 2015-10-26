@@ -9,7 +9,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import ch.epfl.sweng.evento.Events.Event;
 
 public class EventActivity extends AppCompatActivity implements
     GestureDetector.OnGestureListener{
@@ -39,11 +43,12 @@ public class EventActivity extends AppCompatActivity implements
 
         /*Those are mock events before getting them from the database*/
         events = new Event[5];
-        events[0] = new Event(1,"Event1","This is a first event",1.1,1.1,"1 long street","alfredo");
-        events[1] = new Event(2,"Event2","This is a second event",2.2,2.2,"2 long street","bob");
-        events[2] = new Event(3,"Event3","This is a third event",3.3,3.3,"3 long street","charlie");
-        events[3] = new Event(4,"Event4","This is a fourth event",4.4,4.4,"4 long street","dinesh");
-        events[4] = new Event(5,"Event5","This is a fifth event",5.5,5.5,"5 long street","ethan");
+        Set<String> tag = new HashSet<String>();
+        events[0] = new Event(1,"Event1","This is a first event",1.1,1.1,"1 long street","alfredo", tag);
+        events[1] = new Event(2,"Event2","This is a second event",2.2,2.2,"2 long street","bob", tag);
+        events[2] = new Event(3,"Event3","This is a third event",3.3,3.3,"3 long street","charlie", tag);
+        events[3] = new Event(4,"Event4","This is a fourth event",4.4,4.4,"4 long street","dinesh", tag);
+        events[4] = new Event(5,"Event5","This is a fifth event",5.5,5.5,"5 long street","ethan", tag);
 
         currentEvent = events[2];
 
@@ -53,7 +58,7 @@ public class EventActivity extends AppCompatActivity implements
     }
 
     private void updateFields() {
-        System.out.println("Current event title : " + currentEvent.Title());
+        System.out.println("Current event title : " + currentEvent.getTitle());
     }
 
     @Override
@@ -101,18 +106,18 @@ public class EventActivity extends AppCompatActivity implements
 
     private void onSwipeLeft() {
         System.out.println("swiped left");
-        if(currentEvent.ID()<events.length-1)
+        if(currentEvent.getID()<events.length-1)
         {
-            currentEvent = events[currentEvent.ID()];
+            currentEvent = events[currentEvent.getID()];
             updateFields();
         }
     }
 
     private void onSwipeRight() {
         System.out.println("swiped right");
-        if(currentEvent.ID()>1)
+        if(currentEvent.getID()>1)
         {
-            currentEvent = events[currentEvent.ID()-2];
+            currentEvent = events[currentEvent.getID()-2];
             updateFields();
         }
     }

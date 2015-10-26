@@ -48,7 +48,8 @@ public class GetTask extends AsyncTask<String, Void, String>{
             conn.setDoInput(true);
             conn.connect();
 
-            int responseCode = conn.getResponseCode();
+            int responseCode = 0;
+            responseCode = conn.getResponseCode();
             if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END) {
                 throw new RestException("Invalid HTTP response code");
             }
