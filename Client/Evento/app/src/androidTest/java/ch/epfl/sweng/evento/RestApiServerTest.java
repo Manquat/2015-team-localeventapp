@@ -71,7 +71,8 @@ public class RestApiServerTest {
 
     @Test
     public void testPostTask() {
-        PostTask postTask = new PostTask(urlServer, networkProvider, PROPER_JSON_STRING, new RestTaskCallback(){
+        String url = urlServer + "events/";
+        PostTask postTask = new PostTask(url, networkProvider, PROPER_JSON_STRING, new RestTaskCallback(){
             public void onTaskComplete(String response){
             }});
 
