@@ -36,9 +36,9 @@ public class EventSet {
      */
     public void addEvent(Event event)
     {
-        if(!mEvents.containsKey(event.ID()))
+        if(!mEvents.containsKey(event.getID()))
         {
-            mEvents.put(event.ID(), event);
+            mEvents.put(event.getID(), event);
         }
     }
 
@@ -57,7 +57,7 @@ public class EventSet {
             Event event = entry.getValue();
             float result[] = new float[1];
             //stores the distance (in meters) between those two points in result[0]
-            Location.distanceBetween(event.Latitude(),event.Longitude(),latLng.latitude,latLng.longitude,result);
+            Location.distanceBetween(event.getLatitude(),event.getLongitude(),latLng.latitude,latLng.longitude,result);
             if(result[0]<distance)
             {
                 newEventSet.addEvent(event);
@@ -76,7 +76,7 @@ public class EventSet {
 
         for(Map.Entry<Integer, Event> entry : mEvents.entrySet())
         {
-            if(entry.getValue().Tags().containsAll(tags))
+            if(entry.getValue().getTags().containsAll(tags))
             {
                 newEventSet.addEvent(entry.getValue()); //or mEvents.put(entry)...
             }

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +29,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -255,8 +253,8 @@ public class MapsFragment extends SupportMapFragment implements
             double tempLatitude = latitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
             double tempLongitude = longitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
 
-            mClusterManager.addItem(new Event(mEvent.ID(), mEvent.Title(),mEvent.Description(),
-                    tempLatitude, tempLongitude, mEvent.Address(), mEvent.Creator(), mEvent.Tags()));
+            mClusterManager.addItem(new Event(mEvent.getID(), mEvent.getTitle(),mEvent.getDescription(),
+                    tempLatitude, tempLongitude, mEvent.getAddress(), mEvent.getCreator(), mEvent.getTags()));
         }
     }
 
@@ -286,10 +284,10 @@ public class MapsFragment extends SupportMapFragment implements
         View view = getLayoutInflater(null).inflate(R.layout.infomarker_event, mContainer, false);
 
         TextView tvTitle = (TextView) view.findViewById(R.id.info_title);
-        tvTitle.setText(mEvent.Title());
+        tvTitle.setText(mEvent.getTitle());
 
         TextView tvDescription = (TextView) view.findViewById(R.id.info_description);
-        tvDescription.setText(mEvent.Description());
+        tvDescription.setText(mEvent.getDescription());
 
         return view;
     }
@@ -298,7 +296,7 @@ public class MapsFragment extends SupportMapFragment implements
     public boolean onClusterClick(Cluster<Event> cluster)
     {
         // Show a toast with some info when the cluster is clicked.
-        String firstName = cluster.getItems().iterator().next().Title();
+        String firstName = cluster.getItems().iterator().next().getTitle();
         Toast.makeText(getContext(), cluster.getSize() + " (including " + firstName + ")", Toast.LENGTH_SHORT).show();
         return true;
     }

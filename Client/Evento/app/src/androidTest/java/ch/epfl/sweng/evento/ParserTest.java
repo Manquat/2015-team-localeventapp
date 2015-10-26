@@ -48,13 +48,14 @@ public class ParserTest{
     public void testParsingJsonToEvent() throws JSONException {
         JSONObject jsonObject = new JSONObject(PROPER_JSON_STRING);
         Event eventFromJson = parser.parseFromJSON(jsonObject);
-        assertEquals("id correctly parsed", event.ID(), eventFromJson.ID());
-        assertEquals("title correctly parsed", event.Title(), eventFromJson.Title());
-        assertEquals("description correctly parsed", event.Description(), eventFromJson.Description());
-        assertEquals("xLoc correctly parsed", event.Latitude(), eventFromJson.Latitude());
-        assertEquals("yLoc correctly parsed", event.Longitude(), eventFromJson.Longitude());
-        assertEquals("address correctly parsed", event.Address(), eventFromJson.Address());
-        //assertEquals("creator correctly parsed", event.Creator(), eventFromJson.Creator());
+
+        assertEquals("id correctly parsed", event.getID(), eventFromJson.getID());
+        assertEquals("title correctly parsed", event.getTitle(), eventFromJson.getTitle());
+        assertEquals("description correctly parsed", event.getDescription(), eventFromJson.getDescription());
+        assertEquals("xLoc correctly parsed", event.getLatitude(), eventFromJson.getLatitude());
+        assertEquals("yLoc correctly parsed", event.getLongitude(), eventFromJson.getLongitude());
+        assertEquals("address correctly parsed", event.getAddress(), eventFromJson.getAddress());
+        //assertEquals("creator correctly parsed", event.getCreator(), eventFromJson.getCreator());
 
     }
 
