@@ -65,7 +65,7 @@ public class MapsFragment extends SupportMapFragment implements
     private GoogleMap           mMap;
     private Location            mLastLocation;
     private static final Event  mockEvent = new Event(1,"Event1","This is a first event",1.1,1.1,
-            "1 long street","alfredo", new HashSet<String>());   // a mock event that would be replicated all over the map
+            "1 long street","alfredo", new HashSet<String>(), new Event.Date(),new Event.Date());   // a mock event that would be replicated all over the map
     private ArrayList<Event>    mEvents;
     private Event               mEventClick;        // the event actually click
     private RestApi             mRestAPI;

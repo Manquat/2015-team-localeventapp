@@ -42,7 +42,7 @@
             android:layout_weight="0.22"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="363dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="startDate"
@@ -51,7 +51,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="endDate"
@@ -60,13 +60,21 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="address"
             android:id="@+id/addressView"
             android:layout_below="@+id/endDateView"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_weight="0.10" />
+
+        <TextView
+            android:layout_width="292dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="tags"
+            android:id="@+id/tagsView" />
 
         <TextView
             android:layout_width="276dp"
@@ -77,7 +85,7 @@
             android:layout_marginTop="23dp"
             android:layout_below="@+id/addressView"
             android:layout_centerHorizontal="true"
-            android:layout_weight="0.40" />
+            android:layout_weight="0.49" />
 
     </LinearLayout>
 
