@@ -1,14 +1,12 @@
 package ch.epfl.sweng.evento.RestApi;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
-import ch.epfl.sweng.evento.Event;
+import ch.epfl.sweng.evento.Events.Event;
 
 /**
  * Created by joachimmuth on 16.10.15.
@@ -51,6 +49,8 @@ public class Parser {
                     "Missing creator");
                     // TODO: correct the typo adress and add creator and tags
                     //jsonObject.getString("creator"))
+                    new HashSet<String>());
+>>>>>>> origin/sprint2
         } catch (IllegalArgumentException e) {
             throw new JSONException("Invalid question structure");
         } catch (NullPointerException e) {

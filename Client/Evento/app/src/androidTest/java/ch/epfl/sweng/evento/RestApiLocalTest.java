@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 
+import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.RestApi.Parser;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.RestApi.RestException;

@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-import ch.epfl.sweng.evento.Event;
+import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.NetworkProvider;
 
 /**
