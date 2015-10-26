@@ -22,17 +22,16 @@ public class MyView extends ImageView {
         void OnToggled(MyView v, boolean touchOn);
     }
 
-    boolean touchOn;
+    boolean mtouchOn;
     boolean mDownTouch = false;
-    private OnToggledListener toggledListener;
-    int idX = 0; //default
-    int idY = 0; //default
+    private OnToggledListener mtoggledListener;
+    int midX = 0; //default
+    int midY = 0; //default
 
     public MyView(Context context, int x, int y) {
         super(context);
-        idX = x;
-        idY = y;
-        setImageResource(R.drawable.football);
+        midX = x;
+        midY = y;
         init();
     }
 
@@ -52,23 +51,10 @@ public class MyView extends ImageView {
     }
 
     private void init() {
-        touchOn = false;
+        mtouchOn = false;
     }
 
-    /*@Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec),
-                MeasureSpec.getSize(heightMeasureSpec));
-    }*/
 
-   /* @Override
-    protected void onDraw(Canvas canvas) {
-        if (touchOn) {
-            canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-        } else {
-            //canvas.drawColor(Color.GRAY);
-        }
-    }*/
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -77,11 +63,11 @@ public class MyView extends ImageView {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
 
-                touchOn = !touchOn;
+                mtouchOn = !mtouchOn;
                 invalidate();
 
-                if(toggledListener != null){
-                    toggledListener.OnToggled(this, touchOn);
+                if(mtoggledListener != null){
+                    mtoggledListener.OnToggled(this, mtouchOn);
                 }
 
                 mDownTouch = true;
@@ -104,15 +90,15 @@ public class MyView extends ImageView {
     }
 
     public void setOnToggledListener(OnToggledListener listener){
-        toggledListener = listener;
+        mtoggledListener = listener;
     }
 
     public int getIdX(){
-        return idX;
+        return midX;
     }
 
     public int getIdY(){
-        return idY;
+        return midY;
     }
 
 }

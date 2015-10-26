@@ -62,7 +62,7 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
     public ContentFragment(){
         super();
         m_numberOfColumn = 3;
-        m_numberOfRow = 3;
+        m_numberOfRow = 4;
     }
 
     @Override
@@ -93,49 +93,45 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mosaic, container, false);
-
         m_gridLayout = (GridLayout) view.findViewById(R.id.gridLayout);
         m_gridLayout.setRowCount(m_numberOfRow);
         m_gridLayout.setColumnCount(m_numberOfColumn);
 
         m_myViews = new MyView[m_numberOfRow*m_numberOfColumn];
 
+
         for(int yPos=0; yPos<m_numberOfRow; yPos++){
             for(int xPos=0; xPos<m_numberOfColumn; xPos++){
                 MyView tView = new MyView(view.getContext(), xPos, yPos);
-                tView.setOnToggledListener(this);
-                m_myViews[yPos*m_numberOfColumn + xPos] = tView;
-                m_gridLayout.addView(tView);
+                if(!(xPos == 2 && yPos == 2 || (xPos == 0 && yPos == 3))) {
+                    if (!(xPos == 2 && yPos == 1 || (xPos == 0 && yPos == 2))) tView.setImageResource(R.drawable.football);
+                    else tView.setImageResource(R.drawable.basket);
+                    tView.setOnToggledListener(this);
+                    m_myViews[yPos * m_numberOfColumn + xPos] = tView;
+                    if (!(xPos == 2 && yPos == 1 || (xPos == 0 && yPos == 2)))
+                        addViewToGridLayout(tView, yPos, xPos, 1, 1);
+                    else addViewToGridLayout(tView, yPos, xPos, 2, 1);
+                }
             }
         }
-
-        //Rescale
-        m_gridLayout.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener(){
-
-                    @Override
-                    public void onGlobalLayout() {
-                        int pWidth = m_gridLayout.getWidth();
-                        int pHeight = m_gridLayout.getHeight();
-                        int widthColumn = pWidth/m_numberOfColumn;
-                        int heightRow = pHeight/m_numberOfRow;
-
-                        for(int yPos=0; yPos<m_numberOfRow; yPos++){
-                            for(int xPos=0; xPos<m_numberOfColumn; xPos++){
-                                GridLayout.LayoutParams params =
-                                        (GridLayout.LayoutParams)m_myViews[yPos*m_numberOfColumn + xPos].getLayoutParams();
-                                params.width = widthColumn - 2*PADDING;
-                                params.height = heightRow - 2*PADDING;
-                                params.setMargins(PADDING, PADDING, PADDING, PADDING);
-                                m_myViews[yPos*m_numberOfColumn + xPos].setLayoutParams(params);
-                            }
-                        }
-
-                    }});
 
         return view;
     }
 
+    private void addViewToGridLayout(View view, int row, int column, int rowSpan, int columnSpan) {
+        int pWidth = m_gridLayout.getWidth();
+        int pHeight = m_gridLayout.getHeight();
+        int widthColumn = pWidth/m_numberOfColumn;
+        int heightRow = pHeight/m_numberOfRow;
+        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+        params.width = widthColumn - 2*PADDING;
+        params.height = heightRow - 2*PADDING;
+        params.setMargins(PADDING, PADDING, PADDING, PADDING);
+        params.columnSpec = GridLayout.spec(column, columnSpan);
+        params.rowSpec = GridLayout.spec(row, rowSpan);
+
+        m_gridLayout.addView(view, params);
+    }
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
