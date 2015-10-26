@@ -29,12 +29,16 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 
+import ch.epfl.sweng.evento.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventsClusterRenderer;
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.RestApi.RestException;
 
 
 /**
@@ -55,11 +59,15 @@ public class MapsFragment extends SupportMapFragment implements
 {
     private static final String TAG = MapsFragment.class.getSimpleName();   // LogCat tag
     private static final int NUMBER_OF_MARKERS = 100;                       // Number of marker that will be displayed
+    private static final int NUMBER_OF_EVENT = 5;
     private static final float ZOOM_LEVEL = 15.0f;                          // Zoom level of the map at the beginning
 
     private GoogleMap           mMap;
     private Location            mLastLocation;
-    private Event               mEvent;             // a mock event that would be replicated all over the map
+    //private Event               mEvent;             // a mock event that would be replicated all over the map
+    private ArrayList<Event>    mEvents;
+    private Event               mEventClick;        // the event actually click
+    private RestApi             mRestAPI;
     private ClusterManager<Event> mClusterManager;  // Manage the clustering of the marker
 
     // Google client to interact with Google API
@@ -93,7 +101,21 @@ public class MapsFragment extends SupportMapFragment implements
 
         getMapAsync(this);
 
-        mEvent = new Event(1,"Event1","This is a first event",1.1,1.1,"1 long street","alfredo", new HashSet<String>());
+        //mEvent = new Event(1,"Event1","This is a first event",1.1,1.1,"1 long street","alfredo", new HashSet<String>());
+        mEvents = new ArrayList<Event>();
+        mRestAPI = new RestApi(new DefaultNetworkProvider(), getString(R.string.url_server));
+        for (int i=0; i<NUMBER_OF_EVENT; i++)
+        {
+            mRestAPI.getEvent(mEvents);
+            /*try
+            {
+                mRestAPI.waitUntilFinish();
+            }
+            catch (RestException e)
+            {
+                e.printStackTrace();
+            }*/
+        }
 
         mContext = view.getContext();
 
@@ -253,8 +275,15 @@ public class MapsFragment extends SupportMapFragment implements
             double tempLatitude = latitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
             double tempLongitude = longitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
 
-            mClusterManager.addItem(new Event(mEvent.getID(), mEvent.getTitle(),mEvent.getDescription(),
-                    tempLatitude, tempLongitude, mEvent.getAddress(), mEvent.getCreator(), mEvent.getTags()));
+            int iEvent = i % mEvents.size();
+            mClusterManager.addItem(new Event(mEvents.get(iEvent).getID(),
+                    mEvents.get(iEvent).getTitle(),
+                    mEvents.get(iEvent).getDescription(),
+                    tempLatitude,
+                    tempLongitude,
+                    mEvents.get(iEvent).getAddress(),
+                    mEvents.get(iEvent).getCreator(),
+                    mEvents.get(iEvent).getTags()));
         }
     }
 
@@ -284,10 +313,10 @@ public class MapsFragment extends SupportMapFragment implements
         View view = getLayoutInflater(null).inflate(R.layout.infomarker_event, mContainer, false);
 
         TextView tvTitle = (TextView) view.findViewById(R.id.info_title);
-        tvTitle.setText(mEvent.getTitle());
+        tvTitle.setText(mEventClick.getTitle());
 
         TextView tvDescription = (TextView) view.findViewById(R.id.info_description);
-        tvDescription.setText(mEvent.getDescription());
+        tvDescription.setText(mEventClick.getDescription());
 
         return view;
     }
@@ -310,6 +339,7 @@ public class MapsFragment extends SupportMapFragment implements
     @Override
     public boolean onClusterItemClick(Event event)
     {
+        mEventClick = event;
         // TODO Does nothing, but you could go into the event's page, for example.
         return false;
     }

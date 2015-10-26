@@ -49,7 +49,9 @@ public class Parser {
                     jsonObject.getDouble("latitude"),
                     jsonObject.getDouble("longitude"),
                     jsonObject.getString("address"),
-                    jsonObject.getString("creator"),
+                    "Missing creator",
+                    // TODO: correct the typo adress and add creator and tags
+                    //jsonObject.getString("creator"))
                     new HashSet<String>());
         } catch (IllegalArgumentException e) {
             throw new JSONException("Invalid question structure");
