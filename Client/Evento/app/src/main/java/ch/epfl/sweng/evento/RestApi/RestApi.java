@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -53,23 +54,38 @@ public class RestApi{
 
 
     /**
+     * Default getEvent method, without callback.
      * Request new events to display in the app, according with the position and the filter
      * preferences of the user
      *
      * @param eventArrayList the ArrayList where you want to push the loaded event.
      */
     public void getEvent(final ArrayList<Event> eventArrayList){
+        getEvent(eventArrayList, new GetResponseCallback() {
+            @Override
+            void onDataReceived() {
+                // do nothing
+            }
+        });
+    }
+
+    /**
+     * getEvent method, given an array of events and a specified callback
+     * @param eventArrayList
+     * @param callback
+     */
+    public void getEvent(final ArrayList<Event> eventArrayList, final GetResponseCallback callback){
         onWork += 1;
         noEvent += 1;
         String restUrl = UrlMaker.get(urlServer, noEvent);
         new GetTask(restUrl, networkProvider, new RestTaskCallback (){
             @Override
             public void onTaskComplete(String response){
-                JSONObject JSONresponse = null;
+                JSONObject JsonResponse = null;
                 Event event;
                 try {
-                    JSONresponse = new JSONObject(response);
-                    event = Parser.parseFromJSON(JSONresponse);
+                    JsonResponse = new JSONObject(response);
+                    event = Parser.parseFromJSON(JsonResponse);
                     eventArrayList.add(event);
                     onWork -= 1;
                 } catch (JSONException e) {
@@ -81,8 +97,8 @@ public class RestApi{
                     }
                     // TODO: Manage the exception
                     e.printStackTrace();
-
                 }
+                callback.onDataReceived();
             }
         }).execute();
     }
