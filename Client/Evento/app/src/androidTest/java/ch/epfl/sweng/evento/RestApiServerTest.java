@@ -14,6 +14,7 @@ import ch.epfl.sweng.evento.RestApi.PostTask;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.RestApi.RestException;
 import ch.epfl.sweng.evento.RestApi.RestTaskCallback;
+import ch.epfl.sweng.evento.Events.*;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -53,6 +54,17 @@ public class RestApiServerTest {
         }
 
         assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
+
+        restApi.getEvent(eventArrayList);
+
+        try {
+            restApi.waitUntilFinish();
+        } catch (RestException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals("We get two event after requesting twice", eventArrayList.size(), 2);
+
 
     }
 

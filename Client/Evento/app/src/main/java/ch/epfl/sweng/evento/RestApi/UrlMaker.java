@@ -7,8 +7,8 @@ package ch.epfl.sweng.evento.RestApi;
  */
 public final class UrlMaker {
 
-    public static final String get(String urlServer) {
-        String url = urlServer + "events/1";
+    public static final String get(String urlServer, int noEvent) {
+        String url = urlServer + "events/" + String.valueOf(noEvent);
         return url;
     }
 

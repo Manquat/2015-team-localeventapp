@@ -4,7 +4,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
 
@@ -39,6 +41,7 @@ public class Parser {
 //            tags.add(jsonTags.getString(i));
 //        }
 
+
         try {
             return new Event(jsonObject.getInt("id"),
                     jsonObject.getString("Event_name"),
@@ -46,11 +49,10 @@ public class Parser {
                     jsonObject.getDouble("latitude"),
                     jsonObject.getDouble("longitude"),
                     jsonObject.getString("adress"),
-                    "Missing creator");
+                    "Missing creator",
                     // TODO: correct the typo adress and add creator and tags
                     //jsonObject.getString("creator"))
                     new HashSet<String>());
->>>>>>> origin/sprint2
         } catch (IllegalArgumentException e) {
             throw new JSONException("Invalid question structure");
         } catch (NullPointerException e) {

@@ -28,6 +28,7 @@ public class RestApi{
     private NetworkProvider networkProvider;
     private String urlServer;
     private int onWork = 0;  // ugly trick to wait for REST terminates, while testing
+    private int noEvent = 0;
     // TODO: find a better way
 
     public RestApi(NetworkProvider networkProvider, String urlServer){
@@ -59,7 +60,8 @@ public class RestApi{
      */
     public void getEvent(final ArrayList<Event> eventArrayList){
         onWork += 1;
-        String restUrl = UrlMaker.get(urlServer);
+        noEvent += 1;
+        String restUrl = UrlMaker.get(urlServer, noEvent);
         new GetTask(restUrl, networkProvider, new RestTaskCallback (){
             @Override
             public void onTaskComplete(String response){

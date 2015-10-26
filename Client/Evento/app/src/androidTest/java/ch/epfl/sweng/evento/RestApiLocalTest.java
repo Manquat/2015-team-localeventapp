@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.concurrent.ExecutionException;
 
 
@@ -49,14 +50,15 @@ public class RestApiLocalTest {
             + "    \"Okay guys, let's play a little game this evening at dorigny. Remember: no doping allowed!\" ,\n"
             + "  \"latitude\": 46.519428,\n"
             + "  \"longitude\": 6.580847,\n"
-            + "  \"adress\": \"Terrain de football de Dorigny\",\n "
+            + "  \"adress\": \"Terrain de football de Dorigny\"\n "
             + "}\n";
     private static final Event PROPER_EVENT_RESULT = new Event(17005,
             "My football game",
             "Okay guys, let's play a little game this evening at dorigny. Remember: no doping allowed!",
             46.519428, 6.580847,
             "Terrain de football de Dorigny",
-            "Micheal Jackson");
+            "Micheal Jackson",
+            new HashSet<String>());
 
 
     @Before
