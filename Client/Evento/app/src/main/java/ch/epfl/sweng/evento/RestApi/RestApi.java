@@ -110,6 +110,7 @@ public class RestApi{
      * @param callback The callback to execute when submission status is available.
      */
     public void postEvent(Event event, final PostCallback callback){
+        onWork += 1;
         String restUrl = UrlMaker.put(urlServer);
         String requestBody = Serializer.event(event);
         new PutTask(restUrl, networkProvider, requestBody, new RestTaskCallback(){

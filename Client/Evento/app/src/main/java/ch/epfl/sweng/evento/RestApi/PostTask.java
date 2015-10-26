@@ -56,7 +56,7 @@ public class PostTask extends AsyncTask<String, String, String> {
             URL url = new URL(restUrl);
             HttpURLConnection conn = networkProvider.getConnection(url);
             conn.setRequestMethod("POST");
-            conn.setDoInput(true);
+            //conn.setDoInput(true);
             conn.setDoOutput(true);
             conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 

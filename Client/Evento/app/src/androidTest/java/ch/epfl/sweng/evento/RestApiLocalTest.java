@@ -50,7 +50,8 @@ public class RestApiLocalTest {
             + "    \"Okay guys, let's play a little game this evening at dorigny. Remember: no doping allowed!\" ,\n"
             + "  \"latitude\": 46.519428,\n"
             + "  \"longitude\": 6.580847,\n"
-            + "  \"adress\": \"Terrain de football de Dorigny\"\n "
+            + "  \"address\": \"Terrain de football de Dorigny\", \n "
+            + "  \"creator\": \"Micheal Jackson\"\n"
             + "}\n";
     private static final Event PROPER_EVENT_RESULT = new Event(17005,
             "My football game",
