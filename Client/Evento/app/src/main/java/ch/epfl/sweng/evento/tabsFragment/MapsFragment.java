@@ -64,7 +64,8 @@ public class MapsFragment extends SupportMapFragment implements
 
     private GoogleMap           mMap;
     private Location            mLastLocation;
-    //private Event               mEvent;             // a mock event that would be replicated all over the map
+    private static final Event  mockEvent = new Event(1,"Event1","This is a first event",1.1,1.1,
+            "1 long street","alfredo", new HashSet<String>());   // a mock event that would be replicated all over the map
     private ArrayList<Event>    mEvents;
     private Event               mEventClick;        // the event actually click
     private RestApi             mRestAPI;
@@ -101,20 +102,11 @@ public class MapsFragment extends SupportMapFragment implements
 
         getMapAsync(this);
 
-        //mEvent = new Event(1,"Event1","This is a first event",1.1,1.1,"1 long street","alfredo", new HashSet<String>());
         mEvents = new ArrayList<Event>();
         mRestAPI = new RestApi(new DefaultNetworkProvider(), getString(R.string.url_server));
         for (int i=0; i<NUMBER_OF_EVENT; i++)
         {
             mRestAPI.getEvent(mEvents);
-            /*try
-            {
-                mRestAPI.waitUntilFinish();
-            }
-            catch (RestException e)
-            {
-                e.printStackTrace();
-            }*/
         }
 
         mContext = view.getContext();
@@ -253,6 +245,11 @@ public class MapsFragment extends SupportMapFragment implements
         if (mLastLocation == null)
         {
                 mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient); //may return null in case of non connected device
+        }
+
+        if (mEvents.size() == 0)
+        {
+            mEvents.add(mockEvent);
         }
 
         // introduction of randomness
