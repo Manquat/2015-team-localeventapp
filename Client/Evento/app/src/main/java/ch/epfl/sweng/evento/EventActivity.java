@@ -58,7 +58,7 @@ public class EventActivity extends AppCompatActivity implements
     }
 
     private void updateFields() {
-        System.out.println("Current event title : " + currentEvent.Title());
+        System.out.println("Current event title : " + currentEvent.getTitle());
     }
 
     @Override
@@ -106,18 +106,18 @@ public class EventActivity extends AppCompatActivity implements
 
     private void onSwipeLeft() {
         System.out.println("swiped left");
-        if(currentEvent.ID()<events.length-1)
+        if(currentEvent.getID()<events.length-1)
         {
-            currentEvent = events[currentEvent.ID()];
+            currentEvent = events[currentEvent.getID()];
             updateFields();
         }
     }
 
     private void onSwipeRight() {
         System.out.println("swiped right");
-        if(currentEvent.ID()>1)
+        if(currentEvent.getID()>1)
         {
-            currentEvent = events[currentEvent.ID()-2];
+            currentEvent = events[currentEvent.getID()-2];
             updateFields();
         }
     }

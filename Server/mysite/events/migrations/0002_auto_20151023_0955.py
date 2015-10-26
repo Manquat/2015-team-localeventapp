@@ -2,6 +2,8 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
+import datetime
+from django.utils.timezone import utc
 
 
 class Migration(migrations.Migration):
@@ -31,8 +33,18 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='event',
+            name='date',
+            field=models.DateTimeField(default=datetime.datetime(2015, 10, 23, 7, 55, 26, 816000, tzinfo=utc), verbose_name=b'date'),
+        ),
+        migrations.AddField(
+            model_name='event',
             name='description',
             field=models.TextField(default=b'No Description!'),
+        ),
+        migrations.AddField(
+            model_name='event',
+            name='duration',
+            field=models.DurationField(default=datetime.timedelta(0), verbose_name=b'duration'),
         ),
         migrations.AddField(
             model_name='event',

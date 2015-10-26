@@ -13,9 +13,11 @@ public abstract class DeleteResponseCallback {
      * Called when the response data for the REST call is ready. <br/>
      * This method is guaranteed to execute on the UI thread.
      *
-     * @param event The {@code event} that was received from the server.
+     *
      */
-    abstract void onDeleteSucced();
+
+
+    public abstract void onDeleteSuccess();
 
     /*
      * Additional methods like onPreGet() or onFailure() can be added with default implementations.

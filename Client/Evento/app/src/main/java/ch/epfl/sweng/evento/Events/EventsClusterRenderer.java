@@ -81,7 +81,7 @@ public class EventsClusterRenderer extends DefaultClusterRenderer<Event>
 
         Bitmap icon = mEventIconGenerator.makeIcon();
 
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(event.Title());
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(event.getTitle());
     }
 
     @Override

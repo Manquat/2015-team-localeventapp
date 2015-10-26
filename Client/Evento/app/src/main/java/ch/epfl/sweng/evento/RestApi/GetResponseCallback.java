@@ -18,9 +18,8 @@ public abstract class GetResponseCallback{
      * Called when the response data for the REST call is ready. <br/>
      * This method is guaranteed to execute on the UI thread.
      *
-     * @param event The {@code event} that was received from the server.
      */
-    abstract void onDataReceived(ArrayList<Event> event);
+    abstract void onDataReceived();
 
     /*
      * Additional methods like onPreGet() or onFailure() can be added with default implementations.

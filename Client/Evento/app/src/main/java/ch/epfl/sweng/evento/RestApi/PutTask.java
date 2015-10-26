@@ -6,6 +6,8 @@ package ch.epfl.sweng.evento.RestApi;
 
 import android.os.AsyncTask;
 
+import ch.epfl.sweng.evento.NetworkProvider;
+
 /**
  * An AsyncTask implementation for performing PUTs.
  */
@@ -13,6 +15,7 @@ public class PutTask extends AsyncTask<String, String, String> {
     private String mRestUrl;
     private RestTaskCallback mCallback;
     private String mRequestBody;
+    private NetworkProvider networkProvider;
 
     /**
      * Creates a new instance of PostTask with the specified URL, callback, and
@@ -24,10 +27,11 @@ public class PutTask extends AsyncTask<String, String, String> {
      * @param requestBody The body of the POST request.
      *
      */
-    public PutTask(String restUrl, String requestBody, RestTaskCallback callback){
+    public PutTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback){
         this.mRestUrl = restUrl;
         this.mRequestBody = requestBody;
         this.mCallback = callback;
+        this.networkProvider = networkProvider;
     }
 
     @Override

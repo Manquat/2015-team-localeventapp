@@ -10,70 +10,70 @@ import java.util.Set;
  */
 
 public class Event implements ClusterItem {
-    private final int _ID;
-    private final String _title;
-    private final String _description;
-    private final LatLng _location;
-    private final String _address;
-    private final String _creator;//might be replaced by some kind of User class
+    private final int mID;
+    private final String mTitle;
+    private final String mDescription;
+    private final LatLng mLocation;
+    private final String mAddress;
+    private final String mCreator;//might be replaced by some kind of User class
     private final Set<String> mTags;
 
     public Event(int id, String title, String description, double latitude, double longitude, String address, String creator, Set<String> tags)
     {
-        _ID = id;
-        _title = title;
-        _description = description;
-        _location = new LatLng(latitude, longitude);
-        _address = address;
-        _creator = creator;
+        mID = id;
+        mTitle = title;
+        mDescription = description;
+        mLocation = new LatLng(latitude, longitude);
+        mAddress = address;
+        mCreator = creator;
         mTags = tags;
     }
 
-    public int ID()
+    public int getID()
     {
-        return _ID;
+        return mID;
     }
 
-    public String Title()
+    public String getTitle()
     {
-        return _title;
+        return mTitle;
     }
 
-    public String Description()
+    public String getDescription()
     {
-        return _description;
+        return mDescription;
     }
 
-    public double Latitude()
+    public double getLatitude()
     {
-        return _location.latitude;
+        return mLocation.latitude;
     }
 
-    public double Longitude()
+    public double getLongitude()
     {
-        return _location.longitude;
+        return mLocation.longitude;
     }
 
-    public LatLng Location() {
-        return _location;
+    public LatLng getLocation() {
+        return mLocation;
     }
 
-    public String Address()
+    public String getAddress()
     {
-        return _address;
+        return mAddress;
     }
 
-    public String Creator()
+    public String getCreator()
     {
-        return _creator;
+        return mCreator;
     }
 
-    public Set<String> Tags() { return mTags; }
+    public Set<String> getTags() { return mTags; }
 
 
     @Override
     public LatLng getPosition() {
-        return _location;
+        return mLocation;
     }
 }
 
