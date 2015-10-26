@@ -37,7 +37,7 @@ public class RestApiLocalTest {
     private static final int ASCII_SPACE = 0x20;
     private HttpURLConnection connection;
     private NetworkProvider networkProviderMockito;
-    private static final String wrongUrl = "wrongurl";
+    private static final String wrongUrl = "http://exemple.com";
 
     private static final Parser parser = new Parser();
     private static final String PROPER_JSON_STRING = "{\n"
@@ -92,7 +92,7 @@ public class RestApiLocalTest {
         final String testString = "test string";
         configureResponse(HttpURLConnection.HTTP_OK, testString, JSON_CONTENT_TYPE);
 
-        getTask = new GetTask("http://example.com", networkProviderMockito,
+        getTask = new GetTask(wrongUrl, networkProviderMockito,
                 new RestTaskCallback(){
                     public void onTaskComplete(String response){
                         assertEquals(testString + "\n", response);
@@ -110,19 +110,12 @@ public class RestApiLocalTest {
     @Test
     public void testGetEvent() throws IOException {
         configureResponse(HttpURLConnection.HTTP_OK, PROPER_JSON_STRING, JSON_CONTENT_TYPE);
-        RestApi restApi = new RestApi(networkProviderMockito);
+        RestApi restApi = new RestApi(networkProviderMockito, wrongUrl);
         ArrayList<Event> eventArrayList = new ArrayList<Event>();
 
         restApi.getEvent(eventArrayList);
 
-        // TODO: a best way to test the end of the asyctask called by RestApi
-        while(restApi.isWorking()) {
-            try {
-                Thread.sleep(100);                 //1000 milliseconds is one second.
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-        }
+        restApi.waitUntilFinish();
 
         assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
         assertEquals("id", eventArrayList.get(0).ID(), PROPER_EVENT_RESULT.ID());

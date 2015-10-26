@@ -26,19 +26,30 @@ import ch.epfl.sweng.evento.NetworkProvider;
  */
 public class RestApi{
     private NetworkProvider networkProvider;
-    private String urlServer = "http://10.0.2.2:8000/";
-    private Boolean onWork = false;  // ugly trick to wait for REST terminates, while testing
+    private String urlServer;
+    private int onWork = 0;  // ugly trick to wait for REST terminates, while testing
     // TODO: find a better way
 
-    public RestApi(NetworkProvider networkProvider){
+    public RestApi(NetworkProvider networkProvider, String urlServer){
         this.networkProvider = networkProvider;
+        this. urlServer = urlServer;
     }
 
-//    public static RestApi getInstance(){
-//        //Choose an appropriate creation strategy.
+//    public static RestApi getInstance() {
+//
 //    }
 
-    public Boolean isWorking() { return onWork; };
+    public void waitUntilFinish() {
+        while (onWork > 0){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
 
     /**
      * Request new events to display in the app, according with the position and the filter
@@ -47,7 +58,7 @@ public class RestApi{
      * @param eventArrayList the ArrayList where you want to push the loaded event.
      */
     public void getEvent(final ArrayList<Event> eventArrayList){
-        onWork = true;
+        onWork += 1;
         String restUrl = UrlMaker.get(urlServer);
         new GetTask(restUrl, networkProvider, new RestTaskCallback (){
             @Override
@@ -58,11 +69,11 @@ public class RestApi{
                     JSONresponse = new JSONObject(response);
                     event = Parser.parseFromJSON(JSONresponse);
                     eventArrayList.add(event);
-                    onWork = false;
+                    onWork -= 1;
                 } catch (JSONException e) {
                     // TODO: Manage the exception
                     e.printStackTrace();
-                    onWork = false;
+                    onWork -= 1;
                 }
             }
         }).execute();

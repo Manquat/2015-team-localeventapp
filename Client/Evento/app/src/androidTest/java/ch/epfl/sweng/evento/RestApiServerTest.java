@@ -20,24 +20,18 @@ import static junit.framework.Assert.assertEquals;
 @LargeTest
 public class RestApiServerTest {
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-
+    private static final String urlServer = "http://10.0.2.2:8000/";
 
 
     @Test
     public void testGetEvent() {
-        RestApi restApi = new RestApi(networkProvider);
+        RestApi restApi = new RestApi(networkProvider, urlServer);
         ArrayList<Event> eventArrayList = new ArrayList<Event>();
         assertEquals("Before requesting, eventArrayList is empty", eventArrayList.size(), 0);
 
         restApi.getEvent(eventArrayList);
 
-        while(restApi.isWorking()) {
-            try {
-                Thread.sleep(100);                 //1000 milliseconds is one second.
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-        }
+        restApi.waitUntilFinish();
 
         assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
 
