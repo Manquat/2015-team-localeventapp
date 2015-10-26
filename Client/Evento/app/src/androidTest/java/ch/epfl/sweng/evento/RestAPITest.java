@@ -124,9 +124,9 @@ public class RestAPITest {
         }
 
         assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
-        assertEquals("id", eventArrayList.get(0).ID(), PROPER_EVENT_RESULT.ID());
-        assertEquals("title", eventArrayList.get(0).Title(), PROPER_EVENT_RESULT.Title());
-        assertEquals("description", eventArrayList.get(0).Description(), PROPER_EVENT_RESULT.Description());
+        assertEquals("id", eventArrayList.get(0).getID(), PROPER_EVENT_RESULT.getID());
+        assertEquals("title", eventArrayList.get(0).getTitle(), PROPER_EVENT_RESULT.getTitle());
+        assertEquals("description", eventArrayList.get(0).getDescription(), PROPER_EVENT_RESULT.getDescription());
 
     }
 
