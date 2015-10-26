@@ -6,8 +6,10 @@ package ch.epfl.sweng.evento.RestApi;
 
 import android.os.AsyncTask;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -54,11 +56,21 @@ public class PostTask extends AsyncTask<String, String, String> {
             URL url = new URL(restUrl);
             HttpURLConnection conn = networkProvider.getConnection(url);
             conn.setRequestMethod("POST");
+            conn.setDoInput(true);
             conn.setDoOutput(true);
             conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
             OutputStream output = conn.getOutputStream();
-            output.write(bodyToSend.getBytes(charset));
+            //output.write(bodyToSend.getBytes(charset));
+
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(output, "UTF-8"));
+
+            writer.write(bodyToSend);
+            writer.flush();
+            writer.close();
+            output.close();
+
 
             conn.connect();
 

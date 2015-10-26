@@ -72,8 +72,6 @@ public class RestApiServerTest {
     public void testPostTask() {
         PostTask postTask = new PostTask(urlServer, networkProvider, PROPER_JSON_STRING, new RestTaskCallback(){
             public void onTaskComplete(String response){
-
-
             }});
 
         try {
