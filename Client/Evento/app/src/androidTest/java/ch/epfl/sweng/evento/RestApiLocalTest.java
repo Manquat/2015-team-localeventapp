@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 
 import ch.epfl.sweng.evento.RestApi.Parser;
 import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.RestApi.RestException;
 import ch.epfl.sweng.evento.RestApi.RestTaskCallback;
 import ch.epfl.sweng.evento.RestApi.GetTask;
 
@@ -48,7 +49,6 @@ public class RestApiLocalTest {
             + "  \"latitude\": 46.519428,\n"
             + "  \"longitude\": 6.580847,\n"
             + "  \"adress\": \"Terrain de football de Dorigny\",\n "
-            + "  \"creator\": \"Micheal Jackson\"\n"
             + "}\n";
     private static final Event PROPER_EVENT_RESULT = new Event(17005,
             "My football game",
@@ -115,7 +115,11 @@ public class RestApiLocalTest {
 
         restApi.getEvent(eventArrayList);
 
-        restApi.waitUntilFinish();
+        try {
+            restApi.waitUntilFinish();
+        } catch (RestException e) {
+            e.printStackTrace();
+        }
 
         assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
         assertEquals("id", eventArrayList.get(0).ID(), PROPER_EVENT_RESULT.ID());

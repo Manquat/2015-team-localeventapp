@@ -13,7 +13,8 @@ public final class UrlMaker {
     }
 
     public static final String post(String urlServer) {
-        return urlServer;
+        String url = urlServer + "events/";
+        return url;
     }
 
     public static final String put(String urlServer) {

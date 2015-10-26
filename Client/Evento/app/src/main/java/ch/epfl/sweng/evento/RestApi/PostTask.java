@@ -7,9 +7,12 @@ package ch.epfl.sweng.evento.RestApi;
 import android.os.AsyncTask;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import ch.epfl.sweng.evento.NetworkProvider;
 
@@ -17,6 +20,9 @@ import ch.epfl.sweng.evento.NetworkProvider;
  * An AsyncTask implementation for performing POSTs.
  */
 public class PostTask extends AsyncTask<String, String, String> {
+    private static final String charset = "UTF-8";
+    private static final int HTTP_SUCCESS_START = 200;
+    private static final int HTTP_SUCCESS_END = 299;
     private final NetworkProvider networkProvider;
     private String restUrl;
     private RestTaskCallback callback;
@@ -42,20 +48,36 @@ public class PostTask extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... arg0) {
-        URL url = null;
         String response = null;
         try {
-            url = new URL(restUrl);
-
-
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            String bodyToSend = URLEncoder.encode(requestBody, charset);
+            URL url = new URL(restUrl);
             HttpURLConnection conn = networkProvider.getConnection(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+
+            OutputStream output = conn.getOutputStream();
+            output.write(bodyToSend.getBytes(charset));
+
+            conn.connect();
+
+            int responseCode = 0;
+            responseCode = conn.getResponseCode();
+            if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END) {
+                throw new RestException("Invalid HTTP response code");
+            }
+
         } catch (IOException e) {
+            try {
+                throw new RestException(e);
+            } catch (RestException e1) {
+                e1.printStackTrace();
+            }
+        } catch (RestException e) {
             e.printStackTrace();
         }
-        //TODO
+
         return response;
     }
 

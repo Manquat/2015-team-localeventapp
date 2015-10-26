@@ -39,12 +39,12 @@ public class RestApi{
 //
 //    }
 
-    public void waitUntilFinish() {
+    public void waitUntilFinish() throws RestException {
         while (onWork > 0){
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                throw new RestException(e);
             }
 
         }
@@ -62,7 +62,7 @@ public class RestApi{
         String restUrl = UrlMaker.get(urlServer);
         new GetTask(restUrl, networkProvider, new RestTaskCallback (){
             @Override
-            public void onTaskComplete(String response) {
+            public void onTaskComplete(String response){
                 JSONObject JSONresponse = null;
                 Event event;
                 try {
@@ -71,9 +71,15 @@ public class RestApi{
                     eventArrayList.add(event);
                     onWork -= 1;
                 } catch (JSONException e) {
+                    onWork -= 1;
+                    try {
+                        throw new RestException(e);
+                    } catch (RestException e1) {
+                        e1.printStackTrace();
+                    }
                     // TODO: Manage the exception
                     e.printStackTrace();
-                    onWork -= 1;
+
                 }
             }
         }).execute();
@@ -90,6 +96,7 @@ public class RestApi{
         String requestBody = Serializer.event(event);
         new PutTask(restUrl, networkProvider, requestBody, new RestTaskCallback(){
             public void onTaskComplete(String response){
+                onWork -= 1;
                 callback.onPostSuccess();
             }
         }).execute();
