@@ -29,8 +29,9 @@ import android.support.v7.widget.Toolbar;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
-
+import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 /**
  * A simple launcher activity containing a summary sample description, sample log and a custom
  * {@link android.support.v4.app.Fragment} which can display a view.

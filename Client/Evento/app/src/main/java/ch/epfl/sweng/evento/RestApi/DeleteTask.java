@@ -1,20 +1,16 @@
 package ch.epfl.sweng.evento.RestApi;
 
-/**
- * Created by cerschae on 15/10/2015.
- */
-
 import android.os.AsyncTask;
 
 import ch.epfl.sweng.evento.NetworkProvider;
 
 /**
- * An AsyncTask implementation for performing PUTs.
+ * Created by joachimmuth on 22.10.15.
  */
-public class PutTask extends AsyncTask<String, String, String> {
-    private String mRestUrl;
-    private RestTaskCallback mCallback;
-    private String mRequestBody;
+public class DeleteTask extends AsyncTask<String, Void, String> {
+    private String restUrl;
+    private RestTaskCallback callback;
+    private String requestBody;
     private NetworkProvider networkProvider;
 
     /**
@@ -27,10 +23,10 @@ public class PutTask extends AsyncTask<String, String, String> {
      * @param requestBody The body of the POST request.
      *
      */
-    public PutTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback){
-        this.mRestUrl = restUrl;
-        this.mRequestBody = requestBody;
-        this.mCallback = callback;
+    public DeleteTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback){
+        this.requestBody = restUrl;
+        this.requestBody = requestBody;
+        this.callback = callback;
         this.networkProvider = networkProvider;
     }
 
@@ -45,7 +41,7 @@ public class PutTask extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        mCallback.onTaskComplete(result);
+        callback.onTaskComplete(result);
         super.onPostExecute(result);
     }
 }

@@ -1,7 +1,7 @@
 package ch.epfl.sweng.evento.RestApi;
 
-import ch.epfl.sweng.evento.Event;
-import ch.epfl.sweng.evento.EventFilter;
+import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.Events.EventFilter;
 
 /**
  * Created by joachimmuth on 16.10.15.

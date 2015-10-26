@@ -1,14 +1,14 @@
 package ch.epfl.sweng.evento.RestApi;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
-import ch.epfl.sweng.evento.Event;
+import ch.epfl.sweng.evento.Events.Event;
 
 /**
  * Created by joachimmuth on 16.10.15.
@@ -25,7 +25,7 @@ public class Parser {
         // Check that jsonObject have requiered field
         // TODO: choose whether other fields are requiered or optional
         if (!(jsonObject.get("id") instanceof Integer)
-                || !(jsonObject.get("title") instanceof String)
+                || !(jsonObject.get("Event_name") instanceof String)
                 ) {
             throw new JSONException("Invalid question structure");
         }
@@ -41,14 +41,18 @@ public class Parser {
 //            tags.add(jsonTags.getString(i));
 //        }
 
+
         try {
             return new Event(jsonObject.getInt("id"),
-                    jsonObject.getString("title"),
+                    jsonObject.getString("Event_name"),
                     jsonObject.getString("description"),
-                    jsonObject.getDouble("xLocation"),
-                    jsonObject.getDouble("yLocation"),
-                    jsonObject.getString("address"),
-                    jsonObject.getString("creator"));
+                    jsonObject.getDouble("latitude"),
+                    jsonObject.getDouble("longitude"),
+                    jsonObject.getString("adress"),
+                    "Missing creator",
+                    // TODO: correct the typo adress and add creator and tags
+                    //jsonObject.getString("creator"))
+                    new HashSet<String>());
         } catch (IllegalArgumentException e) {
             throw new JSONException("Invalid question structure");
         } catch (NullPointerException e) {
