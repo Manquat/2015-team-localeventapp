@@ -16,8 +16,8 @@ public class CalendarTabs extends Fragment
 {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.tab, container, false);
         return view;
