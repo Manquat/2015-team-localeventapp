@@ -27,4 +27,10 @@ public class EventFilter {
     {
         return eventSet.filter(tags);
     }
+
+    public static EventSet filter(EventSet eventSet, String tag)
+    {
+        return eventSet.filter(tag);
+    }
+
 }

@@ -35,7 +35,8 @@ public class RestApiServerTest {
             + "    \"Okay guys, let's play a little game this evening at dorigny. Remember: no doping allowed!\" ,\n"
             + "  \"latitude\": 46.519428,\n"
             + "  \"longitude\": 6.580847,\n"
-            + "  \"adress\": \"Terrain de football de Dorigny\",\n "
+            + "  \"address\": \"Terrain de football de Dorigny\", \n "
+            + "  \"creator\": \"Micheal Jackson\"\n"
             + "}\n";
 
 
@@ -70,10 +71,9 @@ public class RestApiServerTest {
 
     @Test
     public void testPostTask() {
-        PostTask postTask = new PostTask(urlServer, networkProvider, PROPER_JSON_STRING, new RestTaskCallback(){
+        String url = urlServer + "events/";
+        PostTask postTask = new PostTask(url, networkProvider, PROPER_JSON_STRING, new RestTaskCallback(){
             public void onTaskComplete(String response){
-
-
             }});
 
         try {

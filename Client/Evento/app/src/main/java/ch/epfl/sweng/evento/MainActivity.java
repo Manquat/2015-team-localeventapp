@@ -18,7 +18,6 @@
 package ch.epfl.sweng.evento;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -28,10 +27,10 @@ import android.support.v7.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
-import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 /**
  * A simple launcher activity containing a summary sample description, sample log and a custom
  * {@link android.support.v4.app.Fragment} which can display a view.
@@ -42,14 +41,14 @@ import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 public class MainActivity extends AppCompatActivity
 {
 
-    public final String          TAG = "MainActivity";
+    public static final String   TAG = "MainActivity";
     private Toolbar              mToolbar;
     private ViewPager            mPager;
     private ViewPageAdapter      mAdaptater;
     private SlidingTabLayout     mTabs;
-    private ArrayList<CharSequence> mTitles = new ArrayList<CharSequence>(
+    private List<CharSequence> mTitles = new ArrayList<CharSequence>(
             Arrays.asList("Maps", "Events", "Calendar"));
-    private final int            MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
+    private static final int     MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
 
 
     @Override

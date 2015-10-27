@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -41,14 +42,17 @@ public class EventActivity extends AppCompatActivity implements
 
         movementDetector = new GestureDetectorCompat(this,this);
 
+        Event.Date start = new Event.Date(2015,10,12,18,30);
+        Event.Date end = new Event.Date(2015,10,12,20,30);
+
         /*Those are mock events before getting them from the database*/
         events = new Event[5];
         Set<String> tag = new HashSet<String>();
-        events[0] = new Event(1,"Event1","This is a first event",1.1,1.1,"1 long street","alfredo", tag);
-        events[1] = new Event(2,"Event2","This is a second event",2.2,2.2,"2 long street","bob", tag);
-        events[2] = new Event(3,"Event3","This is a third event",3.3,3.3,"3 long street","charlie", tag);
-        events[3] = new Event(4,"Event4","This is a fourth event",4.4,4.4,"4 long street","dinesh", tag);
-        events[4] = new Event(5,"Event5","This is a fifth event",5.5,5.5,"5 long street","ethan", tag);
+        events[0] = new Event(1,"Event1","This is a first event",1.1,1.1,"1 long street","alfredo", tag, start,end);
+        events[1] = new Event(2,"Event2","This is a second event",2.2,2.2,"2 long street","bob", tag, start,end);
+        events[2] = new Event(3,"Event3","This is a third event",3.3,3.3,"3 long street","charlie", tag, start,end);
+        events[3] = new Event(4,"Event4","This is a fourth event",4.4,4.4,"4 long street","dinesh", tag, start,end);
+        events[4] = new Event(5,"Event5","This is a fifth event",5.5,5.5,"5 long street","ethan", tag, start,end);
 
         currentEvent = events[2];
 
@@ -58,7 +62,19 @@ public class EventActivity extends AppCompatActivity implements
     }
 
     private void updateFields() {
-        System.out.println("Current event title : " + currentEvent.getTitle());
+        TextView titleView = (TextView) findViewById(R.id.titleView);
+        TextView creatorView = (TextView) findViewById(R.id.creatorView);
+        TextView startDateView = (TextView) findViewById(R.id.startDateView);
+        TextView endDateView = (TextView) findViewById(R.id.endDateView);
+        TextView addressView = (TextView) findViewById(R.id.addressView);
+        TextView descriptionView = (TextView) findViewById(R.id.descriptionView);
+
+        titleView.setText(currentEvent.getTitle());
+        creatorView.setText("Created by " + currentEvent.getCreator());
+        startDateView.setText("From  " + currentEvent.getStartDate().toString());
+        endDateView.setText(  "to    " + currentEvent.getEndDate().toString());
+        addressView.setText(  "at    " + currentEvent.getAddress());
+        descriptionView.setText(currentEvent.getDescription());
     }
 
     @Override
@@ -73,9 +89,7 @@ public class EventActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onShowPress(MotionEvent e) {
-
-    }
+    public void onShowPress(MotionEvent e) {}
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
@@ -95,7 +109,6 @@ public class EventActivity extends AppCompatActivity implements
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         float sensitivity = 50;
-        System.out.println("fling");
         if((e1.getX() - e2.getX()) > sensitivity){
             onSwipeLeft();
         }else if((e2.getX() - e1.getX()) > sensitivity) {
@@ -105,7 +118,6 @@ public class EventActivity extends AppCompatActivity implements
     }
 
     private void onSwipeLeft() {
-        System.out.println("swiped left");
         if(currentEvent.getID()<events.length-1)
         {
             currentEvent = events[currentEvent.getID()];
@@ -114,7 +126,6 @@ public class EventActivity extends AppCompatActivity implements
     }
 
     private void onSwipeRight() {
-        System.out.println("swiped right");
         if(currentEvent.getID()>1)
         {
             currentEvent = events[currentEvent.getID()-2];

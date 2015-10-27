@@ -29,7 +29,7 @@ public class RestApi{
     private NetworkProvider networkProvider;
     private String urlServer;
     private int onWork = 0;  // ugly trick to wait for REST terminates, while testing
-    private int noEvent = 0;
+    private int noEvent = 10;
     // TODO: find a better way
 
     public RestApi(NetworkProvider networkProvider, String urlServer){
@@ -110,6 +110,7 @@ public class RestApi{
      * @param callback The callback to execute when submission status is available.
      */
     public void postEvent(Event event, final PostCallback callback){
+        onWork += 1;
         String restUrl = UrlMaker.put(urlServer);
         String requestBody = Serializer.event(event);
         new PutTask(restUrl, networkProvider, requestBody, new RestTaskCallback(){

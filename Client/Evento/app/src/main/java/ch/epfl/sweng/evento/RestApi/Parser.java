@@ -48,7 +48,7 @@ public class Parser {
                     jsonObject.getString("description"),
                     jsonObject.getDouble("latitude"),
                     jsonObject.getDouble("longitude"),
-                    jsonObject.getString("adress"),
+                    jsonObject.getString("address"),
                     "Missing creator",
                     // TODO: correct the typo adress and add creator and tags
                     //jsonObject.getString("creator"))
