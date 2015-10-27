@@ -42,7 +42,8 @@ public class EventSet {
 
 
     /**
-     * Returns a set of Events that are at most at 'distance' from 'latLng'
+     * Returns the set of Events that are at most at 'distance' meters from  the
+     * latitude and longitude stored in 'latLng'
      *
      * @param latLng   The reference latitude and longitude
      * @param distance The maximum distance in meters from this LatLng
@@ -71,10 +72,9 @@ public class EventSet {
      */
     public EventSet filter(Set<String> tags) {
         EventSet newEventSet = new EventSet();
-
-        for (Map.Entry<Integer, Event> entry : mEvents.entrySet()) {
-            if (entry.getValue().getTags().containsAll(tags)) {
-                newEventSet.addEvent(entry.getValue()); //or mEvents.put(entry)...
+        for (Event event : mEvents.values()) {
+            if (event.getTags().containsAll(tags)) {
+                newEventSet.addEvent(event); //or mEvents.put(entry)...
             }
         }
         return newEventSet;
@@ -82,9 +82,9 @@ public class EventSet {
 
     public EventSet filter(String tag) {
         EventSet newEventSet = new EventSet();
-        for (Map.Entry<Integer, Event> entry : mEvents.entrySet()) {
-            if (entry.getValue().getTags().contains(tag)) {
-                newEventSet.addEvent(entry.getValue()); //or mEvents.put(entry)...
+        for (Event event : mEvents.values()) {
+            if (event.getTags().contains(tag)) {
+                newEventSet.addEvent(event); //or mEvents.put(entry)...
             }
         }
         return newEventSet;
