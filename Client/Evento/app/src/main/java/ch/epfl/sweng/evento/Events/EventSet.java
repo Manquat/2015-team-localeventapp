@@ -31,7 +31,7 @@ public class EventSet {
 
     /**
      * Adds an event to the Map
-     *
+     * Verifies the Event is not already in the Map
      * @param event the Event to be added
      */
     public void addEvent(Event event) {
@@ -72,9 +72,9 @@ public class EventSet {
     public EventSet filter(Set<String> tags) {
         EventSet newEventSet = new EventSet();
 
-        for (Map.Entry<Integer, Event> entry : mEvents.entrySet()) {
-            if (entry.getValue().getTags().containsAll(tags)) {
-                newEventSet.addEvent(entry.getValue()); //or mEvents.put(entry)...
+        for (Event event : mEvents.values()) {
+            if (event.getTags().containsAll(tags)) {
+                newEventSet.addEvent(event); //or mEvents.put(entry)...
             }
         }
         return newEventSet;
@@ -82,9 +82,9 @@ public class EventSet {
 
     public EventSet filter(String tag) {
         EventSet newEventSet = new EventSet();
-        for (Map.Entry<Integer, Event> entry : mEvents.entrySet()) {
-            if (entry.getValue().getTags().contains(tag)) {
-                newEventSet.addEvent(entry.getValue()); //or mEvents.put(entry)...
+        for (Event event : mEvents.values()) {
+            if (event.getTags().contains(tag)) {
+                newEventSet.addEvent(event); //or mEvents.put(entry)...
             }
         }
         return newEventSet;
