@@ -6,4 +6,7 @@
 
     <!-- Size of the icon on the map. -->
     <dimen name="icon_map_size">50dp</dimen>
+
+    <!-- Calendar grid dimensions -->
+    <dimen name="calendar_grid_view_spacing">2dp</dimen>
 </resources>
