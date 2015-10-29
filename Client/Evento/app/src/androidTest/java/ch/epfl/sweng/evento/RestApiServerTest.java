@@ -43,20 +43,10 @@ public class RestApiServerTest {
     @Test
     public void testGetEvent() {
         RestApi restApi = new RestApi(networkProvider, urlServer);
-        ArrayList<Event> eventArrayList = new ArrayList<Event>();
-        assertEquals("Before requesting, eventArrayList is empty", eventArrayList.size(), 0);
+        EventSet eventSet = new EventSet();
+        assertEquals("Before requesting, eventArrayList is empty", eventSet.size(), 0);
 
-        restApi.getEvent(eventArrayList);
-
-        try {
-            restApi.waitUntilFinish();
-        } catch (RestException e) {
-            e.printStackTrace();
-        }
-
-        assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
-
-        restApi.getEvent(eventArrayList);
+        restApi.getEvent(eventSet);
 
         try {
             restApi.waitUntilFinish();
@@ -64,7 +54,17 @@ public class RestApiServerTest {
             e.printStackTrace();
         }
 
-        assertEquals("We get two event after requesting twice", eventArrayList.size(), 2);
+        assertEquals("We get one event after requesting once", eventSet.size(), 1);
+
+        restApi.getEvent(eventSet);
+
+        try {
+            restApi.waitUntilFinish();
+        } catch (RestException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals("We get two event after requesting twice", eventSet.size(), 2);
 
 
     }

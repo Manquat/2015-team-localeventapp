@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 
 
 import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.Events.EventSet;
 import ch.epfl.sweng.evento.RestApi.Parser;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.RestApi.RestException;
@@ -115,9 +116,9 @@ public class RestApiLocalTest {
     public void testGetEvent() throws IOException {
         configureResponse(HttpURLConnection.HTTP_OK, PROPER_JSON_STRING, JSON_CONTENT_TYPE);
         RestApi restApi = new RestApi(networkProviderMockito, wrongUrl);
-        ArrayList<Event> eventArrayList = new ArrayList<Event>();
+        EventSet eventSet = new EventSet();
 
-        restApi.getEvent(eventArrayList);
+        restApi.getEvent(eventSet);
 
         try {
             restApi.waitUntilFinish();
@@ -125,10 +126,10 @@ public class RestApiLocalTest {
             e.printStackTrace();
         }
 
-        assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
-        assertEquals("id", eventArrayList.get(0).getID(), PROPER_EVENT_RESULT.getID());
-        assertEquals("title", eventArrayList.get(0).getTitle(), PROPER_EVENT_RESULT.getTitle());
-        assertEquals("description", eventArrayList.get(0).getDescription(), PROPER_EVENT_RESULT.getDescription());
+        assertEquals("We get one event after requesting once", eventSet.size(), 1);
+        assertEquals("id", eventSet.get(17005).getID(), PROPER_EVENT_RESULT.getID());
+        assertEquals("title", eventSet.get(17005).getTitle(), PROPER_EVENT_RESULT.getTitle());
+        assertEquals("description", eventSet.get(17005).getDescription(), PROPER_EVENT_RESULT.getDescription());
 
     }
 

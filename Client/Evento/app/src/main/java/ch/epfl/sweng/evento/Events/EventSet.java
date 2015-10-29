@@ -83,4 +83,8 @@ public class EventSet {
         }
         return newEventSet;
     }
+
+    public int size() {
+        return mEvents.size();
+    }
 }
