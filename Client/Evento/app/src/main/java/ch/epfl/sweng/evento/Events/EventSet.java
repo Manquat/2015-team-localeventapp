@@ -4,8 +4,6 @@ import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,27 +19,19 @@ public class EventSet {
      * Default constructor
      */
     public EventSet() {
-        mEvents = new HashMap<>();
     }
 
     /**
      * @param ID the ID of the Event to be returned
-     * @return the Event corresponding to the ID or the special ERROR Event if it's not in the Map
-     *
+     * @return the Event corresponding to the ID. NULL if it's not in the Map
      */
     public Event get(int ID) {
-        if(mEvents.containsKey(ID))
-        {
-            return mEvents.get(ID);
-        }
-        else {
-            return getErrorEvent();
-        }
+        return mEvents.get(ID);
     }
 
     /**
      * Adds an event to the Map
-     * Verifies the Event is not already in the Map
+     *
      * @param event the Event to be added
      */
     public void addEvent(Event event) {
@@ -82,7 +72,9 @@ public class EventSet {
      */
     public EventSet filter(Set<String> tags) {
         EventSet newEventSet = new EventSet();
-                newEventSet.addEvent(entry.getValue()); //or mEvents.put(entry)...
+        for (Event event : mEvents.values()) {
+            if (event.getTags().containsAll(tags)) {
+                newEventSet.addEvent(event); //or mEvents.put(entry)...
             }
         }
         return newEventSet;
@@ -98,21 +90,4 @@ public class EventSet {
         return newEventSet;
     }
 
-    /**
-     * This method returns an error Event.
-     * This is just temporary before implementing good exception handling
-     * @return
-     */
-    private Event getErrorEvent()
-    {
-        return new Event(0,
-                "ERROR",
-                "The Event doesn't exist or wasn't there",
-                0.0,0.0,
-                "",
-                "",
-                new HashSet<String>(),
-                new Event.Date(),
-                new Event.Date());
-    }
 }
