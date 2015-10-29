@@ -52,7 +52,7 @@ public class PostTask extends AsyncTask<String, String, String> {
     protected String doInBackground(String... arg0) {
         String response = null;
         try {
-            String bodyToSend = URLEncoder.encode(requestBody, charset);
+            String bodyToSend = URLEncoder.encode("Event_name=\"coucou\"", charset);
             URL url = new URL(restUrl);
             HttpURLConnection conn = networkProvider.getConnection(url);
             conn.setRequestMethod("POST");
@@ -60,16 +60,23 @@ public class PostTask extends AsyncTask<String, String, String> {
             conn.setDoOutput(true);
             conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
-            OutputStream output = conn.getOutputStream();
-            //output.write(bodyToSend.getBytes(charset));
+//            OutputStream output = conn.getOutputStream();
+//            output.write(bodyToSend.getBytes(charset));
+//
+////            BufferedWriter writer = new BufferedWriter(
+//                    new OutputStreamWriter(output, "UTF-8"));
+//
+//            writer.write(bodyToSend);
+//            writer.flush();
+//            writer.close();
 
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(output, "UTF-8"));
+            BufferedWriter out =
+                    new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+            out.write(bodyToSend);
+            out.close();
 
-            writer.write(bodyToSend);
-            writer.flush();
-            writer.close();
-            output.close();
+
+//            output.close();
 
 
             conn.connect();

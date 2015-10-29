@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.Events.EventSet;
 import ch.epfl.sweng.evento.NetworkProvider;
 
 /**
@@ -58,10 +59,10 @@ public class RestApi{
      * Request new events to display in the app, according with the position and the filter
      * preferences of the user
      *
-     * @param eventArrayList the ArrayList where you want to push the loaded event.
+     * @param eventSet the ArrayList where you want to push the loaded event.
      */
-    public void getEvent(final ArrayList<Event> eventArrayList){
-        getEvent(eventArrayList, new GetResponseCallback() {
+    public void getEvent(final EventSet eventSet){
+        getEvent(eventSet, new GetResponseCallback() {
             @Override
             void onDataReceived() {
                 // do nothing
@@ -71,10 +72,10 @@ public class RestApi{
 
     /**
      * getEvent method, given an array of events and a specified callback
-     * @param eventArrayList
+     * @param eventSet
      * @param callback
      */
-    public void getEvent(final ArrayList<Event> eventArrayList, final GetResponseCallback callback){
+    public void getEvent(final EventSet eventSet, final GetResponseCallback callback){
         onWork += 1;
         noEvent += 1;
         String restUrl = UrlMaker.get(urlServer, noEvent);
@@ -86,7 +87,7 @@ public class RestApi{
                 try {
                     JsonResponse = new JSONObject(response);
                     event = Parser.parseFromJSON(JsonResponse);
-                    eventArrayList.add(event);
+                    eventSet.addEvent(event);
                     onWork -= 1;
                 } catch (JSONException e) {
                     onWork -= 1;
