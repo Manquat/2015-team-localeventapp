@@ -1,7 +1,6 @@
 package ch.epfl.sweng.evento.RestApi;
 
 import ch.epfl.sweng.evento.Events.Event;
-import ch.epfl.sweng.evento.Events.EventFilter;
 
 /**
  * Created by joachimmuth on 16.10.15.
@@ -18,10 +17,10 @@ public final class Serializer {
         return res;
     }
 
-    public static String filter(EventFilter f){
+    /*public static String filter(EventFilter f){
         String res;
         res = null;
         return res;
-    }
+    }*/
 
 }

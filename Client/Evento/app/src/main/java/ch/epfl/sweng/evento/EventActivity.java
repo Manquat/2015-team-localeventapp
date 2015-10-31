@@ -42,19 +42,9 @@ public class EventActivity extends AppCompatActivity implements
 
         movementDetector = new GestureDetectorCompat(this,this);
 
-        Event.Date start = new Event.Date(2015,10,12,18,30);
-        Event.Date end = new Event.Date(2015,10,12,20,30);
 
-        /*Those are mock events before getting them from the database*/
-        events = new Event[5];
-        Set<String> tag = new HashSet<String>();
-        events[0] = new Event(1,"Event1","This is a first event",1.1,1.1,"1 long street","alfredo", tag, start,end);
-        events[1] = new Event(2,"Event2","This is a second event",2.2,2.2,"2 long street","bob", tag, start,end);
-        events[2] = new Event(3,"Event3","This is a third event",3.3,3.3,"3 long street","charlie", tag, start,end);
-        events[3] = new Event(4,"Event4","This is a fourth event",4.4,4.4,"4 long street","dinesh", tag, start,end);
-        events[4] = new Event(5,"Event5","This is a fifth event",5.5,5.5,"5 long street","ethan", tag, start,end);
-
-        currentEvent = events[2];
+        Event event = ((EventoApplication) getApplication()).getEventDatabase().getEvent(3);
+        currentEvent = event;
 
         updateFields();
 
@@ -118,18 +108,19 @@ public class EventActivity extends AppCompatActivity implements
     }
 
     private void onSwipeLeft() {
-        if(currentEvent.getID()<events.length-1)
-        {
-            currentEvent = events[currentEvent.getID()];
-            updateFields();
-        }
+        currentEvent = ((EventoApplication) getApplication())
+                .getEventDatabase()
+                .getEvent(currentEvent.getID()+1);
+
+        updateFields();
     }
 
     private void onSwipeRight() {
-        if(currentEvent.getID()>1)
-        {
-            currentEvent = events[currentEvent.getID()-2];
-            updateFields();
-        }
+
+        currentEvent =((EventoApplication) getApplication())
+                .getEventDatabase()
+                .getEvent(currentEvent.getID()-1);
+
+        updateFields();
     }
 }
