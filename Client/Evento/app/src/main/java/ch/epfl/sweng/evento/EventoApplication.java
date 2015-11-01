@@ -5,7 +5,7 @@ import android.app.Application;
 /**
  * Created by Val on 28.10.2015.
  */
-public class EventoApplication extends Application{
+public class EventoApplication extends Application {
 
 
     public EventoApplication() {
@@ -19,8 +19,7 @@ public class EventoApplication extends Application{
         super.onCreate();
     }
 
-    EventDatabase getEventDatabase()
-    {
+    EventDatabase getEventDatabase() {
         return EventDatabase.INSTANCE;
     }
 }

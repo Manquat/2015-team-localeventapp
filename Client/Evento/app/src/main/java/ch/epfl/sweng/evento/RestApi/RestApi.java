@@ -21,20 +21,20 @@ import ch.epfl.sweng.evento.NetworkProvider;
 
 /**
  * Entry point into the API. Joachim
- *
+ * <p>
  * ONLY GETTASK IS WORKING =D
  * TODO: know the server protocol to provide correct String to GetTask and PostTask
  */
-public class RestApi{
+public class RestApi {
     private NetworkProvider networkProvider;
     private String urlServer;
     private int onWork = 0;  // ugly trick to wait for REST terminates, while testing
     private int noEvent = 10;
     // TODO: find a better way
 
-    public RestApi(NetworkProvider networkProvider, String urlServer){
+    public RestApi(NetworkProvider networkProvider, String urlServer) {
         this.networkProvider = networkProvider;
-        this. urlServer = urlServer;
+        this.urlServer = urlServer;
     }
 
 //    public static RestApi getInstance() {
@@ -42,7 +42,7 @@ public class RestApi{
 //    }
 
     public void waitUntilFinish() throws RestException {
-        while (onWork > 0){
+        while (onWork > 0) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -60,7 +60,7 @@ public class RestApi{
      *
      * @param eventArrayList the ArrayList where you want to push the loaded event.
      */
-    public void getEvent(final ArrayList<Event> eventArrayList){
+    public void getEvent(final ArrayList<Event> eventArrayList) {
         getEvent(eventArrayList, new GetResponseCallback() {
             @Override
             void onDataReceived() {
@@ -71,16 +71,17 @@ public class RestApi{
 
     /**
      * getEvent method, given an array of events and a specified callback
+     *
      * @param eventArrayList
      * @param callback
      */
-    public void getEvent(final ArrayList<Event> eventArrayList, final GetResponseCallback callback){
+    public void getEvent(final ArrayList<Event> eventArrayList, final GetResponseCallback callback) {
         onWork += 1;
         noEvent += 1;
         String restUrl = UrlMaker.get(urlServer, noEvent);
-        new GetTask(restUrl, networkProvider, new RestTaskCallback (){
+        new GetTask(restUrl, networkProvider, new RestTaskCallback() {
             @Override
-            public void onTaskComplete(String response){
+            public void onTaskComplete(String response) {
                 JSONObject JsonResponse = null;
                 Event event;
                 try {
@@ -106,15 +107,16 @@ public class RestApi{
 
     /**
      * Submit a Event to the server.
-     * @param event the new event to post
+     *
+     * @param event    the new event to post
      * @param callback The callback to execute when submission status is available.
      */
-    public void postEvent(Event event, final PostCallback callback){
+    public void postEvent(Event event, final PostCallback callback) {
         onWork += 1;
         String restUrl = UrlMaker.put(urlServer);
         String requestBody = Serializer.event(event);
-        new PutTask(restUrl, networkProvider, requestBody, new RestTaskCallback(){
-            public void onTaskComplete(String response){
+        new PutTask(restUrl, networkProvider, requestBody, new RestTaskCallback() {
+            public void onTaskComplete(String response) {
                 onWork -= 1;
                 callback.onPostSuccess();
             }
@@ -123,30 +125,31 @@ public class RestApi{
 
     /**
      * Update a Event to the server.
-     * @param event the event to update on the server
+     *
+     * @param event    the event to update on the server
      * @param callback The callback to execute when submission status is available.
-     *
-     *
      */
-    public void updateEvent(Event event, final PutCallback callback){
+    public void updateEvent(Event event, final PutCallback callback) {
         String restUrl = UrlMaker.post(urlServer);
         String requestBody = Serializer.event(event);
-        new PostTask(restUrl, networkProvider, requestBody, new RestTaskCallback(){
-            public void onTaskComplete(String response){
+        new PostTask(restUrl, networkProvider, requestBody, new RestTaskCallback() {
+            public void onTaskComplete(String response) {
                 callback.onPostSuccess();
             }
         }).execute();
     }
+
     /**
      * Delete a Event of the server.
-     * @param event the event to delete
+     *
+     * @param event    the event to delete
      * @param callback The callback to execute when submission status is available.
      */
-    public void deleteEvent(Event event, final DeleteResponseCallback callback){
+    public void deleteEvent(Event event, final DeleteResponseCallback callback) {
         String restUrl = UrlMaker.delete(urlServer);
         String requestBody = Serializer.event(event);
-        new DeleteTask(restUrl, networkProvider, requestBody, new RestTaskCallback(){
-            public void onTaskComplete(String response){
+        new DeleteTask(restUrl, networkProvider, requestBody, new RestTaskCallback() {
+            public void onTaskComplete(String response) {
                 callback.onDeleteSuccess();
             }
         }).execute();
@@ -159,19 +162,19 @@ public class RestApi{
      * @param callback
      */
 
-    public void setInterestedInEvent(Event event, final PostCallback callback){
+    public void setInterestedInEvent(Event event, final PostCallback callback) {
 
     }
 
-    public void setNotInterestedInEvent(Event event, final PostCallback callback){
+    public void setNotInterestedInEvent(Event event, final PostCallback callback) {
 
     }
 
-    public void setParticipateToEvent(Event event, final PostCallback callback){
+    public void setParticipateToEvent(Event event, final PostCallback callback) {
 
     }
 
-    public void setNotParticipateToEvent(Event event, final PostCallback callback){
+    public void setNotParticipateToEvent(Event event, final PostCallback callback) {
 
     }
 

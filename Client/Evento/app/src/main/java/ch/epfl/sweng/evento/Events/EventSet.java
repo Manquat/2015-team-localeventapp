@@ -28,23 +28,18 @@ public class EventSet {
     /**
      * @param ID the ID of the Event to be returned
      * @return the Event corresponding to the ID or the special ERROR Event if it's not in the Map
-     *
      */
     public Event get(int ID) {
-        if(mEvents.containsKey(ID))
-        {
+        if (mEvents.containsKey(ID)) {
             return mEvents.get(ID);
-        }
-        else {
+        } else {
             return getErrorEvent();
         }
     }
 
-    public Event getFirst()
-    {
+    public Event getFirst() {
         int i = 0;
-        while(!mEvents.containsKey(i))
-        {
+        while (!mEvents.containsKey(i)) {
             i++;
         }
         return mEvents.get(i);
@@ -70,6 +65,7 @@ public class EventSet {
     /**
      * Adds an event to the Map
      * Verifies the Event is not already in the Map
+     *
      * @param event the Event to be added
      */
     public void addEvent(Event event) {
@@ -132,14 +128,14 @@ public class EventSet {
     /**
      * This method returns an error Event.
      * This is just temporary before implementing good exception handling
+     *
      * @return
      */
-    private Event getErrorEvent()
-    {
+    private Event getErrorEvent() {
         return new Event(0,
                 "ERROR",
                 "The Event doesn't exist or wasn't there",
-                0.0,0.0,
+                0.0, 0.0,
                 "",
                 "",
                 new HashSet<String>(),

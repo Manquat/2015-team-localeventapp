@@ -21,13 +21,12 @@ public class PutTask extends AsyncTask<String, String, String> {
      * Creates a new instance of PostTask with the specified URL, callback, and
      * request body.
      *
-     * @param restUrl The URL for the REST API.
-     * @param callback The callback to be invoked when the HTTP request
-     *            completes.
+     * @param restUrl     The URL for the REST API.
+     * @param callback    The callback to be invoked when the HTTP request
+     *                    completes.
      * @param requestBody The body of the POST request.
-     *
      */
-    public PutTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback){
+    public PutTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback) {
         this.mRestUrl = restUrl;
         this.mRequestBody = requestBody;
         this.mCallback = callback;

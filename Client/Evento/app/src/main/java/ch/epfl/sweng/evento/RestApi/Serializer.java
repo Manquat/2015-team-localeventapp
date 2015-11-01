@@ -4,14 +4,13 @@ import ch.epfl.sweng.evento.Events.Event;
 
 /**
  * Created by joachimmuth on 16.10.15.
- *
+ * <p>
  * Provide the serialization method to transform android class into string understandable by the server
- *
  */
 public final class Serializer {
 
 
-    public static String event(Event e){
+    public static String event(Event e) {
         String res;
         res = null;
         return res;

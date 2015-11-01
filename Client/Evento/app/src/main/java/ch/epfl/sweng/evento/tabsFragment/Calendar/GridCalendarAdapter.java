@@ -22,8 +22,7 @@ import ch.epfl.sweng.evento.R;
 /**
  * Created by Gautier on 27/10/2015.
  */
-public class GridCalendarAdapter extends BaseAdapter implements View.OnClickListener
-{
+public class GridCalendarAdapter extends BaseAdapter implements View.OnClickListener {
     private static final String tag = "GridCalendarAdapter";
     private static final int NUMBER_OF_CELLS = 7 * 7; // the line for the day of the week, and 6 lines for all the day of the month
 
@@ -31,8 +30,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
     private CalendarGrid mCalendarGrid;
 
-    public GridCalendarAdapter(Context context)
-    {
+    public GridCalendarAdapter(Context context) {
         super();
         mContext = context;
 
@@ -41,35 +39,29 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
     }
 
     @Override
-    public int getCount()
-    {
+    public int getCount() {
         return NUMBER_OF_CELLS;
     }
 
     @Override
-    public Object getItem(int position)
-    {
+    public Object getItem(int position) {
         return null;
     }
 
     @Override
-    public long getItemId(int position)
-    {
+    public long getItemId(int position) {
         return 0;
     }
 
     // create a new ImageView for each item referenced by the Adapter
     @Override
-    public View getView(int gridPosition, View convertView, ViewGroup parent)
-    {
+    public View getView(int gridPosition, View convertView, ViewGroup parent) {
         Log.d(tag, "getView ...");
 
         View rootView = convertView;
 
-        if (gridPosition < 7)
-        {
-            if (rootView == null)
-            {
+        if (gridPosition < 7) {
+            if (rootView == null) {
                 GregorianCalendar calendar = new GregorianCalendar();
 
                 // backtrack to the beginning of the current week
@@ -86,13 +78,10 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
                 rootView = textView;
             }
-        }
-        else
-        {
+        } else {
             int position = gridPosition - 7; // remove the first row of the calendar
 
-            if (rootView == null)
-            {
+            if (rootView == null) {
                 LayoutInflater inflater = (LayoutInflater.from(mContext));
                 rootView = inflater.inflate(R.layout.day_cell, parent, false);
             }
@@ -100,8 +89,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
             // get a reference of the day button
             Button button = (Button) rootView.findViewById(R.id.cell_button_view);
 
-            if (button == null)
-            {
+            if (button == null) {
                 Log.e(tag, "No button in the view");
                 throw new NullPointerException("No button in the view");
             }
@@ -116,21 +104,18 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
             button.setTextColor(ContextCompat.getColor(mContext, R.color.colorDisableMonth));
             button.setActivated(false);
 
-            if (mCalendarGrid.isCurrentMonth(position))
-            {
+            if (mCalendarGrid.isCurrentMonth(position)) {
                 button.setTextColor(ContextCompat.getColor(mContext, R.color.colorCurrentMonth));
             }
 
-            if (mCalendarGrid.isCurrentDay(position))
-            {
+            if (mCalendarGrid.isCurrentDay(position)) {
                 button.setActivated(true);
             }
 
             // highlight the current day by changing it textColor
             GregorianCalendar calendar = new GregorianCalendar();
             if (mCalendarGrid.getDayOfYear(position) == calendar.get(Calendar.DAY_OF_YEAR)
-                    && mCalendarGrid.getCurrentYear() == calendar.get(Calendar.YEAR))
-            {
+                    && mCalendarGrid.getCurrentYear() == calendar.get(Calendar.YEAR)) {
                 button.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
             }
         }
@@ -140,16 +125,15 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
     /**
      * Return a string with the date of the current day focused
+     *
      * @return the date format as th default local convention
      */
-    public String getStringDate()
-    {
+    public String getStringDate() {
         return mCalendarGrid.getStringDate();
     }
 
     @Override
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         int position = Integer.valueOf((String) v.getTag(R.id.position_tag));
 
         String day = mCalendarGrid.getStringDate(position);
@@ -160,14 +144,12 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         notifyDataSetChanged();
     }
 
-    public void nextMonth()
-    {
+    public void nextMonth() {
         mCalendarGrid.nextMonth();
         notifyDataSetChanged();
     }
 
-    public void prevMonth()
-    {
+    public void prevMonth() {
         mCalendarGrid.prevMonth();
         notifyDataSetChanged();
     }

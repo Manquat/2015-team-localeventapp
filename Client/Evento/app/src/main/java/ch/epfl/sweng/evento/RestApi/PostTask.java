@@ -35,13 +35,12 @@ public class PostTask extends AsyncTask<String, String, String> {
      * request body.
      *
      * @param networkProvider
-     * @param restUrl The URL for the REST API.
-     * @param requestBody The body of the POST request.
-     * @param callback The callback to be invoked when the HTTP request
-*            completes.
-     *
+     * @param restUrl         The URL for the REST API.
+     * @param requestBody     The body of the POST request.
+     * @param callback        The callback to be invoked when the HTTP request
+     *                        completes.
      */
-    public PostTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback){
+    public PostTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback) {
         this.networkProvider = networkProvider;
         this.restUrl = restUrl;
         this.requestBody = requestBody;

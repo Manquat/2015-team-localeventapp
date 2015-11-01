@@ -17,7 +17,7 @@ import java.util.Set;
 import ch.epfl.sweng.evento.Events.Event;
 
 public class EventActivity extends AppCompatActivity implements
-    GestureDetector.OnGestureListener{
+        GestureDetector.OnGestureListener {
 
 
     private GestureDetectorCompat movementDetector;
@@ -40,7 +40,7 @@ public class EventActivity extends AppCompatActivity implements
             }
         });
 
-        movementDetector = new GestureDetectorCompat(this,this);
+        movementDetector = new GestureDetectorCompat(this, this);
 
 
         Event event = ((EventoApplication) getApplication()).getEventDatabase().getFirstEvent();
@@ -62,8 +62,8 @@ public class EventActivity extends AppCompatActivity implements
         titleView.setText(currentEvent.getTitle());
         creatorView.setText("Created by " + currentEvent.getCreator());
         startDateView.setText("From  " + currentEvent.getStartDate().toString());
-        endDateView.setText(  "to    " + currentEvent.getEndDate().toString());
-        addressView.setText(  "at    " + currentEvent.getAddress());
+        endDateView.setText("to    " + currentEvent.getEndDate().toString());
+        addressView.setText("at    " + currentEvent.getAddress());
         descriptionView.setText(currentEvent.getDescription());
     }
 
@@ -79,7 +79,8 @@ public class EventActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onShowPress(MotionEvent e) {}
+    public void onShowPress(MotionEvent e) {
+    }
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
@@ -99,9 +100,9 @@ public class EventActivity extends AppCompatActivity implements
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         float sensitivity = 50;
-        if((e1.getX() - e2.getX()) > sensitivity){
+        if ((e1.getX() - e2.getX()) > sensitivity) {
             onSwipeLeft();
-        }else if((e2.getX() - e1.getX()) > sensitivity) {
+        } else if ((e2.getX() - e1.getX()) > sensitivity) {
             onSwipeRight();
         }
         return false;
@@ -109,17 +110,17 @@ public class EventActivity extends AppCompatActivity implements
 
     private void onSwipeLeft() {
         currentEvent = ((EventoApplication) getApplication())
-                    .getEventDatabase()
-                    .getEvent(currentEvent.getID() - 1);
+                .getEventDatabase()
+                .getEvent(currentEvent.getID() - 1);
 
         updateFields();
     }
 
     private void onSwipeRight() {
 
-        currentEvent =((EventoApplication) getApplication())
+        currentEvent = ((EventoApplication) getApplication())
                 .getEventDatabase()
-                .getEvent(currentEvent.getID()-1);
+                .getEvent(currentEvent.getID() - 1);
 
         updateFields();
     }

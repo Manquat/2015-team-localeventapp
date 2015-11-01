@@ -17,13 +17,12 @@ public class DeleteTask extends AsyncTask<String, Void, String> {
      * Creates a new instance of PostTask with the specified URL, callback, and
      * request body.
      *
-     * @param restUrl The URL for the REST API.
-     * @param callback The callback to be invoked when the HTTP request
-     *            completes.
+     * @param restUrl     The URL for the REST API.
+     * @param callback    The callback to be invoked when the HTTP request
+     *                    completes.
      * @param requestBody The body of the POST request.
-     *
      */
-    public DeleteTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback){
+    public DeleteTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback) {
         this.requestBody = restUrl;
         this.requestBody = requestBody;
         this.callback = callback;

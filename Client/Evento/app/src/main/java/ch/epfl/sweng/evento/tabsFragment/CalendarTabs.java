@@ -16,15 +16,13 @@ import ch.epfl.sweng.evento.tabsFragment.Calendar.GridCalendarAdapter;
 /**
  * Created by Gautier on 21/10/2015.
  */
-public class CalendarTabs extends Fragment implements Button.OnClickListener
-{
+public class CalendarTabs extends Fragment implements Button.OnClickListener {
     private GridCalendarAdapter mGridCalendarAdapter;
     private TextView mCurrentDate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
 
         GridView gridView = (GridView) view.findViewById(R.id.gridview);
@@ -44,8 +42,7 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener
 
     @Override
     public void onClick(View v) {
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.nextButton:
                 mGridCalendarAdapter.nextMonth();
                 updateDate();
@@ -58,8 +55,7 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener
         }
     }
 
-    private void updateDate()
-    {
+    private void updateDate() {
         mCurrentDate.setText(mGridCalendarAdapter.getStringDate());
     }
 }
