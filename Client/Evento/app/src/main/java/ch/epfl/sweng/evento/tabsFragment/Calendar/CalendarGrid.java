@@ -14,7 +14,7 @@ import java.util.List;
 public class CalendarGrid
 {
     private static final String TAG = "CalendarGrid";
-    private static final int NUMBER_OF_CELLS = 6 * 7;
+    private static final int NUMBER_OF_CELLS = 6 * 7; // the minimal size for displaying all the day of a month
 
     private enum Current
     {
@@ -67,6 +67,28 @@ public class CalendarGrid
     public int getDay(int position)
     {
         return mDays.get(position);
+    }
+
+    public int getDayOfYear(int position)
+    {
+        GregorianCalendar cal;
+        switch (mCurrent.get(position))
+        {
+            case CURRENT:
+                cal = new GregorianCalendar(mCurrentYear, mCurrentMonth, mDays.get(position));
+                break;
+            case PREVIOUS:
+                cal = new GregorianCalendar(mCurrentYear, mCurrentMonth -1, mDays.get(position));
+                break;
+            case NEXT:
+                cal = new GregorianCalendar(mCurrentYear, mCurrentMonth +1, mDays.get(position));
+                break;
+            default:
+                Log.d(TAG, "No such Current Type!");
+                throw new AssertionError(Current.values());
+        }
+
+        return cal.get(Calendar.DAY_OF_YEAR);
     }
 
     /**
@@ -129,32 +151,68 @@ public class CalendarGrid
     {
         Calendar cal = getDateFromPosition(position);
 
-        DateFormat format = DateFormat.getDateInstance(DateFormat.FULL);
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL);
 
-        return format.format(cal.getTime());
+        return dateFormat.format(cal.getTime());
+    }
+
+    /**
+     * Return a string with the date of the current day
+     * @return the date format as th default local convention
+     */
+    public String getStringDate()
+    {
+        return getStringDate(mIndexOfCurrentDay);
     }
 
     private Calendar getDateFromPosition(int position)
     {
-        GregorianCalendar cal = new GregorianCalendar(mCurrentYear,
-                mCurrentMonth, mDays.get(position));
+        int effectiveMonth = mCurrentMonth;
 
         switch (mCurrent.get(position))
         {
             case CURRENT:
                 break;
             case NEXT:
-                cal.add(Calendar.MONTH, 1);
+                effectiveMonth += 1;
                 break;
             case PREVIOUS:
-                cal.add(Calendar.MONTH, -1);
+                effectiveMonth -= 1;
                 break;
             default:
                 Log.d(TAG, "No such Current enum");
                 throw new AssertionError(Current.values());
         }
 
+        GregorianCalendar cal = new GregorianCalendar(mCurrentYear,
+                effectiveMonth, mDays.get(position));
+
         return cal;
+    }
+
+    /**
+     * This return the index of the day given in the current month
+     * If it's not found return -1
+     * @param day the day search in the current month
+     * @return
+     */
+    private int getIndexOfDay(int day)
+    {
+        int iFind = -1;
+        // finding the index of the current day
+        for (int i=0; i<mDays.size(); i++)
+        {
+            if (mCurrent.get(i) == Current.CURRENT)
+            {
+                if (mDays.get(i) == day)
+                {
+                    iFind = i;
+                    break; // end the for loop
+                }
+            }
+        }
+
+        return iFind;
     }
 
 //---------------------------------------------------------------------------------------------
@@ -165,17 +223,25 @@ public class CalendarGrid
     {
         if (month != mCurrentMonth || year != mCurrentYear)
         {
-            mCurrentMonth = month;
-            mCurrentYear = year;
-
             Calendar cal = new GregorianCalendar(year, month, 1);
+
+            mCurrentMonth = cal.get(Calendar.MONTH);
+            mCurrentYear = cal.get(Calendar.YEAR);
 
             // backtrack to the beginning of the current week (first week of the month)
             cal.add(Calendar.DAY_OF_YEAR, cal.getFirstDayOfWeek() - cal.get(Calendar.DAY_OF_WEEK));
 
+            // if the first day ot the month is the first day of a week there will be no day of the previous month
+            if (cal.get(Calendar.MONTH) == mCurrentMonth)
+            {
+                // backtrack of one more week
+                cal.add(Calendar.DAY_OF_YEAR, -7);
+            }
+
             for (int i = 0; i < mDays.size(); i++)
             {
                 mDays.set(i, cal.get(Calendar.DAY_OF_MONTH));
+
                 if (cal.get(Calendar.MONTH) != mCurrentMonth) //this is a different month
                 {
                     if (i < mDays.size() / 2) // we are at the beginning of the grid so it's necessarily the previous
@@ -186,6 +252,10 @@ public class CalendarGrid
                     {
                         mCurrent.set(i, Current.NEXT);
                     }
+                }
+                else // this the current month
+                {
+                    mCurrent.set(i, Current.CURRENT);
                 }
 
                 cal.add(Calendar.DAY_OF_YEAR, 1);
@@ -206,15 +276,29 @@ public class CalendarGrid
             setFocusedMonth(month, year);
         }
 
-        // finding the index of the current day
-        for (int i=0; i<mDays.size(); i++)
+        // verify that the day is in the range of the possible day for this month
+        mIndexOfCurrentDay = getIndexOfDay(day);
+
+        if (mIndexOfCurrentDay == -1)
         {
-            if (mCurrent.get(i) == Current.CURRENT)
+            // the day was out of the scale
+            if (day < 1)
             {
-                if (mDays.get(i) == day)
+                // fixing it at the first day of the month
+                mIndexOfCurrentDay = getIndexOfDay(1);
+            }
+            else
+            {
+                // create a calendar to now the last day of the current month
+                GregorianCalendar cal = new GregorianCalendar(mCurrentYear, mCurrentMonth, 1);
+                if (day > cal.getActualMaximum(Calendar.DAY_OF_MONTH))
                 {
-                    mIndexOfCurrentDay = i;
-                    break; // end the for loop
+                    // fixing it at the last day of the current month
+                    mIndexOfCurrentDay = getIndexOfDay(cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+                }
+                else
+                {
+                    throw new AssertionError(day);
                 }
             }
         }
@@ -223,5 +307,29 @@ public class CalendarGrid
     public void setFocusedDay(int position)
     {
         setFocusedDay(getDateFromPosition(position));
+    }
+
+//---------------------------------------------------------------------------------------------
+//----Methods----------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+
+    public boolean isCurrentMonth(int position)
+    {
+        return mCurrent.get(position) == Current.CURRENT;
+    }
+
+    public boolean isCurrentDay(int position)
+    {
+        return position == mIndexOfCurrentDay;
+    }
+
+    public void nextMonth()
+    {
+        setFocusedDay(mDays.get(mIndexOfCurrentDay), mCurrentMonth + 1, mCurrentYear);
+    }
+
+    public void prevMonth()
+    {
+        setFocusedDay(mDays.get(mIndexOfCurrentDay), mCurrentMonth - 1, mCurrentYear);
     }
 }
