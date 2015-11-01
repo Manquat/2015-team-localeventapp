@@ -4,12 +4,14 @@ import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventSet;
+import ch.epfl.sweng.evento.RestApi.RestApi;
 
 /**
  * Created by Val on 28.10.2015.
@@ -46,6 +48,14 @@ public enum EventDatabase {
         eventSet.addEvent(events[2]);
         eventSet.addEvent(events[3]);
         eventSet.addEvent(events[4]);
+
+
+
+        /*RestApi mRestAPI = new RestApi(new DefaultNetworkProvider(),"http://128.179.179.51:8000/");// R.string.url_server);
+        ArrayList<Event> eventList = new ArrayList<>();
+        mRestAPI.getEvent(eventList);
+        eventSet.addEvent((eventList.get(0)));
+        */
     }
 
     /**
@@ -53,11 +63,20 @@ public enum EventDatabase {
      * @param id the ID of the desired Event
      * @return the Event corresponding to the ID.
      */
-    Event getEvent(int id)
+    public Event getEvent(int id)
     {
         return eventSet.get(id);
     }
 
+    public Event getFirstEvent()
+    {
+        return eventSet.getFirst();
+    }
+
+    public Event getNextEvent(int ID)
+    {
+        return eventSet.getNext(ID);
+    }
 
     public EventSet filter(LatLng latLng, double distance) {
         return eventSet.filter(latLng,distance);

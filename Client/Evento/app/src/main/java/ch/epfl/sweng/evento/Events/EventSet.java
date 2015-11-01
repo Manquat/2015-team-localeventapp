@@ -6,6 +6,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -38,6 +39,34 @@ public class EventSet {
             return getErrorEvent();
         }
     }
+
+    public Event getFirst()
+    {
+        int i = 0;
+        while(!mEvents.containsKey(i))
+        {
+            i++;
+        }
+        return mEvents.get(i);
+
+    }
+
+    //not working yet
+    /*public Event getNext(int ID)
+    {
+        int i = ID+1;
+        Iterator<Integer> iterator = mEvents.keySet().iterator();
+
+        while(iterator.hasNext() && iterator.next() != i) {
+            i++;
+        }
+
+        if(i == mEvents.keySet().size()) {
+            return getErrorEvent();
+        }else{
+            return mEvents.get(i);
+        }
+    }*/
 
     /**
      * Adds an event to the Map
