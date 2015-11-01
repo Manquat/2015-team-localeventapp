@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -109,10 +110,11 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
             button.setOnClickListener(this);
 
             // adding the tag to store the date position in the grid inside the button
-            button.setTag(String.valueOf(position));
+            button.setTag(R.id.position_tag, String.valueOf(position));
 
             // by default all the text are disable (grey color)
             button.setTextColor(ContextCompat.getColor(mContext, R.color.colorDisableMonth));
+            button.setActivated(false);
 
             if (mCalendarGrid.isCurrentMonth(position))
             {
@@ -121,6 +123,14 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
             if (mCalendarGrid.isCurrentDay(position))
             {
+                button.setActivated(true);
+            }
+
+            // highlight the current day by changing it textColor
+            GregorianCalendar calendar = new GregorianCalendar();
+            if (mCalendarGrid.getDayOfYear(position) == calendar.get(Calendar.DAY_OF_YEAR)
+                    && mCalendarGrid.getCurrentYear() == calendar.get(Calendar.YEAR))
+            {
                 button.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
             }
         }
@@ -128,16 +138,37 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         return rootView;
     }
 
+    /**
+     * Return a string with the date of the current day focused
+     * @return the date format as th default local convention
+     */
+    public String getStringDate()
+    {
+        return mCalendarGrid.getStringDate();
+    }
+
     @Override
     public void onClick(View v)
     {
-        int position = Integer.valueOf((String) v.getTag());
+        int position = Integer.valueOf((String) v.getTag(R.id.position_tag));
 
         String day = mCalendarGrid.getStringDate(position);
 
-        Toast.makeText(mContext, "Test " + day, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mContext, "Test " + day, Toast.LENGTH_SHORT).show();
 
         mCalendarGrid.setFocusedDay(position);
+        notifyDataSetChanged();
+    }
+
+    public void nextMonth()
+    {
+        mCalendarGrid.nextMonth();
+        notifyDataSetChanged();
+    }
+
+    public void prevMonth()
+    {
+        mCalendarGrid.prevMonth();
         notifyDataSetChanged();
     }
 }
