@@ -73,10 +73,10 @@ public enum EventDatabase {
         return eventSet.getFirst();
     }
 
-    public Event getNextEvent(int ID)
+    /*public Event getNextEvent(int ID)
     {
         return eventSet.getNext(ID);
-    }
+    }*/
 
     public EventSet filter(LatLng latLng, double distance) {
         return eventSet.filter(latLng,distance);

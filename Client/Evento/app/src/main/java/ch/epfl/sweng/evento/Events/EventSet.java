@@ -50,7 +50,6 @@ public class EventSet {
         return mEvents.get(i);
 
     }
-
     //not working yet
     /*public Event getNext(int ID)
     {
@@ -81,8 +80,8 @@ public class EventSet {
 
 
     /**
-     * Returns the set of Events that are at most at 'distance' meters from  the
-     * latitude and longitude stored in 'latLng'
+     * Returns a set of Events that are at most at 'distance'
+     * from the latitude and longitude stored in 'latLng'
      *
      * @param latLng   The reference latitude and longitude
      * @param distance The maximum distance in meters from this LatLng
@@ -111,7 +110,10 @@ public class EventSet {
      */
     public EventSet filter(Set<String> tags) {
         EventSet newEventSet = new EventSet();
-                newEventSet.addEvent(entry.getValue()); //or mEvents.put(entry)...
+
+        for (Event event : mEvents.values()) {
+            if (event.getTags().containsAll(tags)) {
+                newEventSet.addEvent(event); //or mEvents.put(entry)...
             }
         }
         return newEventSet;
