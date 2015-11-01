@@ -1,5 +1,7 @@
 package ch.epfl.sweng.evento.Events;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
@@ -61,6 +63,9 @@ public class Event implements ClusterItem {
         mEndDate = new Date();
     }
 
+    public void debugLogEvent(){
+        Log.d("Event " + mID + " : ", "title : " + mTitle);
+    }
 
     public int getID()
     {
