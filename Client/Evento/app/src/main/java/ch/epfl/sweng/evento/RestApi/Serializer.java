@@ -14,7 +14,15 @@ public final class Serializer {
 
     public static String event(Event e){
         String res;
-        res = null;
+        res = "{\n"
+                + "  \"Event_name\": \"" + e.getTitle() + "\",\n"
+                + "  \"description\": \n"
+                + "    \"" + e.getDescription() + "\" ,\n"
+                + "  \"latitude\": " + e.getLatitude() + ",\n"
+                + "  \"longitude\": " + e.getLongitude() + ",\n"
+                + "  \"address\": \"" + e.getAddress() + "\", \n "
+                + "  \"creator\": \"" + e.getCreator() + "\"\n"
+                + "}\n";
         return res;
     }
 

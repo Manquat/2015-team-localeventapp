@@ -30,6 +30,7 @@ import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.RestApi.RestException;
 import ch.epfl.sweng.evento.RestApi.RestTaskCallback;
 import ch.epfl.sweng.evento.RestApi.GetTask;
+import ch.epfl.sweng.evento.RestApi.Serializer;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
@@ -62,7 +63,7 @@ public class RestApiTest {
             + "  \"address\": \"Terrain de football de Dorigny\", \n "
             + "  \"creator\": \"Micheal Jackson\"\n"
             + "}\n";
-    private static final Event PROPER_EVENT_RESULT = new Event(17005,
+    private static final Event PROPER_EVENT = new Event(17005,
             "My football game",
             "Okay guys, let's play a little game this evening at dorigny. Remember: no doping allowed!",
             46.519428, 6.580847,
@@ -106,14 +107,22 @@ public class RestApiTest {
         JSONObject jsonObject = new JSONObject(PROPER_JSON_STRING);
         Event eventFromJson = parser.parseFromJSON(jsonObject);
 
-        assertEquals("id correctly parsed", PROPER_EVENT_RESULT.getID(), eventFromJson.getID());
-        assertEquals("title correctly parsed", PROPER_EVENT_RESULT.getTitle(), eventFromJson.getTitle());
-        assertEquals("description correctly parsed", PROPER_EVENT_RESULT.getDescription(), eventFromJson.getDescription());
-        assertEquals("xLoc correctly parsed", PROPER_EVENT_RESULT.getLatitude(), eventFromJson.getLatitude());
-        assertEquals("yLoc correctly parsed", PROPER_EVENT_RESULT.getLongitude(), eventFromJson.getLongitude());
-        assertEquals("address correctly parsed", PROPER_EVENT_RESULT.getAddress(), eventFromJson.getAddress());
-        assertEquals("creator correctly parsed", PROPER_EVENT_RESULT.getCreator(), eventFromJson.getCreator());
+        assertEquals("id correctly parsed", PROPER_EVENT.getID(), eventFromJson.getID());
+        assertEquals("title correctly parsed", PROPER_EVENT.getTitle(), eventFromJson.getTitle());
+        assertEquals("description correctly parsed", PROPER_EVENT.getDescription(), eventFromJson.getDescription());
+        assertEquals("xLoc correctly parsed", PROPER_EVENT.getLatitude(), eventFromJson.getLatitude());
+        assertEquals("yLoc correctly parsed", PROPER_EVENT.getLongitude(), eventFromJson.getLongitude());
+        assertEquals("address correctly parsed", PROPER_EVENT.getAddress(), eventFromJson.getAddress());
+        assertEquals("creator correctly parsed", PROPER_EVENT.getCreator(), eventFromJson.getCreator());
 
+    }
+
+    @Test
+    public void testSerializer() throws JSONException {
+        String event_string = Serializer.event(PROPER_EVENT);
+        JSONObject event_json = new JSONObject(event_string);
+        assertEquals("Event title correctly serialized to string",event_json.getString("Event_name"), PROPER_EVENT.getTitle());
+        assertEquals("Event latitude correctly serialized to string",event_json.getDouble("latitude"), PROPER_EVENT.getLatitude());
     }
 
     /**
@@ -160,9 +169,9 @@ public class RestApiTest {
 
         assertNotNull("Event is not null", eventArrayList);
         assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
-        assertEquals("id", eventArrayList.get(0).getID(), PROPER_EVENT_RESULT.getID());
-        assertEquals("title", eventArrayList.get(0).getTitle(), PROPER_EVENT_RESULT.getTitle());
-        assertEquals("description", eventArrayList.get(0).getDescription(), PROPER_EVENT_RESULT.getDescription());
+        assertEquals("id", eventArrayList.get(0).getID(), PROPER_EVENT.getID());
+        assertEquals("title", eventArrayList.get(0).getTitle(), PROPER_EVENT.getTitle());
+        assertEquals("description", eventArrayList.get(0).getDescription(), PROPER_EVENT.getDescription());
 
     }
 
@@ -231,7 +240,7 @@ public class RestApiTest {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        
+
         /**
          * TODO: a way to verify automatically that the event is well created.
          * For the moment a only go to server through browser and check it
