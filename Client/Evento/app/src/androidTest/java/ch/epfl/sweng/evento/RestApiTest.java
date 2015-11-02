@@ -18,12 +18,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 
 import ch.epfl.sweng.evento.Events.Event;
-import ch.epfl.sweng.evento.Events.EventSet;
 import ch.epfl.sweng.evento.RestApi.DeleteResponseCallback;
 import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.Parser;
@@ -32,7 +30,6 @@ import ch.epfl.sweng.evento.RestApi.PostTask;
 import ch.epfl.sweng.evento.RestApi.PutCallback;
 import ch.epfl.sweng.evento.RestApi.PutTask;
 import ch.epfl.sweng.evento.RestApi.RestApi;
-import ch.epfl.sweng.evento.RestApi.RestException;
 import ch.epfl.sweng.evento.RestApi.RestTaskCallback;
 import ch.epfl.sweng.evento.RestApi.GetTask;
 import ch.epfl.sweng.evento.RestApi.Serializer;
@@ -267,7 +264,7 @@ public class RestApiTest {
 
         restApi.postEvent(e, new PostCallback() {
             @Override
-            public void onPostSuccess() {
+            public void onPostSuccess(String response) {
                 // nothing
             }
         });
@@ -312,7 +309,7 @@ public class RestApiTest {
         RestApi restApi = new RestApi(networkProvider, urlServer);
         restApi.updateEvent(event, new PutCallback() {
             @Override
-            public void onPostSuccess() {
+            public void onPostSuccess(String response) {
 
             }
         });
@@ -327,11 +324,10 @@ public class RestApiTest {
 
     @Test
     public void testDeleteEvent(){
-        Event event = new Event(14, "this is a test of UpdateEvent", "test1", 0, 0,"address", "createur", new HashSet<String>());
         RestApi restApi = new RestApi(networkProvider, urlServer);
-        restApi.deleteEvent(event, new DeleteResponseCallback() {
+        restApi.deleteEvent(15, new DeleteResponseCallback() {
             @Override
-            public void onDeleteSuccess() {
+            public void onDeleteSuccess(String response) {
 
             }
         });

@@ -22,46 +22,39 @@ public class GetTask extends AsyncTask<String, Void, String>{
     private static final int HTTP_SUCCESS_END = 299;
     private String mRestUrl;
     private RestTaskCallback mCallback;
-    private NetworkProvider myNetworkProvider;
+    private NetworkProvider mNetworkProvider;
 
-    /**
-     * Creates a new instance of GetTask with the specified URL and callback.
-     *
-     * @param restUrl The URL for the REST API.
-     * @param callback The callback to be invoked when the HTTP request
-     *            completes.
-     *
-     */
     public GetTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback){
         this.mRestUrl = restUrl;
         this.mCallback = callback;
-        this.myNetworkProvider = networkProvider;
+        this.mNetworkProvider = networkProvider;
     }
 
     @Override
     protected String doInBackground(String... params) {
         String response = null;
         try {
+            // prepare URL and parameter
             URL url = new URL(mRestUrl);
-            HttpURLConnection conn = myNetworkProvider.getConnection(url);
+            HttpURLConnection conn = mNetworkProvider.getConnection(url);
+            // set server connection
             conn.setRequestMethod("GET");
             conn.setDoInput(true);
             conn.connect();
-
+            // get HTTP response code and get the event ONLY in case of success
             int responseCode = 0;
             responseCode = conn.getResponseCode();
             if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END) {
                 throw new RestException("Invalid HTTP response code");
             }
-
+            // get the event
             response = fetchContent(conn);
+
         } catch (IOException e) {
             Log.e("RestException", "Exception thrown in GetTask", e);
-            // TODO: make something with that exception !
         } catch (RestException e) {
             Log.e("RestException", "Exception thrown in GetTask", e);
         }
-
         return response;
     }
 
@@ -71,6 +64,12 @@ public class GetTask extends AsyncTask<String, Void, String>{
         //super.onPostExecute(result);
     }
 
+    /**
+     * fetch the HTTP response and parse it into readable JSON String
+     * @param conn
+     * @return
+     * @throws IOException
+     */
     private String fetchContent(HttpURLConnection conn) throws IOException {
         StringBuilder out = new StringBuilder();
         BufferedReader reader = null;

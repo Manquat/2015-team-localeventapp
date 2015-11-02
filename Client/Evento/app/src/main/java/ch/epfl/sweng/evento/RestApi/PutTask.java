@@ -18,28 +18,19 @@ import ch.epfl.sweng.evento.NetworkProvider;
  * An AsyncTask implementation for performing PUTs.
  */
 public class PutTask extends AsyncTask<String, String, String> {
+    private static final int HTTP_SUCCESS_START = 200;
+    private static final int HTTP_SUCCESS_END = 299;
     private String mRestUrl;
     private RestTaskCallback mCallback;
     private String mRequestBody;
-    private NetworkProvider networkProvider;
-    private static final int HTTP_SUCCESS_START = 200;
-    private static final int HTTP_SUCCESS_END = 299;
+    private NetworkProvider mNetworkProvider;
 
-    /**
-     * Creates a new instance of PostTask with the specified URL, callback, and
-     * request body.
-     *
-     * @param restUrl The URL for the REST API.
-     * @param callback The callback to be invoked when the HTTP request
-     *            completes.
-     * @param requestBody The body of the POST request.
-     *
-     */
+
     public PutTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback){
         this.mRestUrl = restUrl;
         this.mRequestBody = requestBody;
         this.mCallback = callback;
-        this.networkProvider = networkProvider;
+        this.mNetworkProvider = networkProvider;
     }
 
     @Override
@@ -51,7 +42,7 @@ public class PutTask extends AsyncTask<String, String, String> {
             String postData = urlParameters;
             int postDataLength = postData.length();
             URL url = new URL(mRestUrl);
-            HttpURLConnection conn = networkProvider.getConnection(url);
+            HttpURLConnection conn = mNetworkProvider.getConnection(url);
             // set connexion
             conn.setDoOutput(true);
             conn.setInstanceFollowRedirects(false);
@@ -64,7 +55,7 @@ public class PutTask extends AsyncTask<String, String, String> {
             try (OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream())) {
                 wr.write(postData);
             }
-            // get back response code and put it in response string
+            // get back response code and put it in response string (in case of success)
             int responseCode = 0;
             responseCode = conn.getResponseCode();
             if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END) {
@@ -77,7 +68,6 @@ public class PutTask extends AsyncTask<String, String, String> {
         } catch (RestException e) {
             Log.e("RestException", "Exception thrown in PutTask", e);
         }
-
 
         return response;
     }

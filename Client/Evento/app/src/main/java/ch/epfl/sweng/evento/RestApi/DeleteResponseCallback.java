@@ -14,10 +14,11 @@ public abstract class DeleteResponseCallback {
      * This method is guaranteed to execute on the UI thread.
      *
      *
+     * @param response
      */
 
 
-    public abstract void onDeleteSuccess();
+    public abstract void onDeleteSuccess(String response);
 
     /*
      * Additional methods like onPreGet() or onFailure() can be added with default implementations.
