@@ -82,24 +82,27 @@ public class RestApi {
         new GetTask(restUrl, networkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String response) {
-                JSONObject JsonResponse = null;
-                Event event;
-                try {
-                    JsonResponse = new JSONObject(response);
-                    event = Parser.parseFromJSON(JsonResponse);
-                    eventArrayList.add(event);
-                    onWork -= 1;
-                } catch (JSONException e) {
-                    onWork -= 1;
+                if (response != null) {
+                    JSONObject JsonResponse = null;
+                    Event event;
                     try {
-                        throw new RestException(e);
-                    } catch (RestException e1) {
-                        e1.printStackTrace();
+                        JsonResponse = new JSONObject(response);
+                        event = Parser.parseFromJSON(JsonResponse);
+                        eventArrayList.add(event);
+                        onWork -= 1;
+
+                    } catch (JSONException e) {
+                        onWork -= 1;
+                        try {
+                            throw new RestException(e);
+                        } catch (RestException e1) {
+                            e1.printStackTrace();
+                        }
+                        // TODO: Manage the exception
+                        e.printStackTrace();
                     }
-                    // TODO: Manage the exception
-                    e.printStackTrace();
+                    callback.onDataReceived();
                 }
-                callback.onDataReceived();
             }
         }).execute();
     }
