@@ -42,6 +42,7 @@ import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventsClusterRenderer;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.tabsFragment.Maps.EventClusterManager;
 
 
 /**
@@ -71,7 +72,7 @@ public class MapsFragment extends SupportMapFragment implements
     private List<Event> mEvents;
     private Collection<Event> mEventsClick;        // the events actually click
     private RestApi mRestAPI;
-    private ClusterManager<Event> mClusterManager;  // Manage the clustering of the marker
+    private EventClusterManager mClusterManager;  // Manage the clustering of the marker
 
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
@@ -146,7 +147,7 @@ public class MapsFragment extends SupportMapFragment implements
         mMap.setInfoWindowAdapter(this);
 
         // Initialize the manager with the context and the map.
-        mClusterManager = new ClusterManager<Event>(mActivity.getApplicationContext(), mMap);
+        mClusterManager = new EventClusterManager(mActivity.getApplicationContext(), mMap);
         mClusterManager.setRenderer(new EventsClusterRenderer(getContext(), mMap, mClusterManager, null));
 
         // Point the map's listeners at the listeners implemented by the cluster manager.
