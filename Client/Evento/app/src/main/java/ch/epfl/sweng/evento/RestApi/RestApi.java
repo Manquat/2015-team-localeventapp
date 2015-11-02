@@ -80,9 +80,9 @@ public class RestApi{
      * @param callback The callback to execute when submission status is available.
      */
     public void postEvent(Event event, final PostCallback callback){
-        String restUrl = UrlMaker.put(urlServer);
+        String restUrl = UrlMaker.post(urlServer);
         String requestBody = Serializer.event(event);
-        new PutTask(restUrl, networkProvider, requestBody, new RestTaskCallback(){
+        new PostTask(restUrl, networkProvider, requestBody, new RestTaskCallback(){
             public void onTaskComplete(String response){
                 callback.onPostSuccess();
             }
@@ -97,9 +97,9 @@ public class RestApi{
      *
      */
     public void updateEvent(Event event, final PutCallback callback){
-        String restUrl = UrlMaker.post(urlServer);
+        String restUrl = UrlMaker.put(urlServer, event.getID());
         String requestBody = Serializer.event(event);
-        new PostTask(restUrl, networkProvider, requestBody, new RestTaskCallback(){
+        new PutTask(restUrl, networkProvider, requestBody, new RestTaskCallback(){
             public void onTaskComplete(String response){
                 callback.onPostSuccess();
             }
@@ -111,9 +111,8 @@ public class RestApi{
      * @param callback The callback to execute when submission status is available.
      */
     public void deleteEvent(Event event, final DeleteResponseCallback callback){
-        String restUrl = UrlMaker.delete(urlServer);
-        String requestBody = Serializer.event(event);
-        new DeleteTask(restUrl, networkProvider, requestBody, new RestTaskCallback(){
+        String restUrl = UrlMaker.delete(urlServer, event.getID());
+        new DeleteTask(restUrl, networkProvider, new RestTaskCallback(){
             public void onTaskComplete(String response){
                 callback.onDeleteSuccess();
             }

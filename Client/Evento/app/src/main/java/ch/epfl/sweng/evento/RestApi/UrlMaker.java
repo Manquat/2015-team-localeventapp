@@ -17,12 +17,14 @@ public final class UrlMaker {
         return url;
     }
 
-    public static final String put(String urlServer) {
-        return urlServer;
+    public static final String put(String urlServer, int id) {
+        String url = urlServer + "events/" + Integer.toString(id);
+        return url;
     }
 
-    public static final String delete(String urlServer) {
-        return urlServer;
+    public static final String delete(String urlServer, int id) {
+        String url = urlServer + "events/" + Integer.toString(id);
+        return url;
     }
 
 }

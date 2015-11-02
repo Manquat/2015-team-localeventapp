@@ -55,50 +55,42 @@ public class PostTask extends AsyncTask<String, String, String> {
     protected String doInBackground(String... arg0) {
         String response = null;
         try {
-//            String bodyToSend = URLEncoder.encode(requestBody, charset);
-//            URL url = new URL(restUrl);
-//            HttpURLConnection conn = networkProvider.getConnection(url);
-//            conn.setRequestMethod("POST");
-//            //conn.setDoInput(true);
-//            conn.setDoOutput(true);
-//            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-
-            //String bodyToSend = URLEncoder.encode(requestBody, charset);
+            // prepare URL and parameter
             String urlParameters = requestBody;
-//            byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
             String postData = urlParameters;
             int postDataLength = postData.length();
             URL url = new URL(restUrl);
             HttpURLConnection conn = networkProvider.getConnection(url);
+            // set connexion
             conn.setDoOutput(true);
             conn.setInstanceFollowRedirects(false);
             conn.setRequestMethod("POST");
-//            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("charset", "utf-8");
             conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));
             conn.setUseCaches(false);
-//            try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
-//                wr.write(postData);
-//            }
+            // send data
             try (OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream())) {
                 wr.write(postData);
             }
+            // get back response code and put it in response string
             int responseCode = 0;
             responseCode = conn.getResponseCode();
             if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END) {
                 throw new RestException("Invalid HTTP response code");
+            } else {
+                response = Integer.toString(responseCode);
             }
 
 
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e("RestException", "Exception thrown in PostTask", e);
         } catch (ProtocolException e) {
-            e.printStackTrace();
+            Log.e("RestException", "Exception thrown in PostTask", e);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("RestException", "Exception thrown in PostTask", e);
         } catch (RestException e) {
-            e.printStackTrace();
+            Log.e("RestException", "Exception thrown in PostTask", e);
         }
         return response;
     }

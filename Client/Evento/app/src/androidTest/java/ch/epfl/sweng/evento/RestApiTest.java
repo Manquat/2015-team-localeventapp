@@ -18,14 +18,19 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventSet;
+import ch.epfl.sweng.evento.RestApi.DeleteResponseCallback;
 import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.Parser;
+import ch.epfl.sweng.evento.RestApi.PostCallback;
 import ch.epfl.sweng.evento.RestApi.PostTask;
+import ch.epfl.sweng.evento.RestApi.PutCallback;
+import ch.epfl.sweng.evento.RestApi.PutTask;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.RestApi.RestException;
 import ch.epfl.sweng.evento.RestApi.RestTaskCallback;
@@ -226,6 +231,15 @@ public class RestApiTest {
             + "  \"creator\": \"Guillaume Meyrat\"\n"
             + "}\n";
 
+    private static final  Event e = new Event(10, "Ping-Pong at Sat 2", "Beer, ping-pong... let's beerpong",
+            46.519428, 6.580847, "Satellite", "Guillaume Meyrat", new HashSet<String>());
+    private static final String EVENT_TO_CREATE_seri = Serializer.event(e);
+
+
+    @Test
+    public void testSerializer2() {
+        assertEquals("event are correctly serialized", EVENT_TO_CREATE, EVENT_TO_CREATE_seri);
+    }
     @Test
     public void testPostTaskServer() {
         String url = urlServer + "events/";
@@ -245,6 +259,89 @@ public class RestApiTest {
          * TODO: a way to verify automatically that the event is well created.
          * For the moment a only go to server through browser and check it
          */
+    }
+
+    @Test
+    public void testPostEvent(){
+        RestApi restApi = new RestApi(networkProvider, urlServer);
+
+        restApi.postEvent(e, new PostCallback() {
+            @Override
+            public void onPostSuccess() {
+                // nothing
+            }
+        });
+    }
+
+
+    @Test
+    public void testPutTask() {
+        String EVENT_TO_PUT = "{\n"
+                + "  \"Event_name\": \"Ping-Pong at Sat 2\",\n"
+                + "  \"description\": \n"
+                + "    \"This event was send using PUT method!\" ,\n"
+                + "  \"latitude\": 46.519428,\n"
+                + "  \"longitude\": 6.580847,\n"
+                + "  \"address\": \"Satellite\", \n "
+                + "  \"creator\": \"Guillaume Meyrat\"\n"
+                + "}\n";;
+
+        String url = urlServer + "events/11";
+        final ArrayList<Event> eventArrayList = new ArrayList<>();
+
+        // put event id = 11;
+        PutTask putTask = new PutTask(url, networkProvider, EVENT_TO_PUT, new RestTaskCallback() {
+            @Override
+            public void onTaskComplete(String result) {
+            // nothing
+            }
+        });
+
+        try {
+            putTask.execute().get();
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        } catch (ExecutionException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testUpdateEvent() {
+        Event event = new Event(14, "this is a test of UpdateEvent", "test1", 0, 0,"address", "createur", new HashSet<String>());
+        RestApi restApi = new RestApi(networkProvider, urlServer);
+        restApi.updateEvent(event, new PutCallback() {
+            @Override
+            public void onPostSuccess() {
+
+            }
+        });
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void testDeleteEvent(){
+        Event event = new Event(14, "this is a test of UpdateEvent", "test1", 0, 0,"address", "createur", new HashSet<String>());
+        RestApi restApi = new RestApi(networkProvider, urlServer);
+        restApi.deleteEvent(event, new DeleteResponseCallback() {
+            @Override
+            public void onDeleteSuccess() {
+
+            }
+        });
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
+
     }
 
 
