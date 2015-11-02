@@ -22,25 +22,25 @@ import ch.epfl.sweng.evento.Events.EventSet;
 import ch.epfl.sweng.evento.NetworkProvider;
 
 /**
- * Entry point into the API. Joachim
+ * RestAPI
+ * This allow main thread to send four basic action to Django server: GET, POST, PUT, DELETE
+ *
+ * Each of the method ask for a Callback allowing the main thread to make an action when the task ends
+ * The method return a RESULT string that can be an event (in case of Get) or an HTTPcode (others)
+ * In case of FAILURE, response is null and main thread has to deal with it in his callback.
  *
  */
 public class RestApi{
     private NetworkProvider networkProvider;
     private String urlServer;
-    private int noEvent = 10;
     // TODO: find a better way
+    private int noEvent = 10;
+
 
     public RestApi(NetworkProvider networkProvider, String urlServer){
         this.networkProvider = networkProvider;
         this. urlServer = urlServer;
     }
-
-//    public static RestApi getInstance() {
-//
-//    }
-
-
 
     /**
      * Default getEvent method, without callback.
