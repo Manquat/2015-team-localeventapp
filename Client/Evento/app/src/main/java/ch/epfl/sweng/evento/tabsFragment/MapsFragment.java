@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +32,7 @@ import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -39,7 +42,6 @@ import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventsClusterRenderer;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.RestApi;
-import ch.epfl.sweng.evento.RestApi.RestException;
 
 
 /**
@@ -67,7 +69,7 @@ public class MapsFragment extends SupportMapFragment implements
     private static final Event mockEvent = new Event(1, "Event1", "This is a first event", 1.1, 1.1,
             "1 long street", "alfredo", new HashSet<String>(), new Event.Date(), new Event.Date());   // a mock event that would be replicated all over the map
     private List<Event> mEvents;
-    private Event mEventClick;        // the event actually click
+    private Collection<Event> mEventsClick;        // the events actually click
     private RestApi mRestAPI;
     private ClusterManager<Event> mClusterManager;  // Manage the clustering of the marker
 
@@ -288,13 +290,29 @@ public class MapsFragment extends SupportMapFragment implements
         // return null to let's the default view display or a view that will be display inside the
         // default view
 
-        View view = getLayoutInflater(null).inflate(R.layout.infomarker_event, mContainer, false);
+        View view;
 
-        TextView tvTitle = (TextView) view.findViewById(R.id.info_title);
-        tvTitle.setText(mEventClick.getTitle());
+        switch (mEventsClick.size()) {
+            case 1:
+                view = getLayoutInflater(null).inflate(R.layout.infomarker_event, mContainer, false);
+                Event event = mEventsClick.iterator().next();
+                TextView tvTitle = (TextView) view.findViewById(R.id.info_title);
+                tvTitle.setText(event.getTitle());
 
-        TextView tvDescription = (TextView) view.findViewById(R.id.info_description);
-        tvDescription.setText(mEventClick.getDescription());
+                TextView tvDescription = (TextView) view.findViewById(R.id.info_description);
+                tvDescription.setText(event.getDescription());
+                break;
+            default:
+                view = getLayoutInflater(null).inflate(R.layout.infomarker_cluster, mContainer, false);
+
+                LinearLayout layout = (LinearLayout) view.findViewById(R.id.list_event);
+                for (Event iEvent : mEventsClick) {
+                    TextView textView = new TextView(mContext);
+                    textView.setText(iEvent.getTitle());
+                    layout.addView(textView);
+                }
+        }
+
 
         return view;
     }
@@ -302,9 +320,19 @@ public class MapsFragment extends SupportMapFragment implements
     @Override
     public boolean onClusterClick(Cluster<Event> cluster) {
         // Show a toast with some info when the cluster is clicked.
-        String firstName = cluster.getItems().iterator().next().getTitle();
+        Event event = cluster.getItems().iterator().next();
+        String firstName = event.getTitle();
         Toast.makeText(getContext(), cluster.getSize() + " (including " + firstName + ")", Toast.LENGTH_SHORT).show();
-        return true;
+
+        if (mEventsClick != null) {
+            // clear the actual events click
+            mEventsClick.clear();
+        }
+
+        // store the actual events in the member
+        mEventsClick = cluster.getItems();
+
+        return false;
     }
 
     @Override
@@ -314,7 +342,12 @@ public class MapsFragment extends SupportMapFragment implements
 
     @Override
     public boolean onClusterItemClick(Event event) {
-        mEventClick = event;
+        if (mEventsClick == null) {
+            mEventsClick = new ArrayList<Event>();
+        }
+
+        mEventsClick.clear();
+        mEventsClick.add(event);
         // TODO Does nothing, but you could go into the event's page, for example.
         return false;
     }
