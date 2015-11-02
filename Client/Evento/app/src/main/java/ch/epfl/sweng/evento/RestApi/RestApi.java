@@ -91,11 +91,6 @@ public class RestApi{
                     onWork -= 1;
                 } catch (JSONException e) {
                     onWork -= 1;
-                    try {
-                        throw new RestException(e);
-                    } catch (RestException e1) {
-                        e1.printStackTrace();
-                    }
                     // TODO: Manage the exception
                     e.printStackTrace();
                 }

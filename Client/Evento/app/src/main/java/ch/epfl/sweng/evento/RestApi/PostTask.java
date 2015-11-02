@@ -88,11 +88,7 @@ public class PostTask extends AsyncTask<String, String, String> {
             }
 
         } catch (IOException e) {
-            try {
-                throw new RestException(e);
-            } catch (RestException e1) {
-                e1.printStackTrace();
-            }
+            e.printStackTrace();
         } catch (RestException e) {
             e.printStackTrace();
         }

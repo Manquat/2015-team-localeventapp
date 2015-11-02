@@ -55,8 +55,6 @@ public class Parser {
                     new HashSet<String>());
         } catch (IllegalArgumentException e) {
             throw new JSONException("Invalid question structure");
-        } catch (NullPointerException e) {
-            throw new JSONException("Invalid question structure");
         }
     }
 }
