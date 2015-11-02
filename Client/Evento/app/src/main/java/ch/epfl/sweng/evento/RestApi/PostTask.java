@@ -8,11 +8,13 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -53,51 +55,55 @@ public class PostTask extends AsyncTask<String, String, String> {
     protected String doInBackground(String... arg0) {
         String response = null;
         try {
-            String bodyToSend = URLEncoder.encode("Event_name=\"coucou\"", charset);
+//            String bodyToSend = URLEncoder.encode(requestBody, charset);
+//            URL url = new URL(restUrl);
+//            HttpURLConnection conn = networkProvider.getConnection(url);
+//            conn.setRequestMethod("POST");
+//            //conn.setDoInput(true);
+//            conn.setDoOutput(true);
+//            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+
+            //String bodyToSend = URLEncoder.encode(requestBody, charset);
+            String urlParameters = requestBody;
+//            byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+            String postData = urlParameters;
+            int postDataLength = postData.length();
             URL url = new URL(restUrl);
             HttpURLConnection conn = networkProvider.getConnection(url);
-            conn.setRequestMethod("POST");
-            //conn.setDoInput(true);
             conn.setDoOutput(true);
-            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-
-//            OutputStream output = conn.getOutputStream();
-//            output.write(bodyToSend.getBytes(charset));
-//
-////            BufferedWriter writer = new BufferedWriter(
-//                    new OutputStreamWriter(output, "UTF-8"));
-//
-//            writer.write(bodyToSend);
-//            writer.flush();
-//            writer.close();
-
-            BufferedWriter out =
-                    new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-            out.write(bodyToSend);
-            out.close();
-
-
-//            output.close();
-
-
-            conn.connect();
-
+            conn.setInstanceFollowRedirects(false);
+            conn.setRequestMethod("POST");
+//            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("charset", "utf-8");
+            conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+            conn.setUseCaches(false);
+//            try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
+//                wr.write(postData);
+//            }
+            try (OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream())) {
+                wr.write(postData);
+            }
             int responseCode = 0;
             responseCode = conn.getResponseCode();
             if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END) {
                 throw new RestException("Invalid HTTP response code");
             }
 
-        } catch (IOException e) {
-            Log.e("RestException", "Exception thrown in PostTask", e);
-        } catch (RestException e) {
-            Log.e("RestException", "Exception thrown in PostTask", e);
-        }
 
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (RestException e) {
+            e.printStackTrace();
+        }
         return response;
     }
 
-    @Override
+        @Override
     protected void onPostExecute(String result) {
         callback.onTaskComplete(result);
         super.onPostExecute(result);

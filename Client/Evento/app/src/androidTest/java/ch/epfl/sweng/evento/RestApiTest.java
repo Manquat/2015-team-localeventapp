@@ -207,10 +207,20 @@ public class RestApiTest {
 
     }
 
+    private static final String EVENT_TO_CREATE ="{\n"
+            + "  \"Event_name\": \"Ping-Pong at Sat 2\",\n"
+            + "  \"description\": \n"
+            + "    \"Beer, ping-pong... let's beerpong\" ,\n"
+            + "  \"latitude\": 46.519428,\n"
+            + "  \"longitude\": 6.580847,\n"
+            + "  \"address\": \"Satellite\", \n "
+            + "  \"creator\": \"Guillaume Meyrat\"\n"
+            + "}\n";
+
     @Test
     public void testPostTaskServer() {
         String url = urlServer + "events/";
-        PostTask postTask = new PostTask(url, networkProvider, PROPER_JSON_STRING, new RestTaskCallback(){
+        PostTask postTask = new PostTask(url, networkProvider, EVENT_TO_CREATE, new RestTaskCallback(){
             public void onTaskComplete(String response){
             }});
 
@@ -221,6 +231,11 @@ public class RestApiTest {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        
+        /**
+         * TODO: a way to verify automatically that the event is well created.
+         * For the moment a only go to server through browser and check it
+         */
     }
 
 
