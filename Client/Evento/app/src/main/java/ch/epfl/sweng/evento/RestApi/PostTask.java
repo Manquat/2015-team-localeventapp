@@ -5,6 +5,7 @@ package ch.epfl.sweng.evento.RestApi;
  */
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -88,9 +89,9 @@ public class PostTask extends AsyncTask<String, String, String> {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("RestException", "Exception thrown in PostTask", e);
         } catch (RestException e) {
-            e.printStackTrace();
+            Log.e("RestException", "Exception thrown in PostTask", e);
         }
 
         return response;

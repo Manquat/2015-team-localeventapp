@@ -2,7 +2,10 @@ package ch.epfl.sweng.evento;
 
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,13 +23,16 @@ import java.util.concurrent.ExecutionException;
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventSet;
+import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.Parser;
+import ch.epfl.sweng.evento.RestApi.PostTask;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.RestApi.RestException;
 import ch.epfl.sweng.evento.RestApi.RestTaskCallback;
 import ch.epfl.sweng.evento.RestApi.GetTask;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
 /**
  * Created by joachimmuth on 21.10.15.
@@ -35,13 +41,15 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class RestApiLocalTest {
+public class RestApiTest {
     private GetTask getTask;
     private static final String JSON_CONTENT_TYPE = "application/json; charset=utf-8";
     private static final int ASCII_SPACE = 0x20;
     private HttpURLConnection connection;
     private NetworkProvider networkProviderMockito;
     private static final String wrongUrl = "http://exemple.com";
+    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
+    private static final String urlServer = "http://10.0.2.2:8000/";
 
     private static final Parser parser = new Parser();
     private static final String PROPER_JSON_STRING = "{\n"
@@ -61,6 +69,7 @@ public class RestApiLocalTest {
             "Terrain de football de Dorigny",
             "Micheal Jackson",
             new HashSet<String>());
+
 
 
     @Before
@@ -89,11 +98,30 @@ public class RestApiLocalTest {
     }
 
     /**
+     *
+     * @throws JSONException
+     */
+    @Test
+    public void testParsingJsonToEvent() throws JSONException {
+        JSONObject jsonObject = new JSONObject(PROPER_JSON_STRING);
+        Event eventFromJson = parser.parseFromJSON(jsonObject);
+
+        assertEquals("id correctly parsed", PROPER_EVENT_RESULT.getID(), eventFromJson.getID());
+        assertEquals("title correctly parsed", PROPER_EVENT_RESULT.getTitle(), eventFromJson.getTitle());
+        assertEquals("description correctly parsed", PROPER_EVENT_RESULT.getDescription(), eventFromJson.getDescription());
+        assertEquals("xLoc correctly parsed", PROPER_EVENT_RESULT.getLatitude(), eventFromJson.getLatitude());
+        assertEquals("yLoc correctly parsed", PROPER_EVENT_RESULT.getLongitude(), eventFromJson.getLongitude());
+        assertEquals("address correctly parsed", PROPER_EVENT_RESULT.getAddress(), eventFromJson.getAddress());
+        assertEquals("creator correctly parsed", PROPER_EVENT_RESULT.getCreator(), eventFromJson.getCreator());
+
+    }
+
+    /**
      * Test if GetTask works with a simple mockito string response
      * @throws IOException
      */
     @Test
-    public void testGetTask() throws IOException {
+    public void testGetTaskLocal() throws IOException {
         final String testString = "test string";
         configureResponse(HttpURLConnection.HTTP_OK, testString, JSON_CONTENT_TYPE);
 
@@ -113,24 +141,86 @@ public class RestApiLocalTest {
     }
 
     @Test
-    public void testGetEvent() throws IOException {
+    public void testGetEventLocal() throws IOException {
         configureResponse(HttpURLConnection.HTTP_OK, PROPER_JSON_STRING, JSON_CONTENT_TYPE);
         RestApi restApi = new RestApi(networkProviderMockito, wrongUrl);
-        EventSet eventSet = new EventSet();
-
-        restApi.getEvent(eventSet);
+        final ArrayList<Event> eventArrayList = new ArrayList<Event>();
+        restApi.getEvent(new GetResponseCallback() {
+            @Override
+            public void onDataReceived(Event event) {
+                eventArrayList.add(event);
+            }
+        });
 
         try {
-            restApi.waitUntilFinish();
-        } catch (RestException e) {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        assertEquals("We get one event after requesting once", eventSet.size(), 1);
-        assertEquals("id", eventSet.get(17005).getID(), PROPER_EVENT_RESULT.getID());
-        assertEquals("title", eventSet.get(17005).getTitle(), PROPER_EVENT_RESULT.getTitle());
-        assertEquals("description", eventSet.get(17005).getDescription(), PROPER_EVENT_RESULT.getDescription());
+        assertNotNull("Event is not null", eventArrayList);
+        assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
+        assertEquals("id", eventArrayList.get(0).getID(), PROPER_EVENT_RESULT.getID());
+        assertEquals("title", eventArrayList.get(0).getTitle(), PROPER_EVENT_RESULT.getTitle());
+        assertEquals("description", eventArrayList.get(0).getDescription(), PROPER_EVENT_RESULT.getDescription());
 
+    }
+
+    @Test
+    public void testGetEventServer() {
+        RestApi restApi = new RestApi(networkProvider, urlServer);
+        final ArrayList<Event> eventArrayList = new ArrayList<>();
+        assertEquals("Before requesting, eventArrayList is empty", eventArrayList.size(), 0);
+
+        restApi.getEvent(new GetResponseCallback() {
+            @Override
+            public void onDataReceived(Event event) {
+                Log.d("TestGetEvent", event.getTitle());
+                Log.d("TestGetEvent", Integer.toString((event.getID())));
+                eventArrayList.add(event);
+            }
+        });
+
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
+
+        restApi.getEvent(new GetResponseCallback() {
+            @Override
+            public void onDataReceived(Event event) {
+                eventArrayList.add(event);
+            }
+        });
+
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals("We get two event after requesting twice", eventArrayList.size(), 2);
+
+
+    }
+
+    @Test
+    public void testPostTaskServer() {
+        String url = urlServer + "events/";
+        PostTask postTask = new PostTask(url, networkProvider, PROPER_JSON_STRING, new RestTaskCallback(){
+            public void onTaskComplete(String response){
+            }});
+
+        try {
+            postTask.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
 

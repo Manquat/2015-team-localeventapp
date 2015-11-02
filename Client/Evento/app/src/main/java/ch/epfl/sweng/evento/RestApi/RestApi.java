@@ -6,6 +6,7 @@ package ch.epfl.sweng.evento.RestApi;
 
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,13 +24,10 @@ import ch.epfl.sweng.evento.NetworkProvider;
 /**
  * Entry point into the API. Joachim
  *
- * ONLY GETTASK IS WORKING =D
- * TODO: know the server protocol to provide correct String to GetTask and PostTask
  */
 public class RestApi{
     private NetworkProvider networkProvider;
     private String urlServer;
-    private int onWork = 0;  // ugly trick to wait for REST terminates, while testing
     private int noEvent = 10;
     // TODO: find a better way
 
@@ -42,16 +40,6 @@ public class RestApi{
 //
 //    }
 
-    public void waitUntilFinish() throws RestException {
-        while (onWork > 0){
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                throw new RestException(e);
-            }
-
-        }
-    }
 
 
     /**
@@ -60,41 +48,27 @@ public class RestApi{
      * preferences of the user
      *
      * @param eventSet the ArrayList where you want to push the loaded event.
-     */
-    public void getEvent(final EventSet eventSet){
-        getEvent(eventSet, new GetResponseCallback() {
-            @Override
-            void onDataReceived() {
-                // do nothing
-            }
-        });
-    }
+    */
 
     /**
      * getEvent method, given an array of events and a specified callback
-     * @param eventSet
      * @param callback
      */
-    public void getEvent(final EventSet eventSet, final GetResponseCallback callback){
-        onWork += 1;
+    public void getEvent(final GetResponseCallback callback){
         noEvent += 1;
         String restUrl = UrlMaker.get(urlServer, noEvent);
         new GetTask(restUrl, networkProvider, new RestTaskCallback (){
             @Override
             public void onTaskComplete(String response){
                 JSONObject JsonResponse = null;
-                Event event;
+                Event event = null;
                 try {
                     JsonResponse = new JSONObject(response);
                     event = Parser.parseFromJSON(JsonResponse);
-                    eventSet.addEvent(event);
-                    onWork -= 1;
                 } catch (JSONException e) {
-                    onWork -= 1;
-                    // TODO: Manage the exception
-                    e.printStackTrace();
+                    Log.e("RestException", "Exception thrown in getEvent", e);
                 }
-                callback.onDataReceived();
+                callback.onDataReceived(event);
             }
         }).execute();
     }
@@ -106,12 +80,10 @@ public class RestApi{
      * @param callback The callback to execute when submission status is available.
      */
     public void postEvent(Event event, final PostCallback callback){
-        onWork += 1;
         String restUrl = UrlMaker.put(urlServer);
         String requestBody = Serializer.event(event);
         new PutTask(restUrl, networkProvider, requestBody, new RestTaskCallback(){
             public void onTaskComplete(String response){
-                onWork -= 1;
                 callback.onPostSuccess();
             }
         }).execute();

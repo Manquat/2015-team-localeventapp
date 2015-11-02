@@ -56,10 +56,10 @@ public class GetTask extends AsyncTask<String, Void, String>{
 
             response = fetchContent(conn);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("RestException", "Exception thrown in GetTask", e);
             // TODO: make something with that exception !
         } catch (RestException e) {
-            e.printStackTrace();
+            Log.e("RestException", "Exception thrown in GetTask", e);
         }
 
         return response;
@@ -68,7 +68,7 @@ public class GetTask extends AsyncTask<String, Void, String>{
     @Override
     protected void onPostExecute(String result) {
         mCallback.onTaskComplete(result);
-        super.onPostExecute(result);
+        //super.onPostExecute(result);
     }
 
     private String fetchContent(HttpURLConnection conn) throws IOException {
@@ -84,8 +84,6 @@ public class GetTask extends AsyncTask<String, Void, String>{
             }
 
             String result = out.toString();
-            Log.d("HTTPFetchContent", "Fetched string of length "
-                    + result.length());
             return result;
         } finally {
             if (reader != null) {

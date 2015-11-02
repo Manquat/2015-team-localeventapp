@@ -91,7 +91,11 @@ public class EventSet {
     }
 
     public int size() {
-        return mEvents.size();
+        if(mEvents == null) {
+            return 0;
+        } else {
+            return mEvents.size();
+        }
     }
 
 }
