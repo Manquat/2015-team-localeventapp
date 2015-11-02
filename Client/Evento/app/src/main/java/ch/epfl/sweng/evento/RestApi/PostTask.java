@@ -5,16 +5,14 @@ package ch.epfl.sweng.evento.RestApi;
  */
 
 import android.os.AsyncTask;
+import android.util.Log;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 import ch.epfl.sweng.evento.NetworkProvider;
 
@@ -22,79 +20,67 @@ import ch.epfl.sweng.evento.NetworkProvider;
  * An AsyncTask implementation for performing POSTs.
  */
 public class PostTask extends AsyncTask<String, String, String> {
-    private static final String charset = "UTF-8";
     private static final int HTTP_SUCCESS_START = 200;
     private static final int HTTP_SUCCESS_END = 299;
-    private final NetworkProvider networkProvider;
-    private String restUrl;
-    private RestTaskCallback callback;
-    private String requestBody;
+    private final NetworkProvider mNetworkProvider;
+    private String mRestUrl;
+    private RestTaskCallback mCallback;
+    private String mRequestBody;
 
-    /**
-     * Creates a new instance of PostTask with the specified URL, callback, and
-     * request body.
-     *
-     * @param networkProvider
-     * @param restUrl         The URL for the REST API.
-     * @param requestBody     The body of the POST request.
-     * @param callback        The callback to be invoked when the HTTP request
-     *                        completes.
-     */
-    public PostTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback) {
-        this.networkProvider = networkProvider;
-        this.restUrl = restUrl;
-        this.requestBody = requestBody;
-        this.callback = callback;
+
+    public PostTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback){
+        this.mNetworkProvider = networkProvider;
+        this.mRestUrl = restUrl;
+        this.mRequestBody = requestBody;
+        this.mCallback = callback;
     }
 
     @Override
     protected String doInBackground(String... arg0) {
         String response = null;
         try {
-            String bodyToSend = URLEncoder.encode(requestBody, charset);
-            URL url = new URL(restUrl);
-            HttpURLConnection conn = networkProvider.getConnection(url);
-            conn.setRequestMethod("POST");
-            //conn.setDoInput(true);
+            // prepare URL and parameter
+            String urlParameters = mRequestBody;
+            String postData = urlParameters;
+            int postDataLength = postData.length();
+            URL url = new URL(mRestUrl);
+            HttpURLConnection conn = mNetworkProvider.getConnection(url);
+            // set connexion
             conn.setDoOutput(true);
-            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-
-            OutputStream output = conn.getOutputStream();
-            //output.write(bodyToSend.getBytes(charset));
-
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(output, "UTF-8"));
-
-            writer.write(bodyToSend);
-            writer.flush();
-            writer.close();
-            output.close();
-
-
-            conn.connect();
-
+            conn.setInstanceFollowRedirects(false);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("charset", "utf-8");
+            conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+            conn.setUseCaches(false);
+            // send data
+            try (OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream())) {
+                wr.write(postData);
+            }
+            // get back response code and put it in response string (in case of success)
             int responseCode = 0;
             responseCode = conn.getResponseCode();
             if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END) {
                 throw new RestException("Invalid HTTP response code");
+            } else {
+                response = Integer.toString(responseCode);
             }
 
+        } catch (MalformedURLException e) {
+            Log.e("RestException", "Exception thrown in PostTask", e);
+        } catch (ProtocolException e) {
+            Log.e("RestException", "Exception thrown in PostTask", e);
         } catch (IOException e) {
-            try {
-                throw new RestException(e);
-            } catch (RestException e1) {
-                e1.printStackTrace();
-            }
+            Log.e("RestException", "Exception thrown in PostTask", e);
         } catch (RestException e) {
-            e.printStackTrace();
+            Log.e("RestException", "Exception thrown in PostTask", e);
         }
-
         return response;
     }
 
-    @Override
+        @Override
     protected void onPostExecute(String result) {
-        callback.onTaskComplete(result);
+        mCallback.onTaskComplete(result);
         super.onPostExecute(result);
     }
 }

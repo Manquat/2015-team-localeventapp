@@ -125,6 +125,14 @@ public class EventSet {
         return newEventSet;
     }
 
+    public int size() {
+        if(mEvents == null) {
+            return 0;
+        } else {
+            return mEvents.size();
+        }
+    }
+
     /**
      * This method returns an error Event.
      * This is just temporary before implementing good exception handling

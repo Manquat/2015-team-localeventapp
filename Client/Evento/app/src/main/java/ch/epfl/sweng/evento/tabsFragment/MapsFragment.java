@@ -37,6 +37,7 @@ import ch.epfl.sweng.evento.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventsClusterRenderer;
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.tabsFragment.Maps.EventClusterManager;
 
@@ -96,8 +97,15 @@ public class MapsFragment extends SupportMapFragment implements
 
         mEvents = new ArrayList<Event>();
         mRestAPI = new RestApi(new DefaultNetworkProvider(), getString(R.string.url_server));
-        for (int i = 0; i < NUMBER_OF_EVENT; i++) {
-            mRestAPI.getEvent((ArrayList<Event>) mEvents); //TODO remove the cast once the change in restAPI is made
+        for (int i=0; i<NUMBER_OF_EVENT; i++)
+        {
+            mRestAPI.getEvent(new GetResponseCallback() {
+                @Override
+                public void onDataReceived(Event event){
+                    mEvents.add(event);
+
+                }
+            }); //TODO remove the cast once the change in restAPI is made
         }
 
         mContext = view.getContext();

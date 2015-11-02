@@ -12,7 +12,8 @@ public abstract class PostCallback {
     /**
      * Called when a POST success response is received. <br/>
      * This method is guaranteed to execute on the UI thread.
+     * @param response
      */
-    public abstract void onPostSuccess();
+    public abstract void onPostSuccess(String response);
 
 }
