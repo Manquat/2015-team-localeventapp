@@ -19,11 +19,12 @@ public class DeleteTask extends AsyncTask<String, Void, String> {
     private RestTaskCallback mCallback;
     private NetworkProvider mNetworkProvider;
 
-    public DeleteTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback){
+    public DeleteTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback) {
         this.mRestUrl = restUrl;
         this.mCallback = callback;
         this.mNetworkProvider = networkProvider;
     }
+
 
     @Override
     protected String doInBackground(String... arg0) {

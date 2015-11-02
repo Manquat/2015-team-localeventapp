@@ -3,6 +3,7 @@ package ch.epfl.sweng.evento.tabsFragment.MyView;
 /**
  * Created by thomas on 25/10/15.
  */
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -55,7 +56,6 @@ public class MyView extends ImageView {
     }
 
 
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
@@ -66,7 +66,7 @@ public class MyView extends ImageView {
                 mtouchOn = !mtouchOn;
                 invalidate();
 
-                if(mtoggledListener != null){
+                if (mtoggledListener != null) {
                     mtoggledListener.OnToggled(this, mtouchOn);
                 }
 
@@ -89,15 +89,15 @@ public class MyView extends ImageView {
         return true;
     }
 
-    public void setOnToggledListener(OnToggledListener listener){
+    public void setOnToggledListener(OnToggledListener listener) {
         mtoggledListener = listener;
     }
 
-    public int getIdX(){
+    public int getIdX() {
         return midX;
     }
 
-    public int getIdY(){
+    public int getIdY() {
         return midY;
     }
 

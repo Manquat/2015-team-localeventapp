@@ -5,19 +5,20 @@ package ch.epfl.sweng.evento.RestApi;
  */
 public class RestException extends Exception {
 
-    public RestException(){}
+    public RestException() {
+    }
 
-    public RestException(String message){
+    public RestException(String message) {
 
         super(message);
     }
 
-    public RestException(Throwable cause){
+    public RestException(Throwable cause) {
 
         super(cause);
     }
 
-    public RestException(String message, Throwable cause){
+    public RestException(String message, Throwable cause) {
 
         super(message, cause);
     }

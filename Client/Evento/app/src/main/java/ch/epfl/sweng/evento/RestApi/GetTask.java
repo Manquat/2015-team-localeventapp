@@ -3,6 +3,7 @@ package ch.epfl.sweng.evento.RestApi;
 /**
  * Created by cerschae on 15/10/2015.
  */
+
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -17,7 +18,7 @@ import ch.epfl.sweng.evento.NetworkProvider;
 /**
  * An AsyncTask implementation for performing GETs.
  */
-public class GetTask extends AsyncTask<String, Void, String>{
+public class GetTask extends AsyncTask<String, Void, String> {
     private static final int HTTP_SUCCESS_START = 200;
     private static final int HTTP_SUCCESS_END = 299;
     private String mRestUrl;
@@ -25,6 +26,7 @@ public class GetTask extends AsyncTask<String, Void, String>{
     private NetworkProvider mNetworkProvider;
 
     public GetTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback){
+
         this.mRestUrl = restUrl;
         this.mCallback = callback;
         this.mNetworkProvider = networkProvider;

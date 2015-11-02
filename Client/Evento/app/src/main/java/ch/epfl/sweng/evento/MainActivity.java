@@ -17,10 +17,12 @@
 
 package ch.epfl.sweng.evento;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
@@ -31,6 +33,7 @@ import java.util.List;
 
 import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
+
 /**
  * A simple launcher activity containing a summary sample description, sample log and a custom
  * {@link android.support.v4.app.Fragment} which can display a view.
@@ -38,17 +41,16 @@ import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
  * For devices with displays with a width of 720dp or greater, the sample log is always visible,
  * on other devices it's visibility is controlled by an item on the Action Bar.
  */
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
 
-    public static final String   TAG = "MainActivity";
-    private Toolbar              mToolbar;
-    private ViewPager            mPager;
-    private ViewPageAdapter      mAdaptater;
-    private SlidingTabLayout     mTabs;
+    public static final String TAG = "MainActivity";
+    private Toolbar mToolbar;
+    private ViewPager mPager;
+    private ViewPageAdapter mAdaptater;
+    private SlidingTabLayout mTabs;
     private List<CharSequence> mTitles = new ArrayList<CharSequence>(
             Arrays.asList("Maps", "Events", "Calendar"));
-    private static final int     MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
+    private static final int MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
 
 
     @Override
@@ -88,9 +90,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main,menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -103,11 +106,14 @@ public class MainActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if(id == R.id.action_createAnEvent){
+            Intent intent = new Intent(this, CreatingEventActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.action_logout){
+
         }
 
         return super.onOptionsItemSelected(item);

@@ -18,18 +18,15 @@ public class EventFilter {
     private EventFilter() {
     }
 
-    public static EventSet filter(EventSet eventSet, LatLng latLng, double distance)
-    {
-        return eventSet.filter(latLng,distance);
+    public static EventSet filter(EventSet eventSet, LatLng latLng, double distance) {
+        return eventSet.filter(latLng, distance);
     }
 
-    public static EventSet filter(EventSet eventSet, Set<String> tags)
-    {
+    public static EventSet filter(EventSet eventSet, Set<String> tags) {
         return eventSet.filter(tags);
     }
 
-    public static EventSet filter(EventSet eventSet, String tag)
-    {
+    public static EventSet filter(EventSet eventSet, String tag) {
         return eventSet.filter(tag);
     }
 

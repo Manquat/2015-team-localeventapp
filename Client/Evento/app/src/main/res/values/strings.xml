@@ -15,4 +15,7 @@
     <string name="Slogan">This slogan will make you buy our premium features</string>
     <string name="Username">Username</string>
     <string name="Password">Password</string>
+    <string name="title_activity_creating_event">CreatingEventActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

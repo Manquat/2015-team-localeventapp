@@ -17,7 +17,7 @@ import java.util.Set;
 import ch.epfl.sweng.evento.Events.Event;
 
 public class EventActivity extends AppCompatActivity implements
-    GestureDetector.OnGestureListener{
+        GestureDetector.OnGestureListener {
 
 
     private GestureDetectorCompat movementDetector;
@@ -40,21 +40,11 @@ public class EventActivity extends AppCompatActivity implements
             }
         });
 
-        movementDetector = new GestureDetectorCompat(this,this);
+        movementDetector = new GestureDetectorCompat(this, this);
 
-        Event.Date start = new Event.Date(2015,10,12,18,30);
-        Event.Date end = new Event.Date(2015,10,12,20,30);
 
-        /*Those are mock events before getting them from the database*/
-        events = new Event[5];
-        Set<String> tag = new HashSet<String>();
-        events[0] = new Event(1,"Event1","This is a first event",1.1,1.1,"1 long street","alfredo", tag, start,end);
-        events[1] = new Event(2,"Event2","This is a second event",2.2,2.2,"2 long street","bob", tag, start,end);
-        events[2] = new Event(3,"Event3","This is a third event",3.3,3.3,"3 long street","charlie", tag, start,end);
-        events[3] = new Event(4,"Event4","This is a fourth event",4.4,4.4,"4 long street","dinesh", tag, start,end);
-        events[4] = new Event(5,"Event5","This is a fifth event",5.5,5.5,"5 long street","ethan", tag, start,end);
-
-        currentEvent = events[2];
+        Event event = ((EventoApplication) getApplication()).getEventDatabase().getFirstEvent();
+        currentEvent = event;
 
         updateFields();
 
@@ -72,8 +62,8 @@ public class EventActivity extends AppCompatActivity implements
         titleView.setText(currentEvent.getTitle());
         creatorView.setText("Created by " + currentEvent.getCreator());
         startDateView.setText("From  " + currentEvent.getStartDate().toString());
-        endDateView.setText(  "to    " + currentEvent.getEndDate().toString());
-        addressView.setText(  "at    " + currentEvent.getAddress());
+        endDateView.setText("to    " + currentEvent.getEndDate().toString());
+        addressView.setText("at    " + currentEvent.getAddress());
         descriptionView.setText(currentEvent.getDescription());
     }
 
@@ -89,7 +79,8 @@ public class EventActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onShowPress(MotionEvent e) {}
+    public void onShowPress(MotionEvent e) {
+    }
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
@@ -109,27 +100,28 @@ public class EventActivity extends AppCompatActivity implements
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         float sensitivity = 50;
-        if((e1.getX() - e2.getX()) > sensitivity){
+        if ((e1.getX() - e2.getX()) > sensitivity) {
             onSwipeLeft();
-        }else if((e2.getX() - e1.getX()) > sensitivity) {
+        } else if ((e2.getX() - e1.getX()) > sensitivity) {
             onSwipeRight();
         }
         return false;
     }
 
     private void onSwipeLeft() {
-        if(currentEvent.getID()<events.length-1)
-        {
-            currentEvent = events[currentEvent.getID()];
-            updateFields();
-        }
+        currentEvent = ((EventoApplication) getApplication())
+                .getEventDatabase()
+                .getEvent(currentEvent.getID() - 1);
+
+        updateFields();
     }
 
     private void onSwipeRight() {
-        if(currentEvent.getID()>1)
-        {
-            currentEvent = events[currentEvent.getID()-2];
-            updateFields();
-        }
+
+        currentEvent = ((EventoApplication) getApplication())
+                .getEventDatabase()
+                .getEvent(currentEvent.getID() - 1);
+
+        updateFields();
     }
 }

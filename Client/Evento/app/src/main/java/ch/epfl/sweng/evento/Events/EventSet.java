@@ -4,6 +4,9 @@ import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,18 +22,49 @@ public class EventSet {
      * Default constructor
      */
     public EventSet() {
+        mEvents = new HashMap<>();
     }
 
     /**
      * @param ID the ID of the Event to be returned
-     * @return the Event corresponding to the ID. NULL if it's not in the Map
+     * @return the Event corresponding to the ID or the special ERROR Event if it's not in the Map
      */
     public Event get(int ID) {
-        return mEvents.get(ID);
+        if (mEvents.containsKey(ID)) {
+            return mEvents.get(ID);
+        } else {
+            return getErrorEvent();
+        }
     }
+
+    public Event getFirst() {
+        int i = 0;
+        while (!mEvents.containsKey(i)) {
+            i++;
+        }
+        return mEvents.get(i);
+
+    }
+    //not working yet
+    /*public Event getNext(int ID)
+    {
+        int i = ID+1;
+        Iterator<Integer> iterator = mEvents.keySet().iterator();
+
+        while(iterator.hasNext() && iterator.next() != i) {
+            i++;
+        }
+
+        if(i == mEvents.keySet().size()) {
+            return getErrorEvent();
+        }else{
+            return mEvents.get(i);
+        }
+    }*/
 
     /**
      * Adds an event to the Map
+     * Verifies the Event is not already in the Map
      *
      * @param event the Event to be added
      */
@@ -42,8 +76,8 @@ public class EventSet {
 
 
     /**
-     * Returns the set of Events that are at most at 'distance' meters from  the
-     * latitude and longitude stored in 'latLng'
+     * Returns a set of Events that are at most at 'distance'
+     * from the latitude and longitude stored in 'latLng'
      *
      * @param latLng   The reference latitude and longitude
      * @param distance The maximum distance in meters from this LatLng
@@ -72,6 +106,7 @@ public class EventSet {
      */
     public EventSet filter(Set<String> tags) {
         EventSet newEventSet = new EventSet();
+
         for (Event event : mEvents.values()) {
             if (event.getTags().containsAll(tags)) {
                 newEventSet.addEvent(event); //or mEvents.put(entry)...
@@ -98,4 +133,21 @@ public class EventSet {
         }
     }
 
+    /**
+     * This method returns an error Event.
+     * This is just temporary before implementing good exception handling
+     *
+     * @return
+     */
+    private Event getErrorEvent() {
+        return new Event(0,
+                "ERROR",
+                "The Event doesn't exist or wasn't there",
+                0.0, 0.0,
+                "",
+                "",
+                new HashSet<String>(),
+                new Event.Date(),
+                new Event.Date());
+    }
 }

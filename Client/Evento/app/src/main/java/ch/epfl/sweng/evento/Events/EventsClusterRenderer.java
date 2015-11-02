@@ -24,8 +24,7 @@ import ch.epfl.sweng.evento.R;
 /**
  * Created by Gautier on 25/10/2015.
  */
-public class EventsClusterRenderer extends DefaultClusterRenderer<Event>
-{
+public class EventsClusterRenderer extends DefaultClusterRenderer<Event> {
     private final int MAX_NUMBER_OF_IMAGE = 4;
 
     // Icon generator used to create the custom icon for the events and cluster of events on the map
@@ -33,18 +32,17 @@ public class EventsClusterRenderer extends DefaultClusterRenderer<Event>
     private final IconGenerator mClusterEventIconGenerator;
 
     // View used to create the icon of the events and cluster of events on the map
-    private final ImageView     mIconEventView;
-    private final ImageView     mIconClusterView;
+    private final ImageView mIconEventView;
+    private final ImageView mIconClusterView;
 
     // context used for all the creation of content
-    private final Context       mContext;
+    private final Context mContext;
 
     // dimension of the icon in the map
-    private final int           mDimension;
+    private final int mDimension;
 
     public EventsClusterRenderer(Context context, GoogleMap map, ClusterManager<Event> clusterManager,
-                                 ViewGroup container)
-    {
+                                 ViewGroup container) {
         super(context, map, clusterManager);
 
         mContext = context;
@@ -70,12 +68,12 @@ public class EventsClusterRenderer extends DefaultClusterRenderer<Event>
     /**
      * Function call just before the icon is rendered, modify the view using the property
      * of the events
-     * @param event the event that would be rendered
+     *
+     * @param event         the event that would be rendered
      * @param markerOptions the options of the marker that would be rendered
      */
     @Override
-    protected void onBeforeClusterItemRendered(Event event, MarkerOptions markerOptions)
-    {
+    protected void onBeforeClusterItemRendered(Event event, MarkerOptions markerOptions) {
         // Draw a single event icon
         mIconEventView.setImageResource(R.drawable.football); // TODO replace the mock image by the real one of the event
 
@@ -85,14 +83,12 @@ public class EventsClusterRenderer extends DefaultClusterRenderer<Event>
     }
 
     @Override
-    protected void onBeforeClusterRendered(Cluster<Event> cluster, MarkerOptions markerOptions)
-    {
+    protected void onBeforeClusterRendered(Cluster<Event> cluster, MarkerOptions markerOptions) {
         // Draw the clustered event icon
         // at most MAX_NUMBER_OF_IMAGE image
         List<Drawable> eventsImage = new ArrayList<Drawable>(Math.min(MAX_NUMBER_OF_IMAGE, cluster.getSize()));
 
-        for (Event event : cluster.getItems())
-        {
+        for (Event event : cluster.getItems()) {
             Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.football); // TODO replace the mock image by the real one of the event
             drawable.setBounds(0, 0, mDimension, mDimension);
             eventsImage.add(drawable);
@@ -107,8 +103,7 @@ public class EventsClusterRenderer extends DefaultClusterRenderer<Event>
     }
 
     @Override
-    protected boolean shouldRenderAsCluster(Cluster cluster)
-    {
+    protected boolean shouldRenderAsCluster(Cluster cluster) {
         // Always render clusters.
         return cluster.getSize() > 1;
     }
