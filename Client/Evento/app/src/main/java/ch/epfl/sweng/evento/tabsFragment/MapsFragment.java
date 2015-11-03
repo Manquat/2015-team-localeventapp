@@ -260,6 +260,7 @@ public class MapsFragment extends SupportMapFragment implements
                     mEvents.get(iEvent).getAddress(),
                     mEvents.get(iEvent).getCreator(),
                     mEvents.get(iEvent).getTags()));
+            mClusterManager.cluster();
         }
     }
 

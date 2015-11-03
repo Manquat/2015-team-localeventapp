@@ -56,15 +56,16 @@ public class EventClusterManager extends ClusterManager<Event> implements
      */
     @Override
     public boolean onClusterClick(Cluster<Event> cluster) {
-        if (cluster.getSize() == 0)
+        Collection<Event> events = new ArrayList<>(cluster.getItems());
+        if (events.size() == 0)
         {
             Log.d(TAG, "this cluster is empty");
             //throw new NegativeArraySizeException();
         }
 
-        if (cluster.getSize() != 0) {
+        if (events.size() != 0) {
             // Show a toast with some info when the cluster is clicked.
-            Event event = cluster.getItems().iterator().next();
+            Event event = events.iterator().next();
             String firstName = event.getTitle();
             Toast.makeText(mContext, cluster.getSize() + " (including " + firstName + ")", Toast.LENGTH_SHORT).show();
         }
@@ -75,7 +76,7 @@ public class EventClusterManager extends ClusterManager<Event> implements
         }
 
         // store the actual events in the member
-        mEventsClick = cluster.getItems();
+        mEventsClick = events;
 
         return false;
     }
