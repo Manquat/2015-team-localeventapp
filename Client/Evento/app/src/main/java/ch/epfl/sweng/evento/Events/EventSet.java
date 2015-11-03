@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * Created by Val on 24.10.2015.
@@ -22,7 +24,8 @@ public class EventSet {
      * Default constructor
      */
     public EventSet() {
-        mEvents = new HashMap<>();
+        //we use a TreeMap so it's sorted and the methods GetNext and GetPrevious make sense
+        mEvents = new TreeMap<>();
     }
 
     /**
@@ -46,21 +49,53 @@ public class EventSet {
 
     }
     //not working yet
-    /*public Event getNext(int ID)
+    public Event getNext(int ID)
     {
-        int i = ID+1;
         Iterator<Integer> iterator = mEvents.keySet().iterator();
+        int currentID = -1;//To be sure it's not in the Map
 
-        while(iterator.hasNext() && iterator.next() != i) {
-            i++;
+        do{
+            currentID = iterator.next();
+        }while(iterator.hasNext() && currentID != ID);
+
+        //If we reached the end of the iterator, it means that 'ID' was the ID of the last Event.
+        //In that case, we return the last Event
+        if(iterator.hasNext())
+        {
+            currentID = iterator.next();
         }
+        if(mEvents.containsKey(currentID)) {
+            return mEvents.get(currentID);
 
-        if(i == mEvents.keySet().size()) {
-            return getErrorEvent();
         }else{
-            return mEvents.get(i);
+            return getErrorEvent();
         }
-    }*/
+    }
+
+    public Event getPrevious(int ID)
+    {
+        Iterator<Integer> iterator = mEvents.keySet().iterator();
+        int previousID = -2;
+        int currentID = -1;//To be sure it's not in the Map
+
+        do{
+            previousID = currentID;
+            currentID = iterator.next();
+        }while(iterator.hasNext() && currentID != ID);
+
+        //if previousID is less than zero, it means the loop has been done only once and that 'ID'
+        //is the first Event's ID. In that case, we don't want to go further and we return the
+        //first Event
+        if(previousID<1){
+            previousID = currentID;
+        }
+        if(mEvents.containsKey(previousID)) {
+            return mEvents.get(previousID);
+
+        }else{
+            return getErrorEvent();
+        }
+    }
 
     /**
      * Adds an event to the Map
