@@ -332,11 +332,6 @@ public class MapsFragment extends SupportMapFragment implements
         String firstName = event.getTitle();
         Toast.makeText(getContext(), cluster.getSize() + " (including " + firstName + ")", Toast.LENGTH_SHORT).show();
 
-        if (mEventsClick != null) {
-            // clear the actual events click
-            mEventsClick.clear();
-        }
-
         // store the actual events in the member
         mEventsClick = cluster.getItems();
 
