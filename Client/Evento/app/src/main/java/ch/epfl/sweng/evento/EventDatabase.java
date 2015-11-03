@@ -1,16 +1,14 @@
 package ch.epfl.sweng.evento;
 
-import android.location.Location;
-
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.ArrayList;
+
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventSet;
+import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 
 /**
@@ -19,8 +17,11 @@ import ch.epfl.sweng.evento.RestApi.RestApi;
 public enum EventDatabase {
     INSTANCE;
 
+    private RestApi mRestAPI;
+
     private EventDatabase() {
         eventSet = new EventSet();
+        mRestAPI = new RestApi(new DefaultNetworkProvider(), "https://protected-hamlet-4797.herokuapp.com/");
 
         //temporary mock events
         Event.Date start = new Event.Date(2015, 10, 12, 18, 30);
@@ -48,13 +49,16 @@ public enum EventDatabase {
         eventSet.addEvent(events[3]);
         eventSet.addEvent(events[1]);
 
+        for(int i = 0;i<5;i++)
+        {
+            mRestAPI.getEvent(new GetResponseCallback() {
+                @Override
+                public void onDataReceived(Event event) {
+                    eventSet.addEvent(event);
+                }
+            });
+        }
 
-
-        /*RestApi mRestAPI = new RestApi(new DefaultNetworkProvider(),"http://128.179.179.51:8000/");// R.string.url_server);
-        ArrayList<Event> eventList = new ArrayList<>();
-        mRestAPI.getEvent(eventList);
-        eventSet.addEvent((eventList.get(0)));
-        */
     }
 
     /**
