@@ -46,11 +46,14 @@ public class RestApi{
             @Override
             public void onTaskComplete(String response){
                 Event event = null;
-                if (response != null) { //TODO treat that with an exception maybe
-                    try {
+                if (response != null) //TODO treat this problem nicely
+                {
+                    try
+                    {
                         JSONObject JsonResponse = new JSONObject(response);
                         event = Parser.parseFromJSON(JsonResponse);
-                    } catch (JSONException e) {
+                    } catch (JSONException e)
+                    {
                         Log.e("RestException", "Exception thrown in getEvent", e);
                     }
                 }
