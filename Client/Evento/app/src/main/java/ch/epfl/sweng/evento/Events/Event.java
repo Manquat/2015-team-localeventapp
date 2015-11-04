@@ -109,12 +109,12 @@ public class Event implements ClusterItem {
         return mEndDate;
     }
 
-
     @Override
     public LatLng getPosition() {
         return mLocation;
     }
 
+    public long getSignature() { return (1000 * getStartDate().toLong() + (long)getID());}
 
     public static class Date {
         private final int mYear;
@@ -125,6 +125,14 @@ public class Event implements ClusterItem {
 
         public String toString() {
             return mYear + "/" + mMonth + "/" + mDay + "  " + mHour + ":" + mMinutes;
+        }
+
+        public long toLong() {
+            return (long) (Math.pow(10,8)
+                    * mYear + Math.pow(10,6)
+                    * mMonth + Math.pow(10,4)
+                    * mDay + Math.pow(10,2)
+                    * mHour + mMinutes);
         }
 
         public Date() {
