@@ -75,13 +75,25 @@ public enum EventDatabase {
         return eventSet.getFirst();
     }
 
+    /**
+     * This method returns the next Event after the one passed in argument, in the order of starting
+     * Date and ID. If 'current' is the last one, it will return it instead.
+     * @param current the current Event which is the reference to get the next Event
+     * @return the Event that is right after the 'current' Event in the starting Date order
+     */
     public Event getNextEvent(Event current) { return eventSet.getNext(current);}
 
-    public Event getNextEvent(long signature) { return eventSet.getNext(signature);}
+    //public Event getNextEvent(long signature) { return eventSet.getNext(signature);}
 
+    /**
+     * This method returns the previous Event before the one passed in argument, in the order of starting
+     * Date and ID. If 'current' is the first one, it will return it instead.
+     * @param current the current Event which is the reference to get the previous Event
+     * @return the Event that is right before the 'current' Event in the starting Date order
+     */
     public Event getPreviousEvent(Event current) { return eventSet.getPrevious(current.getSignature());}
 
-    public Event getPreviousEvent(long signature) { return eventSet.getPrevious(signature);}
+    //public Event getPreviousEvent(long signature) { return eventSet.getPrevious(signature);}
 
     public EventSet filter(LatLng latLng, double distance) {
         return eventSet.filter(latLng, distance);
@@ -96,6 +108,7 @@ public enum EventDatabase {
     }
 
     public EventSet filter(Event.Date startDate) {return eventSet.filter(startDate);}
+
     /**
      * This EventSet represents all the Events currently stored on the device
      */

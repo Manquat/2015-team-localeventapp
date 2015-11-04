@@ -114,7 +114,13 @@ public class Event implements ClusterItem {
         return mLocation;
     }
 
-    public long getSignature() { return (1000 * getStartDate().toLong() + (long)getID());}
+    /**
+     * The signature of an Event is its Date in the long form to which its ID is appended.
+     * It allows to order Events by starting Date AND by ID at the same time.
+     * The ID is written on 6 digits for now.
+     * @return the signature of the Event in the form yyyymmddhhmmID
+     */
+    public long getSignature() { return (100000 * getStartDate().toLong() + (long)getID());}
 
     public static class Date {
         private final int mYear;
@@ -127,6 +133,11 @@ public class Event implements ClusterItem {
             return mYear + "/" + mMonth + "/" + mDay + "  " + mHour + ":" + mMinutes;
         }
 
+        /**
+         * This method returns a long representing the date with appended values
+         * It makes comparison between 2 Dates trivial and is also used to get an Event's signature
+         * @return the Date in the form yyyymmddhhmm
+         */
         public long toLong() {
             return (long) (Math.pow(10,8)
                     * mYear + Math.pow(10,6)
