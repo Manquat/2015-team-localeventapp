@@ -45,15 +45,18 @@ public enum EventDatabase {
         events[3] = new Event(5152, "Event4", "This is a fourth event with ID 5152", 4.4, 4.4, "4 long street", "dinesh", tags, start2, end);
         events[4] = new Event(42222, "Event5", "This is a fifth event with ID 42222", 5.5, 5.5, "5 long street", "ethan", tags, start, end);
 
-       /* for(int i = 0;i<5;i++)
+        for(int i = 0;i<5;i++)
         {
             mRestAPI.getEvent(new GetResponseCallback() {
                 @Override
                 public void onDataReceived(Event event) {
                     eventSet.addEvent(event);
+                    System.out.println(event.getSignature());
                 }
             });
-        }*/
+
+        }
+
         eventSet.addEvent(events[0]);
         eventSet.addEvent(events[1]);
         eventSet.addEvent(events[2]);
