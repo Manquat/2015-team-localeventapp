@@ -51,10 +51,9 @@ public enum EventDatabase {
                 @Override
                 public void onDataReceived(Event event) {
                     eventSet.addEvent(event);
-                    System.out.println(event.getSignature());
+                    //System.out.println(event.getSignature());
                 }
             });
-
         }
 
         eventSet.addEvent(events[0]);
@@ -62,6 +61,20 @@ public enum EventDatabase {
         eventSet.addEvent(events[2]);
         eventSet.addEvent(events[3]);
         eventSet.addEvent(events[4]);
+    }
+
+    void loadNewEvents()
+    {
+        for(int i = 0;i<5;i++)
+        {
+            mRestAPI.getEvent(new GetResponseCallback() {
+                @Override
+                public void onDataReceived(Event event) {
+                    eventSet.addEvent(event);
+                    //System.out.println(event.getSignature());
+                }
+            });
+        }
     }
 
     /**
@@ -84,7 +97,14 @@ public enum EventDatabase {
      * @param current the current Event which is the reference to get the next Event
      * @return the Event that is right after the 'current' Event in the starting Date order
      */
-    public Event getNextEvent(Event current) { return eventSet.getNext(current);}
+    public Event getNextEvent(Event current) {
+        System.out.println(eventSet.eventsLeftAfter(current));
+        if(eventSet.eventsLeftAfter(current) < 5)
+        {
+           loadNewEvents();
+        }
+        return eventSet.getNext(current);
+    }
 
     //public Event getNextEvent(long signature) { return eventSet.getNext(signature);}
 

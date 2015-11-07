@@ -112,7 +112,7 @@ public class EventSet {
      * @param event the Event to be added
      */
     public void addEvent(Event event) {
-        if (!mEvents.containsKey(event.getSignature())) {
+        if (event != null && !mEvents.containsKey(event.getSignature())) {
             //mEvents.put(event.getID(), event);
             mEvents.put(event.getSignature(),event);
         }
@@ -184,6 +184,27 @@ public class EventSet {
         }
     }
 
+    public int eventsLeftAfter(Event event)
+    {
+        int numberOfEvents = 0;
+
+        if(event != null && mEvents.containsKey(event.getSignature()))
+        {
+            Iterator<Long> iterator = mEvents.keySet().iterator();
+            while(iterator.hasNext() && iterator.next() != event.getSignature()){}
+            while(iterator.hasNext())
+            {
+                numberOfEvents++;
+                iterator.next();
+            }
+        }
+        else
+        {
+            numberOfEvents = -1;
+        }
+
+        return numberOfEvents;
+    }
     /**
      * This method returns an error Event.
      * This is just temporary before implementing good exception handling
