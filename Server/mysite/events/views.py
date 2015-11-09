@@ -87,5 +87,5 @@ def event_request(request, fromdate, todate, mLongitude, mLatitude, mDistance, m
         return Response(status=status.HTTP_404_NOT_FOUND)
     #event = Event.objects.all()
     if request.method == 'GET':
-        serializer = EventSerializer(event[:100], many=True)
+        serializer = EventSerializer(event[:mNE], many=True)
         return Response(serializer.data)
