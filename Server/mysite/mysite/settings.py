@@ -41,6 +41,15 @@ INSTALLED_APPS = (
     'events',
 )
 
+REST_FRAMEWORK = {
+    # Use hyperlinked styles by default.
+    # Only used if the `serializer_class` attribute is not set on a view.
+    'DEFAULT_MODEL_SERIALIZER_CLASS':
+        'rest_framework.serializers.HyperlinkedModelSerializer',
+
+
+}
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -100,5 +109,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
-
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = "/Users/Pujima/OneDrive/Physique 5eme Annee/Software Engineering/team-localeventapp/Server/mysite/mysite/static"
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    "C:/Users/Pujima/OneDrive/Physique 5eme Annee/Software Engineering/team-localeventapp/Server/mysite/mysite/static",
+)
