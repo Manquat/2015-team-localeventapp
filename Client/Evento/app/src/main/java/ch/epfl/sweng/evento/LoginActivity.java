@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -20,11 +21,10 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 
 
-
 public class LoginActivity extends AppCompatActivity implements
-                GoogleApiClient.ConnectionCallbacks,
-                GoogleApiClient.OnConnectionFailedListener,
-                View.OnClickListener{
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        View.OnClickListener {
 
 //---------------------------------------------------------------------------------------------
 //----Attributes-------------------------------------------------------------------------------
@@ -49,7 +49,6 @@ public class LoginActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_login);
 
 
-
         // Build GoogleApiClient with access to basic profile
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -61,7 +60,6 @@ public class LoginActivity extends AppCompatActivity implements
 
         // Sign in if clicked
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-
 
 
     }
@@ -141,7 +139,7 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     private void showSignedOutUI() {
-    //TODO
+        //TODO
     }
 
     @Override
@@ -150,7 +148,6 @@ public class LoginActivity extends AppCompatActivity implements
             onSignInClicked();
         }
     }
-
 
 
     private void onSignInClicked() {
@@ -205,9 +202,6 @@ public class LoginActivity extends AppCompatActivity implements
     private void showSignedInUI() {
         //TODO
     }
-
-
-
 
 
 }

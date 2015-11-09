@@ -7,4 +7,6 @@
     <color name="white">#ffffff</color>
     <color name="background_window">#FFE5E5E5</color>
     <color name="tabsScrollColor">#8a140e</color>
+    <color name="colorDisableMonth">#8396b3</color>
+    <color name="colorCurrentMonth">#3F4043</color>
 </resources>

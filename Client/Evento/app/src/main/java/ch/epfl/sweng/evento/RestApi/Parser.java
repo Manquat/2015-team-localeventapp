@@ -15,7 +15,7 @@ import ch.epfl.sweng.evento.Events.Event;
  */
 public class Parser {
 
-    public static ArrayList<Event> events(String s){
+    public static ArrayList<Event> events(String s) {
         ArrayList<Event> events = null;
         return events;
     }
@@ -49,13 +49,9 @@ public class Parser {
                     jsonObject.getDouble("latitude"),
                     jsonObject.getDouble("longitude"),
                     jsonObject.getString("address"),
-                    "Missing creator",
-                    // TODO: correct the typo adress and add creator and tags
-                    //jsonObject.getString("creator"))
+                    jsonObject.getString("creator"),
                     new HashSet<String>());
         } catch (IllegalArgumentException e) {
-            throw new JSONException("Invalid question structure");
-        } catch (NullPointerException e) {
             throw new JSONException("Invalid question structure");
         }
     }

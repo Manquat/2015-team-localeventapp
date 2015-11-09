@@ -33,11 +33,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
 import java.util.Vector;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
+import ch.epfl.sweng.evento.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.EventActivity;
+import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
+import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 
 /**
@@ -47,35 +56,57 @@ import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 public class ContentFragment extends Fragment implements MyView.OnToggledListener {
 
     final int PADDING = 5;
-    private static Vector<ImageButton> m_mosaicVector = new Vector<ImageButton>();
+    private static final int NUMBER_OF_EVENT = 50;
 
-    private GridLayout m_gridLayout;
+    private static Vector<ImageButton> mMosaicVector = new Vector<ImageButton>();
+    private List<Event> mEvents;
+    private RestApi mRestAPI;
+
+    private static final Event mockEventFootball = new Event(1, "Event1", "This is a first event", 1.1, 1.1,
+            "1 long street", "Football", new HashSet<String>(Arrays.asList("Football")), new Event.Date(), new Event.Date());   // a mock event that would be replicated all over the map
+    private static final Event mockEventBasket = new Event(1, "Event2", "This is a second event", 1.1, 1.1,
+            "1 long street", "Basketball", new HashSet<String>(Arrays.asList("Basketball")), new Event.Date(), new Event.Date());   // a mock event that would be replicated all over the map
+
+    private GridLayout mGridLayout;
     private Activity mActivity;
-    private int m_numberOfRow;
-    private int m_numberOfColumn;
-    private MyView[] m_myViews;
+    private int mNumberOfRow;
+    private int mNumberOfColumn;
+    private Vector<boolean[]> mDisplayOrNot;
+    private Vector<MyView> mMyViews;
 
     /**
      * @return a new instance of {@link ContentFragment}, adding the parameters into a bundle and
      * setting them as arguments.
      */
-    public ContentFragment(){
+    public ContentFragment() {
         super();
-        m_numberOfColumn = 3;
-        m_numberOfRow = 4;
+        mNumberOfColumn = 3;
+        mNumberOfRow = 4;
+        mDisplayOrNot = new Vector<boolean[]>();
+        for (int i = 0; i < 2 * NUMBER_OF_EVENT / mNumberOfColumn + 1; ++i) {
+            boolean[] tmpBooleanRow = new boolean[mNumberOfColumn];
+            for (int j = 0; j < mNumberOfColumn; ++j) {
+                tmpBooleanRow[j] = true;
+            }
+            mDisplayOrNot.add(tmpBooleanRow);
+        }
+        mMyViews = new Vector<MyView>();
     }
 
+    public enum Span {NOTHING, TWO_ROWS, TWO_COLUMNS}
+
+    ;
+
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = getActivity();
     }
 
     @Override
     public void OnToggled(MyView v, boolean touchOn) {
-        Intent intent = new Intent(mActivity, EventActivity.class);
-        mActivity.startActivity(intent);
+        //Intent intent = new Intent(mActivity, EventActivity.class);
+        //mActivity.startActivity(intent);
 
         //This toast may be useful
         /*String idString = v.getIdX() + ":" + v.getIdY();
@@ -91,26 +122,80 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mosaic, container, false);
-        m_gridLayout = (GridLayout) view.findViewById(R.id.gridLayout);
-        m_gridLayout.setRowCount(m_numberOfRow);
-        m_gridLayout.setColumnCount(m_numberOfColumn);
 
-        m_myViews = new MyView[m_numberOfRow*m_numberOfColumn];
+        mEvents = new ArrayList<Event>();
+        mRestAPI = new RestApi(new DefaultNetworkProvider(), getString(R.string.url_server));
+        for (int i = 0; i < NUMBER_OF_EVENT; i++) {
+            mRestAPI.getEvent(new GetResponseCallback() {
+                @Override
+                public void onDataReceived(Event event)
+                {
+                    mEvents.add(event);
+                }
+            }); //TODO remove the cast once the change in restAPI is made
+            //
+        }
+
+        Random rand = new Random();
+        for (int i = 0; i < NUMBER_OF_EVENT; i++) {
+            if (rand.nextInt(2) == 0) mEvents.add(mockEventBasket);
+            else mEvents.add(mockEventFootball);
+        }
+        mGridLayout = (GridLayout) view.findViewById(R.id.gridLayout);
+        mGridLayout.setRowCount(mNumberOfRow);
+        mGridLayout.setColumnCount(mNumberOfColumn);
 
 
-        for(int yPos=0; yPos<m_numberOfRow; yPos++){
-            for(int xPos=0; xPos<m_numberOfColumn; xPos++){
+        boolean[] tmpBooleanRow = new boolean[mNumberOfColumn];
+        Span tmpSpanSmtgOrNot = Span.NOTHING;
+        for (int yPos = 0, countEvent = 0; countEvent < NUMBER_OF_EVENT; yPos++) {
+            Log.d("yPos :", Integer.toString(yPos));
+            Log.d("Event :", Integer.toString(countEvent));
+            Log.d("Number of row :", Integer.toString(mNumberOfRow));
+
+            for (int xPos = 0; xPos < mNumberOfColumn && countEvent < NUMBER_OF_EVENT; xPos++, countEvent++) {
                 MyView tView = new MyView(view.getContext(), xPos, yPos);
-                if(!(xPos == 2 && yPos == 2 || (xPos == 0 && yPos == 3))) {
-                    if (!(xPos == 2 && yPos == 1 || (xPos == 0 && yPos == 2))) tView.setImageResource(R.drawable.football);
-                    else tView.setImageResource(R.drawable.basket);
+                if (mDisplayOrNot.get(yPos)[xPos]) {
+                    switch (mEvents.get(countEvent).getCreator()) {
+                        case "Football":
+                            tmpSpanSmtgOrNot = Span.NOTHING;
+                            tView.setImageResource(R.drawable.football);
+                            break;
+                        case "Basketball":
+                            tmpSpanSmtgOrNot = Span.TWO_ROWS;
+                            tView.setImageResource(R.drawable.basket);
+                            mDisplayOrNot.get(yPos + 1)[xPos] = false;
+                            break;
+                        default:
+                            Log.d("Warning ", "ContentFragment.OnCreateView.mEvent_DoesntMAtch");
+                            break;
+                    }
                     tView.setOnToggledListener(this);
-                    m_myViews[yPos * m_numberOfColumn + xPos] = tView;
-                    if (!(xPos == 2 && yPos == 1 || (xPos == 0 && yPos == 2)))
-                        addViewToGridLayout(tView, yPos, xPos, 1, 1);
-                    else addViewToGridLayout(tView, yPos, xPos, 2, 1);
+                    mMyViews.add(tView);
+
+                    switch (tmpSpanSmtgOrNot) {
+                        case NOTHING:
+                            while (yPos >= mNumberOfRow) {
+                                ++mNumberOfRow;
+                                mGridLayout.setRowCount(mNumberOfRow);
+                            }
+                            addViewToGridLayout(tView, yPos, xPos, 1, 1);
+                            break;
+                        case TWO_ROWS:
+                            while ((yPos + 1) >= mNumberOfRow) {
+                                ++mNumberOfRow;
+                                mGridLayout.setRowCount(mNumberOfRow);
+                            }
+                            addViewToGridLayout(tView, yPos, xPos, 2, 1);
+                            break;
+                        case TWO_COLUMNS:
+                            addViewToGridLayout(tView, yPos, xPos, 1, 2);
+                            break;
+                    }
+                } else {
+                    countEvent--;
                 }
             }
         }
@@ -119,19 +204,20 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
     }
 
     private void addViewToGridLayout(View view, int row, int column, int rowSpan, int columnSpan) {
-        int pWidth = m_gridLayout.getWidth();
-        int pHeight = m_gridLayout.getHeight();
-        int widthColumn = pWidth/m_numberOfColumn;
-        int heightRow = pHeight/m_numberOfRow;
+        int pWidth = mGridLayout.getWidth();
+        int pHeight = mGridLayout.getHeight();
+        int widthColumn = pWidth / mNumberOfColumn;
+        int heightRow = pHeight / mNumberOfRow;
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-        params.width = widthColumn - 2*PADDING;
-        params.height = heightRow - 2*PADDING;
+        params.width = widthColumn - 2 * PADDING;
+        params.height = heightRow - 2 * PADDING;
         params.setMargins(PADDING, PADDING, PADDING, PADDING);
         params.columnSpec = GridLayout.spec(column, columnSpan);
         params.rowSpec = GridLayout.spec(row, rowSpan);
 
-        m_gridLayout.addView(view, params);
+        mGridLayout.addView(view, params);
     }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

@@ -1,5 +1,7 @@
 package ch.epfl.sweng.evento.Events;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
@@ -28,8 +30,7 @@ public class Event implements ClusterItem {
                  String creator,
                  Set<String> tags,
                  Date startDate,
-                 Date endDate)
-    {
+                 Date endDate) {
         mID = id;
         mTitle = title;
         mDescription = description;
@@ -48,8 +49,7 @@ public class Event implements ClusterItem {
                  double longitude,
                  String address,
                  String creator,
-                 Set<String> tags)
-    {
+                 Set<String> tags) {
         mID = id;
         mTitle = title;
         mDescription = description;
@@ -61,29 +61,27 @@ public class Event implements ClusterItem {
         mEndDate = new Date();
     }
 
+    public void debugLogEvent() {
+        Log.d("Event " + mID + " : ", "title : " + mTitle);
+    }
 
-    public int getID()
-    {
+    public int getID() {
         return mID;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return mTitle;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return mDescription;
     }
 
-    public double getLatitude()
-    {
+    public double getLatitude() {
         return mLocation.latitude;
     }
 
-    public double getLongitude()
-    {
+    public double getLongitude() {
         return mLocation.longitude;
     }
 
@@ -91,45 +89,64 @@ public class Event implements ClusterItem {
         return mLocation;
     }
 
-    public String getAddress()
-    {
+    public String getAddress() {
         return mAddress;
     }
 
-    public String getCreator()
-    {
+    public String getCreator() {
         return mCreator;
     }
 
-    public Set<String> getTags() { return mTags; }
+    public Set<String> getTags() {
+        return mTags;
+    }
 
-    public Date getStartDate() { return mStartDate;}
+    public Date getStartDate() {
+        return mStartDate;
+    }
 
-    public Date getEndDate() { return mEndDate;}
-
+    public Date getEndDate() {
+        return mEndDate;
+    }
 
     @Override
     public LatLng getPosition() {
         return mLocation;
     }
 
+    /**
+     * The signature of an Event is its Date in the long form to which its ID is appended.
+     * It allows to order Events by starting Date AND by ID at the same time.
+     * The ID is written on 6 digits for now.
+     * @return the signature of the Event in the form yyyymmddhhmmID
+     */
+    public long getSignature() { return (100000 * getStartDate().toLong() + (long)getID());}
 
-
-    public static class Date
-    {
+    public static class Date {
         private final int mYear;
         private final int mMonth;
         private final int mDay;
         private final int mHour;
         private final int mMinutes;
 
-        public String toString()
-        {
+        public String toString() {
             return mYear + "/" + mMonth + "/" + mDay + "  " + mHour + ":" + mMinutes;
         }
 
-        public Date()
-        {
+        /**
+         * This method returns a long representing the date with appended values
+         * It makes comparison between 2 Dates trivial and is also used to get an Event's signature
+         * @return the Date in the form yyyymmddhhmm
+         */
+        public long toLong() {
+            return (long) (Math.pow(10,8)
+                    * mYear + Math.pow(10,6)
+                    * mMonth + Math.pow(10,4)
+                    * mDay + Math.pow(10,2)
+                    * mHour + mMinutes);
+        }
+
+        public Date() {
             mYear = 0;
             mMonth = 0;
             mDay = 0;
@@ -137,8 +154,7 @@ public class Event implements ClusterItem {
             mMinutes = 0;
         }
 
-        public Date(int year, int month, int day, int hour, int minutes)
-        {
+        public Date(int year, int month, int day, int hour, int minutes) {
             mYear = year;
             mMonth = month;
             mDay = day;
@@ -146,8 +162,7 @@ public class Event implements ClusterItem {
             mMinutes = minutes;
         }
 
-        public Date(Date other)
-        {
+        public Date(Date other) {
             mYear = other.mYear;
             mMonth = other.mMonth;
             mDay = other.mDay;

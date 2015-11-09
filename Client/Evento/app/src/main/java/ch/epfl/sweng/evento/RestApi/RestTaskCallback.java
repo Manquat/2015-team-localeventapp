@@ -3,7 +3,7 @@ package ch.epfl.sweng.evento.RestApi;
 /**
  * Created by cerschae on 15/10/2015.
  */
-public abstract class RestTaskCallback{
+public abstract class RestTaskCallback {
     /**
      * Called when the HTTP request completes.
      *
