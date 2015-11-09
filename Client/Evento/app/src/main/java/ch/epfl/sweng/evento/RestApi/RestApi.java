@@ -103,26 +103,6 @@ public class RestApi{
         }).execute();
     }
 
-    /**
-     * TODO: the interested and participation options
-     *
-     */
-
-    public void setInterestedInEvent(Event event, final PostCallback callback) {
-
-    }
-
-    public void setNotInterestedInEvent(Event event, final PostCallback callback) {
-
-    }
-
-    public void setParticipateToEvent(Event event, final PostCallback callback) {
-
-    }
-
-    public void setNotParticipateToEvent(Event event, final PostCallback callback) {
-
-    }
 
 }
 
