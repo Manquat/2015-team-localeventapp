@@ -170,7 +170,7 @@ public class RestApiTest {
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            fail();
         }
 
         //assertNotNull("Event is not null", eventArrayList);
@@ -199,7 +199,7 @@ public class RestApiTest {
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            fail();
         }
 
         assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
@@ -214,7 +214,7 @@ public class RestApiTest {
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            fail();
         }
 
         assertEquals("We get two event after requesting twice", eventArrayList.size(), 2);
@@ -321,7 +321,7 @@ public class RestApiTest {
         try {
             Thread.sleep(500);
         } catch (InterruptedException e1) {
-            e1.printStackTrace();
+            fail();
         }
 
     }
@@ -339,7 +339,7 @@ public class RestApiTest {
         try {
             Thread.sleep(500);
         } catch (InterruptedException e1) {
-            e1.printStackTrace();
+            fail();
         }
 
     }
