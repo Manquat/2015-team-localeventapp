@@ -123,11 +123,11 @@ public class Event implements ClusterItem {
     public long getSignature() { return (100000 * getStartDate().toLong() + (long)getID());}
 
     public static class Date {
-        private final int mYear;
-        private final int mMonth;
-        private final int mDay;
-        private final int mHour;
-        private final int mMinutes;
+        private int mYear;
+        private int mMonth;
+        private int mDay;
+        private int mHour;
+        private int mMinutes;
 
         public String toString() {
             return mYear + "/" + mMonth + "/" + mDay + "  " + mHour + ":" + mMinutes;
@@ -152,6 +152,24 @@ public class Event implements ClusterItem {
             mDay = 0;
             mHour = 0;
             mMinutes = 0;
+        }
+
+        public void setTime(int hour, int minutes){
+            mHour = hour;
+            mMinutes = minutes;
+        }
+
+        public int getYear() { return mYear;}
+        public int getMonth() { return mMonth;}
+        public int getDay() { return mDay;}
+        public int getMinutes() { return mMinutes;}
+        public int getHour() { return mHour;}
+
+
+        public void setDate(int year, int month, int day){
+            mYear = year;
+            mMonth = month;
+            mDay = day;
         }
 
         public Date(int year, int month, int day, int hour, int minutes) {
