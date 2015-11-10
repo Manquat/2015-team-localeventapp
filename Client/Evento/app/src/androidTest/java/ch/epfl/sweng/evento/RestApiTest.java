@@ -54,6 +54,7 @@ public class RestApiTest {
     private static final String wrongUrl = "http://exemple.com";
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
     private static final String urlServer = "http://10.0.2.2:8000/";
+    //private static final String urlServer = "https://protected-hamlet-4797.herokuapp.com";
 
     private static final Parser parser = new Parser();
     private static final String PROPER_JSON_STRING = "{\n"
@@ -136,7 +137,7 @@ public class RestApiTest {
      * @throws IOException
      */
     @Test
-    public void testGetTaskLocal() throws IOException {
+    public void testGetTaskLocal() throws IOException, ExecutionException, InterruptedException {
         final String testString = "test string";
         configureResponse(HttpURLConnection.HTTP_OK, testString, JSON_CONTENT_TYPE);
 
@@ -146,17 +147,12 @@ public class RestApiTest {
                         assertEquals(testString + "\n", response);
                     }});
 
-        try {
-            getTask.execute().get();
-        } catch (InterruptedException e) {
-            fail();
-        } catch (ExecutionException e) {
-            fail();
-        }
+        getTask.execute().get();
+
     }
 
     @Test
-    public void testGetEventLocal() throws IOException {
+    public void testGetEventLocal() throws IOException, InterruptedException {
         configureResponse(HttpURLConnection.HTTP_OK, PROPER_JSON_STRING, JSON_CONTENT_TYPE);
         RestApi restApi = new RestApi(networkProviderMockito, wrongUrl);
         final ArrayList<Event> eventArrayList = new ArrayList<Event>();
@@ -167,11 +163,8 @@ public class RestApiTest {
             }
         });
 
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            fail();
-        }
+        Thread.sleep(500);
+
 
         //assertNotNull("Event is not null", eventArrayList);
         assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
@@ -182,7 +175,7 @@ public class RestApiTest {
     }
 
     @Test
-    public void testGetEventServer() {
+    public void testGetEventServer() throws InterruptedException {
         RestApi restApi = new RestApi(networkProvider, urlServer);
         final ArrayList<Event> eventArrayList = new ArrayList<>();
         assertEquals("Before requesting, eventArrayList is empty", eventArrayList.size(), 0);
@@ -196,11 +189,7 @@ public class RestApiTest {
             }
         });
 
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            fail();
-        }
+        Thread.sleep(200);
 
         assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
 
@@ -211,11 +200,8 @@ public class RestApiTest {
             }
         });
 
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            fail();
-        }
+        Thread.sleep(200);
+
 
         assertEquals("We get two event after requesting twice", eventArrayList.size(), 2);
 
@@ -223,7 +209,7 @@ public class RestApiTest {
     }
 
     private static final String EVENT_TO_CREATE ="{\n"
-            + "  \"Event_name\": \"Ping-Pong at Sat 2\",\n"
+            + "  \"Event_name\": \"Test in room for show\",\n"
             + "  \"description\": \n"
             + "    \"Beer, ping-pong... let's beerpong\" ,\n"
             + "  \"latitude\": 46.519428,\n"
@@ -242,24 +228,13 @@ public class RestApiTest {
         assertEquals("event are correctly serialized", EVENT_TO_CREATE, EVENT_TO_CREATE_seri);
     }
     @Test
-    public void testPostTaskServer() {
+    public void testPostTaskServer() throws ExecutionException, InterruptedException {
         String url = urlServer + "events/";
         PostTask postTask = new PostTask(url, networkProvider, EVENT_TO_CREATE, new RestTaskCallback(){
             public void onTaskComplete(String response){
             }});
 
-        try {
-            postTask.execute().get();
-        } catch (InterruptedException e) {
-            fail();
-        } catch (ExecutionException e) {
-            fail();
-        }
-
-        /**
-         * TODO: a way to verify automatically that the event is well created.
-         * For the moment a only go to server through browser and check it
-         */
+        postTask.execute().get();
     }
 
     @Test
@@ -276,7 +251,7 @@ public class RestApiTest {
 
 
     @Test
-    public void testPutTask() {
+    public void testPutTask() throws ExecutionException, InterruptedException {
         String EVENT_TO_PUT = "{\n"
                 + "  \"Event_name\": \"Ping-Pong at Sat 2\",\n"
                 + "  \"description\": \n"
@@ -298,17 +273,11 @@ public class RestApiTest {
             }
         });
 
-        try {
-            putTask.execute().get();
-        } catch (InterruptedException e1) {
-            fail();
-        } catch (ExecutionException e1) {
-            fail();
-        }
+        putTask.execute().get();
     }
 
     @Test
-    public void testUpdateEvent() {
+    public void testUpdateEvent() throws InterruptedException {
         Event event = new Event(14, "this is a test of UpdateEvent", "test1", 0, 0,"address", "createur", new HashSet<String>());
         RestApi restApi = new RestApi(networkProvider, urlServer);
         restApi.updateEvent(event, new PutCallback() {
@@ -318,16 +287,12 @@ public class RestApiTest {
             }
         });
 
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e1) {
-            fail();
-        }
+        Thread.sleep(500);
 
     }
 
     @Test
-    public void testDeleteEvent(){
+    public void testDeleteEvent() throws InterruptedException {
         RestApi restApi = new RestApi(networkProvider, urlServer);
         restApi.deleteEvent(15, new DeleteResponseCallback() {
             @Override
@@ -336,11 +301,7 @@ public class RestApiTest {
             }
         });
 
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e1) {
-            fail();
-        }
+        Thread.sleep(500);
 
     }
 
