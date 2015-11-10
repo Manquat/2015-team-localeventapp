@@ -36,6 +36,7 @@ import ch.epfl.sweng.evento.RestApi.Serializer;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.fail;
 
 /**
  * Created by joachimmuth on 21.10.15.
@@ -53,6 +54,7 @@ public class RestApiTest {
     private static final String wrongUrl = "http://exemple.com";
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
     private static final String urlServer = "http://10.0.2.2:8000/";
+    //private static final String urlServer = "https://protected-hamlet-4797.herokuapp.com";
 
     private static final Parser parser = new Parser();
     private static final String PROPER_JSON_STRING = "{\n"
@@ -65,7 +67,8 @@ public class RestApiTest {
             + "  \"address\": \"Terrain de football de Dorigny\", \n "
             + "  \"creator\": \"Micheal Jackson\"\n"
             + "}\n";
-    private static final Event PROPER_EVENT = new Event(17005,
+    private static final Event PROPER_EVENT = new Event(
+            17005,
             "My football game",
             "Okay guys, let's play a little game this evening at dorigny. Remember: no doping allowed!",
             46.519428, 6.580847,
@@ -80,7 +83,7 @@ public class RestApiTest {
         connection = Mockito.mock(HttpURLConnection.class);
         networkProviderMockito = Mockito.mock(NetworkProvider.class);
         Mockito.doReturn(connection).when(networkProviderMockito).getConnection(Mockito.any(URL.class));
-        }
+    }
 
     private void configureResponse(int status, String content, String contentType)
             throws IOException {
@@ -108,6 +111,8 @@ public class RestApiTest {
     public void testParsingJsonToEvent() throws JSONException {
         JSONObject jsonObject = new JSONObject(PROPER_JSON_STRING);
         Event eventFromJson = parser.parseFromJSON(jsonObject);
+
+        //assertEquals("Event correctly parsed", eventFromJson, PROPER_EVENT);
 
         assertEquals("id correctly parsed", PROPER_EVENT.getID(), eventFromJson.getID());
         assertEquals("title correctly parsed", PROPER_EVENT.getTitle(), eventFromJson.getTitle());
@@ -145,9 +150,9 @@ public class RestApiTest {
         try {
             getTask.execute().get();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            fail();
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            fail();
         }
     }
 
@@ -166,10 +171,10 @@ public class RestApiTest {
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            fail();
         }
 
-        assertNotNull("Event is not null", eventArrayList);
+        //assertNotNull("Event is not null", eventArrayList);
         assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
         assertEquals("id", eventArrayList.get(0).getID(), PROPER_EVENT.getID());
         assertEquals("title", eventArrayList.get(0).getTitle(), PROPER_EVENT.getTitle());
@@ -195,7 +200,7 @@ public class RestApiTest {
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            fail();
         }
 
         assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
@@ -210,7 +215,7 @@ public class RestApiTest {
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            fail();
         }
 
         assertEquals("We get two event after requesting twice", eventArrayList.size(), 2);
@@ -219,7 +224,7 @@ public class RestApiTest {
     }
 
     private static final String EVENT_TO_CREATE ="{\n"
-            + "  \"Event_name\": \"Ping-Pong at Sat 2\",\n"
+            + "  \"Event_name\": \"Test in room for show\",\n"
             + "  \"description\": \n"
             + "    \"Beer, ping-pong... let's beerpong\" ,\n"
             + "  \"latitude\": 46.519428,\n"
@@ -247,9 +252,9 @@ public class RestApiTest {
         try {
             postTask.execute().get();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            fail();
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            fail();
         }
 
         /**
@@ -297,9 +302,9 @@ public class RestApiTest {
         try {
             putTask.execute().get();
         } catch (InterruptedException e1) {
-            e1.printStackTrace();
+            fail();
         } catch (ExecutionException e1) {
-            e1.printStackTrace();
+            fail();
         }
     }
 
@@ -317,7 +322,7 @@ public class RestApiTest {
         try {
             Thread.sleep(500);
         } catch (InterruptedException e1) {
-            e1.printStackTrace();
+            fail();
         }
 
     }
@@ -335,7 +340,7 @@ public class RestApiTest {
         try {
             Thread.sleep(500);
         } catch (InterruptedException e1) {
-            e1.printStackTrace();
+            fail();
         }
 
     }

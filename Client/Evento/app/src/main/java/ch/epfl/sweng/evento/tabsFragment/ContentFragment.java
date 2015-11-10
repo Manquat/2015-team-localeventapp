@@ -130,8 +130,8 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
         for (int i = 0; i < NUMBER_OF_EVENT; i++) {
             mRestAPI.getEvent(new GetResponseCallback() {
                 @Override
-                public void onDataReceived(Event event)
-                {
+
+                public void onDataReceived(Event event) {
                     mEvents.add(event);
                 }
             }); //TODO remove the cast once the change in restAPI is made

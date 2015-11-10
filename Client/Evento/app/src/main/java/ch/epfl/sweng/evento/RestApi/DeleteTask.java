@@ -15,9 +15,9 @@ import ch.epfl.sweng.evento.NetworkProvider;
 public class DeleteTask extends AsyncTask<String, Void, String> {
     private static final int HTTP_SUCCESS_START = 200;
     private static final int HTTP_SUCCESS_END = 299;
-    private String mRestUrl;
-    private RestTaskCallback mCallback;
-    private NetworkProvider mNetworkProvider;
+    private final String mRestUrl;
+    private final RestTaskCallback mCallback;
+    private final NetworkProvider mNetworkProvider;
 
     public DeleteTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback) {
         this.mRestUrl = restUrl;
