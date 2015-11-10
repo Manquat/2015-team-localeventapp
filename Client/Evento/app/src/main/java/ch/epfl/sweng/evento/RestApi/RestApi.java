@@ -24,6 +24,7 @@ import ch.epfl.sweng.evento.NetworkProvider;
  *
  */
 public class RestApi{
+    private static final String TAG = "RestApi";
     private NetworkProvider mNetworkProvider;
     private String mUrlServer;
     // TODO: as soon as the server provide a better way to get event, change it
@@ -56,6 +57,7 @@ public class RestApi{
                     {
                         Log.e("RestException", "Exception thrown in getEvent", e);
                     }
+
                 }
                 callback.onDataReceived(event);
             }
