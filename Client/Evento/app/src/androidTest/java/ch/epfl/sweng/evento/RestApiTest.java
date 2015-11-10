@@ -46,6 +46,7 @@ import static junit.framework.Assert.fail;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class RestApiTest {
+    private static final String TAG = "RestApiTest";
     private GetTask getTask;
     private static final String JSON_CONTENT_TYPE = "application/json; charset=utf-8";
     private static final int ASCII_SPACE = 0x20;
@@ -183,8 +184,8 @@ public class RestApiTest {
         restApi.getEvent(new GetResponseCallback() {
             @Override
             public void onDataReceived(Event event) {
-                Log.d("TestGetEvent", event.getTitle());
-                Log.d("TestGetEvent", Integer.toString((event.getID())));
+                Log.d(TAG, event.getTitle());
+                Log.d(TAG, Integer.toString((event.getID())));
                 eventArrayList.add(event);
             }
         });
