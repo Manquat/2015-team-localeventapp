@@ -20,6 +20,7 @@ import ch.epfl.sweng.evento.NetworkProvider;
  * An AsyncTask implementation for performing POSTs.
  */
 public class PostTask extends AsyncTask<String, String, String> {
+    private static final String TAG = "PostTask";
     private static final int HTTP_SUCCESS_START = 200;
     private static final int HTTP_SUCCESS_END = 299;
     private final NetworkProvider mNetworkProvider;
@@ -67,13 +68,13 @@ public class PostTask extends AsyncTask<String, String, String> {
             }
 
         } catch (MalformedURLException e) {
-            Log.e("RestException", "Exception thrown in PostTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         } catch (ProtocolException e) {
-            Log.e("RestException", "Exception thrown in PostTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         } catch (IOException e) {
-            Log.e("RestException", "Exception thrown in PostTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         } catch (RestException e) {
-            Log.e("RestException", "Exception thrown in PostTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         }
         return response;
     }

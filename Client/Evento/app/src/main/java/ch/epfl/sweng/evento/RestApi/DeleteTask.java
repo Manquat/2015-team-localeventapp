@@ -13,6 +13,7 @@ import ch.epfl.sweng.evento.NetworkProvider;
  * Created by joachimmuth on 22.10.15.
  */
 public class DeleteTask extends AsyncTask<String, Void, String> {
+    private static final String TAG = "DeleteTask";
     private static final int HTTP_SUCCESS_START = 200;
     private static final int HTTP_SUCCESS_END = 299;
     private final String mRestUrl;
@@ -48,9 +49,9 @@ public class DeleteTask extends AsyncTask<String, Void, String> {
             }
 
         } catch (IOException e) {
-            Log.e("RestException", "Exception thrown in GetTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         } catch (RestException e) {
-            Log.e("RestException", "Exception thrown in GetTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         }
 
         return response;

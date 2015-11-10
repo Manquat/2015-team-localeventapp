@@ -23,7 +23,7 @@ public class Parser {
     public static Event parseFromJSON(JSONObject jsonObject) throws JSONException {
 
 
-        // TODO: when the tag to Event will be added ;)
+        // when the tag to Event will be added ;)
 //        JSONArray jsonTags = jsonObject.getJSONArray("tags");
 //        List<String> tags = new ArrayList<String>();
 //        for (int i = 0; i < jsonTags.length(); ++i) {
