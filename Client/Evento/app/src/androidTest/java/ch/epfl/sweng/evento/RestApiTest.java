@@ -53,8 +53,8 @@ public class RestApiTest {
     private NetworkProvider networkProviderMockito;
     private static final String wrongUrl = "http://exemple.com";
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    //private static final String urlServer = "http://10.0.2.2:8000/";
-    private static final String urlServer = "https://protected-hamlet-4797.herokuapp.com";
+    private static final String urlServer = "http://10.0.2.2:8000/";
+    //private static final String urlServer = "https://protected-hamlet-4797.herokuapp.com";
 
     private static final Parser parser = new Parser();
     private static final String PROPER_JSON_STRING = "{\n"
@@ -224,7 +224,7 @@ public class RestApiTest {
     }
 
     private static final String EVENT_TO_CREATE ="{\n"
-            + "  \"Event_name\": \"Ping-Pong at Sat 2\",\n"
+            + "  \"Event_name\": \"Test in room for show\",\n"
             + "  \"description\": \n"
             + "    \"Beer, ping-pong... let's beerpong\" ,\n"
             + "  \"latitude\": 46.519428,\n"
