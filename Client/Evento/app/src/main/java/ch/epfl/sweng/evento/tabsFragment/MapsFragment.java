@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -28,8 +26,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.maps.android.clustering.Cluster;
-import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,6 +39,7 @@ import ch.epfl.sweng.evento.Events.EventsClusterRenderer;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.tabsFragment.Maps.EventClusterManager;
 
 
 /**
@@ -55,11 +52,7 @@ public class MapsFragment extends SupportMapFragment implements
         ConnectionCallbacks,
         OnConnectionFailedListener,
         OnMyLocationButtonClickListener,
-        InfoWindowAdapter,
-        ClusterManager.OnClusterClickListener<Event>,
-        ClusterManager.OnClusterInfoWindowClickListener<Event>,
-        ClusterManager.OnClusterItemClickListener<Event>,
-        ClusterManager.OnClusterItemInfoWindowClickListener<Event> {
+        InfoWindowAdapter {
     private static final String TAG = MapsFragment.class.getSimpleName();   // LogCat tag
     private static final int NUMBER_OF_MARKERS = 100;                       // Number of marker that will be displayed
     private static final int NUMBER_OF_EVENT = 5;
@@ -72,7 +65,7 @@ public class MapsFragment extends SupportMapFragment implements
     private List<Event> mEvents;
     private Collection<Event> mEventsClick;        // the events actually click
     private RestApi mRestAPI;
-    private ClusterManager<Event> mClusterManager;  // Manage the clustering of the marker
+    private EventClusterManager mClusterManager;  // Manage the clustering of the marker and the callback associate
 
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
@@ -154,17 +147,12 @@ public class MapsFragment extends SupportMapFragment implements
         mMap.setInfoWindowAdapter(this);
 
         // Initialize the manager with the context and the map.
-        mClusterManager = new ClusterManager<Event>(mActivity.getApplicationContext(), mMap);
+        mClusterManager = new EventClusterManager(mActivity.getApplicationContext(), mMap);
         mClusterManager.setRenderer(new EventsClusterRenderer(getContext(), mMap, mClusterManager, null));
 
         // Point the map's listeners at the listeners implemented by the cluster manager.
         mMap.setOnCameraChangeListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
-
-        mClusterManager.setOnClusterClickListener(this);
-        mClusterManager.setOnClusterInfoWindowClickListener(this);
-        mClusterManager.setOnClusterItemClickListener(this);
-        mClusterManager.setOnClusterItemInfoWindowClickListener(this);
 
         if (mGoogleApiClient.isConnected()) {
             zoomOnUser();
@@ -272,6 +260,7 @@ public class MapsFragment extends SupportMapFragment implements
                     mEvents.get(iEvent).getAddress(),
                     mEvents.get(iEvent).getCreator(),
                     mEvents.get(iEvent).getTags()));
+            mClusterManager.cluster();
         }
     }
 
@@ -299,8 +288,13 @@ public class MapsFragment extends SupportMapFragment implements
         // default view
 
         View view;
+        mEventsClick = mClusterManager.getEventsClick();
 
         switch (mEventsClick.size()) {
+            case 0:
+                view = null;
+                Log.d(TAG, "No actual event clicked");
+                break;
             case 1:
                 view = getLayoutInflater(null).inflate(R.layout.infomarker_event, mContainer, false);
                 Event event = mEventsClick.iterator().next();
@@ -321,42 +315,6 @@ public class MapsFragment extends SupportMapFragment implements
                 }
         }
 
-
         return view;
-    }
-
-    @Override
-    public boolean onClusterClick(Cluster<Event> cluster) {
-        // Show a toast with some info when the cluster is clicked.
-        Event event = cluster.getItems().iterator().next();
-        String firstName = event.getTitle();
-        Toast.makeText(getContext(), cluster.getSize() + " (including " + firstName + ")", Toast.LENGTH_SHORT).show();
-
-        // store the actual events in the member
-        mEventsClick = cluster.getItems();
-
-        return false;
-    }
-
-    @Override
-    public void onClusterInfoWindowClick(Cluster<Event> cluster) {
-        // TODO Does nothing, but you could go to a list of the events.
-    }
-
-    @Override
-    public boolean onClusterItemClick(Event event) {
-        if (mEventsClick == null) {
-            mEventsClick = new ArrayList<Event>();
-        }
-
-        mEventsClick.clear();
-        mEventsClick.add(event);
-        // TODO Does nothing, but you could go into the event's page, for example.
-        return false;
-    }
-
-    @Override
-    public void onClusterItemInfoWindowClick(Event event) {
-        // TODO Does nothing, but you could go into the user's profile page, for example.
     }
 }
