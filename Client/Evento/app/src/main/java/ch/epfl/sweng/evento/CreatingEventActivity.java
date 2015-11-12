@@ -75,6 +75,8 @@ public class CreatingEventActivity extends AppCompatActivity
     private TextView mPlaceDetailsText;
     private TextView mPlaceDetailsAttribution;
     private PlaceAutocompleteAdapter mAdapter;
+    private double latitude = 0.0;
+    private double longitude = 0.0;
 
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
             new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
@@ -167,7 +169,6 @@ public class CreatingEventActivity extends AppCompatActivity
 
         // Set up the adapter that will retrieve suggestions from the Places Geo Data API that cover
         // the entire world.
-        // TODO change bounds
         mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, BOUNDS_GREATER_SYDNEY,
                 null);
         mAutocompleteView.setAdapter(mAdapter);
@@ -233,15 +234,30 @@ public class CreatingEventActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 TextView title = (TextView) findViewById(R.id.title);
-                final String titleString = title.getText().toString();
                 TextView description = (TextView) findViewById(R.id.eventDescription);
-                final String descriptionString = description.getText().toString();
                 TextView address = (TextView) findViewById(R.id.eventAddress);
-                final String addressString = address.getText().toString();
+                String titleString = title.getText().toString();
+                String descriptionString = description.getText().toString();
+                String addressString = address.getText().toString();
+
+                // just in case you haven't put any date ;)
+                if(startDate == null){
+                    startDate = new Event.Date(0,0,0,0,0);
+                }
+                if(endDate == null){
+                    endDate = new Event.Date(0,0,0,0,0);
+                }
+                if(titleString.isEmpty()){
+                    titleString = "No title";
+                }
+                if(descriptionString.isEmpty()){
+                    descriptionString = "No description";
+                }
+                if(addressString.isEmpty()){
+                    addressString = "No address";
+                }
 
 
-                double latitude = 0.0;
-                double longitude = 0.0;
                 String creator = "Jack Henri";
                 Random rand = new Random();
                 int id = rand.nextInt(10000);
@@ -347,6 +363,10 @@ public class CreatingEventActivity extends AppCompatActivity
             }
             // Get the Place object from the buffer.
             final Place place = places.get(0);
+
+            // set longitude and latitude
+            latitude = place.getLatLng().latitude;
+            longitude = place.getLatLng().longitude;
 
             // Format details of the place for display and show it in a TextView.
             mPlaceDetailsText.setText(formatPlaceDetails(getResources(), place.getName(),
