@@ -161,7 +161,9 @@ public class CreatingEventActivity extends AppCompatActivity
 
         // Retrieve the TextViews that will display details and attributions of the selected place.
         mPlaceDetailsText = (TextView) findViewById(R.id.place_details);
+        mPlaceDetailsText.setVisibility(View.GONE);
         mPlaceDetailsAttribution = (TextView) findViewById(R.id.place_attribution);
+        mPlaceDetailsAttribution.setVisibility(View.GONE);
 
         // Set up the adapter that will retrieve suggestions from the Places Geo Data API that cover
         // the entire world.
