@@ -170,7 +170,7 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
                 final String titleString = title.getText().toString();
                 TextView description = (TextView) findViewById(R.id.eventDescription);
                 final String descriptionString = description.getText().toString();
-                TextView address = (TextView) findViewById(R.id.eventDescription);
+                TextView address = (TextView) findViewById(R.id.eventAddress);
                 final String addressString = address.getText().toString();
 
 
