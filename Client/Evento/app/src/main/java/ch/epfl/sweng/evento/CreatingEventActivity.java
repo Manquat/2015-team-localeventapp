@@ -77,7 +77,7 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
 
 
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = "http://10.0.2.2:8000/";
+    private static final String urlServer = ServerUrl.get();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
