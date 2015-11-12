@@ -40,6 +40,7 @@ import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.tabsFragment.Maps.EventClusterManager;
+import ch.epfl.sweng.evento.ServerUrl;
 
 
 /**
@@ -96,7 +97,7 @@ public class MapsFragment extends SupportMapFragment implements
         getMapAsync(this);
 
         mEvents = new ArrayList<Event>();
-        mRestAPI = new RestApi(new DefaultNetworkProvider(), getString(R.string.url_server));
+        mRestAPI = new RestApi(new DefaultNetworkProvider(), ServerUrl.get());
         for (int i=0; i<NUMBER_OF_EVENT; i++)
         {
             mRestAPI.getEvent(new GetResponseCallback() {

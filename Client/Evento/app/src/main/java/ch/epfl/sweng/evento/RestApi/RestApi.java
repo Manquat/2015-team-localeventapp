@@ -24,10 +24,11 @@ import ch.epfl.sweng.evento.NetworkProvider;
  *
  */
 public class RestApi{
+    private static final String TAG = "RestApi";
     private NetworkProvider mNetworkProvider;
     private String mUrlServer;
     // TODO: as soon as the server provide a better way to get event, change it
-    private int mNoEvent = 10;
+    private int mNoEvent = 1;
 
 
     public RestApi(NetworkProvider networkProvider, String urlServer){
@@ -40,7 +41,7 @@ public class RestApi{
      * @param callback : receive an event as parameter and typically put it in a set
      */
     public void getEvent(final GetResponseCallback callback){
-        mNoEvent += 1;
+        //mNoEvent += 1;
         String restUrl = UrlMaker.get(mUrlServer, mNoEvent);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback (){
             @Override
@@ -56,6 +57,7 @@ public class RestApi{
                     {
                         Log.e("RestException", "Exception thrown in getEvent", e);
                     }
+
                 }
                 callback.onDataReceived(event);
             }
@@ -108,26 +110,6 @@ public class RestApi{
         }).execute();
     }
 
-    /**
-     * TODO: the interested and participation options
-     *
-     */
-
-    public void setInterestedInEvent(Event event, final PostCallback callback) {
-
-    }
-
-    public void setNotInterestedInEvent(Event event, final PostCallback callback) {
-
-    }
-
-    public void setParticipateToEvent(Event event, final PostCallback callback) {
-
-    }
-
-    public void setNotParticipateToEvent(Event event, final PostCallback callback) {
-
-    }
 
 }
 
