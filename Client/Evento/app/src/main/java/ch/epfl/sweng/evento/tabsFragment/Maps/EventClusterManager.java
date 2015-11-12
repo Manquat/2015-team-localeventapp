@@ -1,10 +1,18 @@
 package ch.epfl.sweng.evento.tabsFragment.Maps;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.MarkerManager;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
@@ -12,7 +20,9 @@ import com.google.maps.android.clustering.ClusterManager;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import ch.epfl.sweng.evento.EventActivity;
 import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.R;
 
 /**
  * Created by Gautier on 02/11/2015.
@@ -21,15 +31,21 @@ public class EventClusterManager extends ClusterManager<Event> implements
         ClusterManager.OnClusterClickListener<Event>,
         ClusterManager.OnClusterInfoWindowClickListener<Event>,
         ClusterManager.OnClusterItemClickListener<Event>,
-        ClusterManager.OnClusterItemInfoWindowClickListener<Event> {
+        ClusterManager.OnClusterItemInfoWindowClickListener<Event>,
+        GoogleMap.InfoWindowAdapter,
+        GoogleMap.OnInfoWindowClickListener {
     final static String TAG = "EventClusterManager";
 
     private Context mContext;
     private Collection<Event> mEventsClick;
+    private ViewGroup mContainer;
+    private Activity mActivity;
 
-    public EventClusterManager(Context context, GoogleMap map) {
+    public EventClusterManager(Context context, GoogleMap map, ViewGroup container, Activity parentActivity) {
         super(context, map);
         mContext = context;
+        mContainer = container;
+        mActivity = parentActivity;
         init();
     }
 
@@ -109,7 +125,10 @@ public class EventClusterManager extends ClusterManager<Event> implements
      */
     @Override
     public void onClusterItemInfoWindowClick(Event event) {
-        // TODO Does nothing, but you could go into the user's profile page, for example.
+        // TODO Does nothing, but you could go into the event's page, for example.
+
+        Intent intent = new Intent(mContext, EventActivity.class);
+        mActivity.startActivity(intent);
     }
 
     /**
@@ -120,5 +139,58 @@ public class EventClusterManager extends ClusterManager<Event> implements
     public Collection<Event> getEventsClick() {
         // defensive copy
         return new ArrayList<Event>(mEventsClick);
+    }
+
+    /**
+     * Call before creating the marker of the event
+     *
+     * @param marker the marker that will be displayed
+     * @return null to let's the default view display or a view that will be used instead
+     */
+    @Override
+    public View getInfoWindow(Marker marker) {
+        // return null to let's the default view display or a view that will be used instead
+        return null;
+    }
+
+    /**
+     * Personalise the info pop-up of the marker
+     *
+     * @param marker the marker where the user have click
+     * @return The view that represent the info bubble
+     */
+    @Override
+    public View getInfoContents(Marker marker) {
+        // return null to let's the default view display or a view that will be display inside the
+        // default view
+
+        View view;
+
+        switch (mEventsClick.size()) {
+            case 0:
+                view = null;
+                Log.d(TAG, "No actual event clicked");
+                break;
+            case 1:
+                view = ViewGroup.inflate(mContext, R.layout.infomarker_event, null);
+                Event event = mEventsClick.iterator().next();
+                TextView tvTitle = (TextView) view.findViewById(R.id.info_title);
+                tvTitle.setText(event.getTitle());
+
+                TextView tvDescription = (TextView) view.findViewById(R.id.info_description);
+                tvDescription.setText(event.getDescription());
+                break;
+            default:
+                view = ViewGroup.inflate(mContext, R.layout.infomarker_cluster, null);
+
+                LinearLayout layout = (LinearLayout) view.findViewById(R.id.list_event);
+                for (Event iEvent : mEventsClick) {
+                    TextView textView = new TextView(mContext);
+                    textView.setText(iEvent.getTitle());
+                    layout.addView(textView);
+                }
+        }
+
+        return view;
     }
 }

@@ -51,8 +51,7 @@ public class MapsFragment extends SupportMapFragment implements
         OnMapReadyCallback,
         ConnectionCallbacks,
         OnConnectionFailedListener,
-        OnMyLocationButtonClickListener,
-        InfoWindowAdapter {
+        OnMyLocationButtonClickListener {
     private static final String TAG = MapsFragment.class.getSimpleName();   // LogCat tag
     private static final int NUMBER_OF_MARKERS = 100;                       // Number of marker that will be displayed
     private static final int NUMBER_OF_EVENT = 5;
@@ -105,7 +104,7 @@ public class MapsFragment extends SupportMapFragment implements
                     mEvents.add(event);
 
                 }
-            }); //TODO remove the cast once the change in restAPI is made
+            });
         }
 
         mContext = view.getContext();
@@ -144,15 +143,16 @@ public class MapsFragment extends SupportMapFragment implements
 
         mMap.setMyLocationEnabled(true);
         mMap.setOnMyLocationButtonClickListener(this);
-        mMap.setInfoWindowAdapter(this);
 
         // Initialize the manager with the context and the map.
-        mClusterManager = new EventClusterManager(mActivity.getApplicationContext(), mMap);
+        mClusterManager = new EventClusterManager(mActivity.getApplicationContext(), mMap, mContainer, getActivity());
         mClusterManager.setRenderer(new EventsClusterRenderer(getContext(), mMap, mClusterManager, null));
 
         // Point the map's listeners at the listeners implemented by the cluster manager.
         mMap.setOnCameraChangeListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
+        mMap.setInfoWindowAdapter(mClusterManager);
+        mMap.setOnInfoWindowClickListener(mClusterManager);
 
         if (mGoogleApiClient.isConnected()) {
             zoomOnUser();
@@ -262,59 +262,5 @@ public class MapsFragment extends SupportMapFragment implements
                     mEvents.get(iEvent).getTags()));
             mClusterManager.cluster();
         }
-    }
-
-    /**
-     * Call before creating the marker of the event
-     *
-     * @param marker the marker that will be displayed
-     * @return null to let's the default view display or a view that will be used instead
-     */
-    @Override
-    public View getInfoWindow(Marker marker) {
-        // return null to let's the default view display or a view that will be used instead
-        return null;
-    }
-
-    /**
-     * Personalise the info pop-up of the marker
-     *
-     * @param marker the marker where the user have click
-     * @return The view that represent the info bubble
-     */
-    @Override
-    public View getInfoContents(Marker marker) {
-        // return null to let's the default view display or a view that will be display inside the
-        // default view
-
-        View view;
-        mEventsClick = mClusterManager.getEventsClick();
-
-        switch (mEventsClick.size()) {
-            case 0:
-                view = null;
-                Log.d(TAG, "No actual event clicked");
-                break;
-            case 1:
-                view = getLayoutInflater(null).inflate(R.layout.infomarker_event, mContainer, false);
-                Event event = mEventsClick.iterator().next();
-                TextView tvTitle = (TextView) view.findViewById(R.id.info_title);
-                tvTitle.setText(event.getTitle());
-
-                TextView tvDescription = (TextView) view.findViewById(R.id.info_description);
-                tvDescription.setText(event.getDescription());
-                break;
-            default:
-                view = getLayoutInflater(null).inflate(R.layout.infomarker_cluster, mContainer, false);
-
-                LinearLayout layout = (LinearLayout) view.findViewById(R.id.list_event);
-                for (Event iEvent : mEventsClick) {
-                    TextView textView = new TextView(mContext);
-                    textView.setText(iEvent.getTitle());
-                    layout.addView(textView);
-                }
-        }
-
-        return view;
     }
 }
