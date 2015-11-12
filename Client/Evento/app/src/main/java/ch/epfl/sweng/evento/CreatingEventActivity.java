@@ -274,6 +274,9 @@ public class CreatingEventActivity extends AppCompatActivity
                     }
                 });
                 Toast.makeText(getApplicationContext(), "Submitting " + titleString, Toast.LENGTH_SHORT).show();
+
+                finish();
+
             }
         });
 
