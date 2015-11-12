@@ -9,6 +9,7 @@ import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +44,7 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
     private Event.Date startDate;
     private Event.Date endDate;
     private boolean mStartOrEndDate;
+    private boolean mDisplayTimeFragment;
     private DialogFragment mDateFragment;
     private DialogFragment mTimeFragment;
     private ExpendableList mListAdapter;
@@ -55,8 +57,11 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
                               int dayOfMonth) {
         if(mStartOrEndDate == false) startDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
         else endDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
-        mTimeFragment = new TimePickerDialogFragment();
-        mTimeFragment.show(getFragmentManager(), "timePicker");
+        if(mDisplayTimeFragment == true) {
+            mTimeFragment = new TimePickerDialogFragment();
+            mTimeFragment.show(getFragmentManager(), "timePicker");
+            mDisplayTimeFragment = false;
+        }
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute){
@@ -77,11 +82,12 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
 
 
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = "http://10.0.2.2:8000/";
+    private static final String urlServer = ServerUrl.get();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDisplayTimeFragment = false;
         setContentView(R.layout.activity_creating_event);
         Button validateButton = (Button) findViewById(R.id.submitEvent);
         mDateFragment = new DatePickerDialogFragment();
@@ -91,6 +97,7 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
         mStartDateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mDisplayTimeFragment = true;
                 mStartOrEndDate = false;
                 mDateFragment.show(getFragmentManager(), "datePicker");
             }
@@ -101,6 +108,7 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
         mEndDateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mDisplayTimeFragment = true;
                 mStartOrEndDate = true;
                 mDateFragment.show(getFragmentManager(), "datePicker");
             }
@@ -170,7 +178,7 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
                 final String titleString = title.getText().toString();
                 TextView description = (TextView) findViewById(R.id.eventDescription);
                 final String descriptionString = description.getText().toString();
-                TextView address = (TextView) findViewById(R.id.eventDescription);
+                TextView address = (TextView) findViewById(R.id.eventAddress);
                 final String addressString = address.getText().toString();
 
 

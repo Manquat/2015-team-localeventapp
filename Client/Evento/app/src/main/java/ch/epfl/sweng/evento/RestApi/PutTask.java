@@ -4,6 +4,7 @@ package ch.epfl.sweng.evento.RestApi;
  * Created by cerschae on 15/10/2015.
  */
 
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -18,6 +19,7 @@ import ch.epfl.sweng.evento.NetworkProvider;
  * An AsyncTask implementation for performing PUTs.
  */
 public class PutTask extends AsyncTask<String, String, String> {
+    private static final String TAG = "PutTask";
     private static final int HTTP_SUCCESS_START = 200;
     private static final int HTTP_SUCCESS_END = 299;
     private String mRestUrl;
@@ -64,9 +66,9 @@ public class PutTask extends AsyncTask<String, String, String> {
                 response = Integer.toString(responseCode);
             }
         } catch (IOException e) {
-            Log.e("RestException", "Exception thrown in PutTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         } catch (RestException e) {
-            Log.e("RestException", "Exception thrown in PutTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         }
 
         return response;

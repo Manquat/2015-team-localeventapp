@@ -21,7 +21,7 @@ public enum EventDatabase {
 
     private EventDatabase() {
         eventSet = new EventSet();
-        mRestAPI = new RestApi(new DefaultNetworkProvider(), "https://protected-hamlet-4797.herokuapp.com/");
+        mRestAPI = new RestApi(new DefaultNetworkProvider(), ServerUrl.get());
 
         //temporary mock events
         Event.Date start = new Event.Date(2015, 10, 12, 18, 30);
