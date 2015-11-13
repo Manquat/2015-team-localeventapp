@@ -22,7 +22,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
@@ -31,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
 
 /**
@@ -46,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
     private Toolbar mToolbar;
     private ViewPager mPager;
-    private ViewPageAdapter mAdaptater;
+    private ViewPageAdapter mAdapter;
     private SlidingTabLayout mTabs;
     private List<CharSequence> mTitles = new ArrayList<CharSequence>(
             Arrays.asList("Maps", "Events", "Calendar"));
@@ -63,11 +61,11 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
 
         // Creating the ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs.
-        mAdaptater = new ViewPageAdapter(getSupportFragmentManager(), mTitles);
+        mAdapter = new ViewPageAdapter(getSupportFragmentManager(), mTitles);
 
         // Assigning ViewPager View and setting the adapter
         mPager = (ViewPager) findViewById(R.id.pager);
-        mPager.setAdapter(mAdaptater);
+        mPager.setAdapter(mAdapter);
 
         // Set the mosaic as the first launched screen
         mPager.setCurrentItem(MOSAIC_POSITION);

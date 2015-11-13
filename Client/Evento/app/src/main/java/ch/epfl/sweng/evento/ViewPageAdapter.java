@@ -2,6 +2,7 @@ package ch.epfl.sweng.evento;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import ch.epfl.sweng.evento.tabsFragment.MapsFragment;
 /**
  * Created by Gautier on 21/10/2015.
  */
-public class ViewPageAdapter extends FragmentStatePagerAdapter {
+public class ViewPageAdapter extends FragmentPagerAdapter {
     private List<CharSequence> mTitles; // This will Store the Titles of the Tabs
 
     // Build a Constructor and assign the passed Values to appropriate values in the class

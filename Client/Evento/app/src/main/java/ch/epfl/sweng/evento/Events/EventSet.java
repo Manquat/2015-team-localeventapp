@@ -10,12 +10,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import ch.epfl.sweng.evento.common.logger.Log;
+
 /**
  * Created by Val on 24.10.2015.
  */
 public class EventSet {
 
-    //The container of Events. For now, it's a Map with the ID as key values
+    private static final String TAG = "EventSet";
+
+    //The container of Events. For now, it's a Map with the Signature as key values
     private Map<Long, Event> mEvents;
 
     /**
@@ -219,5 +223,23 @@ public class EventSet {
                 new HashSet<String>(),
                 new Event.CustomDate(),
                 new Event.CustomDate());
+    }
+
+    public int getPosition(long signature) {
+        int position =0;
+        Iterator<Long> iterator = mEvents.keySet().iterator();
+        boolean stop = false;
+
+        while (iterator.next() != signature) {
+            ++position;
+
+            if (!iterator.hasNext()) {
+                Log.d(TAG, "No such event return the first event");
+                position = 0;
+                break;
+            }
+        }
+
+        return position;
     }
 }
