@@ -41,15 +41,13 @@ public class EventClusterManager extends ClusterManager<Event> implements
 
     private Context     mContext;
     private Collection<Event> mEventsClick;
-    private ViewGroup   mContainer;
     private Activity    mActivity;
     private GoogleMap   mMap;
 
-    public EventClusterManager(Context context, GoogleMap map, ViewGroup container, Activity parentActivity) {
+    public EventClusterManager(Context context, GoogleMap map, Activity parentActivity) {
         super(context, map);
         mContext = context;
         mMap = map;
-        mContainer = container;
         mActivity = parentActivity;
         init();
     }

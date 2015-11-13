@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Random;
 
 import ch.epfl.sweng.evento.DefaultNetworkProvider;
+import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventsClusterRenderer;
 import ch.epfl.sweng.evento.R;
@@ -91,22 +92,29 @@ public class MapsFragment extends SupportMapFragment implements
         mContainer = container;
         View view = super.onCreateView(inflater, mContainer, savedInstanceState);
 
+        if (view == null) {
+            Log.e(TAG, "The maps view cannot be created");
+            throw new NullPointerException();
+        }
+
         getMapAsync(this);
 
         mEvents = new ArrayList<Event>();
-        mRestAPI = new RestApi(new DefaultNetworkProvider(), ServerUrl.get());
-        for (int i=0; i<NUMBER_OF_EVENT; i++)
-        {
-            mRestAPI.getEvent(new GetResponseCallback() {
-                @Override
-                public void onDataReceived(Event event){
-                    mEvents.add(event);
+        mEvents.add(EventDatabase.INSTANCE.getFirstEvent());
 
-                }
-            });
+        for (int i=0; i<NUMBER_OF_EVENT -1; i++)
+        {
+            mEvents.add(EventDatabase.INSTANCE.getNextEvent(mEvents.get(i)));
         }
 
+
         mContext = view.getContext();
+
+        if (mContext == null)
+        {
+            Log.e(TAG, "The actual context don't exist");
+            throw new NullPointerException();
+        }
 
         mGoogleApiClient = new GoogleApiClient.Builder(mContext)
                 .addApi(LocationServices.API)
@@ -144,7 +152,7 @@ public class MapsFragment extends SupportMapFragment implements
         mMap.setOnMyLocationButtonClickListener(this);
 
         // Initialize the manager with the context and the map.
-        mClusterManager = new EventClusterManager(mActivity.getApplicationContext(), mMap, mContainer, getActivity());
+        mClusterManager = new EventClusterManager(mActivity.getApplicationContext(), mMap, getActivity());
         mClusterManager.setRenderer(new EventsClusterRenderer(getContext(), mMap, mClusterManager, null));
 
         // Point the map's listeners at the listeners implemented by the cluster manager.
