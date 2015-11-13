@@ -85,8 +85,8 @@ public class CreatingEventActivity extends AppCompatActivity
 
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
-        if(mStartOrEndDate == false) startDate = new Event.Date(year, monthOfYear+1, dayOfMonth, 0, 0);
-        else endDate = new Event.Date(year, monthOfYear+1, dayOfMonth, 0, 0);
+        if(mStartOrEndDate == false) startDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
+        else endDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
         if(mDisplayTimeFragment == true) {
             mTimeFragment = new TimePickerDialogFragment();
             mTimeFragment.show(getFragmentManager(), "timePicker");
@@ -97,13 +97,13 @@ public class CreatingEventActivity extends AppCompatActivity
     public void onTimeSet(TimePicker view, int hourOfDay, int minute){
         if(mStartOrEndDate == false){
             startDate.setTime(hourOfDay, minute);
-            String s = Integer.toString(startDate.getMonth()) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
+            String s = Integer.toString(startDate.getMonth()+1) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
                     " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes()) ;
             mStartDateView.setText(s);
         }
         else {
             endDate.setTime(hourOfDay, minute);
-            String s = Integer.toString(endDate.getMonth()) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) +
+            String s = Integer.toString(endDate.getMonth()+1) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) +
                     " at " + Integer.toString(endDate.getHour()) + ":" + Integer.toString(endDate.getMinutes()) ;
             mEndDateView.setText(s);
         }

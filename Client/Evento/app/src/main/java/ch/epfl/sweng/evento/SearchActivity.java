@@ -82,13 +82,13 @@ public class SearchActivity extends AppCompatActivity
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                           int dayOfMonth) {
         if(mStartOrEndDate == false) {
-            startDate = new Event.Date(year, monthOfYear+1, dayOfMonth, 0, 0);
-            String s = Integer.toString(startDate.getMonth()) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) ;
+            startDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
+            String s = Integer.toString(startDate.getMonth()+1) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) ;
             mStartDateView.setText(s);
         }
         else {
-            endDate = new Event.Date(year, monthOfYear+1, dayOfMonth, 0, 0);
-            String s = Integer.toString(endDate.getMonth()) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) ;
+            endDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
+            String s = Integer.toString(endDate.getMonth()+1) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) ;
             mEndDateView.setText(s);
         }
     }

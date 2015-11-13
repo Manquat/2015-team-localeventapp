@@ -9,10 +9,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Set;
+import java.util.TimeZone;
 
 /**
  * Created by Val on 15.10.2015.
@@ -92,6 +94,13 @@ public class Event implements ClusterItem {
     public GregorianCalendar getCalendarEnd() {
         return new GregorianCalendar(mEndDate.getYear(), mEndDate.getMonth(), mEndDate.getDay(),
                 mEndDate.getHour(), mEndDate.getMinutes());
+    }
+
+    public String getProperDateString(){
+        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        timeFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String time = timeFormat.format(this.getCalendarStart().getTime());
+        return time;
     }
 
     public void debugLogEvent() {
