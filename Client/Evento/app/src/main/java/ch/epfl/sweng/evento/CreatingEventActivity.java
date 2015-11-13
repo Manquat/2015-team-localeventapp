@@ -85,8 +85,8 @@ public class CreatingEventActivity extends AppCompatActivity
 
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
-        if(mStartOrEndDate == false) startDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
-        else endDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
+        if(mStartOrEndDate == false) startDate = new Event.Date(year, monthOfYear+1, dayOfMonth, 0, 0);
+        else endDate = new Event.Date(year, monthOfYear+1, dayOfMonth, 0, 0);
         if(mDisplayTimeFragment == true) {
             mTimeFragment = new TimePickerDialogFragment();
             mTimeFragment.show(getFragmentManager(), "timePicker");
@@ -264,9 +264,15 @@ public class CreatingEventActivity extends AppCompatActivity
                 Random rand = new Random();
                 int id = rand.nextInt(10000);
 
+
+
                 Event e = new Event(id, titleString, descriptionString, latitude,
                                     longitude, addressString, creator,
                                     new HashSet<String>(),startDate, endDate);
+
+                Log.d(TAG, "date de l'event: " + e.getStartDate().toString() + " " + e.getEndDate().toString());
+
+
                 RestApi restApi = new RestApi(networkProvider, urlServer);
 
                 restApi.postEvent(e, new PostCallback() {

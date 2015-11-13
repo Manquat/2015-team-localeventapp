@@ -1,5 +1,8 @@
 package ch.epfl.sweng.evento.RestApi;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import ch.epfl.sweng.evento.Events.Event;
 
 /**
@@ -11,6 +14,8 @@ public final class Serializer {
 
 
     public static String event(Event e) {
+
+
         String res;
         res = "{\n"
                 + "  \"Event_name\": \"" + e.getTitle() + "\",\n"
@@ -19,6 +24,7 @@ public final class Serializer {
                 + "  \"latitude\": " + e.getLatitude() + ",\n"
                 + "  \"longitude\": " + e.getLongitude() + ",\n"
                 + "  \"address\": \"" + e.getAddress() + "\", \n "
+                + " \"date\" : \"" + e.getCalendarStart().getTimeInMillis() + "\", \n "
                 + "  \"creator\": \"" + e.getCreator() + "\"\n"
                 + "}\n";
         return res;

@@ -8,6 +8,7 @@ import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
@@ -19,6 +20,7 @@ import java.util.Calendar;
  * Created by thomas on 09/11/15.
  */
 public class DatePickerDialogFragment extends DialogFragment {
+    private String TAG = "DatePickerDialogFragment";
     private DatePickerDialog.OnDateSetListener listener;
 
     public DatePickerDialogFragment()
@@ -27,11 +29,14 @@ public class DatePickerDialogFragment extends DialogFragment {
 
     public void setListener(DatePickerDialog.OnDateSetListener listener)
     {
-        listener = listener;
+        this.listener = listener;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        if(listener == null) {
+            Log.e(TAG, "listener is null");
+        }
         // Use the current date as the default date in the picker
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);

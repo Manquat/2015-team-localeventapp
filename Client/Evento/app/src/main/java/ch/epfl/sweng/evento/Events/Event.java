@@ -9,6 +9,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Set;
 
 /**
@@ -80,6 +83,15 @@ public class Event implements ClusterItem {
         bitmap.compress(Bitmap.CompressFormat.PNG,100, outputStream);
         byte [] b = outputStream.toByteArray();
         mPicture = Base64.encodeToString(b, Base64.DEFAULT);
+    }
+
+    public GregorianCalendar getCalendarStart() {
+        return new GregorianCalendar(mStartDate.getYear(), mStartDate.getMonth(), mStartDate.getDay(),
+                mStartDate.getHour(), mStartDate.getMinutes());
+    }
+    public GregorianCalendar getCalendarEnd() {
+        return new GregorianCalendar(mEndDate.getYear(), mEndDate.getMonth(), mEndDate.getDay(),
+                mEndDate.getHour(), mEndDate.getMinutes());
     }
 
     public void debugLogEvent() {
