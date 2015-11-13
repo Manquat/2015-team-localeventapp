@@ -1,5 +1,7 @@
 package ch.epfl.sweng.evento.RestApi;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +16,7 @@ import ch.epfl.sweng.evento.Events.Event;
  * Created by joachimmuth on 16.10.15.
  */
 public class Parser {
+    private static final String TAG = "Parser";
 
     public static ArrayList<Event> events(String s) {
         ArrayList<Event> events = null;
@@ -46,5 +49,20 @@ public class Parser {
         } catch (IllegalArgumentException e) {
             throw new JSONException("Invalid question structure");
         }
+    }
+
+    public static ArrayList<Event> parseFromJSONMultiple(String response) throws JSONException {
+        ArrayList<Event> eventArrayList = new ArrayList<>();
+
+        // split received string into multiple JSONable string
+        response = response.replace("},{", "}\n{");
+        response = response.substring(1);
+        String[] responseLines = response.split("\n");
+        int i;
+        for(i = 0; i<responseLines.length; i++) {
+            JSONObject jsonObject = new JSONObject(responseLines[i]);
+            eventArrayList.add(parseFromJSON(jsonObject));
+        }
+        return eventArrayList;
     }
 }
