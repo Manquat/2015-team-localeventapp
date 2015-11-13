@@ -240,6 +240,8 @@ public class EventSet {
             }
         }
 
+        --position;//TODO test (I'm afraid that I can pass -1 as result)
+
         return position;
     }
 }

@@ -197,7 +197,7 @@ public class LoginActivity extends AppCompatActivity implements
         // Show the signed-in UI
         //showSignedInUI();
         //TODO something with token and backend server?
-        Intent intent = new Intent(this, EventActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
