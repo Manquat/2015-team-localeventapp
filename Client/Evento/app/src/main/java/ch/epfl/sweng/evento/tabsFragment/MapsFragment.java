@@ -59,11 +59,6 @@ public class MapsFragment extends SupportMapFragment implements
 
     private GoogleMap mMap;
     private Location mLastLocation;
-    private static final Event mockEvent = new Event(1, "Event1", "This is a first event", 1.1, 1.1,
-            "1 long street", "alfredo", new HashSet<String>(), new Event.Date(), new Event.Date());   // a mock event that would be replicated all over the map
-    private List<Event> mEvents;
-    private Collection<Event> mEventsClick;        // the events actually click
-    private RestApi mRestAPI;
     private EventClusterManager mClusterManager;  // Manage the clustering of the marker and the callback associate
 
     // Google client to interact with Google API
@@ -98,15 +93,6 @@ public class MapsFragment extends SupportMapFragment implements
         }
 
         getMapAsync(this);
-
-        mEvents = new ArrayList<Event>();
-        mEvents.add(EventDatabase.INSTANCE.getFirstEvent());
-
-        for (int i=0; i<NUMBER_OF_EVENT -1; i++)
-        {
-            mEvents.add(EventDatabase.INSTANCE.getNextEvent(mEvents.get(i)));
-        }
-
 
         mContext = view.getContext();
 
@@ -235,10 +221,6 @@ public class MapsFragment extends SupportMapFragment implements
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient); //may return null in case of non connected device
         }
 
-        if (mEvents.size() == 0) {
-            mEvents.add(mockEvent);
-        }
-
         // introduction of randomness
         Random random = new Random();
 
@@ -254,20 +236,28 @@ public class MapsFragment extends SupportMapFragment implements
         mMap.clear();
         mClusterManager.clearItems();
 
-        for (int i = 0; i < NUMBER_OF_MARKERS; i++) {
-            double tempLatitude = latitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
-            double tempLongitude = longitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
+        Event prevEvent;
+        int iTot = 0;
 
-            int iEvent = i % mEvents.size();
-            mClusterManager.addItem(new Event(mEvents.get(iEvent).getID(),
-                    mEvents.get(iEvent).getTitle(),
-                    mEvents.get(iEvent).getDescription(),
-                    tempLatitude,
-                    tempLongitude,
-                    mEvents.get(iEvent).getAddress(),
-                    mEvents.get(iEvent).getCreator(),
-                    mEvents.get(iEvent).getTags()));
-            mClusterManager.cluster();
-        }
+        do {
+            prevEvent = EventDatabase.INSTANCE.getFirstEvent();
+            for (int j = 0; j < NUMBER_OF_EVENT && iTot < NUMBER_OF_MARKERS; j++, iTot++) {
+                double tempLatitude = latitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
+                double tempLongitude = longitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
+
+                prevEvent = EventDatabase.INSTANCE.getNextEvent(prevEvent);
+                mClusterManager.addItem( new Event(
+                        prevEvent.getID(),
+                        prevEvent.getTitle(),
+                        prevEvent.getDescription(),
+                        tempLatitude,
+                        tempLongitude,
+                        prevEvent.getAddress(),
+                        prevEvent.getCreator(),
+                        prevEvent.getTags()
+                ));
+                mClusterManager.cluster();
+            }
+        } while (iTot < NUMBER_OF_MARKERS);
     }
 }
