@@ -57,7 +57,7 @@ public enum EventDatabase {
                 @Override
                 public void onDataReceived(Event event) {
                     mEventSet.addEvent(event);
-                    //System.out.println(event.getSignature());
+                    System.out.println("event signature = "+event.getSignature());
                 }
             });
         }
@@ -67,6 +67,7 @@ public enum EventDatabase {
         mEventSet.addEvent(events[2]);
         mEventSet.addEvent(events[3]);
         mEventSet.addEvent(events[4]);
+
     }
 
     void loadNewEvents()

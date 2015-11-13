@@ -234,6 +234,23 @@
         android:layout_marginTop="61dp"
         android:text="Validate" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add a picture"
+        android:id="@+id/pictureButton"
+        android:layout_below="@+id/submitEvent"
+        android:layout_alignEnd="@+id/submitEvent" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/pictureView"
+        android:layout_below="@+id/pictureButton"
+        android:layout_alignStart="@+id/pictureButton"
+        android:minWidth="200dp"
+        android:minHeight="200dp"
+        android:maxWidth="300dp" />
 
 
 </RelativeLayout>
