@@ -344,8 +344,8 @@ public class CreatingEventActivity extends AppCompatActivity
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
 
-            Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
-                    Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
+//                    Toast.LENGTH_SHORT).show();
             Log.i(TAG, "Called getPlaceById to get Place details for " + placeId);
         }
     };
