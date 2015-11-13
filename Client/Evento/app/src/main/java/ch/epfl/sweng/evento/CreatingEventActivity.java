@@ -121,7 +121,7 @@ public class CreatingEventActivity extends AppCompatActivity
         setContentView(R.layout.activity_creating_event);
         Button validateButton = (Button) findViewById(R.id.submitEvent);
         mDateFragment = new DatePickerDialogFragment();
-        mDateFragment.setDatePickerDialogFragment(Calendar.getInstance(), this);
+        mDateFragment.setListener(this);
 
         //START DATE
         mStartDateView = (TextView) findViewById(R.id.startDate);
