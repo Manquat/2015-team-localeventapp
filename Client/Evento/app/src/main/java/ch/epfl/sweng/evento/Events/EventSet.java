@@ -4,13 +4,10 @@ import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.security.Signature;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
@@ -167,7 +164,7 @@ public class EventSet {
         return newEventSet;
     }
 
-    public EventSet filter(Event.Date startDate) {
+    public EventSet filter(Event.CustomDate startDate) {
         EventSet newEventSet = new EventSet();
         for (Event event : mEvents.values()){
             if(event.getStartDate().toLong()>=startDate.toLong()){
@@ -220,7 +217,7 @@ public class EventSet {
                 "",
                 "",
                 new HashSet<String>(),
-                new Event.Date(),
-                new Event.Date());
+                new Event.CustomDate(),
+                new Event.CustomDate());
     }
 }

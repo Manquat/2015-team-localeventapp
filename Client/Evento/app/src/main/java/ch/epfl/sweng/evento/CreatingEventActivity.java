@@ -1,11 +1,7 @@
 package ch.epfl.sweng.evento;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -14,17 +10,12 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -40,13 +31,11 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.RestApi.PostCallback;
@@ -60,8 +49,8 @@ public class CreatingEventActivity extends AppCompatActivity
     private static final String TAG = "CreatingEventActivity";
     private TextView mStartDateView;
     private TextView mEndDateView;
-    private Event.Date startDate;
-    private Event.Date endDate;
+    private Event.CustomDate startDate;
+    private Event.CustomDate endDate;
     private boolean mStartOrEndDate;
     private boolean mDisplayTimeFragment;
     private DialogFragment mDateFragment;
@@ -84,8 +73,8 @@ public class CreatingEventActivity extends AppCompatActivity
 
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
-        if(mStartOrEndDate == false) startDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
-        else endDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
+        if(mStartOrEndDate == false) startDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
+        else endDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
         if(mDisplayTimeFragment == true) {
             mTimeFragment = new TimePickerDialogFragment();
             mTimeFragment.show(getFragmentManager(), "timePicker");
@@ -242,10 +231,10 @@ public class CreatingEventActivity extends AppCompatActivity
 
                 // just in case you haven't put any date ;)
                 if(startDate == null){
-                    startDate = new Event.Date(0,0,0,0,0);
+                    startDate = new Event.CustomDate(0,0,0,0,0);
                 }
                 if(endDate == null){
-                    endDate = new Event.Date(0,0,0,0,0);
+                    endDate = new Event.CustomDate(0,0,0,0,0);
                 }
                 if(titleString.isEmpty()){
                     titleString = "No title";

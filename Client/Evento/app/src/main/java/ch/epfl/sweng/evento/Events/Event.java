@@ -22,8 +22,8 @@ public class Event implements ClusterItem {
     private final String mAddress;
     private final String mCreator;//might be replaced by some kind of User class
     private final Set<String> mTags;
-    private final Date mStartDate;
-    private final Date mEndDate;
+    private final CustomDate mStartDate;
+    private final CustomDate mEndDate;
     private String mPicture;
 
     public Event(int id,
@@ -34,8 +34,8 @@ public class Event implements ClusterItem {
                  String address,
                  String creator,
                  Set<String> tags,
-                 Date startDate,
-                 Date endDate) {
+                 CustomDate startDate,
+                 CustomDate endDate) {
         mID = id;
         mTitle = title;
         mDescription = description;
@@ -43,8 +43,8 @@ public class Event implements ClusterItem {
         mAddress = address;
         mCreator = creator;
         mTags = tags;
-        mStartDate = new Date(startDate);
-        mEndDate = new Date(endDate);
+        mStartDate = new CustomDate(startDate);
+        mEndDate = new CustomDate(endDate);
         mPicture = samplePicture();
     }
 
@@ -63,8 +63,8 @@ public class Event implements ClusterItem {
         mAddress = address;
         mCreator = creator;
         mTags = tags;
-        mStartDate = new Date();
-        mEndDate = new Date();
+        mStartDate = new CustomDate();
+        mEndDate = new CustomDate();
         mPicture = "";
     }
 
@@ -122,11 +122,11 @@ public class Event implements ClusterItem {
         return mTags;
     }
 
-    public Date getStartDate() {
+    public CustomDate getStartDate() {
         return mStartDate;
     }
 
-    public Date getEndDate() {
+    public CustomDate getEndDate() {
         return mEndDate;
     }
 
@@ -150,8 +150,8 @@ public class Event implements ClusterItem {
     }
 
     /**
-     * The signature of an Event is its Date in the long form to which its ID is appended.
-     * It allows to order Events by starting Date AND by ID at the same time.
+     * The signature of an Event is its CustomDate in the long form to which its ID is appended.
+     * It allows to order Events by starting CustomDate AND by ID at the same time.
      * The ID is written on 6 digits for now.
      * @return the signature of the Event in the form yyyymmddhhmmID
      */
@@ -245,7 +245,7 @@ public class Event implements ClusterItem {
                 "AQ35AwUM/AMAEPsDABL8BAQpAAAACQAD+Sb7AwAJAQMAE/wDAQ35AwUM/AMAEPsDABL8BAQpAAAA " +
                 "yAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAAAE=";
     }
-    public static class Date {
+    public static class CustomDate {
         private int mYear;
         private int mMonth;
         private int mDay;
@@ -259,7 +259,7 @@ public class Event implements ClusterItem {
         /**
          * This method returns a long representing the date with appended values
          * It makes comparison between 2 Dates trivial and is also used to get an Event's signature
-         * @return the Date in the form yyyymmddhhmm
+         * @return the CustomDate in the form yyyymmddhhmm
          */
         public long toLong() {
             return (long) (Math.pow(10,8)
@@ -269,7 +269,7 @@ public class Event implements ClusterItem {
                     * mHour + mMinutes);
         }
 
-        public Date() {
+        public CustomDate() {
             mYear = 0;
             mMonth = 0;
             mDay = 0;
@@ -295,7 +295,7 @@ public class Event implements ClusterItem {
             mDay = day;
         }
 
-        public Date(int year, int month, int day, int hour, int minutes) {
+        public CustomDate(int year, int month, int day, int hour, int minutes) {
             mYear = year;
             mMonth = month;
             mDay = day;
@@ -303,7 +303,7 @@ public class Event implements ClusterItem {
             mMinutes = minutes;
         }
 
-        public Date(Date other) {
+        public CustomDate(CustomDate other) {
             mYear = other.mYear;
             mMonth = other.mMonth;
             mDay = other.mDay;

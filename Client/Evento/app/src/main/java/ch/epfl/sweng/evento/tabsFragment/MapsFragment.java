@@ -254,7 +254,9 @@ public class MapsFragment extends SupportMapFragment implements
                         tempLongitude,
                         prevEvent.getAddress(),
                         prevEvent.getCreator(),
-                        prevEvent.getTags()
+                        prevEvent.getTags(),
+                        prevEvent.getStartDate(),
+                        prevEvent.getEndDate()
                 ));
                 mClusterManager.cluster();
             }

@@ -17,20 +17,14 @@
 package ch.epfl.sweng.evento.tabsFragment;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,11 +32,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Vector;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.regex.Pattern;
 
 import ch.epfl.sweng.evento.DefaultNetworkProvider;
-import ch.epfl.sweng.evento.EventActivity;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
@@ -64,9 +55,9 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
     private RestApi mRestAPI;
 
     private static final Event mockEventFootball = new Event(1, "Event1", "This is a first event", 1.1, 1.1,
-            "1 long street", "Football", new HashSet<String>(Arrays.asList("Football")), new Event.Date(), new Event.Date());   // a mock event that would be replicated all over the map
+            "1 long street", "Football", new HashSet<String>(Arrays.asList("Football")), new Event.CustomDate(), new Event.CustomDate());   // a mock event that would be replicated all over the map
     private static final Event mockEventBasket = new Event(1, "Event2", "This is a second event", 1.1, 1.1,
-            "1 long street", "Basketball", new HashSet<String>(Arrays.asList("Basketball")), new Event.Date(), new Event.Date());   // a mock event that would be replicated all over the map
+            "1 long street", "Basketball", new HashSet<String>(Arrays.asList("Basketball")), new Event.CustomDate(), new Event.CustomDate());   // a mock event that would be replicated all over the map
 
     private GridLayout mGridLayout;
     private Activity mActivity;
