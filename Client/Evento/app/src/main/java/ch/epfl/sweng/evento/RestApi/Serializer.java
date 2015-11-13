@@ -18,10 +18,6 @@ public final class Serializer {
 
     public static String event(Event e) {
 
-        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        timeFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        String time = timeFormat.format(e.getCalendarStart().getTime());
-
         String res;
         res = "{\n"
                 + "  \"Event_name\": \"" + e.getTitle() + "\",\n"
@@ -30,7 +26,7 @@ public final class Serializer {
                 + "  \"latitude\": " + e.getLatitude() + ",\n"
                 + "  \"longitude\": " + e.getLongitude() + ",\n"
                 + "  \"address\": \"" + e.getAddress() + "\", \n "
-                + " \"date\" : \"" + time + "\", \n "
+                + " \"date\" : \"" + e.getProperDateString() + "\", \n "
                 + "  \"creator\": \"" + e.getCreator() + "\"\n"
                 + "}\n";
         Log.d(TAG, res);
