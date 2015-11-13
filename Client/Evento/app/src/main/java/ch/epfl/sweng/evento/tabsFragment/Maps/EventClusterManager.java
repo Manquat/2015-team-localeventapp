@@ -1,9 +1,9 @@
 package ch.epfl.sweng.evento.tabsFragment.Maps;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -176,9 +176,11 @@ public class EventClusterManager extends ClusterManager<Event> implements
                 Event event = mEventsClick.iterator().next();
                 TextView tvTitle = (TextView) view.findViewById(R.id.info_title);
                 tvTitle.setText(event.getTitle());
+                tvTitle.setTextColor(ContextCompat.getColor(mContext, R.color.defaultTextColor));
 
                 TextView tvDescription = (TextView) view.findViewById(R.id.info_description);
                 tvDescription.setText(event.getDescription());
+                tvDescription.setTextColor(ContextCompat.getColor(mContext, R.color.defaultTextColor));
                 break;
             default:
                 view = ViewGroup.inflate(mContext, R.layout.infomarker_cluster, null);
@@ -187,6 +189,7 @@ public class EventClusterManager extends ClusterManager<Event> implements
                 for (Event iEvent : mEventsClick) {
                     TextView textView = new TextView(mContext);
                     textView.setText(iEvent.getTitle());
+                    textView.setTextColor(ContextCompat.getColor(mContext, R.color.defaultTextColor));
                     layout.addView(textView);
                 }
         }

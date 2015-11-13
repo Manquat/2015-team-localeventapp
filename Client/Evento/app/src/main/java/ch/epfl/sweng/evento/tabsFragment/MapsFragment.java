@@ -19,13 +19,11 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -150,10 +148,10 @@ public class MapsFragment extends SupportMapFragment implements
         mClusterManager.setRenderer(new EventsClusterRenderer(getContext(), mMap, mClusterManager, null));
 
         // Point the map's listeners at the listeners implemented by the cluster manager.
+        mMap.setOnInfoWindowClickListener(mClusterManager);
         mMap.setOnCameraChangeListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
         mMap.setInfoWindowAdapter(mClusterManager);
-        mMap.setOnInfoWindowClickListener(mClusterManager);
 
         if (mGoogleApiClient.isConnected()) {
             zoomOnUser();

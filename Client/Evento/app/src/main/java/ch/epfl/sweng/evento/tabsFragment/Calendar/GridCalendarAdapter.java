@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -56,8 +54,6 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
     // create a new ImageView for each item referenced by the Adapter
     @Override
     public View getView(int gridPosition, View convertView, ViewGroup parent) {
-        Log.d(tag, "getView ...");
-
         View rootView = convertView;
 
         if (gridPosition < 7) {
@@ -105,7 +101,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
             button.setActivated(false);
 
             if (mCalendarGrid.isCurrentMonth(position)) {
-                button.setTextColor(ContextCompat.getColor(mContext, R.color.colorCurrentMonth));
+                button.setTextColor(ContextCompat.getColor(mContext, R.color.defaultTextColor));
             }
 
             if (mCalendarGrid.isCurrentDay(position)) {
