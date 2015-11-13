@@ -15,6 +15,11 @@ public final class UrlMaker {
         return url;
     }
 
+    public static final String getLots(String urlServer) {
+        String url = urlServer + "events/" + "1212300400/1483225200/46.8/7.1/1500";
+        return url;
+    }
+
     public static final String post(String urlServer) {
         String url = urlServer + "events/";
         return url;

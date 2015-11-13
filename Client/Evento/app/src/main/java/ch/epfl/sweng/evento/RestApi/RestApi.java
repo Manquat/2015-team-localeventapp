@@ -10,6 +10,8 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.NetworkProvider;
 
@@ -53,6 +55,29 @@ public class RestApi{
                     {
                         JSONObject JsonResponse = new JSONObject(response);
                         event = Parser.parseFromJSON(JsonResponse);
+                    } catch (JSONException e)
+                    {
+                        Log.e("RestException", "Exception thrown in getEvent", e);
+                    }
+
+                }
+                callback.onDataReceived(event);
+            }
+        }).execute();
+    }
+
+    public void getMultiplesEvent(final GetResponseCallback callback){
+        String restUrl = UrlMaker.getLots(mUrlServer);
+        new GetTask(restUrl, mNetworkProvider, new RestTaskCallback (){
+            @Override
+            public void onTaskComplete(String response){
+                Event event = null;
+                if (response != null) //TODO treat this problem nicely
+                {
+                    try
+                    {
+                        JSONObject JsonResponse = new JSONObject(response);
+                        ArrayList<Event> eventArrayList = Parser.parseFromJSONMultiple(JsonResponse);
                     } catch (JSONException e)
                     {
                         Log.e("RestException", "Exception thrown in getEvent", e);
