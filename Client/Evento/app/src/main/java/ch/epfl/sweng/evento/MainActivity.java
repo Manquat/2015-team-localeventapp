@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
 import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
     private static final String urlServer = ServerUrl.get();
+    private ArrayList<Event> mEventArrayList = new ArrayList<>();
 
 
     @Override
@@ -64,10 +66,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Get some event
         RestApi restApi = new RestApi(networkProvider, urlServer);
-        restApi.getMultiplesEvent(new GetResponseCallback() {
+        restApi.getMultiplesEvent(new GetMultipleResponseCallback() {
             @Override
-            public void onDataReceived(Event event) {
-                //nothing
+            public void onDataReceived(ArrayList<Event> eventArrayList) {
+                mEventArrayList.addAll(eventArrayList);
             }
         });
 
@@ -100,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
         // Setting the ViewPager For the SlidingTabsLayout
         mTabs.setViewPager(mPager);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
