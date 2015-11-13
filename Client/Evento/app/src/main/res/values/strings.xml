@@ -16,6 +16,7 @@
     <string name="Username">Username</string>
     <string name="Password">Password</string>
     <string name="title_activity_creating_event">CreatingEventActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
 
     <string name="hello_world">Hello world!</string>
 

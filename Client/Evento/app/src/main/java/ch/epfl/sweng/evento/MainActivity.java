@@ -112,8 +112,9 @@ public class MainActivity extends AppCompatActivity {
         if(id == R.id.action_createAnEvent){
             Intent intent = new Intent(this, CreatingEventActivity.class);
             startActivity(intent);
-        } else if (id == R.id.action_logout){
-
+        } else if (id == R.id.action_search){
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

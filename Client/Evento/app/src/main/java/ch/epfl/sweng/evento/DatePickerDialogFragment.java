@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.widget.DatePicker;
@@ -20,16 +21,26 @@ import java.util.Calendar;
  */
 public class DatePickerDialogFragment extends DialogFragment {
 
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the current date as the default date in the picker
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+    private Calendar _date;
+    private DatePickerDialog.OnDateSetListener _listener;
 
-        // Create a new instance of DatePickerDialog and return it
-        return new DatePickerDialog(getActivity(), (CreatingEventActivity)getActivity(), year, month, day);
-        }
+    public DatePickerDialogFragment()
+    {
+    }
+
+    public void setDatePickerDialogFragment( Calendar date, DatePickerDialog.OnDateSetListener listener)
+    {
+        _date = date;
+        _listener = listener;
+    }
+
+
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedState)
+    {
+        DatePickerDialog dialog = new DatePickerDialog(getActivity(), _listener, _date.get(Calendar.YEAR), _date.get(Calendar.MONTH), _date.get(Calendar.DATE));
+        return dialog;
+    }
 
 }

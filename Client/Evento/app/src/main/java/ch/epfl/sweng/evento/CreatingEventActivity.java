@@ -42,6 +42,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -64,7 +65,7 @@ public class CreatingEventActivity extends AppCompatActivity
     private Event.Date endDate;
     private boolean mStartOrEndDate;
     private boolean mDisplayTimeFragment;
-    private DialogFragment mDateFragment;
+    private DatePickerDialogFragment mDateFragment;
     private DialogFragment mTimeFragment;
     private ExpendableList mListAdapter;
     private ExpandableListView mExpListView;
@@ -120,6 +121,7 @@ public class CreatingEventActivity extends AppCompatActivity
         setContentView(R.layout.activity_creating_event);
         Button validateButton = (Button) findViewById(R.id.submitEvent);
         mDateFragment = new DatePickerDialogFragment();
+        mDateFragment.setDatePickerDialogFragment(Calendar.getInstance(), this);
 
         //START DATE
         mStartDateView = (TextView) findViewById(R.id.startDate);
