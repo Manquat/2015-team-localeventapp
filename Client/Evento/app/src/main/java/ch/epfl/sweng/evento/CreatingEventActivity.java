@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -53,7 +54,7 @@ public class CreatingEventActivity extends AppCompatActivity
     private Event.CustomDate endDate;
     private boolean mStartOrEndDate;
     private boolean mDisplayTimeFragment;
-    private DialogFragment mDateFragment;
+    private DatePickerDialogFragment mDateFragment;
     private DialogFragment mTimeFragment;
     private ExpendableList mListAdapter;
     private ExpandableListView mExpListView;
@@ -85,13 +86,13 @@ public class CreatingEventActivity extends AppCompatActivity
     public void onTimeSet(TimePicker view, int hourOfDay, int minute){
         if(mStartOrEndDate == false){
             startDate.setTime(hourOfDay, minute);
-            String s = Integer.toString(startDate.getMonth()) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
+            String s = Integer.toString(startDate.getMonth()+1) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
                     " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes()) ;
             mStartDateView.setText(s);
         }
         else {
             endDate.setTime(hourOfDay, minute);
-            String s = Integer.toString(endDate.getMonth()) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) +
+            String s = Integer.toString(endDate.getMonth()+1) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) +
                     " at " + Integer.toString(endDate.getHour()) + ":" + Integer.toString(endDate.getMinutes()) ;
             mEndDateView.setText(s);
         }
@@ -109,6 +110,7 @@ public class CreatingEventActivity extends AppCompatActivity
         setContentView(R.layout.activity_creating_event);
         Button validateButton = (Button) findViewById(R.id.submitEvent);
         mDateFragment = new DatePickerDialogFragment();
+        mDateFragment.setListener(this);
 
         //START DATE
         mStartDateView = (TextView) findViewById(R.id.startDate);
@@ -251,9 +253,15 @@ public class CreatingEventActivity extends AppCompatActivity
                 Random rand = new Random();
                 int id = rand.nextInt(10000);
 
+
+
                 Event e = new Event(id, titleString, descriptionString, latitude,
                                     longitude, addressString, creator,
                                     new HashSet<String>(),startDate, endDate);
+
+                Log.d(TAG, "date de l'event: " + e.getStartDate().toString() + " " + e.getEndDate().toString());
+
+
                 RestApi restApi = new RestApi(networkProvider, urlServer);
 
                 restApi.postEvent(e, new PostCallback() {
@@ -333,8 +341,8 @@ public class CreatingEventActivity extends AppCompatActivity
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
 
-            Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
-                    Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
+//                    Toast.LENGTH_SHORT).show();
             Log.i(TAG, "Called getPlaceById to get Place details for " + placeId);
         }
     };
