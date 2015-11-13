@@ -11,7 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.MarkerManager;
 import com.google.maps.android.clustering.Cluster;
@@ -36,14 +39,16 @@ public class EventClusterManager extends ClusterManager<Event> implements
         GoogleMap.OnInfoWindowClickListener {
     final static String TAG = "EventClusterManager";
 
-    private Context mContext;
+    private Context     mContext;
     private Collection<Event> mEventsClick;
-    private ViewGroup mContainer;
-    private Activity mActivity;
+    private ViewGroup   mContainer;
+    private Activity    mActivity;
+    private GoogleMap   mMap;
 
     public EventClusterManager(Context context, GoogleMap map, ViewGroup container, Activity parentActivity) {
         super(context, map);
         mContext = context;
+        mMap = map;
         mContainer = container;
         mActivity = parentActivity;
         init();
@@ -98,6 +103,12 @@ public class EventClusterManager extends ClusterManager<Event> implements
     @Override
     public void onClusterInfoWindowClick(Cluster<Event> cluster) {
         // TODO Does nothing, but you could go to a list of the events.
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(cluster.getPosition())
+                .zoom(mMap.getCameraPosition().zoom + 1)
+                .build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
     /**
