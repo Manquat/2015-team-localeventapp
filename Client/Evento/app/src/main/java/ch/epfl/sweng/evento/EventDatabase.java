@@ -1,9 +1,13 @@
 package ch.epfl.sweng.evento;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
@@ -16,6 +20,8 @@ import ch.epfl.sweng.evento.RestApi.RestApi;
  */
 public enum EventDatabase {
     INSTANCE;
+
+    private static final String TAG = "EventDatabase";
 
     private RestApi mRestAPI;
 
@@ -98,12 +104,25 @@ public enum EventDatabase {
      * @return the Event that is right after the 'current' Event in the starting CustomDate order
      */
     public Event getNextEvent(Event current) {
-        System.out.println(mEventSet.eventsLeftAfter(current));
+        Log.d(TAG, Integer.toString(mEventSet.eventsLeftAfter(current)));
         if(mEventSet.eventsLeftAfter(current) < 5)
         {
            loadNewEvents();
         }
         return mEventSet.getNext(current);
+    }
+
+    public Event get(int position) {
+        Event currentEvent = getFirstEvent();
+        for (int i = 0; i <= position; i++)
+        {
+            currentEvent = getNextEvent(currentEvent);
+        }
+        return currentEvent;
+    }
+
+    public int getPosition(long signature) {
+        return mEventSet.getPosition(signature);
     }
 
     //public Event getNextEvent(long signature) { return mEventSet.getNext(signature);}
