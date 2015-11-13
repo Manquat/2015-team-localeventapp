@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ch.epfl.sweng.evento.EventActivity;
+import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
 
@@ -137,6 +138,7 @@ public class EventClusterManager extends ClusterManager<Event> implements
         // TODO Does nothing, but you could go into the event's page, for example.
 
         Intent intent = new Intent(mContext, EventActivity.class);
+        intent.putExtra(EventActivity.KEYCURRENTEVENT, event.getSignature());
         mActivity.startActivity(intent);
     }
 

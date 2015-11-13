@@ -4,6 +4,7 @@ import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.security.Signature;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -29,12 +30,12 @@ public class EventSet {
     }
 
     /**
-     * @param ID the ID of the Event to be returned
-     * @return the Event corresponding to the ID or the special ERROR Event if it's not in the Map
+     * @param signature the Signature of the Event to be returned
+     * @return the Event corresponding to the Signature or the special ERROR Event if it's not in the Map
      */
-    public Event get(long ID) {
-        if (mEvents.containsKey(ID)) {
-            return mEvents.get(ID);
+    public Event get(long signature) {
+        if (mEvents.containsKey(signature)) {
+            return mEvents.get(signature);
         } else {
             return getErrorEvent();
         }

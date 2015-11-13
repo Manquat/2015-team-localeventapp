@@ -80,11 +80,11 @@ public enum EventDatabase {
     /**
      * Returns the Event corresponding to the ID passed in argument
      *
-     * @param id the ID of the desired Event
-     * @return the Event corresponding to the ID.
+     * @param signature the Signature of the desired Event
+     * @return the Event corresponding to the Signature.
      */
-    public Event getEvent(int id) {
-        return eventSet.get(id);
+    public Event getEvent(long signature) {
+        return eventSet.get(signature);
     }
 
     public Event getFirstEvent() {

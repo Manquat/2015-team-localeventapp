@@ -19,6 +19,8 @@ import ch.epfl.sweng.evento.Events.Event;
 public class EventActivity extends AppCompatActivity implements
         GestureDetector.OnGestureListener {
 
+    public static final String KEYCURRENTEVENT = "CurrentEventKey";
+
 
     private GestureDetectorCompat movementDetector;
     private Event[] events;
@@ -42,9 +44,19 @@ public class EventActivity extends AppCompatActivity implements
 
         movementDetector = new GestureDetectorCompat(this, this);
 
+        Bundle bundle = getIntent().getExtras();
 
-        currentEvent = EventDatabase.INSTANCE.getFirstEvent();
+        long currentEventSignature = 0;
+        if (bundle != null) {
+            currentEventSignature = bundle.getLong(KEYCURRENTEVENT);
+        }
 
+        if (currentEventSignature == 0) {
+            currentEvent = EventDatabase.INSTANCE.getFirstEvent();
+        }
+        else {
+            currentEvent = EventDatabase.INSTANCE.getEvent(currentEventSignature);
+        }
         updateFields();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
