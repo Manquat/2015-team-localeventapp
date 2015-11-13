@@ -58,8 +58,8 @@ public class SearchActivity extends AppCompatActivity
     private static final String TAG = "SearchActivity";
     private TextView mStartDateView;
     private TextView mEndDateView;
-    private Event.Date startDate;
-    private Event.Date endDate;
+    private Event.CustomDate startDate;
+    private Event.CustomDate endDate;
     private boolean mStartOrEndDate;
     private boolean mDisplayTimeFragment;
     private DatePickerDialogFragment mDateFragment;
@@ -82,12 +82,12 @@ public class SearchActivity extends AppCompatActivity
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                           int dayOfMonth) {
         if(mStartOrEndDate == false) {
-            startDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
+            startDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
             String s = Integer.toString(startDate.getMonth()+1) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) ;
             mStartDateView.setText(s);
         }
         else {
-            endDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
+            endDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
             String s = Integer.toString(endDate.getMonth()+1) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) ;
             mEndDateView.setText(s);
         }
@@ -139,10 +139,10 @@ public class SearchActivity extends AppCompatActivity
 
                 // just in case you haven't put any date ;)
                 if (startDate == null) {
-                    startDate = new Event.Date(0, 0, 0, 0, 0);
+                    startDate = new Event.CustomDate(0, 0, 0, 0, 0);
                 }
                 if (endDate == null) {
-                    endDate = new Event.Date(0, 0, 0, 0, 0);
+                    endDate = new Event.CustomDate(0, 0, 0, 0, 0);
                 }
                 if (titleString.isEmpty()) {
                     titleString = "No title";
