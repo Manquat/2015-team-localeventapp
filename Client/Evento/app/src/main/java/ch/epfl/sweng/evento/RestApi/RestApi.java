@@ -66,25 +66,22 @@ public class RestApi{
         }).execute();
     }
 
-    public void getMultiplesEvent(final GetResponseCallback callback){
+    public void getMultiplesEvent(final GetMultipleResponseCallback callback){
         String restUrl = UrlMaker.getLots(mUrlServer);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback (){
             @Override
             public void onTaskComplete(String response){
-                Event event = null;
-                if (response != null) //TODO treat this problem nicely
+                ArrayList<Event> eventArrayList = null;
+                if (response != null)
                 {
-                    try
-                    {
-                        JSONObject JsonResponse = new JSONObject(response);
-                        ArrayList<Event> eventArrayList = Parser.parseFromJSONMultiple(JsonResponse);
-                    } catch (JSONException e)
-                    {
-                        Log.e("RestException", "Exception thrown in getEvent", e);
+                    try {
+                         eventArrayList= Parser.parseFromJSONMultiple(response);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "exception in JSON parser");
                     }
 
                 }
-                callback.onDataReceived(event);
+                callback.onDataReceived(eventArrayList);
             }
         }).execute();
     }

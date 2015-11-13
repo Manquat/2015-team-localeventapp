@@ -51,11 +51,18 @@ public class Parser {
         }
     }
 
-    public static ArrayList<Event> parseFromJSONMultiple(JSONObject jsonResponse) {
+    public static ArrayList<Event> parseFromJSONMultiple(String response) throws JSONException {
         ArrayList<Event> eventArrayList = new ArrayList<>();
-        Log.d(TAG, jsonResponse.toString());
 
+        // split received string into multiple JSONable string
+        response = response.replace("},{", "}\n{");
+        response = response.substring(1);
+        String[] responseLines = response.split("\n");
+        int i;
+        for(i = 0; i<responseLines.length; i++) {
+            JSONObject jsonObject = new JSONObject(responseLines[i]);
+            eventArrayList.add(parseFromJSON(jsonObject));
+        }
         return eventArrayList;
-
     }
 }
