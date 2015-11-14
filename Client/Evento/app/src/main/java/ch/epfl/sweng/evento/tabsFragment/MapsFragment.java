@@ -57,6 +57,11 @@ public class MapsFragment extends SupportMapFragment implements
     private static final int NUMBER_OF_EVENT = 10;
     private static final float ZOOM_LEVEL = 15.0f;                          // Zoom level of the map at the beginning
 
+
+//---------------------------------------------------------------------------------------------
+//----Members----------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+
     private GoogleMap mMap;
     private Location mLastLocation;
     private EventClusterManager mClusterManager;  // Manage the clustering of the marker and the callback associate
@@ -68,12 +73,20 @@ public class MapsFragment extends SupportMapFragment implements
     private Context mContext;
     private ViewGroup mContainer;
 
+//---------------------------------------------------------------------------------------------
+//----Constructor------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+
     /**
      * Constructor by default mandatory for fragment class
      */
     public MapsFragment() {
         super();
     }
+
+//---------------------------------------------------------------------------------------------
+//----Callbacks--------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -111,12 +124,18 @@ public class MapsFragment extends SupportMapFragment implements
         return view;
     }
 
+    /**
+     * Call at the start of the fragment
+     */
     @Override
     public void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
     }
 
+    /**
+     * Call at the stop of the fragment
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -153,6 +172,10 @@ public class MapsFragment extends SupportMapFragment implements
         }
     }
 
+    /**
+     * Call when the GoogleApiClient is connected
+     * @param bundle
+     */
     @Override
     public void onConnected(Bundle bundle) {
         if (mMap != null) {
@@ -161,6 +184,10 @@ public class MapsFragment extends SupportMapFragment implements
         }
     }
 
+    /**
+     * Call when the connection of the GoogleApiClient is suspended
+     * @param i
+     */
     @Override
     public void onConnectionSuspended(int i) {
         mGoogleApiClient.connect();
@@ -197,6 +224,9 @@ public class MapsFragment extends SupportMapFragment implements
         return false;
     }
 
+//---------------------------------------------------------------------------------------------
+//----Methods----------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
     /**
      * Zoom on the the position of the user and draw some markers
      */
@@ -239,11 +269,17 @@ public class MapsFragment extends SupportMapFragment implements
         int iTot = 0;
 
         do {
+            // getting the first event from the database
             prevEvent = EventDatabase.INSTANCE.getFirstEvent();
+
+            // getting NUMBER_OF_EVENT events different
+            // (trick to avoid getting 100 events from the database when only 5 are available)
             for (int j = 0; j < NUMBER_OF_EVENT && iTot < NUMBER_OF_MARKERS; j++, iTot++) {
+                // generate randomly the positions in regards of the actual position of the user
                 double tempLatitude = latitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
                 double tempLongitude = longitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
 
+                // get the other events
                 prevEvent = EventDatabase.INSTANCE.getNextEvent(prevEvent);
                 mClusterManager.addItem( new Event(
                         prevEvent.getID(),
@@ -257,8 +293,9 @@ public class MapsFragment extends SupportMapFragment implements
                         prevEvent.getStartDate(),
                         prevEvent.getEndDate()
                 ));
-                mClusterManager.cluster();
             }
+            // refresh the cluster to assemble the markers
+            mClusterManager.cluster();
         } while (iTot < NUMBER_OF_MARKERS);
     }
 }

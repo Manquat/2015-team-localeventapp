@@ -18,7 +18,7 @@ import java.util.Locale;
 import ch.epfl.sweng.evento.R;
 
 /**
- * Adapter for the
+ * Adapter for the GridView that display the CalendarCells
  */
 public class GridCalendarAdapter extends BaseAdapter implements View.OnClickListener {
     private static final String tag = "GridCalendarAdapter";
