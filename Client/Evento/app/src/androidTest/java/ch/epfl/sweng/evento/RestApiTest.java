@@ -212,7 +212,7 @@ public class RestApiTest {
     }
 
     private static final String EVENT_TO_CREATE ="{\n"
-            + "  \"Event_name\": \"Test in room for show\",\n"
+            + "  \"Event_name\": \"Ping-Pong at Sat 2\",\n"
             + "  \"description\": \n"
             + "    \"Beer, ping-pong... let's beerpong\" ,\n"
             + "  \"latitude\": 46.519428,\n"
@@ -230,6 +230,8 @@ public class RestApiTest {
     public void testSerializer2() {
         assertEquals("event are correctly serialized", EVENT_TO_CREATE, EVENT_TO_CREATE_seri);
     }
+
+
     @Test
     public void testPostTaskServer() throws ExecutionException, InterruptedException {
         String url = urlServer + "events/";
