@@ -191,7 +191,7 @@
         android:layout_below="@+id/gridView"
         android:layout_alignEnd="@+id/gridView"
         android:layout_marginTop="61dp"
-        android:text="Validate" />
+        android:text="@string/event_validate" />
 
 
 

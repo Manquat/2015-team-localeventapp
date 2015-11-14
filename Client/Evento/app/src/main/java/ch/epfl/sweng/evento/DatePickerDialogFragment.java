@@ -1,17 +1,9 @@
 package ch.epfl.sweng.evento;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.util.Calendar;
 

@@ -1,19 +1,15 @@
 package ch.epfl.sweng.evento;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by thomas on 09/11/15.
@@ -33,9 +29,9 @@ public class ExpendableList extends BaseExpandableListAdapter {
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosititon) {
+    public Object getChild(int groupPosition, int childPosition) {
         return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .get(childPosititon);
+                .get(childPosition);
     }
 
     @Override

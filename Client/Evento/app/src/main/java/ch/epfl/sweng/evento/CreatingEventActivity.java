@@ -1,34 +1,22 @@
 package ch.epfl.sweng.evento;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.RestApi.PostCallback;
@@ -51,14 +39,14 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
 
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
-        if(mStartOrEndDate == false) startDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
+        if(!mStartOrEndDate) startDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
         else endDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
         mTimeFragment = new TimePickerDialogFragment();
         mTimeFragment.show(getFragmentManager(), "timePicker");
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute){
-        if(mStartOrEndDate == false){
+        if(!mStartOrEndDate){
             startDate.setTime(hourOfDay, minute);
             String s = Integer.toString(startDate.getMonth()) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
                     " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes()) ;
@@ -105,7 +93,7 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
         });
 
         //CATEGORIES
-        // get the listview
+        // get the ListView
         mExpListView = (ExpandableListView) findViewById(R.id.lvExp);
 
         // preparing list data
@@ -116,7 +104,7 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
         // setting list adapter
         mExpListView.setAdapter(mListAdapter);
 
-        // Listview Group click listener
+        // ListView Group click listener
         mExpListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 
             @Override
@@ -129,7 +117,7 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
             }
         });
 
-        // Listview Group expanded listener
+        // ListView Group expanded listener
         mExpListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
@@ -140,7 +128,7 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
             }
         });
 
-        // Listview on child click listener
+        // ListView on child click listener
         mExpListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
             @Override
@@ -214,7 +202,7 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
         party.add("Bill");
 
         List<String> stuff = new ArrayList<String>();
-        stuff.add("Pinguin");
+        stuff.add("Penguin");
         stuff.add("Smurfs");
 
 
