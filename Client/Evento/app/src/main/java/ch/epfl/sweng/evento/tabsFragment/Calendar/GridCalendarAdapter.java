@@ -18,15 +18,22 @@ import java.util.Locale;
 import ch.epfl.sweng.evento.R;
 
 /**
- * Created by Gautier on 27/10/2015.
+ * Adapter for the
  */
 public class GridCalendarAdapter extends BaseAdapter implements View.OnClickListener {
     private static final String tag = "GridCalendarAdapter";
     private static final int NUMBER_OF_CELLS = 7 * 7; // the line for the day of the week, and 6 lines for all the day of the month
 
-    private Context mContext;
+//---------------------------------------------------------------------------------------------
+//----Members----------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
 
+    private Context mContext;
     private CalendarGrid mCalendarGrid;
+
+//---------------------------------------------------------------------------------------------
+//----Constructor------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
 
     public GridCalendarAdapter(Context context) {
         super();
@@ -35,6 +42,10 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         // Initialize the calendar grid at the current date
         mCalendarGrid = new CalendarGrid(new GregorianCalendar(2015, Calendar.DECEMBER, 25));
     }
+
+//---------------------------------------------------------------------------------------------
+//----Get--------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
 
     @Override
     public int getCount() {
@@ -51,7 +62,14 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         return 0;
     }
 
-    // create a new ImageView for each item referenced by the Adapter
+    /**
+     * Create a new ImageView for each item referenced by the Adapter
+     *
+     * @param gridPosition Position in the grid, counting from the first cell on the top left
+     * @param convertView
+     * @param parent
+     * @return An ImageView for this day
+     */
     @Override
     public View getView(int gridPosition, View convertView, ViewGroup parent) {
         View rootView = convertView;
@@ -128,6 +146,10 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         return mCalendarGrid.getStringDate();
     }
 
+//---------------------------------------------------------------------------------------------
+//----Callbacks-------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+
     @Override
     public void onClick(View v) {
         int position = Integer.valueOf((String) v.getTag(R.id.position_tag));
@@ -139,6 +161,10 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         mCalendarGrid.setFocusedDay(position);
         notifyDataSetChanged();
     }
+
+//---------------------------------------------------------------------------------------------
+//----Methods----------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
 
     public void nextMonth() {
         mCalendarGrid.nextMonth();
