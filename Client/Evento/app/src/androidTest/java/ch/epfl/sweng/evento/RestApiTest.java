@@ -55,7 +55,7 @@ public class RestApiTest {
     private static final String wrongUrl = "http://exemple.com";
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
     //private static final String urlServer = "http://10.0.2.2:8000/";
-    private static final String urlServer = "https://protected-hamlet-4797.herokuapp.com";
+    private static final String urlServer = "https://protected-hamlet-4797.herokuapp.com/";
 
     private static final Parser parser = new Parser();
     private static final String PROPER_JSON_STRING = "{\n"
@@ -184,13 +184,15 @@ public class RestApiTest {
         restApi.getEvent(new GetResponseCallback() {
             @Override
             public void onDataReceived(Event event) {
-                Log.d(TAG, event.getTitle());
-                Log.d(TAG, Integer.toString((event.getID())));
-                eventArrayList.add(event);
+                if (event != null) {
+                    Log.d(TAG, event.getTitle());
+                    Log.d(TAG, Integer.toString((event.getID())));
+                    eventArrayList.add(event);
+                }
             }
         });
 
-        Thread.sleep(200);
+        Thread.sleep(2000);
 
         assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
 

@@ -54,9 +54,9 @@ public class PostTask extends AsyncTask<String, String, String> {
             conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));
             conn.setUseCaches(false);
             // send data
-            try (OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream())) {
-                wr.write(postData);
-            }
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(postData);
+
             // get back response code and put it in response string (in case of success)
             int responseCode = 0;
             responseCode = conn.getResponseCode();
