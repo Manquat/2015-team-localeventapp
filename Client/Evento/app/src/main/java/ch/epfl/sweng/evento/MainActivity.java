@@ -46,7 +46,7 @@ import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
  */
 public class MainActivity extends AppCompatActivity {
 
-    public static final String TAG = "MainActivity";
+    private static final String TAG = "MainActivity";
     private Toolbar mToolbar;
     private ViewPager mPager;
     private ViewPageAdapter mAdapter;

@@ -40,8 +40,7 @@ public class PutTask extends AsyncTask<String, String, String> {
         String response = null;
         try {
             // prepare URL and parameter
-            String urlParameters = mRequestBody;
-            String postData = urlParameters;
+            String postData = mRequestBody;
             int postDataLength = postData.length();
             URL url = new URL(mRestUrl);
             HttpURLConnection conn = mNetworkProvider.getConnection(url);
