@@ -47,7 +47,7 @@ import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
  */
 public class ContentFragment extends Fragment implements MyView.OnToggledListener {
 
-    final int PADDING = 5;
+    private final int PADDING = 5;
     private static final int NUMBER_OF_EVENT = 50;
 
     private static Vector<ImageButton> mMosaicVector = new Vector<ImageButton>();
@@ -86,8 +86,6 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
     }
 
     public enum Span {NOTHING, TWO_ROWS, TWO_COLUMNS}
-
-    ;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

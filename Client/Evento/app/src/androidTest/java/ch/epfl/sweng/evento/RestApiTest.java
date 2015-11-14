@@ -111,7 +111,7 @@ public class RestApiTest {
     @Test
     public void testParsingJsonToEvent() throws JSONException {
         JSONObject jsonObject = new JSONObject(PROPER_JSON_STRING);
-        Event eventFromJson = parser.parseFromJSON(jsonObject);
+        Event eventFromJson = Parser.parseFromJSON(jsonObject);
 
         //assertEquals("Event correctly parsed", eventFromJson, PROPER_EVENT);
 
@@ -261,7 +261,7 @@ public class RestApiTest {
                 + "  \"longitude\": 6.580847,\n"
                 + "  \"address\": \"Satellite\", \n "
                 + "  \"creator\": \"Guillaume Meyrat\"\n"
-                + "}\n";;
+                + "}\n";
 
         String url = urlServer + "events/11";
         final ArrayList<Event> eventArrayList = new ArrayList<>();

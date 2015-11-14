@@ -52,7 +52,7 @@ public class MapsFragment extends SupportMapFragment implements
         ConnectionCallbacks,
         OnConnectionFailedListener,
         OnMyLocationButtonClickListener {
-    private static final String TAG = MapsFragment.class.getSimpleName();   // LogCat tag
+    private static final String TAG = "MapsFragment";   // LogCat tag
     private static final int NUMBER_OF_MARKERS = 100;                       // Number of marker that will be displayed
     private static final int NUMBER_OF_EVENT = 10;
     private static final float ZOOM_LEVEL = 15.0f;                          // Zoom level of the map at the beginning
@@ -177,7 +177,6 @@ public class MapsFragment extends SupportMapFragment implements
             GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(),
                     mActivity, 0).show();
             Log.e(TAG, "" + connectionResult.getErrorCode());
-            return;
         }
     }
 
