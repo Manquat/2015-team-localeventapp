@@ -53,7 +53,7 @@ public class MapsFragment extends SupportMapFragment implements
         OnConnectionFailedListener,
         OnMyLocationButtonClickListener {
     private static final String TAG = MapsFragment.class.getSimpleName();   // LogCat tag
-    private static final int NUMBER_OF_MARKERS = 100;                       // Number of marker that will be displayed
+    private static final int NUMBER_OF_MARKERS = 10;                       // Number of marker that will be displayed
     private static final int NUMBER_OF_EVENT = 5;
     private static final float ZOOM_LEVEL = 15.0f;                          // Zoom level of the map at the beginning
 
