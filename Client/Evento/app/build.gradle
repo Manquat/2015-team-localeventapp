@@ -5,9 +5,9 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
-    lintOptions {
+    /*lintOptions {
         abortOnError false
-    }
+    }*/
 
     defaultConfig {
         applicationId "ch.epfl.sweng.evento"
