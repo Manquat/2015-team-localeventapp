@@ -43,8 +43,7 @@ public class EventActivity extends AppCompatActivity implements
         movementDetector = new GestureDetectorCompat(this, this);
 
 
-        Event event = ((EventoApplication) getApplication()).getEventDatabase().getFirstEvent();
-        currentEvent = event;
+        currentEvent = ((EventoApplication) getApplication()).getEventDatabase().getFirstEvent();
 
         updateFields();
 

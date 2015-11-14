@@ -168,10 +168,8 @@ public class CalendarGrid {
                 throw new AssertionError(Current.values());
         }
 
-        GregorianCalendar cal = new GregorianCalendar(mCurrentYear,
+        return new GregorianCalendar(mCurrentYear,
                 effectiveMonth, mDays.get(position));
-
-        return cal;
     }
 
     /**
