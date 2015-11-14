@@ -28,7 +28,7 @@ public class RestApi{
     private NetworkProvider mNetworkProvider;
     private String mUrlServer;
     // TODO: as soon as the server provide a better way to get event, change it
-    private int mNoEvent = 10;
+    private int mNoEvent = 1;
 
 
     public RestApi(NetworkProvider networkProvider, String urlServer){
@@ -41,19 +41,22 @@ public class RestApi{
      * @param callback : receive an event as parameter and typically put it in a set
      */
     public void getEvent(final GetResponseCallback callback){
-        mNoEvent += 1;
+        //mNoEvent += 1;
         String restUrl = UrlMaker.get(mUrlServer, mNoEvent);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback (){
             @Override
             public void onTaskComplete(String response){
                 Event event = null;
-                if (response != null) {
-                    try {
+                if (response != null) //TODO treat this problem nicely
+                {
+                    try
+                    {
                         JSONObject JsonResponse = new JSONObject(response);
                         event = Parser.parseFromJSON(JsonResponse);
                     } catch (JSONException e) {
                         Log.e(TAG, "Exception thrown in getEvent", e);
                     }
+
                 }
                 callback.onDataReceived(event);
             }

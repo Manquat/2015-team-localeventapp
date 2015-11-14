@@ -1,3 +1,4 @@
 .idea
 *.pyc
-Server/mysite/mysite/static/*
+*.css
+/Server/mysite/mysite/static/*

@@ -18,7 +18,7 @@ import java.util.TreeMap;
 public class EventSet {
 
     //The container of Events. For now, it's a Map with the ID as key values
-    private Map<Integer, Event> mEvents;
+    private Map<Long, Event> mEvents;
 
     /**
      * Default constructor
@@ -32,7 +32,7 @@ public class EventSet {
      * @param ID the ID of the Event to be returned
      * @return the Event corresponding to the ID or the special ERROR Event if it's not in the Map
      */
-    public Event get(int ID) {
+    public Event get(long ID) {
         if (mEvents.containsKey(ID)) {
             return mEvents.get(ID);
         } else {
@@ -41,22 +41,25 @@ public class EventSet {
     }
 
     public Event getFirst() {
-        int i = 0;
-        while (!mEvents.containsKey(i)) {
-            i++;
-        }
-        return mEvents.get(i);
+        Iterator<Long> iterator = mEvents.keySet().iterator();
+
+        return mEvents.get(iterator.next());
+    }
+
+    public Event getNext(Event current)
+    {
+        return getNext(current.getSignature());
 
     }
-    //not working yet
-    public Event getNext(int ID)
+
+    public Event getNext(long signature)
     {
-        Iterator<Integer> iterator = mEvents.keySet().iterator();
-        int currentID = -1;//To be sure it's not in the Map
+        Iterator<Long> iterator = mEvents.keySet().iterator();
+        long currentID = -1;//To be sure it's not in the Map
 
         do{
             currentID = iterator.next();
-        }while(iterator.hasNext() && currentID != ID);
+        }while(iterator.hasNext() && currentID != signature);
 
         //If we reached the end of the iterator, it means that 'ID' was the ID of the last Event.
         //In that case, we return the last Event
@@ -72,16 +75,21 @@ public class EventSet {
         }
     }
 
-    public Event getPrevious(int ID)
+    public Event getPrevious(Event current)
     {
-        Iterator<Integer> iterator = mEvents.keySet().iterator();
-        int previousID = -2;
-        int currentID = -1;//To be sure it's not in the Map
+        return getPrevious(current.getSignature());
+    }
+
+    public Event getPrevious(long signature)
+    {
+        Iterator<Long> iterator = mEvents.keySet().iterator();
+        long previousID = -2;
+        long currentID = -1;//To be sure it's not in the Map
 
         do{
             previousID = currentID;
             currentID = iterator.next();
-        }while(iterator.hasNext() && currentID != ID);
+        }while(iterator.hasNext() && currentID != signature);
 
         //if previousID is less than zero, it means the loop has been done only once and that 'ID'
         //is the first Event's ID. In that case, we don't want to go further and we return the
@@ -104,8 +112,9 @@ public class EventSet {
      * @param event the Event to be added
      */
     public void addEvent(Event event) {
-        if (!mEvents.containsKey(event.getID())) {
-            mEvents.put(event.getID(), event);
+        if (event != null && !mEvents.containsKey(event.getSignature())) {
+            //mEvents.put(event.getID(), event);
+            mEvents.put(event.getSignature(),event);
         }
     }
 
@@ -139,7 +148,6 @@ public class EventSet {
      */
     public EventSet filter(Set<String> tags) {
         EventSet newEventSet = new EventSet();
-
         for (Event event : mEvents.values()) {
             if (event.getTags().containsAll(tags)) {
                 newEventSet.addEvent(event); //or mEvents.put(entry)...
@@ -158,10 +166,41 @@ public class EventSet {
         return newEventSet;
     }
 
+    public EventSet filter(Event.Date startDate) {
+        EventSet newEventSet = new EventSet();
+        for (Event event : mEvents.values()){
+            if(event.getStartDate().toLong()>=startDate.toLong()){
+                newEventSet.addEvent(event);
+            }
+        }
+        return newEventSet;
+    }
+
     public int size() {
         return mEvents.size();
     }
 
+    public int eventsLeftAfter(Event event)
+    {
+        int numberOfEvents = 0;
+
+        if(event != null && mEvents.containsKey(event.getSignature()))
+        {
+            Iterator<Long> iterator = mEvents.keySet().iterator();
+            while(iterator.hasNext() && iterator.next() != event.getSignature()){}
+            while(iterator.hasNext())
+            {
+                numberOfEvents++;
+                iterator.next();
+            }
+        }
+        else
+        {
+            numberOfEvents = -1;
+        }
+
+        return numberOfEvents;
+    }
     /**
      * This method returns an error Event.
      * This is just temporary before implementing good exception handling

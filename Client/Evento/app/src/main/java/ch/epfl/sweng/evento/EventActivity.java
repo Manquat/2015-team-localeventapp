@@ -97,12 +97,12 @@ public class EventActivity extends AppCompatActivity implements
     }
 
     private void onSwipeLeft() {
-        currentEvent = EventDatabase.INSTANCE.getNextEvent(currentEvent.getID());
+        currentEvent = EventDatabase.INSTANCE.getNextEvent(currentEvent);
         updateFields();
     }
 
     private void onSwipeRight() {
-        currentEvent = EventDatabase.INSTANCE.getPreviousEvent(currentEvent.getID());
+        currentEvent = EventDatabase.INSTANCE.getPreviousEvent(currentEvent);
 
         updateFields();
     }

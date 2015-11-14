@@ -47,6 +47,7 @@ import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.ServerUrl;
 import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 
 /**
@@ -125,7 +126,7 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
         View view = inflater.inflate(R.layout.fragment_mosaic, container, false);
 
         mEvents = new ArrayList<Event>();
-        mRestAPI = new RestApi(new DefaultNetworkProvider(), getString(R.string.url_server));
+        mRestAPI = new RestApi(new DefaultNetworkProvider(), ServerUrl.get());
         for (int i = 0; i < NUMBER_OF_EVENT; i++) {
             mRestAPI.getEvent(new GetResponseCallback() {
                 @Override
