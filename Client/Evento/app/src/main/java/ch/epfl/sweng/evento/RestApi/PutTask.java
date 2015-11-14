@@ -4,7 +4,6 @@ package ch.epfl.sweng.evento.RestApi;
  * Created by cerschae on 15/10/2015.
  */
 
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.util.Log;
 

@@ -4,9 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
 

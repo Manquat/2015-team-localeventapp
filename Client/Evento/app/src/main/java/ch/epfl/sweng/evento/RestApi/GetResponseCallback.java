@@ -4,8 +4,6 @@ package ch.epfl.sweng.evento.RestApi;
  * Created by cerschae on 15/10/2015.
  */
 
-import java.util.ArrayList;
-
 import ch.epfl.sweng.evento.Events.Event;
 
 /**

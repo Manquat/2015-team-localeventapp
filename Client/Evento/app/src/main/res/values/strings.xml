@@ -26,4 +26,10 @@
     <string name="event_tags">Tags</string>
     <string name="event_description">Description</string>
     <string name="event_create_punch_line">Create your own event !</string>
+    <string name="prev">Prev</string>
+    <string name="next">Next</string>
+    <string name="menu_create_event">Create an event</string>
+    <string name="menu_logout">Logout</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_user">User</string>
 </resources>

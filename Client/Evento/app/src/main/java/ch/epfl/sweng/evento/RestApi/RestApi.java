@@ -18,7 +18,7 @@ import ch.epfl.sweng.evento.NetworkProvider;
  * This allow main thread to send four basic action to Django server: GET, POST, PUT, DELETE
  *
  * Each of the method ask for a Callback allowing the main thread to make an action when the task ends
- * The method return a RESULT string that can be an event (in case of Get) or an HTTPcode (others)
+ * The method return a RESULT string that can be an event (in case of Get) or an HTTP code (others)
  * In case of FAILURE, response is null and main thread has to deal with it in his callback.
  * (exceptions are logged in Log.e with tag RestException)
  *

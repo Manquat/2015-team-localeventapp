@@ -1,18 +1,11 @@
 package ch.epfl.sweng.evento;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.TextView;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
 

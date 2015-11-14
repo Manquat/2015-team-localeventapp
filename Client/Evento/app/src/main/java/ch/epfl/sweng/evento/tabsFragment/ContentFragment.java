@@ -17,20 +17,14 @@
 package ch.epfl.sweng.evento.tabsFragment;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,11 +32,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Vector;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.regex.Pattern;
 
 import ch.epfl.sweng.evento.DefaultNetworkProvider;
-import ch.epfl.sweng.evento.EventActivity;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
@@ -77,7 +68,7 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
     private Vector<MyView> mMyViews;
 
     /**
-     * @return a new instance of {@link ContentFragment}, adding the parameters into a bundle and
+     * Create a new instance of {@link ContentFragment}, adding the parameters into a bundle and
      * setting them as arguments.
      */
     public ContentFragment() {
@@ -112,7 +103,7 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
         /*String idString = v.getIdX() + ":" + v.getIdY();
 
         Toast.makeText(mActivity,
-                "Toogled:\n" +
+                "Toggled:\n" +
                         idString + "\n" +
                         touchOn,
                 Toast.LENGTH_SHORT).show();*/
@@ -168,7 +159,7 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
                             mDisplayOrNot.get(yPos + 1)[xPos] = false;
                             break;
                         default:
-                            Log.d(TAG, "Warning : ContentFragment.OnCreateView.mEvent_DoesntMAtch");
+                            Log.d(TAG, "Warning : ContentFragment.OnCreateView.mEvent_DoesNotMatch");
                             break;
                     }
                     tView.setOnToggledListener(this);
