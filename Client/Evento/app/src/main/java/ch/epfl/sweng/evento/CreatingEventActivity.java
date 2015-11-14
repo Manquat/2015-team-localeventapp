@@ -3,8 +3,15 @@ package ch.epfl.sweng.evento;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -16,6 +23,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -111,6 +119,8 @@ public class CreatingEventActivity extends AppCompatActivity
         Button validateButton = (Button) findViewById(R.id.submitEvent);
         mDateFragment = new DatePickerDialogFragment();
         mDateFragment.setListener(this);
+
+        final Button pictureButton = (Button) findViewById(R.id.pictureButton);
 
         //START DATE
         mStartDateView = (TextView) findViewById(R.id.startDate);
@@ -232,32 +242,36 @@ public class CreatingEventActivity extends AppCompatActivity
                 String addressString = address.getText().toString();
 
                 // just in case you haven't put any date ;)
-                if(startDate == null){
-                    startDate = new Event.CustomDate(0,0,0,0,0);
+                if (startDate == null) {
+                    startDate = new Event.CustomDate(0, 0, 0, 0, 0);
                 }
-                if(endDate == null){
-                    endDate = new Event.CustomDate(0,0,0,0,0);
+                if (endDate == null) {
+                    endDate = new Event.CustomDate(0, 0, 0, 0, 0);
                 }
-                if(titleString.isEmpty()){
+                if (titleString.isEmpty()) {
                     titleString = "No title";
                 }
-                if(descriptionString.isEmpty()){
+                if (descriptionString.isEmpty()) {
                     descriptionString = "No description";
                 }
-                if(addressString.isEmpty()){
+                if (addressString.isEmpty()) {
                     addressString = "No address";
                 }
 
+                ImageView pictureView = (ImageView) findViewById(R.id.pictureView);
+                //Bitmap picture = pictureView.getDrawingCache()
+                Drawable drawable = pictureView.getDrawable();
+                Bitmap picture = ((BitmapDrawable) drawable).getBitmap();
+                pictureView.setImageBitmap(picture);
 
                 String creator = "Jack Henri";
                 Random rand = new Random();
                 int id = rand.nextInt(10000);
 
 
-
                 Event e = new Event(id, titleString, descriptionString, latitude,
-                                    longitude, addressString, creator,
-                                    new HashSet<String>(),startDate, endDate);
+                        longitude, addressString, creator,
+                        new HashSet<String>(), startDate, endDate, picture);
 
                 Log.d(TAG, "date de l'event: " + e.getStartDate().toString() + " " + e.getEndDate().toString());
 
@@ -277,8 +291,39 @@ public class CreatingEventActivity extends AppCompatActivity
             }
         });
 
+        pictureButton.setOnClickListener(new View.OnClickListener(){
 
+            @Override
+            public void onClick(View view) {
+                Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 2);
+            }
+            }
+        );
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        ImageView viewImage = (ImageView) findViewById(R.id.pictureView);
+        Uri selectedImage = data.getData();
+        String[] filePath = { MediaStore.Images.Media.DATA };
+
+        Cursor cursor = getContentResolver().query(selectedImage, filePath, null, null, null);
+        cursor.moveToFirst();
+        int columnIndex = cursor.getColumnIndex(filePath[0]);
+        String picturePath = cursor.getString(columnIndex);
+        cursor.close();
+
+        Bitmap picture = (BitmapFactory.decodeFile(picturePath));
+        int size = 300;
+        Bitmap scaledPicture = Bitmap.createScaledBitmap(picture, size, (int)(size*((double)picture.getHeight()/(double)picture.getWidth())), false);
+        //75k
+        //Log.w("path of image from gallery......******************.........", picturePath "");
+        viewImage.setImageBitmap(scaledPicture);
+    }
+
+
+
 
     private void prepareListData() {
         mListDataHeader = new ArrayList<String>();

@@ -30,6 +30,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
+import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
+import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
 
 /**
@@ -49,12 +54,24 @@ public class MainActivity extends AppCompatActivity {
     private List<CharSequence> mTitles = new ArrayList<CharSequence>(
             Arrays.asList("Maps", "Events", "Calendar"));
     private static final int MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
+    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
+    private static final String urlServer = ServerUrl.get();
+    private ArrayList<Event> mEventArrayList = new ArrayList<>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Get some event
+        RestApi restApi = new RestApi(networkProvider, urlServer);
+        restApi.getMultiplesEvent(new GetMultipleResponseCallback() {
+            @Override
+            public void onDataReceived(ArrayList<Event> eventArrayList) {
+                mEventArrayList.addAll(eventArrayList);
+            }
+        });
 
         // Creating the Toolbar and setting it as the Toolbar for the activity
         mToolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -85,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
         // Setting the ViewPager For the SlidingTabsLayout
         mTabs.setViewPager(mPager);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

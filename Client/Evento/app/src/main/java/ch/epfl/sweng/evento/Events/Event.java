@@ -31,6 +31,29 @@ public class Event implements ClusterItem {
     private final CustomDate mEndDate;
     private String mPicture;
 
+public Event(int id,
+                 String title,
+                 String description,
+                 double latitude,
+                 double longitude,
+                 String address,
+                 String creator,
+                 Set<String> tags,
+                 CustomDate startDate,
+                 CustomDate endDate,
+                 Bitmap picture) {
+        mID = id;
+        mTitle = title;
+        mDescription = description;
+        mLocation = new LatLng(latitude, longitude);
+        mAddress = address;
+        mCreator = creator;
+        mTags = tags;
+        mStartDate = new CustomDate(startDate);
+        mEndDate = new CustomDate(endDate);
+        setPicture(picture);
+    }
+    
     public Event(int id,
                  String title,
                  String description,
@@ -81,10 +104,18 @@ public class Event implements ClusterItem {
 
     public void setPicture(Bitmap bitmap)
     {
-        ByteArrayOutputStream outputStream = new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, outputStream);
-        byte [] b = outputStream.toByteArray();
-        mPicture = Base64.encodeToString(b, Base64.DEFAULT);
+		if(bitmap != null)
+		{
+			ByteArrayOutputStream outputStream = new  ByteArrayOutputStream();
+			bitmap.compress(Bitmap.CompressFormat.PNG,100, outputStream);
+			byte [] b = outputStream.toByteArray();
+			mPicture = Base64.encodeToString(b, Base64.DEFAULT);
+            System.out.println(mPicture.length());
+		}
+		else
+		{
+			mPicture = "";
+		}
     }
 
     public GregorianCalendar getCalendarStart() {

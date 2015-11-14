@@ -29,7 +29,16 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="174dp"
-        android:layout_weight="0.22" />
+        android:layout_weight="0.22" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/eventPictureView"
+            android:layout_gravity="center"
+            android:minWidth="300dp"
+            android:minHeight="50dp" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/startDateView"

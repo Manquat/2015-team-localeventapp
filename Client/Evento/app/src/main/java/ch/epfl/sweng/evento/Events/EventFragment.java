@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import ch.epfl.sweng.evento.EventDatabase;
@@ -48,5 +49,8 @@ public class EventFragment extends Fragment {
         endDateView.setText("to    " + mEvent.getEndDate().toString());
         addressView.setText("at    " + mEvent.getAddress());
         descriptionView.setText(mEvent.getDescription());
+
+        ImageView pictureView = (ImageView) rootView.findViewById(R.id.eventPictureView);
+        pictureView.setImageBitmap(mEvent.getPicture());
     }
 }
