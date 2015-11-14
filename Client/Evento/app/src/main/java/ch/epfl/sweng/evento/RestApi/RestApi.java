@@ -24,6 +24,7 @@ import ch.epfl.sweng.evento.NetworkProvider;
  *
  */
 public class RestApi{
+    private static final String TAG = "RestApi";
     private NetworkProvider mNetworkProvider;
     private String mUrlServer;
     // TODO: as soon as the server provide a better way to get event, change it
@@ -46,15 +47,12 @@ public class RestApi{
             @Override
             public void onTaskComplete(String response){
                 Event event = null;
-                if (response != null) //TODO treat this problem nicely
-                {
-                    try
-                    {
+                if (response != null) {
+                    try {
                         JSONObject JsonResponse = new JSONObject(response);
                         event = Parser.parseFromJSON(JsonResponse);
-                    } catch (JSONException e)
-                    {
-                        Log.e("RestException", "Exception thrown in getEvent", e);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "Exception thrown in getEvent", e);
                     }
                 }
                 callback.onDataReceived(event);
@@ -108,26 +106,6 @@ public class RestApi{
         }).execute();
     }
 
-    /**
-     * TODO: the interested and participation options
-     *
-     */
-
-    public void setInterestedInEvent(Event event, final PostCallback callback) {
-
-    }
-
-    public void setNotInterestedInEvent(Event event, final PostCallback callback) {
-
-    }
-
-    public void setParticipateToEvent(Event event, final PostCallback callback) {
-
-    }
-
-    public void setNotParticipateToEvent(Event event, final PostCallback callback) {
-
-    }
 
 }
 

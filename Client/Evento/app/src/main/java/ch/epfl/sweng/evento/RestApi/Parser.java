@@ -16,22 +16,13 @@ import ch.epfl.sweng.evento.Events.Event;
 public class Parser {
 
     public static ArrayList<Event> events(String s) {
-        ArrayList<Event> events = null;
-        return events;
+        return null;
     }
 
     public static Event parseFromJSON(JSONObject jsonObject) throws JSONException {
 
-        // Check that jsonObject have requiered field
-        // TODO: choose whether other fields are requiered or optional
-        if (!(jsonObject.get("id") instanceof Integer)
-                || !(jsonObject.get("Event_name") instanceof String)
-                ) {
-            throw new JSONException("Invalid question structure");
-        }
 
-
-        // TODO: when the tag to Event will be added ;)
+        // when the tag to Event will be added ;)
 //        JSONArray jsonTags = jsonObject.getJSONArray("tags");
 //        List<String> tags = new ArrayList<String>();
 //        for (int i = 0; i < jsonTags.length(); ++i) {

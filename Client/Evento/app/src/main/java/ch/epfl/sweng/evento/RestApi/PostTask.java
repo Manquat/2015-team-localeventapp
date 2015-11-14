@@ -20,6 +20,7 @@ import ch.epfl.sweng.evento.NetworkProvider;
  * An AsyncTask implementation for performing POSTs.
  */
 public class PostTask extends AsyncTask<String, String, String> {
+    private static final String TAG = "PostTask";
     private static final int HTTP_SUCCESS_START = 200;
     private static final int HTTP_SUCCESS_END = 299;
     private final NetworkProvider mNetworkProvider;
@@ -40,8 +41,7 @@ public class PostTask extends AsyncTask<String, String, String> {
         String response = null;
         try {
             // prepare URL and parameter
-            String urlParameters = mRequestBody;
-            String postData = urlParameters;
+            String postData = mRequestBody;;
             int postDataLength = postData.length();
             URL url = new URL(mRestUrl);
             HttpURLConnection conn = mNetworkProvider.getConnection(url);
@@ -54,9 +54,9 @@ public class PostTask extends AsyncTask<String, String, String> {
             conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));
             conn.setUseCaches(false);
             // send data
-            try (OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream())) {
-                wr.write(postData);
-            }
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(postData);
+
             // get back response code and put it in response string (in case of success)
             int responseCode = 0;
             responseCode = conn.getResponseCode();
@@ -67,13 +67,13 @@ public class PostTask extends AsyncTask<String, String, String> {
             }
 
         } catch (MalformedURLException e) {
-            Log.e("RestException", "Exception thrown in PostTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         } catch (ProtocolException e) {
-            Log.e("RestException", "Exception thrown in PostTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         } catch (IOException e) {
-            Log.e("RestException", "Exception thrown in PostTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         } catch (RestException e) {
-            Log.e("RestException", "Exception thrown in PostTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         }
         return response;
     }

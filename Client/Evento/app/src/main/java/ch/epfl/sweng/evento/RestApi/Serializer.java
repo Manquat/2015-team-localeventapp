@@ -24,10 +24,5 @@ public final class Serializer {
         return res;
     }
 
-    /*public static String filter(EventFilter f){
-        String res;
-        res = null;
-        return res;
-    }*/
 
 }

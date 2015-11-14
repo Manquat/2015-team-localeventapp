@@ -18,4 +18,11 @@
     <string name="title_activity_creating_event">CreatingEventActivity</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="event_title">title</string>
+    <string name="event_creator">creator</string>
+    <string name="event_start_date">startDate</string>
+    <string name="event_end_date">endDate</string>
+    <string name="event_adress">address</string>
+    <string name="event_tags">tags</string>
+    <string name="event_description">description</string>
 </resources>

@@ -120,9 +120,7 @@ public class EventSet {
      */
     public EventSet filter(LatLng latLng, double distance) {
         EventSet newEventSet = new EventSet();
-
-        for (Map.Entry<Integer, Event> entry : mEvents.entrySet()) {
-            Event event = entry.getValue();
+        for (Event event : mEvents.values()) {
             float result[] = new float[1];
             //stores the distance (in meters) between those two points in result[0]
             Location.distanceBetween(event.getLatitude(), event.getLongitude(), latLng.latitude, latLng.longitude, result);
@@ -161,11 +159,7 @@ public class EventSet {
     }
 
     public int size() {
-        if(mEvents == null) {
-            return 0;
-        } else {
-            return mEvents.size();
-        }
+        return mEvents.size();
     }
 
     /**
