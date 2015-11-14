@@ -11,6 +11,7 @@ import java.util.Set;
  * Created by Val on 15.10.2015.
  */
 public class Event implements ClusterItem {
+    private static final String TAG = "Event";
     private final int mID;
     private final String mTitle;
     private final String mDescription;
@@ -62,7 +63,7 @@ public class Event implements ClusterItem {
     }
 
     public void debugLogEvent() {
-        Log.d("Event " + mID + " : ", "title : " + mTitle);
+        Log.d(TAG, "Event " + mID + " : title : " + mTitle);
     }
 
     public int getID() {
