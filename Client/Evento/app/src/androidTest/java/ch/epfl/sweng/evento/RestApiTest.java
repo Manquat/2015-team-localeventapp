@@ -54,8 +54,8 @@ public class RestApiTest {
     private NetworkProvider networkProviderMockito;
     private static final String wrongUrl = "http://exemple.com";
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = "http://10.0.2.2:8000/";
-    //private static final String urlServer = "https://protected-hamlet-4797.herokuapp.com";
+    //private static final String urlServer = "http://10.0.2.2:8000/";
+    private static final String urlServer = "https://protected-hamlet-4797.herokuapp.com";
 
     private static final Parser parser = new Parser();
     private static final String PROPER_JSON_STRING = "{\n"

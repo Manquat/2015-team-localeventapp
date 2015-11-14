@@ -1,92 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:id="@+id/contentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:weightSum="1"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_event" tools:context=".EventActivity">
+    tools:context=".EventActivity"
+    tools:showIn="@layout/activity_event">>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <TextView
+        android:id="@+id/titleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/descriptionView"
+        android:layout_gravity="center_horizontal"
+        android:text="title"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/creatorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleView"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:text="creator"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:weightSum="1"
-        android:id="@+id/contentLayout">
+        android:layout_height="174dp"
+        android:layout_weight="0.22" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="title"
-            android:id="@+id/titleView"
-            android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/descriptionView"
-            android:layout_gravity="center_horizontal" />
+    <TextView
+        android:id="@+id/startDateView"
+        android:layout_width="363dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:text="startDate"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="creator"
-            android:id="@+id/creatorView"
-            android:layout_below="@+id/titleView"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal" />
+    <TextView
+        android:id="@+id/endDateView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/startDateView"
+        android:text="endDate"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="174dp"
-            android:layout_weight="0.22"/>
+    <TextView
+        android:id="@+id/addressView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/endDateView"
+        android:layout_weight="0.10"
+        android:text="address"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <TextView
-            android:layout_width="363dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="startDate"
-            android:id="@+id/startDateView"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true" />
+    <TextView
+        android:id="@+id/tagsView"
+        android:layout_width="292dp"
+        android:layout_height="wrap_content"
+        android:text="tags"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="endDate"
-            android:id="@+id/endDateView"
-            android:layout_alignTop="@+id/startDateView"
-            android:layout_alignParentStart="true" />
+    <TextView
+        android:id="@+id/descriptionView"
+        android:layout_width="276dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addressView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="23dp"
+        android:layout_weight="0.49"
+        android:text="description"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="address"
-            android:id="@+id/addressView"
-            android:layout_below="@+id/endDateView"
-            android:layout_alignParentStart="true"
-            android:layout_weight="0.10" />
-
-        <TextView
-            android:layout_width="292dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="tags"
-            android:id="@+id/tagsView" />
-
-        <TextView
-            android:layout_width="276dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="description"
-            android:id="@+id/descriptionView"
-            android:layout_marginTop="23dp"
-            android:layout_below="@+id/addressView"
-            android:layout_centerHorizontal="true"
-            android:layout_weight="0.49" />
-
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>
