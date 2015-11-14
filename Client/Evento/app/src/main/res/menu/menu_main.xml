@@ -6,23 +6,23 @@
     <item
         android:id="@+id/action_createAnEvent"
         android:orderInCategory="100"
-        android:title="Create an event"
+        android:title="@string/menu_create_event"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_logout"
         android:orderInCategory="100"
-        android:title="Logout"
+        android:title="@string/menu_logout"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_search"
         android:orderInCategory="200"
-        android:title="Search"
+        android:title="@string/menu_search"
         android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_user"
         android:orderInCategory="300"
-        android:title="User"
+        android:title="@string/menu_user"
         android:icon="@drawable/ic_action_user"
         app:showAsAction="ifRoom"/>
 

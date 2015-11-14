@@ -17,7 +17,7 @@ public class MyView extends ImageView {
 
     private boolean mTouchOn;
     private boolean mDownTouch = false;
-    private OnToggledListener mtoggledListener;
+    private OnToggledListener mToggledListener;
     private int midX = 0; //default
     private int midY = 0; //default
 
@@ -58,8 +58,8 @@ public class MyView extends ImageView {
                 mTouchOn = !mTouchOn;
                 invalidate();
 
-                if (mtoggledListener != null) {
-                    mtoggledListener.OnToggled(this, mTouchOn);
+                if (mToggledListener != null) {
+                    mToggledListener.OnToggled(this, mTouchOn);
                 }
 
                 mDownTouch = true;
@@ -82,7 +82,7 @@ public class MyView extends ImageView {
     }
 
     public void setOnToggledListener(OnToggledListener listener) {
-        mtoggledListener = listener;
+        mToggledListener = listener;
     }
 
     public int getIdX() {
