@@ -55,7 +55,8 @@ import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
  */
 public class ContentFragment extends Fragment implements MyView.OnToggledListener {
 
-    final int PADDING = 5;
+    private static final String TAG = "ContentFragment";
+    private final int PADDING = 5;
     private static final int NUMBER_OF_EVENT = 50;
 
     private static Vector<ImageButton> mMosaicVector = new Vector<ImageButton>();
@@ -94,8 +95,6 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
     }
 
     public enum Span {NOTHING, TWO_ROWS, TWO_COLUMNS}
-
-    ;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -150,9 +149,9 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
         boolean[] tmpBooleanRow = new boolean[mNumberOfColumn];
         Span tmpSpanSmtgOrNot = Span.NOTHING;
         for (int yPos = 0, countEvent = 0; countEvent < NUMBER_OF_EVENT; yPos++) {
-            Log.d("yPos :", Integer.toString(yPos));
-            Log.d("Event :", Integer.toString(countEvent));
-            Log.d("Number of row :", Integer.toString(mNumberOfRow));
+            Log.d(TAG, "yPos :" + Integer.toString(yPos));
+            Log.d(TAG, "Event :" + Integer.toString(countEvent));
+            Log.d(TAG, "Number of row :" + Integer.toString(mNumberOfRow));
 
             for (int xPos = 0; xPos < mNumberOfColumn && countEvent < NUMBER_OF_EVENT; xPos++, countEvent++) {
                 MyView tView = new MyView(view.getContext(), xPos, yPos);
@@ -168,7 +167,7 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
                             mDisplayOrNot.get(yPos + 1)[xPos] = false;
                             break;
                         default:
-                            Log.d("Warning ", "ContentFragment.OnCreateView.mEvent_DoesntMAtch");
+                            Log.d(TAG, "Warning : ContentFragment.OnCreateView.mEvent_DoesntMAtch");
                             break;
                     }
                     tView.setOnToggledListener(this);

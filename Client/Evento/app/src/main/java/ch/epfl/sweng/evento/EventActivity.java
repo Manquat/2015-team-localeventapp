@@ -28,23 +28,11 @@ public class EventActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         movementDetector = new GestureDetectorCompat(this, this);
 
 
-        Event event = ((EventoApplication) getApplication()).getEventDatabase().getFirstEvent();
-        currentEvent = event;
+        currentEvent = ((EventoApplication) getApplication()).getEventDatabase().getFirstEvent();
 
         updateFields();
 

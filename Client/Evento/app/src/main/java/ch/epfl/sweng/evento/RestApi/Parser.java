@@ -16,8 +16,7 @@ import ch.epfl.sweng.evento.Events.Event;
 public class Parser {
 
     public static ArrayList<Event> events(String s) {
-        ArrayList<Event> events = null;
-        return events;
+        return null;
     }
 
     public static Event parseFromJSON(JSONObject jsonObject) throws JSONException {

@@ -1,8 +1,13 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
+
+    lintOptions {
+        abortOnError false
+    }
 
     defaultConfig {
         applicationId "ch.epfl.sweng.evento"
@@ -31,9 +36,10 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
-    compile 'com.google.android.gms:play-services:8.1.0'
-    compile 'com.google.android.gms:play-services-identity:8.1.0'
-    compile 'com.google.android.gms:play-services-plus:8.1.0'
+    compile 'com.google.android.gms:play-services:8.3.0'
+    compile 'com.google.android.gms:play-services-identity:8.3.0'
+    compile 'com.google.android.gms:play-services-plus:8.3.0'
+    compile 'com.google.android.gms:play-services-auth:8.3.0'
 
     // for clustering the marker
     compile 'com.google.maps.android:android-maps-utils:0.4+'
