@@ -14,11 +14,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
+
+
+//TODO import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 import ch.epfl.sweng.evento.Events.Event;
 
@@ -59,6 +64,11 @@ public class LoginActivity extends AppCompatActivity implements
                 .addScope(new Scope(Scopes.PROFILE))
                 .addScope(new Scope(Scopes.EMAIL))
                 .build();
+
+
+/*     TODO   GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();*/
 
         // Sign in if clicked
         findViewById(R.id.sign_in_button).setOnClickListener(this);
@@ -196,7 +206,17 @@ public class LoginActivity extends AppCompatActivity implements
 
         // Show the signed-in UI
         //showSignedInUI();
-        //TODO something with token and backend server?
+
+/*  TODO      GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+        if (result.isSuccess()) {
+            GoogleSignInAccount acct = result.getSignInAccount();
+            String idToken = acct.getIdToken();
+            mIdTokenTextView.setText("ID Token: " + idToken);
+            // TODO(user): send token to server and validate server-side
+        } else {
+            mIdTokenTextView.setText("ID Token: null");
+        }*/
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
