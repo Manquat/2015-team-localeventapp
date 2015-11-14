@@ -35,6 +35,7 @@ import ch.epfl.sweng.evento.RestApi.GetTask;
 import ch.epfl.sweng.evento.RestApi.Serializer;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 
 /**
  * Created by joachimmuth on 21.10.15.
@@ -306,6 +307,11 @@ public class RestApiTest {
 
         Thread.sleep(500);
 
+    }
+
+    @Test
+    public void test() {
+        fail();
     }
 
 
