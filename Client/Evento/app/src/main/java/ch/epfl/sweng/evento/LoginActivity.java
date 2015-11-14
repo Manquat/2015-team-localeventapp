@@ -137,11 +137,11 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     private void showErrorDialog(ConnectionResult connectionResult) {
-        //TODO
+        //TODO Add Error dialog on login fail
     }
 
     private void showSignedOutUI() {
-        //TODO
+        //TODO Show Sign Out UI
     }
 
     @Override
@@ -202,7 +202,7 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     private void showSignedInUI() {
-        //TODO
+        //TODO Show signed in UI
     }
 
 

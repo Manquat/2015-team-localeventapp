@@ -13,32 +13,43 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:orientation="vertical"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="@color/backgroundLoginScreen">
 
-    <ImageView
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView2"
-        tools:ignore="ContentDescription"
-        android:layout_gravity="center_horizontal"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:src="@mipmap/eventologo" />
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:gravity="bottom">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/Slogan"
-        android:gravity="center_horizontal"
-        android:id="@+id/textView3" />
-    <!--The G+ sign in Button-->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView2"
+            tools:ignore="ContentDescription"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/logo_evento" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/Slogan"
+            android:gravity="center_horizontal"
+            android:id="@+id/textView3"
+            android:textColor="@color/textColorLoginScreen" />
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:gravity="bottom">
+        android:gravity="bottom"
+        android:layout_weight="0.5">
 
         <EditText
             android:layout_width="match_parent"
@@ -47,7 +58,8 @@
             android:text="@string/Username"
             android:ems="10"
             android:id="@+id/editText2"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/textColorLoginScreen"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -58,7 +70,8 @@
             android:id="@+id/editText"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="0dp"
-            android:layout_marginTop="0dp" />
+            android:layout_marginTop="0dp"
+            android:textColor="@color/textColorLoginScreen"/>
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
