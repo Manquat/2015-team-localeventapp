@@ -59,7 +59,6 @@ public enum EventDatabase {
                 @Override
                 public void onDataReceived(Event event) {
                     mEventSet.addEvent(event);
-                    //System.out.println(event.getSignature());
                 }
             });
         }
@@ -77,7 +76,6 @@ public enum EventDatabase {
                 @Override
                 public void onDataReceived(Event event) {
                     mEventSet.addEvent(event);
-                    //System.out.println(event.getSignature());
                 }
             });
         }
@@ -112,7 +110,6 @@ public enum EventDatabase {
         return mEventSet.getNext(current);
     }
 
-    //public Event getNextEvent(long signature) { return mEventSet.getNext(signature);}
 
     /**
      * This method returns the previous Event before the one passed in argument, in the order of starting
@@ -124,8 +121,6 @@ public enum EventDatabase {
     public Event getPreviousEvent(Event current) {
         return mEventSet.getPrevious(current.getSignature());
     }
-
-    //public Event getPreviousEvent(long signature) { return mEventSet.getPrevious(signature);}
 
     public EventSet filter(LatLng latLng, double distance) {
         return mEventSet.filter(latLng, distance);

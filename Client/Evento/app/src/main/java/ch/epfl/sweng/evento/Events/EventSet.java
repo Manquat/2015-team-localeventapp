@@ -16,7 +16,7 @@ import java.util.TreeMap;
 public class EventSet {
 
     //The container of Events. For now, it's a Map with the ID as key values
-    private Map<Long, Event> mEvents;
+    private TreeMap<Long, Event> mEvents;
 
     /**
      * Default constructor
@@ -39,7 +39,7 @@ public class EventSet {
     }
 
     public Event getFirst() {
-        Iterator<Long> iterator = mEvents.keySet().iterator();
+        Iterator<Long> iterator = mEvents.navigableKeySet().iterator();
 
         return mEvents.get(iterator.next());
     }
@@ -49,7 +49,7 @@ public class EventSet {
     }
 
     public Event getNext(long signature) {
-        Iterator<Long> iterator = mEvents.keySet().iterator();
+        Iterator<Long> iterator = mEvents.navigableKeySet().iterator();
         long currentID = -1;//To be sure it's not in the Map
 
         do {
@@ -74,7 +74,7 @@ public class EventSet {
     }
 
     public Event getPrevious(long signature) {
-        Iterator<Long> iterator = mEvents.keySet().iterator();
+        Iterator<Long> iterator = mEvents.navigableKeySet().iterator();
         long previousID = -2;
         long currentID = -1;//To be sure it's not in the Map
 
@@ -176,7 +176,7 @@ public class EventSet {
         int numberOfEvents = 0;
 
         if (event != null && mEvents.containsKey(event.getSignature())) {
-            Iterator<Long> iterator = mEvents.keySet().iterator();
+            Iterator<Long> iterator = mEvents.navigableKeySet().iterator();
             while (iterator.hasNext() && iterator.next() != event.getSignature()) {
             }
             while (iterator.hasNext()) {
