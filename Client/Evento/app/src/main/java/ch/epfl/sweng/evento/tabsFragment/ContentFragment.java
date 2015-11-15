@@ -31,11 +31,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.Vector;
 
 import ch.epfl.sweng.evento.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
 import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.ServerUrl;
@@ -48,16 +50,12 @@ import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 public class ContentFragment extends Fragment implements MyView.OnToggledListener {
 
     final int PADDING = 5;
-    private static final int NUMBER_OF_EVENT = 50;
+    private static final int MAX_NUMBER_OF_EVENT = 50;
+    private int mNumberOfEvent;
 
     private static Vector<ImageButton> mMosaicVector = new Vector<ImageButton>();
     private List<Event> mEvents;
     private RestApi mRestAPI;
-
-    private static final Event mockEventFootball = new Event(1, "Event1", "This is a first event", 1.1, 1.1,
-            "1 long street", "Football", new HashSet<String>(Arrays.asList("Football")), new Event.CustomDate(), new Event.CustomDate());   // a mock event that would be replicated all over the map
-    private static final Event mockEventBasket = new Event(1, "Event2", "This is a second event", 1.1, 1.1,
-            "1 long street", "Basketball", new HashSet<String>(Arrays.asList("Basketball")), new Event.CustomDate(), new Event.CustomDate());   // a mock event that would be replicated all over the map
 
     private GridLayout mGridLayout;
     private Activity mActivity;
@@ -65,6 +63,8 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
     private int mNumberOfColumn;
     private Vector<boolean[]> mDisplayOrNot;
     private Vector<MyView> mMyViews;
+    private View mView;
+
 
     /**
      * @return a new instance of {@link ContentFragment}, adding the parameters into a bundle and
@@ -75,7 +75,7 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
         mNumberOfColumn = 3;
         mNumberOfRow = 4;
         mDisplayOrNot = new Vector<boolean[]>();
-        for (int i = 0; i < 2 * NUMBER_OF_EVENT / mNumberOfColumn + 1; ++i) {
+        for (int i = 0; i < 2 * MAX_NUMBER_OF_EVENT / mNumberOfColumn + 1; ++i) {
             boolean[] tmpBooleanRow = new boolean[mNumberOfColumn];
             for (int j = 0; j < mNumberOfColumn; ++j) {
                 tmpBooleanRow[j] = true;
@@ -83,6 +83,8 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
             mDisplayOrNot.add(tmpBooleanRow);
         }
         mMyViews = new Vector<MyView>();
+        mEvents = new ArrayList<Event>();
+        mNumberOfEvent = 0;
     }
 
     public enum Span {NOTHING, TWO_ROWS, TWO_COLUMNS}
@@ -111,57 +113,77 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("LOG_ContentFragment", "ContentFragmentOnResume");
+        if(mView != null) refreshEventSet();
+    }
 
+    public void refreshEventSet(){
+        Log.d("LOG_ContentFragment", "Refreshing");
+        mRestAPI = new RestApi(new DefaultNetworkProvider(), ServerUrl.get());
+        mRestAPI.getMultiplesEvent(new GetMultipleResponseCallback() {
+            @Override
+            public void onDataReceived(ArrayList<Event> event) {
+                Log.d("LOG_ContentFragment", "Getting event");
+                mEvents.clear();
+                mEvents = event;
+                mNumberOfEvent = mEvents.size();
+                displayMosaic();
+            }
+        });
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_mosaic, container, false);
+        mView = inflater.inflate(R.layout.fragment_mosaic, container, false);
+        Log.d("LOG_ContentFragment", "ContentFragmentOnCreateView");
 
-        mEvents = new ArrayList<Event>();
-        mRestAPI = new RestApi(new DefaultNetworkProvider(), ServerUrl.get());
-        for (int i = 0; i < NUMBER_OF_EVENT; i++) {
-            mRestAPI.getEvent(new GetResponseCallback() {
-                @Override
-                public void onDataReceived(Event event) {
-                    mEvents.add(event);
-                }
-            }); //TODO remove the cast once the change in restAPI is made
-            //
-        }
+        return mView;
+    }
 
-        Random rand = new Random();
-        for (int i = 0; i < NUMBER_OF_EVENT; i++) {
-            if (rand.nextInt(2) == 0) mEvents.add(mockEventBasket);
-            else mEvents.add(mockEventFootball);
-        }
-        mGridLayout = (GridLayout) view.findViewById(R.id.gridLayout);
+    private void displayMosaic(){
+        Log.d("LOG_ContentFragment", "DisplayMosaic");
+        mGridLayout = (GridLayout) mView.findViewById(R.id.gridLayout);
         mGridLayout.setRowCount(mNumberOfRow);
         mGridLayout.setColumnCount(mNumberOfColumn);
+        Set<String> tagFoot = new HashSet<String>() {{
+            add("Foot!");
+        }};
+        Set<String> tagBasket = new HashSet<String>() {{
+            add("Basketball");
+        }};
+        Set<String> tagFoot2 = new HashSet<String>() {{
+            add("Football");
+        }};
 
 
         boolean[] tmpBooleanRow = new boolean[mNumberOfColumn];
         Span tmpSpanSmtgOrNot = Span.NOTHING;
-        for (int yPos = 0, countEvent = 0; countEvent < NUMBER_OF_EVENT; yPos++) {
+        Log.d("LOG_ContentFragment", "DisplayMosaic, starting the outer loop");
+        for (int yPos = 0, countEvent = 0; countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; yPos++) {
             Log.d("yPos :", Integer.toString(yPos));
             Log.d("Event :", Integer.toString(countEvent));
             Log.d("Number of row :", Integer.toString(mNumberOfRow));
-
-            for (int xPos = 0; xPos < mNumberOfColumn && countEvent < NUMBER_OF_EVENT; xPos++, countEvent++) {
-                MyView tView = new MyView(view.getContext(), xPos, yPos);
+            Log.d("LOG_ContentFragment", "DisplayMosaic, starting the inner loop");
+            for (int xPos = 0; xPos < mNumberOfColumn && countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; xPos++, countEvent++) {
+                Log.d("LOG_ContentFragment", "_CountEvent = " + Integer.toString(countEvent));
+                MyView tView = new MyView(mView.getContext(), xPos, yPos);
                 if (mDisplayOrNot.get(yPos)[xPos]) {
-                    switch (mEvents.get(countEvent).getCreator()) {
-                        case "Football":
-                            tmpSpanSmtgOrNot = Span.NOTHING;
-                            tView.setImageResource(R.drawable.football);
-                            break;
-                        case "Basketball":
-                            tmpSpanSmtgOrNot = Span.TWO_ROWS;
-                            tView.setImageResource(R.drawable.basket);
-                            mDisplayOrNot.get(yPos + 1)[xPos] = false;
-                            break;
-                        default:
-                            Log.d("Warning ", "ContentFragment.OnCreateView.mEvent_DoesntMAtch");
-                            break;
+                    if(mEvents.get(countEvent).getTags().contains(tagFoot) ||
+                            mEvents.get(countEvent).getTags().contains(tagFoot2)) {
+                        tmpSpanSmtgOrNot = Span.NOTHING;
+                        tView.setImageResource(R.drawable.football);
+                    }
+                    else if(mEvents.get(countEvent).getTags().contains(tagBasket)) {
+                        tmpSpanSmtgOrNot = Span.TWO_ROWS;
+                        tView.setImageResource(R.drawable.basket);
+                        mDisplayOrNot.get(yPos + 1)[xPos] = false;
+                    } else {
+                        tmpSpanSmtgOrNot = Span.NOTHING;
+                        tView.setImageResource(R.drawable.unknown);
+                        Log.d("Warning ", "ContentFragment.OnCreateView.mEvent_DoesntMatch");
                     }
                     tView.setOnToggledListener(this);
                     mMyViews.add(tView);
@@ -190,10 +212,7 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
                 }
             }
         }
-
-        return view;
     }
-
     private void addViewToGridLayout(View view, int row, int column, int rowSpan, int columnSpan) {
         int pWidth = mGridLayout.getWidth();
         int pHeight = mGridLayout.getHeight();
