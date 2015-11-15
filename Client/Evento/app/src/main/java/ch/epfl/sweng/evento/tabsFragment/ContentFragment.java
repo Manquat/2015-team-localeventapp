@@ -17,6 +17,7 @@
 package ch.epfl.sweng.evento.tabsFragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -35,6 +36,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import ch.epfl.sweng.evento.DefaultNetworkProvider;
+import ch.epfl.sweng.evento.EventActivity;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
@@ -47,7 +49,7 @@ import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
  * Simple Fragment used to display some meaningful content for each page in the sample's
  * {@link android.support.v4.view.ViewPager}.
  */
-public class ContentFragment extends Fragment implements MyView.OnToggledListener {
+public class ContentFragment extends Fragment {
 
     final int PADDING = 5;
     private static final int MAX_NUMBER_OF_EVENT = 50;
@@ -97,21 +99,7 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
         mActivity = getActivity();
     }
 
-    @Override
-    public void OnToggled(MyView v, boolean touchOn) {
-        //Intent intent = new Intent(mActivity, EventActivity.class);
-        //mActivity.startActivity(intent);
 
-        //This toast may be useful
-        /*String idString = v.getIdX() + ":" + v.getIdY();
-
-        Toast.makeText(mActivity,
-                "Toogled:\n" +
-                        idString + "\n" +
-                        touchOn,
-                Toast.LENGTH_SHORT).show();*/
-
-    }
 
     @Override
     public void onResume() {
@@ -147,7 +135,7 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
     private void displayMosaic(){
         Log.d("LOG_ContentFragment", "DisplayMosaic");
         mGridLayout = (GridLayout) mView.findViewById(R.id.gridLayout);
-        mGridLayout.removeAllViewsInLayout();
+        mGridLayout.removeAllViews();
         mGridLayout.setRowCount(mNumberOfRow);
         mGridLayout.setColumnCount(mNumberOfColumn);
         Set<String> tagFoot = new HashSet<String>() {{
@@ -169,9 +157,18 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
             Log.d("Event :", Integer.toString(countEvent));
             Log.d("Number of row :", Integer.toString(mNumberOfRow));
             Log.d("LOG_ContentFragment", "DisplayMosaic, starting the inner loop");
+
             for (int xPos = 0; xPos < mNumberOfColumn && countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; xPos++, countEvent++) {
                 Log.d("LOG_ContentFragment", "_CountEvent = " + Integer.toString(countEvent));
-                MyView tView = new MyView(mView.getContext(), xPos, yPos);
+                final MyView tView = new MyView(mView.getContext(), xPos, yPos);
+                tView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(mActivity, EventActivity.class);
+                        intent.putExtra(EventActivity.KEYCURRENTEVENT, mEvents.get(tView.getIdX()+tView.getIdY()*mNumberOfColumn).getSignature());
+                        mActivity.startActivity(intent);
+                    }
+                });
                 if (mDisplayOrNot.get(yPos)[xPos]) {
                     if(mEvents.get(countEvent).getTags().contains(tagFoot) ||
                             mEvents.get(countEvent).getTags().contains(tagFoot2)) {
@@ -187,7 +184,6 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
                         tView.setImageResource(R.drawable.unknown);
                         Log.d("Warning ", "ContentFragment.OnCreateView.mEvent_DoesntMatch");
                     }
-                    tView.setOnToggledListener(this);
                     mMyViews.add(tView);
 
                     switch (tmpSpanSmtgOrNot) {

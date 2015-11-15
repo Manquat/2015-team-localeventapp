@@ -19,13 +19,9 @@ import ch.epfl.sweng.evento.R;
 
 public class MyView extends ImageView {
 
-    public interface OnToggledListener {
-        void OnToggled(MyView v, boolean touchOn);
-    }
 
     boolean mtouchOn;
     boolean mDownTouch = false;
-    private OnToggledListener mtoggledListener;
     int midX = 0; //default
     int midY = 0; //default
 
@@ -56,42 +52,7 @@ public class MyView extends ImageView {
     }
 
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        super.onTouchEvent(event);
 
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-
-                mtouchOn = !mtouchOn;
-                invalidate();
-
-                if (mtoggledListener != null) {
-                    mtoggledListener.OnToggled(this, mtouchOn);
-                }
-
-                mDownTouch = true;
-                return true;
-
-            case MotionEvent.ACTION_UP:
-                if (mDownTouch) {
-                    mDownTouch = false;
-                    performClick();
-                    return true;
-                }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean performClick() {
-        super.performClick();
-        return true;
-    }
-
-    public void setOnToggledListener(OnToggledListener listener) {
-        mtoggledListener = listener;
-    }
 
     public int getIdX() {
         return midX;
