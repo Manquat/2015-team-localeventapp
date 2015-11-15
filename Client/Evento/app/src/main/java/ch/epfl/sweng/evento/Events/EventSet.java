@@ -44,61 +44,55 @@ public class EventSet {
         return mEvents.get(iterator.next());
     }
 
-    public Event getNext(Event current)
-    {
+    public Event getNext(Event current) {
         return getNext(current.getSignature());
-
     }
 
-    public Event getNext(long signature)
-    {
+    public Event getNext(long signature) {
         Iterator<Long> iterator = mEvents.keySet().iterator();
         long currentID = -1;//To be sure it's not in the Map
 
-        do{
+        do {
             currentID = iterator.next();
-        }while(iterator.hasNext() && currentID != signature);
+        } while (iterator.hasNext() && currentID != signature);
 
         //If we reached the end of the iterator, it means that 'ID' was the ID of the last Event.
         //In that case, we return the last Event
-        if(iterator.hasNext())
-        {
+        if (iterator.hasNext()) {
             currentID = iterator.next();
         }
-        if(mEvents.containsKey(currentID)) {
+        if (mEvents.containsKey(currentID)) {
             return mEvents.get(currentID);
 
-        }else{
+        } else {
             return getErrorEvent();
         }
     }
 
-    public Event getPrevious(Event current)
-    {
+    public Event getPrevious(Event current) {
         return getPrevious(current.getSignature());
     }
 
-    public Event getPrevious(long signature)
-    {
+    public Event getPrevious(long signature) {
         Iterator<Long> iterator = mEvents.keySet().iterator();
         long previousID = -2;
         long currentID = -1;//To be sure it's not in the Map
 
-        do{
+        do {
             previousID = currentID;
             currentID = iterator.next();
-        }while(iterator.hasNext() && currentID != signature);
+        } while (iterator.hasNext() && currentID != signature);
 
         //if previousID is less than zero, it means the loop has been done only once and that 'ID'
         //is the first Event's ID. In that case, we don't want to go further and we return the
         //first Event
-        if(previousID<1){
+        if (previousID < 1) {
             previousID = currentID;
         }
-        if(mEvents.containsKey(previousID)) {
+        if (mEvents.containsKey(previousID)) {
             return mEvents.get(previousID);
 
-        }else{
+        } else {
             return getErrorEvent();
         }
     }
@@ -112,7 +106,7 @@ public class EventSet {
     public void addEvent(Event event) {
         if (event != null && !mEvents.containsKey(event.getSignature())) {
             //mEvents.put(event.getID(), event);
-            mEvents.put(event.getSignature(),event);
+            mEvents.put(event.getSignature(), event);
         }
     }
 
@@ -166,8 +160,8 @@ public class EventSet {
 
     public EventSet filter(Event.Date startDate) {
         EventSet newEventSet = new EventSet();
-        for (Event event : mEvents.values()){
-            if(event.getStartDate().toLong()>=startDate.toLong()){
+        for (Event event : mEvents.values()) {
+            if (event.getStartDate().toLong() >= startDate.toLong()) {
                 newEventSet.addEvent(event);
             }
         }
@@ -178,27 +172,24 @@ public class EventSet {
         return mEvents.size();
     }
 
-    public int eventsLeftAfter(Event event)
-    {
+    public int eventsLeftAfter(Event event) {
         int numberOfEvents = 0;
 
-        if(event != null && mEvents.containsKey(event.getSignature()))
-        {
+        if (event != null && mEvents.containsKey(event.getSignature())) {
             Iterator<Long> iterator = mEvents.keySet().iterator();
-            while(iterator.hasNext() && iterator.next() != event.getSignature()){}
-            while(iterator.hasNext())
-            {
+            while (iterator.hasNext() && iterator.next() != event.getSignature()) {
+            }
+            while (iterator.hasNext()) {
                 numberOfEvents++;
                 iterator.next();
             }
-        }
-        else
-        {
+        } else {
             numberOfEvents = -1;
         }
 
         return numberOfEvents;
     }
+
     /**
      * This method returns an error Event.
      * This is just temporary before implementing good exception handling

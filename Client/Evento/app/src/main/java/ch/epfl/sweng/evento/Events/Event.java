@@ -70,16 +70,14 @@ public class Event implements ClusterItem {
     }
 
 
-    public void setPicture(String picture)
-    {
+    public void setPicture(String picture) {
         mPicture = picture;
     }
 
-    public void setPicture(Bitmap bitmap)
-    {
-        ByteArrayOutputStream outputStream = new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, outputStream);
-        byte [] b = outputStream.toByteArray();
+    public void setPicture(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        byte[] b = outputStream.toByteArray();
         mPicture = Base64.encodeToString(b, Base64.DEFAULT);
     }
 
@@ -131,15 +129,16 @@ public class Event implements ClusterItem {
         return mEndDate;
     }
 
-    public String getPictureAsString() { return mPicture;}
+    public String getPictureAsString() {
+        return mPicture;
+    }
 
-    public Bitmap getPicture()
-    {
-        try{
-            byte [] encodeByte= Base64.decode(mPicture, Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+    public Bitmap getPicture() {
+        try {
+            byte[] encodeByte = Base64.decode(mPicture, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
             return bitmap;
-        }catch(Exception e){
+        } catch (Exception e) {
             e.getMessage();
             return null;
         }
@@ -154,13 +153,15 @@ public class Event implements ClusterItem {
      * The signature of an Event is its Date in the long form to which its ID is appended.
      * It allows to order Events by starting Date AND by ID at the same time.
      * The ID is written on 6 digits for now.
+     *
      * @return the signature of the Event in the form yyyymmddhhmmID
      */
-    public long getSignature() { return (100000 * getStartDate().toLong() + (long)getID());}
+    public long getSignature() {
+        return (100000 * getStartDate().toLong() + (long) getID());
+    }
 
     //This is a temporary method to test if the server can handle very long strings
-    public String samplePicture()
-    {
+    public String samplePicture() {
         return "Qk2uFAAAAAAAAIoEAAB8AAAAxwAAAMcAAAABAAgAAQAAACQQAAASCwAAEgsAAAABAAAAAQAAAAD/ " +
                 "AAD/AAD/AAAAAAAA/0JHUnMAAAAAAAAAAFS4HvwAAAAAAAAAAGZmZvwAAAAAAAAAAMT1KP8AAAAA " +
                 "AAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAMDAwABI " +
@@ -246,6 +247,7 @@ public class Event implements ClusterItem {
                 "AQ35AwUM/AMAEPsDABL8BAQpAAAACQAD+Sb7AwAJAQMAE/wDAQ35AwUM/AMAEPsDABL8BAQpAAAA " +
                 "yAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAAAE=";
     }
+
     public static class Date {
         private int mYear;
         private int mMonth;
@@ -260,13 +262,14 @@ public class Event implements ClusterItem {
         /**
          * This method returns a long representing the date with appended values
          * It makes comparison between 2 Dates trivial and is also used to get an Event's signature
+         *
          * @return the Date in the form yyyymmddhhmm
          */
         public long toLong() {
-            return (long) (Math.pow(10,8)
-                    * mYear + Math.pow(10,6)
-                    * mMonth + Math.pow(10,4)
-                    * mDay + Math.pow(10,2)
+            return (long) (Math.pow(10, 8)
+                    * mYear + Math.pow(10, 6)
+                    * mMonth + Math.pow(10, 4)
+                    * mDay + Math.pow(10, 2)
                     * mHour + mMinutes);
         }
 
@@ -278,19 +281,33 @@ public class Event implements ClusterItem {
             mMinutes = 0;
         }
 
-        public void setTime(int hour, int minutes){
+        public void setTime(int hour, int minutes) {
             mHour = hour;
             mMinutes = minutes;
         }
 
-        public int getYear() { return mYear;}
-        public int getMonth() { return mMonth;}
-        public int getDay() { return mDay;}
-        public int getMinutes() { return mMinutes;}
-        public int getHour() { return mHour;}
+        public int getYear() {
+            return mYear;
+        }
+
+        public int getMonth() {
+            return mMonth;
+        }
+
+        public int getDay() {
+            return mDay;
+        }
+
+        public int getMinutes() {
+            return mMinutes;
+        }
+
+        public int getHour() {
+            return mHour;
+        }
 
 
-        public void setDate(int year, int month, int day){
+        public void setDate(int year, int month, int day) {
             mYear = year;
             mMonth = month;
             mDay = day;

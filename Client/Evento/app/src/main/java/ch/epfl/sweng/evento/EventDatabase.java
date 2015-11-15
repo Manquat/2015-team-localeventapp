@@ -1,5 +1,7 @@
 package ch.epfl.sweng.evento;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 
 
@@ -17,10 +19,17 @@ import ch.epfl.sweng.evento.RestApi.RestApi;
 public enum EventDatabase {
     INSTANCE;
 
+    private static final String TAG = "EventDatabase";
+
     private RestApi mRestAPI;
 
+    /**
+     * This EventSet represents all the Events currently stored on the device
+     */
+    private EventSet mEventSet;
+
     private EventDatabase() {
-        eventSet = new EventSet();
+        mEventSet = new EventSet();
         mRestAPI = new RestApi(new DefaultNetworkProvider(), ServerUrl.get());
 
         //temporary mock events
@@ -45,32 +54,29 @@ public enum EventDatabase {
         events[3] = new Event(5152, "Event4", "This is a fourth event with ID 5152", 4.4, 4.4, "4 long street", "dinesh", tags, start2, end);
         events[4] = new Event(42222, "Event5", "This is a fifth event with ID 42222", 5.5, 5.5, "5 long street", "ethan", tags, start, end);
 
-        for(int i = 0;i<5;i++)
-        {
+        for (int i = 0; i < 5; i++) {
             mRestAPI.getEvent(new GetResponseCallback() {
                 @Override
                 public void onDataReceived(Event event) {
-                    eventSet.addEvent(event);
+                    mEventSet.addEvent(event);
                     //System.out.println(event.getSignature());
                 }
             });
         }
 
-        eventSet.addEvent(events[0]);
-        eventSet.addEvent(events[1]);
-        eventSet.addEvent(events[2]);
-        eventSet.addEvent(events[3]);
-        eventSet.addEvent(events[4]);
+        mEventSet.addEvent(events[0]);
+        mEventSet.addEvent(events[1]);
+        mEventSet.addEvent(events[2]);
+        mEventSet.addEvent(events[3]);
+        mEventSet.addEvent(events[4]);
     }
 
-    void loadNewEvents()
-    {
-        for(int i = 0;i<5;i++)
-        {
+    void loadNewEvents() {
+        for (int i = 0; i < 5; i++) {
             mRestAPI.getEvent(new GetResponseCallback() {
                 @Override
                 public void onDataReceived(Event event) {
-                    eventSet.addEvent(event);
+                    mEventSet.addEvent(event);
                     //System.out.println(event.getSignature());
                 }
             });
@@ -84,56 +90,56 @@ public enum EventDatabase {
      * @return the Event corresponding to the ID.
      */
     public Event getEvent(int id) {
-        return eventSet.get(id);
+        return mEventSet.get(id);
     }
 
     public Event getFirstEvent() {
-        return eventSet.getFirst();
+        return mEventSet.getFirst();
     }
 
     /**
      * This method returns the next Event after the one passed in argument, in the order of starting
      * Date and ID. If 'current' is the last one, it will return it instead.
+     *
      * @param current the current Event which is the reference to get the next Event
      * @return the Event that is right after the 'current' Event in the starting Date order
      */
     public Event getNextEvent(Event current) {
-        System.out.println(eventSet.eventsLeftAfter(current));
-        if(eventSet.eventsLeftAfter(current) < 5)
-        {
-           loadNewEvents();
+        Log.d(TAG, Integer.toString(mEventSet.eventsLeftAfter(current)));
+        if (mEventSet.eventsLeftAfter(current) < 5) {
+            loadNewEvents();
         }
-        return eventSet.getNext(current);
+        return mEventSet.getNext(current);
     }
 
-    //public Event getNextEvent(long signature) { return eventSet.getNext(signature);}
+    //public Event getNextEvent(long signature) { return mEventSet.getNext(signature);}
 
     /**
      * This method returns the previous Event before the one passed in argument, in the order of starting
      * Date and ID. If 'current' is the first one, it will return it instead.
+     *
      * @param current the current Event which is the reference to get the previous Event
      * @return the Event that is right before the 'current' Event in the starting Date order
      */
-    public Event getPreviousEvent(Event current) { return eventSet.getPrevious(current.getSignature());}
+    public Event getPreviousEvent(Event current) {
+        return mEventSet.getPrevious(current.getSignature());
+    }
 
-    //public Event getPreviousEvent(long signature) { return eventSet.getPrevious(signature);}
+    //public Event getPreviousEvent(long signature) { return mEventSet.getPrevious(signature);}
 
     public EventSet filter(LatLng latLng, double distance) {
-        return eventSet.filter(latLng, distance);
+        return mEventSet.filter(latLng, distance);
     }
 
     public EventSet filter(Set<String> tags) {
-        return eventSet.filter(tags);
+        return mEventSet.filter(tags);
     }
 
     public EventSet filter(String tag) {
-        return eventSet.filter(tag);
+        return mEventSet.filter(tag);
     }
 
-    public EventSet filter(Event.Date startDate) {return eventSet.filter(startDate);}
-
-    /**
-     * This EventSet represents all the Events currently stored on the device
-     */
-    private EventSet eventSet;
+    public EventSet filter(Event.Date startDate) {
+        return mEventSet.filter(startDate);
+    }
 }

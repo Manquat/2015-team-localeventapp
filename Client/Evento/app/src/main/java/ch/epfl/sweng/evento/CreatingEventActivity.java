@@ -12,6 +12,7 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,7 +23,9 @@ import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.RestApi.PostCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 
-public class CreatingEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class CreatingEventActivity extends AppCompatActivity implements
+        DatePickerDialog.OnDateSetListener,
+        TimePickerDialog.OnTimeSetListener {
 
     private TextView mStartDateView;
     private TextView mEndDateView;
@@ -38,24 +41,23 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
 
 
     public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
-        if(!mStartOrEndDate) startDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
+                          int dayOfMonth) {
+        if (!mStartOrEndDate) startDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
         else endDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
         mTimeFragment = new TimePickerDialogFragment();
         mTimeFragment.show(getFragmentManager(), "timePicker");
     }
 
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute){
-        if(!mStartOrEndDate){
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        if (!mStartOrEndDate) {
             startDate.setTime(hourOfDay, minute);
             String s = Integer.toString(startDate.getMonth()) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
-                    " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes()) ;
+                    " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes());
             mStartDateView.setText(s);
-        }
-        else {
+        } else {
             endDate.setTime(hourOfDay, minute);
             String s = Integer.toString(endDate.getMonth()) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) +
-                    " at " + Integer.toString(endDate.getHour()) + ":" + Integer.toString(endDate.getMinutes()) ;
+                    " at " + Integer.toString(endDate.getHour()) + ":" + Integer.toString(endDate.getMinutes());
             mEndDateView.setText(s);
         }
 
@@ -166,9 +168,16 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
                 Random rand = new Random();
                 int id = rand.nextInt(10000);
 
-                Event e = new Event(id, titleString, descriptionString, latitude,
-                                    longitude, addressString, creator,
-                                    new HashSet<String>(),startDate, endDate);
+                Event e = new Event(id,
+                        titleString,
+                        descriptionString,
+                        latitude,
+                        longitude,
+                        addressString,
+                        creator,
+                        new HashSet<String>(),
+                        startDate,
+                        endDate);
                 RestApi restApi = new RestApi(networkProvider, urlServer);
 
                 restApi.postEvent(e, new PostCallback() {
