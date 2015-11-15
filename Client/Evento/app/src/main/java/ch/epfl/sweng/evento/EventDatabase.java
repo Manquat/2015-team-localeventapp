@@ -118,13 +118,9 @@ public enum EventDatabase {
      * @param current the current Event which is the reference to get the previous Event
      * @return the Event that is right before the 'current' Event in the starting Date order
      */
-    public Event getPreviousEvent(Event current) {
-        return mEventSet.getPrevious(current.getSignature());
-    }
+    public Event getPreviousEvent(Event current) {return mEventSet.getPrevious(current);}
 
-    public EventSet filter(LatLng latLng, double distance) {
-        return mEventSet.filter(latLng, distance);
-    }
+    public EventSet filter(LatLng latLng, double distance) {return mEventSet.filter(latLng, distance);}
 
     public EventSet filter(Set<String> tags) {
         return mEventSet.filter(tags);

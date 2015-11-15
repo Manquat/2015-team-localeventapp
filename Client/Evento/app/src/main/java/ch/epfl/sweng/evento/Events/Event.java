@@ -74,6 +74,11 @@ public class Event implements ClusterItem {
         mPicture = picture;
     }
 
+    /**
+     * Converts the Bitmap passed in argument into a base64 String representing the image
+     * and then stores it into the member mPicture
+     * @param bitmap the bitmap image to be converted
+     */
     public void setPicture(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
@@ -85,9 +90,7 @@ public class Event implements ClusterItem {
         Log.d(TAG, "Event " + mID + " : title : " + mTitle);
     }
 
-    public int getID() {
-        return mID;
-    }
+    public int getID() {return mID;}
 
     public String getTitle() {
         return mTitle;
@@ -133,6 +136,11 @@ public class Event implements ClusterItem {
         return mPicture;
     }
 
+    /**
+     * converts the String member named mPicture that represents a Bitmap image encoded in base64
+     * into an actual Bitmap.
+     * @return The Bitmap converted from mPicture
+     */
     public Bitmap getPicture() {
         try {
             byte[] encodeByte = Base64.decode(mPicture, Base64.DEFAULT);

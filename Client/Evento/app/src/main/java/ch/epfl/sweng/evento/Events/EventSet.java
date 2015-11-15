@@ -22,7 +22,8 @@ public class EventSet {
      * Default constructor
      */
     public EventSet() {
-        //we use a TreeMap so it's sorted and the methods GetNext and GetPrevious make sense
+        //we use a TreeMap so it's sorted and we can use navigableKeySet in the methods
+        // GetNext and GetPrevious
         mEvents = new TreeMap<>();
     }
 
@@ -38,16 +39,32 @@ public class EventSet {
         }
     }
 
+    /**
+     * This method returns the first Event in the TreeMap. Since the Events are sorted by their
+     * StartDate and then by their ID, the first Event is the closest in time from when the call
+     * is made
+     * @return The first Event
+     */
     public Event getFirst() {
         Iterator<Long> iterator = mEvents.navigableKeySet().iterator();
 
         return mEvents.get(iterator.next());
     }
 
+    /**
+     * Returns the Event right after the Event passed by argument
+     * @param current the reference Event to define which is the next one
+     * @return the Event right after 'current'
+     */
     public Event getNext(Event current) {
         return getNext(current.getSignature());
     }
 
+    /**
+     * Returns the Event with the closest higher signature from the one passed in argument
+     * @param signature the reference signature to define which Event is the next one
+     * @return the Event with the closest signature
+     */
     public Event getNext(long signature) {
         Iterator<Long> iterator = mEvents.navigableKeySet().iterator();
         long currentID = -1;//To be sure it's not in the Map
@@ -69,10 +86,20 @@ public class EventSet {
         }
     }
 
+    /**
+     * Returns the Event right before the one passed in argument
+     * @param current the reference Event
+     * @return the Event right before 'current'
+     */
     public Event getPrevious(Event current) {
         return getPrevious(current.getSignature());
     }
 
+    /**
+     * Returns the Event with the closest lower signature from the one passed in argument
+     * @param signature the reference signature
+     * @return the Event with the closest lower signature
+     */
     public Event getPrevious(long signature) {
         Iterator<Long> iterator = mEvents.navigableKeySet().iterator();
         long previousID = -2;
@@ -100,7 +127,6 @@ public class EventSet {
     /**
      * Adds an event to the Map
      * Verifies the Event is not already in the Map
-     *
      * @param event the Event to be added
      */
     public void addEvent(Event event) {
@@ -148,6 +174,11 @@ public class EventSet {
         return newEventSet;
     }
 
+    /**
+     * Returns a set of Events that have the tag passed in argument in their own tags
+     * @param tag the tag used to filter the set
+     * @return a filtered set of Events
+     */
     public EventSet filter(String tag) {
         EventSet newEventSet = new EventSet();
         for (Event event : mEvents.values()) {
@@ -158,6 +189,11 @@ public class EventSet {
         return newEventSet;
     }
 
+    /**
+     * returns all Events that start after the Date passed by argument
+     * @param startDate the reference Date
+     * @return the filtered set of Events that start after 'startDate'
+     */
     public EventSet filter(Event.Date startDate) {
         EventSet newEventSet = new EventSet();
         for (Event event : mEvents.values()) {
@@ -168,10 +204,20 @@ public class EventSet {
         return newEventSet;
     }
 
+    /**
+     *
+     * @return the number of Events stored in the set
+     */
     public int size() {
         return mEvents.size();
     }
 
+    /**
+     * Calculates the number of Events left after the one passed in argument
+     * This is useful to know when to get new Events
+     * @param event the reference Event
+     * @return the number of Events left in the set
+     */
     public int eventsLeftAfter(Event event) {
         int numberOfEvents = 0;
 
