@@ -117,6 +117,7 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
     public void onResume() {
         super.onResume();
         Log.d("LOG_ContentFragment", "ContentFragmentOnResume");
+
         if(mView != null) refreshEventSet();
     }
 
@@ -146,6 +147,7 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
     private void displayMosaic(){
         Log.d("LOG_ContentFragment", "DisplayMosaic");
         mGridLayout = (GridLayout) mView.findViewById(R.id.gridLayout);
+        mGridLayout.removeAllViewsInLayout();
         mGridLayout.setRowCount(mNumberOfRow);
         mGridLayout.setColumnCount(mNumberOfColumn);
         Set<String> tagFoot = new HashSet<String>() {{
