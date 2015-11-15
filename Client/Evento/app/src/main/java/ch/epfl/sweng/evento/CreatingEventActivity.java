@@ -27,6 +27,9 @@ public class CreatingEventActivity extends AppCompatActivity implements
         DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener {
 
+    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
+    private static final String urlServer = ServerUrl.get();
+
     private TextView mStartDateView;
     private TextView mEndDateView;
     private Event.Date startDate;
@@ -62,10 +65,6 @@ public class CreatingEventActivity extends AppCompatActivity implements
         }
 
     }
-
-
-    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = ServerUrl.get();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
