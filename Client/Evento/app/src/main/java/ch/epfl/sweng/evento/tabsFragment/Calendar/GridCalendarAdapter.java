@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -23,7 +21,7 @@ import ch.epfl.sweng.evento.R;
  * Created by Gautier on 27/10/2015.
  */
 public class GridCalendarAdapter extends BaseAdapter implements View.OnClickListener {
-    private static final String tag = "GridCalendarAdapter";
+    private static final String TAG = "GridCalendarAdapter";
     private static final int NUMBER_OF_CELLS = 7 * 7; // the line for the day of the week, and 6 lines for all the day of the month
 
     private Context mContext;
@@ -56,7 +54,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
     // create a new ImageView for each item referenced by the Adapter
     @Override
     public View getView(int gridPosition, View convertView, ViewGroup parent) {
-        Log.d(tag, "getView ...");
+        Log.d(TAG, "getView ...");
 
         View rootView = convertView;
 
@@ -90,14 +88,14 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
             Button button = (Button) rootView.findViewById(R.id.cell_button_view);
 
             if (button == null) {
-                Log.e(tag, "No button in the view");
+                Log.e(TAG, "No button in the view");
                 throw new NullPointerException("No button in the view");
             }
 
             button.setText(String.valueOf(mCalendarGrid.getDay(position)));
             button.setOnClickListener(this);
 
-            // adding the tag to store the date position in the grid inside the button
+            // adding the TAG to store the date position in the grid inside the button
             button.setTag(R.id.position_tag, String.valueOf(position));
 
             // by default all the text are disable (grey color)

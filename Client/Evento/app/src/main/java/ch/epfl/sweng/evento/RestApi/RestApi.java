@@ -18,16 +18,17 @@ import ch.epfl.sweng.evento.NetworkProvider;
  * This allow main thread to send four basic action to Django server: GET, POST, PUT, DELETE
  *
  * Each of the method ask for a Callback allowing the main thread to make an action when the task ends
- * The method return a RESULT string that can be an event (in case of Get) or an HTTPcode (others)
+ * The method return a RESULT string that can be an event (in case of Get) or an HTTP code (others)
  * In case of FAILURE, response is null and main thread has to deal with it in his callback.
  * (exceptions are logged in Log.e with tag RestException)
  *
  */
 public class RestApi{
+    private static final String TAG = "RestApi";
     private NetworkProvider mNetworkProvider;
     private String mUrlServer;
     // TODO: as soon as the server provide a better way to get event, change it
-    private int mNoEvent = 10;
+    private int mNoEvent = 5;
 
 
     public RestApi(NetworkProvider networkProvider, String urlServer){
@@ -40,22 +41,20 @@ public class RestApi{
      * @param callback : receive an event as parameter and typically put it in a set
      */
     public void getEvent(final GetResponseCallback callback){
-        mNoEvent += 1;
+        //mNoEvent += 1;
         String restUrl = UrlMaker.get(mUrlServer, mNoEvent);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback (){
             @Override
             public void onTaskComplete(String response){
                 Event event = null;
-                if (response != null) //TODO treat this problem nicely
-                {
-                    try
-                    {
+                if (response != null) {
+                    try {
                         JSONObject JsonResponse = new JSONObject(response);
                         event = Parser.parseFromJSON(JsonResponse);
-                    } catch (JSONException e)
-                    {
-                        Log.e("RestException", "Exception thrown in getEvent", e);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "Exception thrown in getEvent", e);
                     }
+
                 }
                 callback.onDataReceived(event);
             }
@@ -108,26 +107,6 @@ public class RestApi{
         }).execute();
     }
 
-    /**
-     * TODO: the interested and participation options
-     *
-     */
-
-    public void setInterestedInEvent(Event event, final PostCallback callback) {
-
-    }
-
-    public void setNotInterestedInEvent(Event event, final PostCallback callback) {
-
-    }
-
-    public void setParticipateToEvent(Event event, final PostCallback callback) {
-
-    }
-
-    public void setNotParticipateToEvent(Event event, final PostCallback callback) {
-
-    }
 
 }
 

@@ -1,42 +1,34 @@
 package ch.epfl.sweng.evento;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
-
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.RestApi.PostCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 
-public class CreatingEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class CreatingEventActivity extends AppCompatActivity implements
+        DatePickerDialog.OnDateSetListener,
+        TimePickerDialog.OnTimeSetListener {
+
+    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
+    private static final String urlServer = ServerUrl.get();
 
     private TextView mStartDateView;
     private TextView mEndDateView;
@@ -52,32 +44,27 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
 
 
     public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
-        if(mStartOrEndDate == false) startDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
+                          int dayOfMonth) {
+        if (!mStartOrEndDate) startDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
         else endDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
         mTimeFragment = new TimePickerDialogFragment();
         mTimeFragment.show(getFragmentManager(), "timePicker");
     }
 
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute){
-        if(mStartOrEndDate == false){
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        if (!mStartOrEndDate) {
             startDate.setTime(hourOfDay, minute);
             String s = Integer.toString(startDate.getMonth()) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
-                    " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes()) ;
+                    " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes());
             mStartDateView.setText(s);
-        }
-        else {
+        } else {
             endDate.setTime(hourOfDay, minute);
             String s = Integer.toString(endDate.getMonth()) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) +
-                    " at " + Integer.toString(endDate.getHour()) + ":" + Integer.toString(endDate.getMinutes()) ;
+                    " at " + Integer.toString(endDate.getHour()) + ":" + Integer.toString(endDate.getMinutes());
             mEndDateView.setText(s);
         }
 
     }
-
-
-    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = "http://10.0.2.2:8000/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +94,7 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
         });
 
         //CATEGORIES
-        // get the listview
+        // get the ListView
         mExpListView = (ExpandableListView) findViewById(R.id.lvExp);
 
         // preparing list data
@@ -118,7 +105,7 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
         // setting list adapter
         mExpListView.setAdapter(mListAdapter);
 
-        // Listview Group click listener
+        // ListView Group click listener
         mExpListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 
             @Override
@@ -131,7 +118,7 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
             }
         });
 
-        // Listview Group expanded listener
+        // ListView Group expanded listener
         mExpListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
@@ -142,7 +129,7 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
             }
         });
 
-        // Listview on child click listener
+        // ListView on child click listener
         mExpListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
             @Override
@@ -170,7 +157,7 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
                 final String titleString = title.getText().toString();
                 TextView description = (TextView) findViewById(R.id.eventDescription);
                 final String descriptionString = description.getText().toString();
-                TextView address = (TextView) findViewById(R.id.eventDescription);
+                TextView address = (TextView) findViewById(R.id.eventAddress);
                 final String addressString = address.getText().toString();
 
 
@@ -180,9 +167,16 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
                 Random rand = new Random();
                 int id = rand.nextInt(10000);
 
-                Event e = new Event(id, titleString, descriptionString, latitude,
-                                    longitude, addressString, creator,
-                                    new HashSet<String>(),startDate, endDate);
+                Event e = new Event(id,
+                        titleString,
+                        descriptionString,
+                        latitude,
+                        longitude,
+                        addressString,
+                        creator,
+                        new HashSet<String>(),
+                        startDate,
+                        endDate);
                 RestApi restApi = new RestApi(networkProvider, urlServer);
 
                 restApi.postEvent(e, new PostCallback() {
@@ -216,7 +210,7 @@ public class CreatingEventActivity extends AppCompatActivity implements DatePick
         party.add("Bill");
 
         List<String> stuff = new ArrayList<String>();
-        stuff.add("Pinguin");
+        stuff.add("Penguin");
         stuff.add("Smurfs");
 
 

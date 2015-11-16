@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +42,7 @@ import ch.epfl.sweng.evento.Events.EventsClusterRenderer;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.ServerUrl;
 
 
 /**
@@ -60,7 +60,7 @@ public class MapsFragment extends SupportMapFragment implements
         ClusterManager.OnClusterInfoWindowClickListener<Event>,
         ClusterManager.OnClusterItemClickListener<Event>,
         ClusterManager.OnClusterItemInfoWindowClickListener<Event> {
-    private static final String TAG = MapsFragment.class.getSimpleName();   // LogCat tag
+    private static final String TAG = "MapsFragment";   // LogCat tag
     private static final int NUMBER_OF_MARKERS = 100;                       // Number of marker that will be displayed
     private static final int NUMBER_OF_EVENT = 5;
     private static final float ZOOM_LEVEL = 15.0f;                          // Zoom level of the map at the beginning
@@ -103,9 +103,9 @@ public class MapsFragment extends SupportMapFragment implements
         getMapAsync(this);
 
         mEvents = new ArrayList<Event>();
-        mRestAPI = new RestApi(new DefaultNetworkProvider(), getString(R.string.url_server));
-        for (int i=0; i<NUMBER_OF_EVENT; i++)
-        {
+        mRestAPI = new RestApi(new DefaultNetworkProvider(), ServerUrl.get());
+
+        for (int i=0; i<NUMBER_OF_EVENT; i++) {
             mRestAPI.getEvent(new GetResponseCallback() {
                 @Override
                 public void onDataReceived(Event event){
@@ -196,7 +196,6 @@ public class MapsFragment extends SupportMapFragment implements
             GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(),
                     mActivity, 0).show();
             Log.e(TAG, "" + connectionResult.getErrorCode());
-            return;
         }
     }
 
