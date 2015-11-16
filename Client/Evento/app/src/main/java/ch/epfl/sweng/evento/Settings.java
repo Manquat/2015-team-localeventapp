@@ -5,8 +5,8 @@ package ch.epfl.sweng.evento;
  */
 
 
-public final class ServerUrl {
-    public static String get(){
+public final class Settings {
+    public static String getServerUrl(){
         return "https://protected-hamlet-4797.herokuapp.com/";
     }
 }
