@@ -52,6 +52,7 @@ public class MapsFragment extends SupportMapFragment implements
         ConnectionCallbacks,
         OnConnectionFailedListener,
         OnMyLocationButtonClickListener {
+
     private static final String TAG = "MapsFragment";   // LogCat tag
     private static final int NUMBER_OF_MARKERS = 100;                       // Number of marker that will be displayed
     private static final int NUMBER_OF_EVENT = 10;

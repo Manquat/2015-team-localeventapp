@@ -11,15 +11,12 @@ import android.widget.ImageView;
 
 public class MyView extends ImageView {
 
-    public interface OnToggledListener {
-        void OnToggled(MyView v, boolean touchOn);
-    }
 
-    private boolean mTouchOn;
-    private boolean mDownTouch = false;
-    private OnToggledListener mtoggledListener;
-    private int midX = 0; //default
-    private int midY = 0; //default
+
+    boolean mtouchOn;
+    boolean mDownTouch = false;
+    int midX = 0; //default
+    int midY = 0; //default
 
     public MyView(Context context, int x, int y) {
         super(context);
@@ -47,43 +44,6 @@ public class MyView extends ImageView {
         mTouchOn = false;
     }
 
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        super.onTouchEvent(event);
-
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-
-                mTouchOn = !mTouchOn;
-                invalidate();
-
-                if (mtoggledListener != null) {
-                    mtoggledListener.OnToggled(this, mTouchOn);
-                }
-
-                mDownTouch = true;
-                return true;
-
-            case MotionEvent.ACTION_UP:
-                if (mDownTouch) {
-                    mDownTouch = false;
-                    performClick();
-                    return true;
-                }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean performClick() {
-        super.performClick();
-        return true;
-    }
-
-    public void setOnToggledListener(OnToggledListener listener) {
-        mtoggledListener = listener;
-    }
 
     public int getIdX() {
         return midX;

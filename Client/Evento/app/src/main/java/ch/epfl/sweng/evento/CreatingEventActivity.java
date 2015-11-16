@@ -281,7 +281,8 @@ public class CreatingEventActivity extends AppCompatActivity
                 restApi.postEvent(e, new PostCallback() {
                     @Override
                     public void onPostSuccess(String response) {
-                        // nothing
+                        // assert submission
+                        Toast.makeText(getApplicationContext(), "Submitted", Toast.LENGTH_SHORT).show();
                     }
                 });
                 Toast.makeText(getApplicationContext(), "Submitting " + titleString, Toast.LENGTH_SHORT).show();
