@@ -103,6 +103,8 @@ public class ContentFragment extends Fragment {
     }
 
 
+
+
     public enum Span {NOTHING, TWO_ROWS, TWO_COLUMNS}
 
 
@@ -123,6 +125,23 @@ public class ContentFragment extends Fragment {
     public void refreshEventSet(){
 
         mEvents=EventDatabase.INSTANCE.getAllEvents();
+        mNumberOfEvent = mEvents.size();
+        displayMosaic();
+        Log.d("LOG_ContentFragment", "Refreshing");
+        Toast.makeText(mActivity.getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
+    }
+
+    public void refreshFromServer() {
+        EventDatabase.INSTANCE.refresh();
+        mEvents.clear();
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            Log.e(TAG, e.toString());
+        }
+
+        mEvents = EventDatabase.INSTANCE.getAllEvents();
         mNumberOfEvent = mEvents.size();
         displayMosaic();
         Log.d("LOG_ContentFragment", "Refreshing");
