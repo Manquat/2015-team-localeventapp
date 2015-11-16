@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -34,12 +35,16 @@ public class LoginActivity extends AppCompatActivity implements
 
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 0;
+    // Request code used to get ID Token
+    private static final int RC_GET_TOKEN = 9002;
 
     private GoogleApiClient mGoogleApiClient;
     // Is there a ConnectionResult resolution in progress?
     private boolean mIsResolving = false;
     // Should we automatically resolve ConnectionResults when possible?
     private boolean mShouldResolve = false;
+    // TextView for IdToken
+    private TextView mIdTokenTextView;
 
 //---------------------------------------------------------------------------------------------
 //----Methods----------------------------------------------------------------------------------
@@ -51,20 +56,21 @@ public class LoginActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_login);
 
 
-        // Build GoogleApiClient with access to basic profile
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApiIfAvailable(Plus.API)
-                .addScope(new Scope(Scopes.PROFILE))
-                .addScope(new Scope(Scopes.EMAIL))
-                .build();
-
         //Needed options to later on request the ID Token
         //TODO Question: What should serverClientId look like, and can it be affected by any classes? Something with OAuth 2.0 client ID!
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestIdToken(getString(R.string.serverClientId))
+                .build();
+
+        // Build GoogleApiClient using the GoogleSignInOptions defined previously. TODO Question: CONFLICT WITH G+ API?
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .addApiIfAvailable(Plus.API)
+                .addScope(new Scope(Scopes.PROFILE))
+                .addScope(new Scope(Scopes.EMAIL))
                 .build();
 
         // Sign in if clicked
@@ -171,12 +177,13 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
 
+
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+            super.onActivityResult(requestCode, resultCode, data);
 
         final String TAG = "Result of connection.";
 
-        super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
 
         if (requestCode == RC_SIGN_IN) {
@@ -188,9 +195,25 @@ public class LoginActivity extends AppCompatActivity implements
             mIsResolving = false;
             mGoogleApiClient.connect();
         }
+
+        else if (requestCode == RC_GET_TOKEN){
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            Log.d(TAG, "onActivityResult:GET_TOKEN:success:" + result.getStatus().isSuccess());
+
+            if (result.isSuccess()) {
+                GoogleSignInAccount acct = result.getSignInAccount();
+                String idToken = acct.getIdToken();
+                mIdTokenTextView.setText("ID Token: " + idToken);
+                // TODO(user): send token to server and validate server-side. Better to take bare Id Token without 'ID Token: ...' text?
+            } else {
+                mIdTokenTextView.setText("ID Token: null");
+            }
+
+        }
+
     }
 
-    @Override
+    //@Override
     public void onConnected(Bundle bundle) {
         final String TAG = "Connection successful: ";
         // onConnected indicates that an account was selected on the device, that the selected
@@ -202,25 +225,28 @@ public class LoginActivity extends AppCompatActivity implements
         // Show the signed-in UI
         //showSignedInUI();
 
-
-       /* Intent data = this.data;
-        GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-        if (result.isSuccess()) {
-            GoogleSignInAccount acct = result.getSignInAccount();
-            String idToken = acct.getIdToken();
-            mIdTokenTextView.setText("ID Token: " + idToken);
-            // TODO(user): send token to server and validate server-side
-        } else {
-            mIdTokenTextView.setText("ID Token: null");
-        }*/
+        // Launch ID Token function
+        getIdToken();
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
+
+    private void getIdToken() {
+        // Function called to get ID Token for the user
+        // getSignInIntent gets an Intent to start the Google Sign In flow
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_GET_TOKEN);
+    }
+
+
+
+/*
     private void showSignedInUI() {
         //TODO Show signed in UI
     }
+*/
 
 
 }
