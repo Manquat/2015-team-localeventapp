@@ -90,7 +90,9 @@ public class Event implements ClusterItem {
         Log.d(TAG, "Event " + mID + " : title : " + mTitle);
     }
 
-    public int getID() {return mID;}
+    public int getID() {
+        return mID;
+    }
 
     public String getTitle() {
         return mTitle;
