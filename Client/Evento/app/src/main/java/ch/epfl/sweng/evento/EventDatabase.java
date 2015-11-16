@@ -30,12 +30,12 @@ public enum EventDatabase {
         mRestAPI = new RestApi(new DefaultNetworkProvider(), ServerUrl.get());
 
         //temporary mock events
-        Event.CustomDate start = new Event.CustomDate(2015, 10, 12, 18, 30);
+        /*Event.CustomDate start = new Event.CustomDate(2015, 10, 12, 18, 30);
         Event.CustomDate start2 = new Event.CustomDate(2015, 10, 12, 19, 30);
         Event.CustomDate start3 = new Event.CustomDate(2015, 12, 12, 19, 30);
         Event.CustomDate end = new Event.CustomDate(2015, 10, 12, 20, 30);
 
-        /*Those are mock events before getting them from the database*/
+        Those are mock events before getting them from the database
         Event events[];
         events = new Event[5];
         Set<String> tags = new HashSet<String>() {{
@@ -66,8 +66,9 @@ public enum EventDatabase {
         mEventSet.addEvent(events[1]);
         mEventSet.addEvent(events[2]);
         mEventSet.addEvent(events[3]);
-        mEventSet.addEvent(events[4]);
-
+        mEventSet.addEvent(events[4]);*/
+        
+        loadNewEvents();
     }
 
     void loadNewEvents()
