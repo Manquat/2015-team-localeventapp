@@ -2,3 +2,5 @@
 *.pyc
 *.css
 /Server/mysite/mysite/static/*
+/Server/mysite/User/migrations
+/Server/mysite/events/fixtures/Event.json
