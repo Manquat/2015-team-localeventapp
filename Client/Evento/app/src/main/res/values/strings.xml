@@ -16,6 +16,7 @@
     <string name="Username">Username</string>
     <string name="Password">Password</string>
     <string name="title_activity_creating_event">CreatingEventActivity</string>
+    <string name="server_client_id">60350226207-pdg0d7uil1sb29u4e97da4jahotaeulm.apps.googleusercontent.com</string>
 
     <string name="hello_world">Hello world!</string>
 </resources>
