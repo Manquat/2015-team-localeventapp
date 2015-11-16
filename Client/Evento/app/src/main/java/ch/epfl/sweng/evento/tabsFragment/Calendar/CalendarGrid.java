@@ -19,6 +19,10 @@ public class CalendarGrid {
         CURRENT, NEXT, PREVIOUS
     }
 
+//---------------------------------------------------------------------------------------------
+//----Members----------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+
     // Number of the days in the month for the actual calendar display
     private List<Integer> mDays = new ArrayList<>(NUMBER_OF_CELLS);
 
