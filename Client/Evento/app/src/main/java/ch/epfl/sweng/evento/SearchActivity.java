@@ -53,6 +53,7 @@ import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
 import ch.epfl.sweng.evento.RestApi.PostCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.tabsFragment.ContentFragment;
 
 public class SearchActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener {
@@ -134,12 +135,7 @@ public class SearchActivity extends AppCompatActivity
                 GregorianCalendar endTime = new GregorianCalendar(endDate.getYear(),
                         endDate.getMonth(), endDate.getDay());
 
-                restApi.getMultiplesEventByDate(startTime, endTime, new GetMultipleResponseCallback() {
-                    @Override
-                    public void onDataReceived(ArrayList<Event> eventArrayList) {
-                        Toast.makeText(getApplicationContext(), "New events loaded!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                EventDatabase.INSTANCE.loadByDate(startTime, endTime);
 
 
                 Toast.makeText(getApplicationContext(), "Load events...", Toast.LENGTH_SHORT).show();

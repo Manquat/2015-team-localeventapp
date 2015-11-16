@@ -244,10 +244,10 @@ public class CreatingEventActivity extends AppCompatActivity
 
                 // just in case you haven't put any date ;)
                 if (startDate == null) {
-                    startDate = new Event.CustomDate(0, 0, 0, 0, 0);
+                    startDate = new Event.CustomDate(1990, 12, 16, 0, 0);
                 }
                 if (endDate == null) {
-                    endDate = new Event.CustomDate(0, 0, 0, 0, 0);
+                    endDate = new Event.CustomDate(1992, 1, 16, 0, 0);
                 }
                 if (titleString.isEmpty()) {
                     titleString = "No title";
