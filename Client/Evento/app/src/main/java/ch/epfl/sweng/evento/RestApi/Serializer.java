@@ -1,5 +1,11 @@
 package ch.epfl.sweng.evento.RestApi;
 
+import android.util.Log;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 import ch.epfl.sweng.evento.Events.Event;
 
 /**
@@ -8,9 +14,10 @@ import ch.epfl.sweng.evento.Events.Event;
  * Provide the serialization method to transform android class into string understandable by the server
  */
 public final class Serializer {
-
+    private static final String TAG = "Serializer";
 
     public static String event(Event e) {
+
         String res;
         res = "{\n"
                 + "  \"Event_name\": \"" + e.getTitle() + "\",\n"
@@ -19,15 +26,12 @@ public final class Serializer {
                 + "  \"latitude\": " + e.getLatitude() + ",\n"
                 + "  \"longitude\": " + e.getLongitude() + ",\n"
                 + "  \"address\": \"" + e.getAddress() + "\", \n "
+                + " \"date\" : \"" + e.getProperDateString() + "\", \n "
                 + "  \"creator\": \"" + e.getCreator() + "\"\n"
                 + "}\n";
+        Log.d(TAG, res);
         return res;
     }
 
-    /*public static String filter(EventFilter f){
-        String res;
-        res = null;
-        return res;
-    }*/
 
 }

@@ -19,13 +19,11 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,12 +32,14 @@ import java.util.List;
 import java.util.Random;
 
 import ch.epfl.sweng.evento.DefaultNetworkProvider;
+import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventsClusterRenderer;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.tabsFragment.Maps.EventClusterManager;
+import ch.epfl.sweng.evento.ServerUrl;
 
 
 /**
@@ -51,20 +51,14 @@ public class MapsFragment extends SupportMapFragment implements
         OnMapReadyCallback,
         ConnectionCallbacks,
         OnConnectionFailedListener,
-        OnMyLocationButtonClickListener,
-        InfoWindowAdapter {
-    private static final String TAG = MapsFragment.class.getSimpleName();   // LogCat tag
+        OnMyLocationButtonClickListener {
+    private static final String TAG = "MapsFragment";   // LogCat tag
     private static final int NUMBER_OF_MARKERS = 100;                       // Number of marker that will be displayed
-    private static final int NUMBER_OF_EVENT = 5;
+    private static final int NUMBER_OF_EVENT = 10;
     private static final float ZOOM_LEVEL = 15.0f;                          // Zoom level of the map at the beginning
 
     private GoogleMap mMap;
     private Location mLastLocation;
-    private static final Event mockEvent = new Event(1, "Event1", "This is a first event", 1.1, 1.1,
-            "1 long street", "alfredo", new HashSet<String>(), new Event.Date(), new Event.Date());   // a mock event that would be replicated all over the map
-    private List<Event> mEvents;
-    private Collection<Event> mEventsClick;        // the events actually click
-    private RestApi mRestAPI;
     private EventClusterManager mClusterManager;  // Manage the clustering of the marker and the callback associate
 
     // Google client to interact with Google API
@@ -93,22 +87,20 @@ public class MapsFragment extends SupportMapFragment implements
         mContainer = container;
         View view = super.onCreateView(inflater, mContainer, savedInstanceState);
 
-        getMapAsync(this);
-
-        mEvents = new ArrayList<Event>();
-        mRestAPI = new RestApi(new DefaultNetworkProvider(), getString(R.string.url_server));
-        for (int i=0; i<NUMBER_OF_EVENT; i++)
-        {
-            mRestAPI.getEvent(new GetResponseCallback() {
-                @Override
-                public void onDataReceived(Event event){
-                    mEvents.add(event);
-
-                }
-            }); //TODO remove the cast once the change in restAPI is made
+        if (view == null) {
+            Log.e(TAG, "The maps view cannot be created");
+            throw new NullPointerException();
         }
 
+        getMapAsync(this);
+
         mContext = view.getContext();
+
+        if (mContext == null)
+        {
+            Log.e(TAG, "The actual context don't exist");
+            throw new NullPointerException();
+        }
 
         mGoogleApiClient = new GoogleApiClient.Builder(mContext)
                 .addApi(LocationServices.API)
@@ -144,15 +136,16 @@ public class MapsFragment extends SupportMapFragment implements
 
         mMap.setMyLocationEnabled(true);
         mMap.setOnMyLocationButtonClickListener(this);
-        mMap.setInfoWindowAdapter(this);
 
         // Initialize the manager with the context and the map.
-        mClusterManager = new EventClusterManager(mActivity.getApplicationContext(), mMap);
+        mClusterManager = new EventClusterManager(mActivity.getApplicationContext(), mMap, getActivity());
         mClusterManager.setRenderer(new EventsClusterRenderer(getContext(), mMap, mClusterManager, null));
 
         // Point the map's listeners at the listeners implemented by the cluster manager.
+        mMap.setOnInfoWindowClickListener(mClusterManager);
         mMap.setOnCameraChangeListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
+        mMap.setInfoWindowAdapter(mClusterManager);
 
         if (mGoogleApiClient.isConnected()) {
             zoomOnUser();
@@ -184,7 +177,6 @@ public class MapsFragment extends SupportMapFragment implements
             GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(),
                     mActivity, 0).show();
             Log.e(TAG, "" + connectionResult.getErrorCode());
-            return;
         }
     }
 
@@ -228,10 +220,6 @@ public class MapsFragment extends SupportMapFragment implements
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient); //may return null in case of non connected device
         }
 
-        if (mEvents.size() == 0) {
-            mEvents.add(mockEvent);
-        }
-
         // introduction of randomness
         Random random = new Random();
 
@@ -247,74 +235,30 @@ public class MapsFragment extends SupportMapFragment implements
         mMap.clear();
         mClusterManager.clearItems();
 
-        for (int i = 0; i < NUMBER_OF_MARKERS; i++) {
-            double tempLatitude = latitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
-            double tempLongitude = longitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
+        Event prevEvent;
+        int iTot = 0;
 
-            int iEvent = i % mEvents.size();
-            mClusterManager.addItem(new Event(mEvents.get(iEvent).getID(),
-                    mEvents.get(iEvent).getTitle(),
-                    mEvents.get(iEvent).getDescription(),
-                    tempLatitude,
-                    tempLongitude,
-                    mEvents.get(iEvent).getAddress(),
-                    mEvents.get(iEvent).getCreator(),
-                    mEvents.get(iEvent).getTags()));
-            mClusterManager.cluster();
-        }
-    }
+        do {
+            prevEvent = EventDatabase.INSTANCE.getFirstEvent();
+            for (int j = 0; j < NUMBER_OF_EVENT && iTot < NUMBER_OF_MARKERS; j++, iTot++) {
+                double tempLatitude = latitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
+                double tempLongitude = longitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
 
-    /**
-     * Call before creating the marker of the event
-     *
-     * @param marker the marker that will be displayed
-     * @return null to let's the default view display or a view that will be used instead
-     */
-    @Override
-    public View getInfoWindow(Marker marker) {
-        // return null to let's the default view display or a view that will be used instead
-        return null;
-    }
-
-    /**
-     * Personalise the info pop-up of the marker
-     *
-     * @param marker the marker where the user have click
-     * @return The view that represent the info bubble
-     */
-    @Override
-    public View getInfoContents(Marker marker) {
-        // return null to let's the default view display or a view that will be display inside the
-        // default view
-
-        View view;
-        mEventsClick = mClusterManager.getEventsClick();
-
-        switch (mEventsClick.size()) {
-            case 0:
-                view = null;
-                Log.d(TAG, "No actual event clicked");
-                break;
-            case 1:
-                view = getLayoutInflater(null).inflate(R.layout.infomarker_event, mContainer, false);
-                Event event = mEventsClick.iterator().next();
-                TextView tvTitle = (TextView) view.findViewById(R.id.info_title);
-                tvTitle.setText(event.getTitle());
-
-                TextView tvDescription = (TextView) view.findViewById(R.id.info_description);
-                tvDescription.setText(event.getDescription());
-                break;
-            default:
-                view = getLayoutInflater(null).inflate(R.layout.infomarker_cluster, mContainer, false);
-
-                LinearLayout layout = (LinearLayout) view.findViewById(R.id.list_event);
-                for (Event iEvent : mEventsClick) {
-                    TextView textView = new TextView(mContext);
-                    textView.setText(iEvent.getTitle());
-                    layout.addView(textView);
-                }
-        }
-
-        return view;
+                prevEvent = EventDatabase.INSTANCE.getNextEvent(prevEvent);
+                mClusterManager.addItem( new Event(
+                        prevEvent.getID(),
+                        prevEvent.getTitle(),
+                        prevEvent.getDescription(),
+                        tempLatitude,
+                        tempLongitude,
+                        prevEvent.getAddress(),
+                        prevEvent.getCreator(),
+                        prevEvent.getTags(),
+                        prevEvent.getStartDate(),
+                        prevEvent.getEndDate()
+                ));
+                mClusterManager.cluster();
+            }
+        } while (iTot < NUMBER_OF_MARKERS);
     }
 }

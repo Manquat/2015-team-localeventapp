@@ -3,12 +3,20 @@ package ch.epfl.sweng.evento.RestApi;
 /**
  * Created by joachimmuth on 22.10.15.
  * Tool allowing to set every type of URL, according with the django server convention
- * TODO: each of these function has to be setted!
  */
 public final class UrlMaker {
 
+    private UrlMaker() {
+        // private constructor
+    }
+
     public static final String get(String urlServer, int noEvent) {
         String url = urlServer + "events/" + String.valueOf(noEvent) + ".json";
+        return url;
+    }
+
+    public static final String getLots(String urlServer) {
+        String url = urlServer + "events/" + "1212300400/1483225200/46.8/7.1/1500";
         return url;
     }
 

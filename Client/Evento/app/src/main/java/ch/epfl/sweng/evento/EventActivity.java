@@ -1,120 +1,80 @@
 package ch.epfl.sweng.evento;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.GestureDetectorCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.TextView;
-
-import java.util.HashSet;
-import java.util.Set;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.Events.EventPageAdapter;
 
-public class EventActivity extends AppCompatActivity implements
-        GestureDetector.OnGestureListener {
+public class EventActivity extends AppCompatActivity {
+
+    public static final String KEYCURRENTEVENT = "CurrentEventKey";
 
 
-    private GestureDetectorCompat movementDetector;
-    private Event[] events;
-    private Event currentEvent;
+    private ViewPager           mPager;
+    private EventPageAdapter    mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        // Creating the Toolbar and setting it as the Toolbar for the activity
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        // Creating the EventPageAdapter
+        mAdapter = new EventPageAdapter(getSupportFragmentManager());
 
-        movementDetector = new GestureDetectorCompat(this, this);
+        // Assigning ViewPager View and setting the adapter
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setAdapter(mAdapter);
 
-
-        currentEvent = EventDatabase.INSTANCE.getFirstEvent();
-
-        updateFields();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    private void updateFields() {
-        TextView titleView = (TextView) findViewById(R.id.titleView);
-        TextView creatorView = (TextView) findViewById(R.id.creatorView);
-        TextView startDateView = (TextView) findViewById(R.id.startDateView);
-        TextView endDateView = (TextView) findViewById(R.id.endDateView);
-        TextView addressView = (TextView) findViewById(R.id.addressView);
-        TextView descriptionView = (TextView) findViewById(R.id.descriptionView);
-
-        titleView.setText(currentEvent.getTitle());
-        creatorView.setText("Created by " + currentEvent.getCreator());
-        startDateView.setText("From  " + currentEvent.getStartDate().toString());
-        endDateView.setText("to    " + currentEvent.getEndDate().toString());
-        addressView.setText("at    " + currentEvent.getAddress());
-        descriptionView.setText(currentEvent.getDescription());
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        this.movementDetector.onTouchEvent(event);
-        return super.onTouchEvent(event);
-    }
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        float sensitivity = 50;
-        if ((e1.getX() - e2.getX()) > sensitivity) {
-            onSwipeLeft();
-        } else if ((e2.getX() - e1.getX()) > sensitivity) {
-            onSwipeRight();
+        // get the signature of the current event
+        long currentEventSignature = EventDatabase.INSTANCE.getFirstEvent().getSignature();
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            currentEventSignature = bundle.getLong(KEYCURRENTEVENT);
         }
-        return false;
+
+        // Set the position of the page viewer at the correct event
+        mPager.setCurrentItem(EventDatabase.INSTANCE.getPosition(currentEventSignature));
     }
 
-    private void onSwipeLeft() {
-        currentEvent = EventDatabase.INSTANCE.getNextEvent(currentEvent);
-        updateFields();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
-    private void onSwipeRight() {
-        currentEvent = EventDatabase.INSTANCE.getPreviousEvent(currentEvent);
 
-        updateFields();
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        int id = item.getItemId();
+
+        if(id == R.id.action_createAnEvent){
+            Intent intent = new Intent(this, CreatingEventActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.action_logout){
+
+        }
+
+        return super.onOptionsItemSelected(item);
+
     }
 }

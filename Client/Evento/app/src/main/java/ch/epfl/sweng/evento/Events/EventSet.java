@@ -4,20 +4,22 @@ import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
 import java.util.TreeMap;
+
+import ch.epfl.sweng.evento.common.logger.Log;
 
 /**
  * Created by Val on 24.10.2015.
  */
 public class EventSet {
 
-    //The container of Events. For now, it's a Map with the ID as key values
+    private static final String TAG = "EventSet";
+
+    //The container of Events. For now, it's a Map with the Signature as key values
     private Map<Long, Event> mEvents;
 
     /**
@@ -29,12 +31,12 @@ public class EventSet {
     }
 
     /**
-     * @param ID the ID of the Event to be returned
-     * @return the Event corresponding to the ID or the special ERROR Event if it's not in the Map
+     * @param signature the Signature of the Event to be returned
+     * @return the Event corresponding to the Signature or the special ERROR Event if it's not in the Map
      */
-    public Event get(long ID) {
-        if (mEvents.containsKey(ID)) {
-            return mEvents.get(ID);
+    public Event get(long signature) {
+        if (mEvents.containsKey(signature)) {
+            return mEvents.get(signature);
         } else {
             return getErrorEvent();
         }
@@ -166,7 +168,7 @@ public class EventSet {
         return newEventSet;
     }
 
-    public EventSet filter(Event.Date startDate) {
+    public EventSet filter(Event.CustomDate startDate) {
         EventSet newEventSet = new EventSet();
         for (Event event : mEvents.values()){
             if(event.getStartDate().toLong()>=startDate.toLong()){
@@ -219,7 +221,27 @@ public class EventSet {
                 "",
                 "",
                 new HashSet<String>(),
-                new Event.Date(),
-                new Event.Date());
+                new Event.CustomDate(),
+                new Event.CustomDate());
+    }
+
+    public int getPosition(long signature) {
+        int position =0;
+        Iterator<Long> iterator = mEvents.keySet().iterator();
+        boolean stop = false;
+
+        while (iterator.next() != signature) {
+            ++position;
+
+            if (!iterator.hasNext()) {
+                Log.d(TAG, "No such event return the first event");
+                position = 0;
+                break;
+            }
+        }
+
+        --position;//TODO test (I'm afraid that I can pass -1 as result)
+
+        return position;
     }
 }
