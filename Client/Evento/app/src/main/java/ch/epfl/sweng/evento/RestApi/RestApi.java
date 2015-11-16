@@ -47,10 +47,8 @@ public class RestApi{
             @Override
             public void onTaskComplete(String response){
                 Event event = null;
-                if (response != null) //TODO treat this problem nicely
-                {
-                    try
-                    {
+                if (response != null) {
+                    try {
                         JSONObject JsonResponse = new JSONObject(response);
                         event = Parser.parseFromJSON(JsonResponse);
                     } catch (JSONException e) {
