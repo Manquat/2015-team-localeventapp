@@ -14,6 +14,7 @@ public class MyView extends ImageView {
     int midX = 0; //default
     int midY = 0; //default
 
+
     public MyView(Context context, int x, int y) {
         super(context);
         midX = x;

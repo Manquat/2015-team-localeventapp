@@ -57,6 +57,7 @@ public class ContentFragment extends Fragment {
     final int PADDING = 5;
     private static final int MAX_NUMBER_OF_EVENT = 50;
     private int mNumberOfEvent;
+    private static final String TAG = "ContentFragment";
 
     private static Vector<ImageButton> mMosaicVector = new Vector<ImageButton>();
     private List<Event> mEvents;
@@ -74,7 +75,7 @@ public class ContentFragment extends Fragment {
 
 
     /**
-     * @return a new instance of {@link ContentFragment}, adding the parameters into a bundle and
+     * Create a new instance of {@link ContentFragment}, adding the parameters into a bundle and
      * setting them as arguments.
      */
     public ContentFragment() {
@@ -101,7 +102,6 @@ public class ContentFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mActivity = getActivity();
     }
-
 
 
     @Override

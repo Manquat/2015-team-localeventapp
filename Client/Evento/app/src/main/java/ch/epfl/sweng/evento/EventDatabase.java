@@ -25,6 +25,11 @@ public enum EventDatabase {
 
     private RestApi mRestAPI;
 
+    /**
+     * This EventSet represents all the Events currently stored on the device
+     */
+    private EventSet mEventSet;
+
     private EventDatabase() {
         mEventSet = new EventSet();
         mRestAPI = new RestApi(new DefaultNetworkProvider(), ServerUrl.get());
@@ -51,13 +56,11 @@ public enum EventDatabase {
         events[3] = new Event(5152, "Event4", "This is a fourth event with ID 5152", 4.4, 4.4, "4 long street", "dinesh", tags, start2, end);
         events[4] = new Event(42222, "Event5", "This is a fifth event with ID 42222", 5.5, 5.5, "5 long street", "ethan", tags, start, end);
 
-        for(int i = 0;i<5;i++)
-        {
+        for (int i = 0; i < 5; i++) {
             mRestAPI.getEvent(new GetResponseCallback() {
                 @Override
                 public void onDataReceived(Event event) {
                     mEventSet.addEvent(event);
-                    System.out.println("event signature = "+event.getSignature());
                 }
             });
         }
@@ -71,15 +74,12 @@ public enum EventDatabase {
         loadNewEvents();
     }
 
-    void loadNewEvents()
-    {
-        for(int i = 0;i<5;i++)
-        {
+    void loadNewEvents() {
+        for (int i = 0; i < 5; i++) {
             mRestAPI.getEvent(new GetResponseCallback() {
                 @Override
                 public void onDataReceived(Event event) {
                     mEventSet.addEvent(event);
-                    //System.out.println(event.getSignature());
                 }
             });
         }
@@ -135,13 +135,10 @@ public enum EventDatabase {
      * @param current the current Event which is the reference to get the previous Event
      * @return the Event that is right before the 'current' Event in the starting CustomDate order
      */
-    public Event getPreviousEvent(Event current) { return mEventSet.getPrevious(current.getSignature());}
 
-    //public Event getPreviousEvent(long signature) { return mEventSet.getPrevious(signature);}
+    public Event getPreviousEvent(Event current) {return mEventSet.getPrevious(current);}
 
-    public EventSet filter(LatLng latLng, double distance) {
-        return mEventSet.filter(latLng, distance);
-    }
+    public EventSet filter(LatLng latLng, double distance) {return mEventSet.filter(latLng, distance);}
 
     public EventSet filter(Set<String> tags) {
         return mEventSet.filter(tags);
@@ -153,8 +150,5 @@ public enum EventDatabase {
 
     public EventSet filter(Event.CustomDate startDate) {return mEventSet.filter(startDate);}
 
-    /**
-     * This EventSet represents all the Events currently stored on the device
-     */
-    private EventSet mEventSet;
+
 }

@@ -35,8 +35,6 @@ import ch.epfl.sweng.evento.RestApi.GetTask;
 import ch.epfl.sweng.evento.RestApi.Serializer;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.fail;
 
 /**
  * Created by joachimmuth on 21.10.15.
@@ -52,10 +50,10 @@ public class RestApiTest {
     private static final int ASCII_SPACE = 0x20;
     private HttpURLConnection connection;
     private NetworkProvider networkProviderMockito;
-    private static final String wrongUrl = "http://exemple.com";
+    private static final String wrongUrl = "http://example.com";
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = "http://10.0.2.2:8000/";
-    //private static final String urlServer = "https://protected-hamlet-4797.herokuapp.com/";
+    //private static final String urlServer = "http://10.0.2.2:8000/";
+    private static final String urlServer = "https://protected-hamlet-4797.herokuapp.com/";
 
     private static final Parser parser = new Parser();
     private static final String PROPER_JSON_STRING = "{\n"
@@ -184,13 +182,15 @@ public class RestApiTest {
         restApi.getEvent(new GetResponseCallback() {
             @Override
             public void onDataReceived(Event event) {
-                Log.d(TAG, event.getTitle());
-                Log.d(TAG, Integer.toString((event.getID())));
-                eventArrayList.add(event);
+                if (event != null) {
+                    Log.d(TAG, event.getTitle());
+                    Log.d(TAG, Integer.toString((event.getID())));
+                    eventArrayList.add(event);
+                }
             }
         });
 
-        Thread.sleep(200);
+        Thread.sleep(2000);
 
         assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
 
@@ -210,24 +210,23 @@ public class RestApiTest {
     }
 
     private static final String EVENT_TO_CREATE ="{\n"
-            + "  \"Event_name\": \"Test in room for show\",\n"
+            + "  \"Event_name\": \"Ping-Pong at Sat 2\",\n"
             + "  \"description\": \n"
             + "    \"Beer, ping-pong... let's beerpong\" ,\n"
             + "  \"latitude\": 46.519428,\n"
             + "  \"longitude\": 6.580847,\n"
-            + "  \"address\": \"Satellite\", \n "
-            + "  \"creator\": \"Guillaume Meyrat\"\n"
+            + "  \"address\": \"Satellite\", \n"
+            + "  \"date\" : \"1991-01-15T23:00:00Z\",\n "
+            + "   \"creator\": \"Guillaume Meyrat\"\n"
             + "}\n";
 
+    private static final Event.CustomDate date = new Event.CustomDate(1990, 12, 16, 0, 0);
     private static final  Event e = new Event(10, "Ping-Pong at Sat 2", "Beer, ping-pong... let's beerpong",
-            46.519428, 6.580847, "Satellite", "Guillaume Meyrat", new HashSet<String>());
+            46.519428, 6.580847, "Satellite", "Guillaume Meyrat", new HashSet<String>(), date, date);
     private static final String EVENT_TO_CREATE_seri = Serializer.event(e);
 
 
-    @Test
-    public void testSerializer2() {
-        assertEquals("event are correctly serialized", EVENT_TO_CREATE, EVENT_TO_CREATE_seri);
-    }
+
     @Test
     public void testPostTaskServer() throws ExecutionException, InterruptedException {
         String url = urlServer + "events/";
@@ -279,7 +278,7 @@ public class RestApiTest {
 
     @Test
     public void testUpdateEvent() throws InterruptedException {
-        Event event = new Event(14, "this is a test of UpdateEvent", "test1", 0, 0,"address", "createur", new HashSet<String>());
+        Event event = new Event(14, "this is a test of UpdateEvent", "test1", 0, 0,"address", "creator", new HashSet<String>());
         RestApi restApi = new RestApi(networkProvider, urlServer);
         restApi.updateEvent(event, new PutCallback() {
             @Override

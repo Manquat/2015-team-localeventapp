@@ -1,20 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/main_layout">
+    android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/tool_bar"
-        layout="@layout/tool_bar">
-    </include>
+    <TextView
+        android:id="@+id/titleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/event_title"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
+    <TextView
+        android:id="@+id/creatorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/event_creator"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_weight="0.22" />
+
+    <TextView
+        android:id="@+id/startDateView"
+        android:layout_width="363dp"
+        android:layout_height="wrap_content"
+        android:text="@string/event_start_date"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/endDateView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/event_end_date"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/addressView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.10"
+        android:text="@string/event_adress"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/tagsView"
+        android:layout_width="292dp"
+        android:layout_height="wrap_content"
+        android:text="@string/event_tags"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/descriptionView"
+        android:layout_width="276dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_weight="0.49"
+        android:text="@string/event_description"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </LinearLayout>
