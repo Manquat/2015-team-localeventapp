@@ -262,8 +262,12 @@ public class CreatingEventActivity extends AppCompatActivity
                 ImageView pictureView = (ImageView) findViewById(R.id.pictureView);
                 //Bitmap picture = pictureView.getDrawingCache()
                 Drawable drawable = pictureView.getDrawable();
-                Bitmap picture = ((BitmapDrawable) drawable).getBitmap();
-                pictureView.setImageBitmap(picture);
+                Bitmap picture;
+                if(drawable == null){ Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+                    picture = Bitmap.createBitmap(100, 100, conf);
+                } else {
+                    picture = ((BitmapDrawable) drawable).getBitmap();
+                }
 
                 String creator = "Jack Henri";
                 Random rand = new Random();

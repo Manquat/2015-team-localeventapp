@@ -12,6 +12,7 @@ import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventSet;
+import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
 import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 
@@ -40,7 +41,7 @@ public enum EventDatabase {
         Event.CustomDate start3 = new Event.CustomDate(2015, 12, 12, 19, 30);
         Event.CustomDate end = new Event.CustomDate(2015, 10, 12, 20, 30);
 
-        Those are mock events before getting them from the database
+        //Those are mock events before getting them from the database
         Event events[];
         events = new Event[5];
         Set<String> tags = new HashSet<String>() {{
@@ -69,20 +70,23 @@ public enum EventDatabase {
         mEventSet.addEvent(events[1]);
         mEventSet.addEvent(events[2]);
         mEventSet.addEvent(events[3]);
-        mEventSet.addEvent(events[4]);*/
-        
+        mEventSet.addEvent(events[4]);
+        */
         loadNewEvents();
     }
 
     void loadNewEvents() {
-        for (int i = 0; i < 5; i++) {
-            mRestAPI.getEvent(new GetResponseCallback() {
-                @Override
-                public void onDataReceived(Event event) {
-                    mEventSet.addEvent(event);
+        mRestAPI.getMultiplesEvent(new GetMultipleResponseCallback() {
+            @Override
+            public void onDataReceived(ArrayList<Event> events) {
+                for (int i = 0; i < events.size(); ++i) {
+                    mEventSet.addEvent(events.get(i));
+                    Log.d("EVENT LOADED ", Integer.toString(events.size()));
+
+                    Log.d("EVENT LOADEDé ", events.get(i).getTitle());
                 }
-            });
-        }
+            }
+        });
     }
 
     /**
@@ -99,6 +103,9 @@ public enum EventDatabase {
         return mEventSet.getFirst();
     }
 
+    public ArrayList<Event> getAllEvents(){
+        return mEventSet.toArrayList();
+    }
     /**
      * This method returns the next Event after the one passed in argument, in the order of starting
      * CustomDate and ID. If 'current' is the last one, it will return it instead.
@@ -106,11 +113,11 @@ public enum EventDatabase {
      * @return the Event that is right after the 'current' Event in the starting CustomDate order
      */
     public Event getNextEvent(Event current) {
-        Log.d(TAG, Integer.toString(mEventSet.eventsLeftAfter(current)));
+        /*Log.d(TAG, Integer.toString(mEventSet.eventsLeftAfter(current)));
         if(mEventSet.eventsLeftAfter(current) < 5)
         {
            loadNewEvents();
-        }
+        }*/
         return mEventSet.getNext(current);
     }
 

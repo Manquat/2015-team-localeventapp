@@ -41,7 +41,8 @@ public class PostTask extends AsyncTask<String, String, String> {
         String response = null;
         try {
             // prepare URL and parameter
-            String postData = mRequestBody;
+            String urlParameters = mRequestBody;
+            String postData = urlParameters;
             int postDataLength = postData.length();
             URL url = new URL(mRestUrl);
             HttpURLConnection conn = mNetworkProvider.getConnection(url);
@@ -54,9 +55,9 @@ public class PostTask extends AsyncTask<String, String, String> {
             conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));
             conn.setUseCaches(false);
             // send data
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write(postData);
-
+            try (OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream())) {
+                wr.write(postData);
+            }
             // get back response code and put it in response string (in case of success)
             int responseCode = 0;
             responseCode = conn.getResponseCode();

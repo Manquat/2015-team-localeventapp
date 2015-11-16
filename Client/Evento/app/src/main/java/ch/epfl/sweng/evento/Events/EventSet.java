@@ -4,6 +4,8 @@ import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -275,5 +277,14 @@ public class EventSet {
         --position;//TODO test (I'm afraid that I can pass -1 as result)
 
         return position;
+    }
+
+    public ArrayList<Event> toArrayList(){
+
+
+       // new ArrayList<Element>(Arrays.asList(array))
+
+
+        return new ArrayList<Event> (mEvents.values());
     }
 }

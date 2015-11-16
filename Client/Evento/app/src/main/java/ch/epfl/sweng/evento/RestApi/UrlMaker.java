@@ -24,7 +24,7 @@ public final class UrlMaker {
     }
 
     public static final String getLots(String urlServer) {
-        String url = urlServer + event + accessMaster + "1212300400/1483225200/46.8/7.1/1500";
+        String url = urlServer + event + accessMaster ;//+ "1212300400/1483225200/46.8/7.1/1500";
         return url;
     }
 

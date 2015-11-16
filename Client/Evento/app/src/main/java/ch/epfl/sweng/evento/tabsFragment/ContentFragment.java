@@ -39,6 +39,7 @@ import java.util.Vector;
 
 import ch.epfl.sweng.evento.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.EventActivity;
+import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
@@ -113,7 +114,12 @@ public class ContentFragment extends Fragment {
 
     public void refreshEventSet(){
         Log.d("LOG_ContentFragment", "Refreshing");
-        mRestAPI = new RestApi(new DefaultNetworkProvider(), ServerUrl.get());
+
+        mEvents=EventDatabase.INSTANCE.getAllEvents();
+        mNumberOfEvent = mEvents.size();
+        displayMosaic();
+
+        /*mRestAPI = new RestApi(new DefaultNetworkProvider(), ServerUrl.get());
         mRestAPI.getMultiplesEvent(new GetMultipleResponseCallback() {
             @Override
             public void onDataReceived(ArrayList<Event> event) {
@@ -123,7 +129,7 @@ public class ContentFragment extends Fragment {
                 mNumberOfEvent = mEvents.size();
                 displayMosaic();
             }
-        });
+        });*/
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
