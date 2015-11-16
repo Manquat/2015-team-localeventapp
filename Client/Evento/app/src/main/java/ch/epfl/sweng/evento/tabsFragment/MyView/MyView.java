@@ -10,7 +10,7 @@ import android.view.MotionEvent;
 import android.widget.ImageView;
 
 public class MyView extends ImageView {
-    
+
     int midX = 0; //default
     int midY = 0; //default
 
