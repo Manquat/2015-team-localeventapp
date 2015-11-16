@@ -21,7 +21,6 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
-import ch.epfl.sweng.evento.Events.Event;
 
 
 public class LoginActivity extends AppCompatActivity implements
