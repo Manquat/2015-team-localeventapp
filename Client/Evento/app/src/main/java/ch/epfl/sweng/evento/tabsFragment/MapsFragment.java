@@ -104,8 +104,8 @@ public class MapsFragment extends SupportMapFragment implements
 
         mEvents = new ArrayList<Event>();
         mRestAPI = new RestApi(new DefaultNetworkProvider(), ServerUrl.get());
-        for (int i=0; i<NUMBER_OF_EVENT; i++)
-        {
+
+        for (int i=0; i<NUMBER_OF_EVENT; i++) {
             mRestAPI.getEvent(new GetResponseCallback() {
                 @Override
                 public void onDataReceived(Event event){
