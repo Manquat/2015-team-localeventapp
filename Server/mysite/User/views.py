@@ -56,18 +56,23 @@ def validate_user(request,token, format=None):
     Validate User.
     """
 
-
+    CLIENT_ID = "1038367220496-ceugpt9chaqucpjhhglmced2d2tat2lm.apps.googleusercontent.com"
+    WEB_CLIENT_ID = "60350226207-ph9a1g0iuakvfe8bd7bbku01ktr40aur.apps.googleusercontent.com"
 # (Receive token by HTTPS POST)
-    
+
     try:
         idinfo = client.verify_id_token(token, CLIENT_ID)
         # If multiple clients access the backend server:
-        if idinfo['aud'] not in [ANDROID_CLIENT_ID, IOS_CLIENT_ID, WEB_CLIENT_ID]:
+        if idinfo['aud'] not in [WEB_CLIENT_ID]:
             raise crypt.AppIdentityError("Unrecognized client.")
         if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
             raise crypt.AppIdentityError("Wrong issuer.")
     except crypt.AppIdentityError:
-        # Invalid token
-    userid = idinfo['sub']
+        return Response(status=status.HTTP_412_PRECONDITION_FAILED)
+    Userid = idinfo['sub']
+    try:
+        user = User.objects.filter(userid__equal = Userid)
+        return Response(status=status.HTTP_202_ACCEPTED)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
-    return Response(userid)
