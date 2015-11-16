@@ -28,6 +28,7 @@ public final class Serializer {
                 + "  \"address\": \"" + e.getAddress() + "\", \n "
                 + " \"date\" : \"" + e.getProperDateString() + "\", \n "
                 + "  \"creator\": \"" + e.getCreator() + "\" \n"
+               // + "  \"tags\":" + "Basketball" + "\n"
                 + "}\n";
         Log.d(TAG, res);
         return res;

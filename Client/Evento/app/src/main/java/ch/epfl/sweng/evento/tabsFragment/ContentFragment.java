@@ -145,15 +145,6 @@ public class ContentFragment extends Fragment {
         mGridLayout.setRowCount(mNumberOfRow);
         mGridLayout.setColumnCount(mNumberOfColumn);
         mGridLayout.removeAllViews();
-        Set<String> tagFoot = new HashSet<String>() {{
-            add("Foot!");
-        }};
-        Set<String> tagBasket = new HashSet<String>() {{
-            add("Basketball");
-        }};
-        Set<String> tagFoot2 = new HashSet<String>() {{
-            add("Football");
-        }};
 
 
         boolean[] tmpBooleanRow = new boolean[mNumberOfColumn];
@@ -182,7 +173,7 @@ public class ContentFragment extends Fragment {
                         tmpSpanSmtgOrNot = Span.NOTHING;
                         tView.setImageResource(R.drawable.football);
                     }
-                    else if(mEvents.get(countEvent).getTags().contains(tagBasket)) {
+                    else if(mEvents.get(countEvent).getTags().contains("Basketball")) {
                         tmpSpanSmtgOrNot = Span.TWO_ROWS;
                         tView.setImageResource(R.drawable.basket);
                         mDisplayOrNot.get(yPos + 1)[xPos] = false;

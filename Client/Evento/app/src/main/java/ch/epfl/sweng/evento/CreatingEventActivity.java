@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.RestApi.PostCallback;
@@ -77,6 +78,7 @@ public class CreatingEventActivity extends AppCompatActivity
     private TextView mPlaceDetailsText;
     private TextView mPlaceDetailsAttribution;
     private PlaceAutocompleteAdapter mAdapter;
+    private Set<String> mTag;
     private double latitude = 0.0;
     private double longitude = 0.0;
 
@@ -217,7 +219,13 @@ public class CreatingEventActivity extends AppCompatActivity
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                // TODO Auto-generated method stub
+                final int groupPosTmp = groupPosition;
+                final int childPosTmp = childPosition;
+                mTag = new HashSet<String>() {{
+                    add(mListDataChild.get(
+                            mListDataHeader.get(groupPosTmp)).get(
+                            childPosTmp));
+                }};
                 Toast.makeText(
                         getApplicationContext(),
                         mListDataHeader.get(groupPosition)
@@ -276,7 +284,7 @@ public class CreatingEventActivity extends AppCompatActivity
 
                 Event e = new Event(id, titleString, descriptionString, latitude,
                         longitude, addressString, creator,
-                        new HashSet<String>(), startDate, endDate, picture);
+                        mTag, startDate, endDate, picture);
 
                 Log.d(TAG, "date de l'event: " + e.getStartDate().toString() + " " + e.getEndDate().toString());
 

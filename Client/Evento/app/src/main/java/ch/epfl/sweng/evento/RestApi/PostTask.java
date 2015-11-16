@@ -4,7 +4,9 @@ package ch.epfl.sweng.evento.RestApi;
  * Created by cerschae on 15/10/2015.
  */
 
+import android.annotation.TargetApi;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 
 import java.io.IOException;
@@ -36,12 +38,14 @@ public class PostTask extends AsyncTask<String, String, String> {
         this.mCallback = callback;
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected String doInBackground(String... arg0) {
         String response = null;
         try {
             // prepare URL and parameter
             String urlParameters = mRequestBody;
+            Log.d("HERE", urlParameters);
             String postData = urlParameters;
             int postDataLength = postData.length();
             URL url = new URL(mRestUrl);
@@ -61,6 +65,7 @@ public class PostTask extends AsyncTask<String, String, String> {
             // get back response code and put it in response string (in case of success)
             int responseCode = 0;
             responseCode = conn.getResponseCode();
+            Log.d("HERE", "responseCode" + Integer.toString(responseCode));
             if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END) {
                 throw new RestException("Invalid HTTP response code");
             } else {

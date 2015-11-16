@@ -61,6 +61,7 @@ public class EventFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity().getApplicationContext(), "Submitted", Toast.LENGTH_SHORT).show();
+                getActivity().finish();
             }
         });
     }

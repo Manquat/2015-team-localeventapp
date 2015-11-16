@@ -16,6 +16,8 @@ import java.util.GregorianCalendar;
 import java.util.Set;
 import java.util.TimeZone;
 
+import ch.epfl.sweng.evento.R;
+
 /**
  * Created by Val on 15.10.2015.
  */
@@ -169,6 +171,15 @@ public Event(int id,
 
     public String getCreator() {
         return mCreator;
+    }
+
+    public String getTagsString() {
+        if(mTags.contains("Foot!") ||
+               mTags.contains("Football")) {
+            return "Football";
+        }
+        else if(mTags.contains("Basketball")) return "Basketball";
+        else return "Basketball";
     }
 
     public Set<String> getTags() {
