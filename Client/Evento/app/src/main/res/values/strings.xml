@@ -29,4 +29,5 @@
     <string name="event_adress">address</string>
     <string name="event_tags">tags</string>
     <string name="event_description">description</string>
+    <string name="serverClientId">How should this look like?</string>
 </resources>

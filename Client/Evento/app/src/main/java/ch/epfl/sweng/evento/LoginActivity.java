@@ -12,14 +12,13 @@ import android.view.MenuItem;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
-
-
-//TODO import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 import ch.epfl.sweng.evento.Events.Event;
 
@@ -61,10 +60,12 @@ public class LoginActivity extends AppCompatActivity implements
                 .addScope(new Scope(Scopes.EMAIL))
                 .build();
 
-
-/*     TODO   GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        //Needed options to later on request the ID Token
+        //TODO Question: What should serverClientId look like, and can it be affected by any classes? Something with OAuth 2.0 client ID!
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
-                .build();*/
+                .requestIdToken(getString(R.string.serverClientId))
+                .build();
 
         // Sign in if clicked
         findViewById(R.id.sign_in_button).setOnClickListener(this);
@@ -165,7 +166,6 @@ public class LoginActivity extends AppCompatActivity implements
         mGoogleApiClient.connect();
 
         // Show a message to the user that we are signing in.
-        //TODO define mStatus.
         //TextView mStatus = (TextView) ;
         //mStatus.setText(R.string.signing_in);
     }
@@ -179,7 +179,6 @@ public class LoginActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
 
-        //TODO How does requestCode change?
         if (requestCode == RC_SIGN_IN) {
             // If the error resolution was not successful we should not resolve further.
             if (resultCode != RESULT_OK) {
@@ -203,7 +202,9 @@ public class LoginActivity extends AppCompatActivity implements
         // Show the signed-in UI
         //showSignedInUI();
 
-/*  TODO      GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
+       /* Intent data = this.data;
+        GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
             String idToken = acct.getIdToken();
