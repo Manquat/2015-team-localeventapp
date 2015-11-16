@@ -27,7 +27,7 @@ public final class Serializer {
                 + "  \"longitude\": " + e.getLongitude() + ",\n"
                 + "  \"address\": \"" + e.getAddress() + "\", \n "
                 + " \"date\" : \"" + e.getProperDateString() + "\", \n "
-                + "  \"creator\": \"" + e.getCreator() + "\"\n"
+                + "  \"creator\": \"" + e.getCreator() + "\" \n"
                 + "}\n";
         Log.d(TAG, res);
         return res;

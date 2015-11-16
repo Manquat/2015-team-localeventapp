@@ -79,6 +79,7 @@ public class ContentFragment extends Fragment {
     private View mView;
     private Toolbar mToolbar;
 
+    public Event.CustomDate dateFilter;
 
     /**
      * Create a new instance of {@link ContentFragment}, adding the parameters into a bundle and
@@ -120,16 +121,20 @@ public class ContentFragment extends Fragment {
     }
 
     public void refreshEventSet(){
-        Log.d("LOG_ContentFragment", "Refreshing");
+
         mEvents=EventDatabase.INSTANCE.getAllEvents();
         mNumberOfEvent = mEvents.size();
         displayMosaic();
+        Log.d("LOG_ContentFragment", "Refreshing");
+        Toast.makeText(mActivity.getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_mosaic, container, false);
         Log.d("LOG_ContentFragment", "ContentFragmentOnCreateView");
+
+        refreshEventSet();
 
         return mView;
     }

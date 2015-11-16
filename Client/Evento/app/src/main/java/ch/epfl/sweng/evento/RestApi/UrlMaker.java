@@ -23,7 +23,7 @@ public final class UrlMaker {
         return urlServer + event + accessMaster + String.valueOf(noEvent) + ".json";
     }
 
-    public static final String getLots(String urlServer) {
+    public static final String getAll(String urlServer) {
         String url = urlServer + event + accessMaster ;//+ "1212300400/1483225200/46.8/7.1/1500";
         return url;
     }
@@ -44,7 +44,7 @@ public final class UrlMaker {
     public static String getByDate(String urlServer, GregorianCalendar startDate, GregorianCalendar endDate) {
         long startTimeInSec = startDate.getTimeInMillis()/1000;
         long endTimeInSec = endDate.getTimeInMillis()/1000;
-        String url = urlServer + "events/" + Long.toString(startTimeInSec) +
+        String url = urlServer + event + accessMaster + Long.toString(startTimeInSec) +
                 "/" + Long.toString(endTimeInSec) +"/46.8/7.1/1500";
 
         Log.d(TAG, "url : " + url);
