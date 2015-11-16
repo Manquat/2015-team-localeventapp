@@ -65,7 +65,7 @@ public class RestApi{
     }
 
     public void getMultiplesEvent(final GetMultipleResponseCallback callback){
-        String restUrl = UrlMaker.getLots(mUrlServer);
+        String restUrl = UrlMaker.getAll(mUrlServer);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback (){
             @Override
             public void onTaskComplete(String response){

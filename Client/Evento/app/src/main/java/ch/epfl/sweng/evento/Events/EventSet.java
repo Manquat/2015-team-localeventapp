@@ -33,6 +33,11 @@ public class EventSet {
         mEvents = new TreeMap<>();
     }
 
+
+    public void clear(){
+        mEvents.clear();
+    }
+
     /**
      * @param signature the Signature of the Event to be returned
      * @return the Event corresponding to the Signature or the special ERROR Event if it's not in the Map
