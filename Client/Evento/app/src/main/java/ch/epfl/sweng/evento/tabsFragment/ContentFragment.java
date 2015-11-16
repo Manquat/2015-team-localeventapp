@@ -20,12 +20,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,6 +65,8 @@ public class ContentFragment extends Fragment {
     private Activity mActivity;
     private int mNumberOfRow;
     private int mNumberOfColumn;
+    private int mWidthColumn;
+    private int mHeightRow;
     private Vector<boolean[]> mDisplayOrNot;
     private Vector<MyView> mMyViews;
     private View mView;
@@ -105,7 +109,6 @@ public class ContentFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d("LOG_ContentFragment", "ContentFragmentOnResume");
-
         if(mView != null) refreshEventSet();
     }
 
@@ -135,9 +138,9 @@ public class ContentFragment extends Fragment {
     private void displayMosaic(){
         Log.d("LOG_ContentFragment", "DisplayMosaic");
         mGridLayout = (GridLayout) mView.findViewById(R.id.gridLayout);
-        mGridLayout.removeAllViews();
         mGridLayout.setRowCount(mNumberOfRow);
         mGridLayout.setColumnCount(mNumberOfColumn);
+        mGridLayout.removeAllViews();
         Set<String> tagFoot = new HashSet<String>() {{
             add("Foot!");
         }};
@@ -170,8 +173,8 @@ public class ContentFragment extends Fragment {
                     }
                 });
                 if (mDisplayOrNot.get(yPos)[xPos]) {
-                    if(mEvents.get(countEvent).getTags().contains(tagFoot) ||
-                            mEvents.get(countEvent).getTags().contains(tagFoot2)) {
+                    if(mEvents.get(countEvent).getTags().contains("Foot!") ||
+                            mEvents.get(countEvent).getTags().contains("Football")) {
                         tmpSpanSmtgOrNot = Span.NOTHING;
                         tView.setImageResource(R.drawable.football);
                     }
@@ -214,11 +217,13 @@ public class ContentFragment extends Fragment {
     private void addViewToGridLayout(View view, int row, int column, int rowSpan, int columnSpan) {
         int pWidth = mGridLayout.getWidth();
         int pHeight = mGridLayout.getHeight();
-        int widthColumn = pWidth / mNumberOfColumn;
-        int heightRow = pHeight / mNumberOfRow;
+        mWidthColumn = 0;
+        mHeightRow = 0;
+        Log.d("addView", "width" + Integer.toString(mWidthColumn));
+        Log.d("addView", "height" + Integer.toString(mHeightRow));
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-        params.width = widthColumn - 2 * PADDING;
-        params.height = heightRow - 2 * PADDING;
+        params.width = mWidthColumn - 2 * PADDING;
+        params.height = mHeightRow - 2 * PADDING;
         params.setMargins(PADDING, PADDING, PADDING, PADDING);
         params.columnSpec = GridLayout.spec(column, columnSpan);
         params.rowSpec = GridLayout.spec(row, rowSpan);
