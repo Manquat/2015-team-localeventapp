@@ -64,14 +64,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Get some event
-        RestApi restApi = new RestApi(networkProvider, urlServer);
-        restApi.getMultiplesEvent(new GetMultipleResponseCallback() {
-            @Override
-            public void onDataReceived(ArrayList<Event> eventArrayList) {
-                mEventArrayList.addAll(eventArrayList);
-            }
-        });
 
         // Creating the Toolbar and setting it as the Toolbar for the activity
         mToolbar = (Toolbar) findViewById(R.id.tool_bar);
