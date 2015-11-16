@@ -47,9 +47,7 @@ public class RestApi{
             @Override
             public void onTaskComplete(String response){
                 Event event = null;
-                if (response != null)
-
-                {
+                if (response != null) {
                     try {
                         JSONObject JsonResponse = new JSONObject(response);
                         event = Parser.parseFromJSON(JsonResponse);
