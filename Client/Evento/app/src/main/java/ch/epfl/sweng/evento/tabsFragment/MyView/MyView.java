@@ -10,11 +10,7 @@ import android.view.MotionEvent;
 import android.widget.ImageView;
 
 public class MyView extends ImageView {
-
-
-
-    boolean mtouchOn;
-    boolean mDownTouch = false;
+    
     int midX = 0; //default
     int midY = 0; //default
 
@@ -22,28 +18,12 @@ public class MyView extends ImageView {
         super(context);
         midX = x;
         midY = y;
-        init();
     }
 
     public MyView(Context context) {
         super(context);
-        init();
-    }
 
-    public MyView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
     }
-
-    public MyView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    private void init() {
-        mTouchOn = false;
-    }
-
 
     public int getIdX() {
         return midX;

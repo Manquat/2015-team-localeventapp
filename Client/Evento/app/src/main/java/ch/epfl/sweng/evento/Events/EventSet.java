@@ -43,16 +43,17 @@ public class EventSet {
     }
 
     public Event getFirst() {
-		if(mEvents.size > 0){
-			Iterator<Long> iterator = mEvents.keySet().iterator();
-			return mEvents.get(iterator.next());
-		}else{
-			return getErrorEvent();
+        if (mEvents.size() > 0) {
+            Iterator<Long> iterator = mEvents.keySet().iterator();
+            return mEvents.get(iterator.next());
+        } else {
+            return getErrorEvent();
+        }
     }
 
     public Event getNext(Event current)
     {
-		if(mEvent.size > 1){
+		if(mEvents.size() > 1){
 			return getNext(current.getSignature());
 		}else{
 			return current;
@@ -84,7 +85,7 @@ public class EventSet {
 
     public Event getPrevious(Event current)
     {
-		if(mEvents.size > 1){
+		if(mEvents.size() > 1){
 			return getPrevious(current.getSignature());
 		}else{
 			return current;
