@@ -6,9 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
 
@@ -19,8 +17,7 @@ public class Parser {
     private static final String TAG = "Parser";
 
     public static ArrayList<Event> events(String s) {
-        ArrayList<Event> events = null;
-        return events;
+        return null;
     }
 
     public static Event parseFromJSON(JSONObject jsonObject) throws JSONException {

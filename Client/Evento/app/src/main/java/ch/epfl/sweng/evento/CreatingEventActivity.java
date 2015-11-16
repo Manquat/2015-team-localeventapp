@@ -47,6 +47,10 @@ public class CreatingEventActivity extends AppCompatActivity
         TimePickerDialog.OnTimeSetListener,
         GoogleApiClient.OnConnectionFailedListener {
 
+
+    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
+    private static final String urlServer = ServerUrl.get();
+
     private static final String TAG = "CreatingEventActivity";
     private TextView mStartDateView;
     private TextView mEndDateView;
@@ -83,25 +87,22 @@ public class CreatingEventActivity extends AppCompatActivity
         }
     }
 
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute){
-        if(mStartOrEndDate == false){
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        if (!mStartOrEndDate) {
             startDate.setTime(hourOfDay, minute);
             String s = Integer.toString(startDate.getMonth()+1) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
                     " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes()) ;
+
             mStartDateView.setText(s);
-        }
-        else {
+        } else {
             endDate.setTime(hourOfDay, minute);
             String s = Integer.toString(endDate.getMonth()+1) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) +
                     " at " + Integer.toString(endDate.getHour()) + ":" + Integer.toString(endDate.getMinutes()) ;
+
             mEndDateView.setText(s);
         }
 
     }
-
-
-    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = ServerUrl.get();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +166,7 @@ public class CreatingEventActivity extends AppCompatActivity
         mAutocompleteView.setAdapter(mAdapter);
 
         //CATEGORIES
-        // get the listview
+        // get the ListView
         mExpListView = (ExpandableListView) findViewById(R.id.lvExp);
 
         // preparing list data
@@ -176,7 +177,7 @@ public class CreatingEventActivity extends AppCompatActivity
         // setting list adapter
         mExpListView.setAdapter(mListAdapter);
 
-        // Listview Group click listener
+        // ListView Group click listener
         mExpListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 
             @Override
@@ -189,7 +190,7 @@ public class CreatingEventActivity extends AppCompatActivity
             }
         });
 
-        // Listview Group expanded listener
+        // ListView Group expanded listener
         mExpListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
@@ -200,7 +201,7 @@ public class CreatingEventActivity extends AppCompatActivity
             }
         });
 
-        // Listview on child click listener
+        // ListView on child click listener
         mExpListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
             @Override
@@ -261,7 +262,6 @@ public class CreatingEventActivity extends AppCompatActivity
 
                 Log.d(TAG, "date de l'event: " + e.getStartDate().toString() + " " + e.getEndDate().toString());
 
-
                 RestApi restApi = new RestApi(networkProvider, urlServer);
 
                 restApi.postEvent(e, new PostCallback() {
@@ -301,7 +301,7 @@ public class CreatingEventActivity extends AppCompatActivity
         party.add("Bill");
 
         List<String> stuff = new ArrayList<String>();
-        stuff.add("Pinguin");
+        stuff.add("Penguin");
         stuff.add("Smurfs");
 
 

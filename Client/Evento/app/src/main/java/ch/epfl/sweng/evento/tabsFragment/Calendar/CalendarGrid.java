@@ -19,6 +19,10 @@ public class CalendarGrid {
         CURRENT, NEXT, PREVIOUS
     }
 
+//---------------------------------------------------------------------------------------------
+//----Members----------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+
     // Number of the days in the month for the actual calendar display
     private List<Integer> mDays = new ArrayList<>(NUMBER_OF_CELLS);
 
@@ -168,10 +172,8 @@ public class CalendarGrid {
                 throw new AssertionError(Current.values());
         }
 
-        GregorianCalendar cal = new GregorianCalendar(mCurrentYear,
+        return new GregorianCalendar(mCurrentYear,
                 effectiveMonth, mDays.get(position));
-
-        return cal;
     }
 
     /**

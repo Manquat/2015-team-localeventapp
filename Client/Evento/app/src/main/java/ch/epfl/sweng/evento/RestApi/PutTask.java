@@ -4,7 +4,6 @@ package ch.epfl.sweng.evento.RestApi;
  * Created by cerschae on 15/10/2015.
  */
 
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -40,8 +39,7 @@ public class PutTask extends AsyncTask<String, String, String> {
         String response = null;
         try {
             // prepare URL and parameter
-            String urlParameters = mRequestBody;
-            String postData = urlParameters;
+            String postData = mRequestBody;
             int postDataLength = postData.length();
             URL url = new URL(mRestUrl);
             HttpURLConnection conn = mNetworkProvider.getConnection(url);
@@ -54,9 +52,9 @@ public class PutTask extends AsyncTask<String, String, String> {
             conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));
             conn.setUseCaches(false);
             // send data
-            try (OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream())) {
-                wr.write(postData);
-            }
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(postData);
+
             // get back response code and put it in response string (in case of success)
             int responseCode = 0;
             responseCode = conn.getResponseCode();

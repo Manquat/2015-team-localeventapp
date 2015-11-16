@@ -5,17 +5,9 @@ package ch.epfl.sweng.evento.tabsFragment.MyView;
  */
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
-
-import ch.epfl.sweng.evento.R;
 
 public class MyView extends ImageView {
 
@@ -23,11 +15,11 @@ public class MyView extends ImageView {
         void OnToggled(MyView v, boolean touchOn);
     }
 
-    boolean mtouchOn;
-    boolean mDownTouch = false;
-    private OnToggledListener mtoggledListener;
-    int midX = 0; //default
-    int midY = 0; //default
+    private boolean mTouchOn;
+    private boolean mDownTouch = false;
+    private OnToggledListener mToggledListener;
+    private int midX = 0; //default
+    private int midY = 0; //default
 
     public MyView(Context context, int x, int y) {
         super(context);
@@ -52,7 +44,7 @@ public class MyView extends ImageView {
     }
 
     private void init() {
-        mtouchOn = false;
+        mTouchOn = false;
     }
 
 
@@ -63,11 +55,11 @@ public class MyView extends ImageView {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
 
-                mtouchOn = !mtouchOn;
+                mTouchOn = !mTouchOn;
                 invalidate();
 
-                if (mtoggledListener != null) {
-                    mtoggledListener.OnToggled(this, mtouchOn);
+                if (mToggledListener != null) {
+                    mToggledListener.OnToggled(this, mTouchOn);
                 }
 
                 mDownTouch = true;
@@ -90,7 +82,7 @@ public class MyView extends ImageView {
     }
 
     public void setOnToggledListener(OnToggledListener listener) {
-        mtoggledListener = listener;
+        mToggledListener = listener;
     }
 
     public int getIdX() {

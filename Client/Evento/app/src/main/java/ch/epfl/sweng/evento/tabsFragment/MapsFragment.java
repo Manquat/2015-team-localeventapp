@@ -24,6 +24,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,8 +53,8 @@ public class MapsFragment extends SupportMapFragment implements
         ConnectionCallbacks,
         OnConnectionFailedListener,
         OnMyLocationButtonClickListener {
-    private static final String TAG = MapsFragment.class.getSimpleName();   // LogCat tag
-    private static final int NUMBER_OF_MARKERS = 10;                       // Number of marker that will be displayed
+    private static final String TAG = "MapsFragment";   // LogCat tag
+    private static final int NUMBER_OF_MARKERS = 100;                       // Number of marker that will be displayed
     private static final int NUMBER_OF_EVENT = 5;
     private static final float ZOOM_LEVEL = 15.0f;                          // Zoom level of the map at the beginning
 
@@ -177,7 +178,6 @@ public class MapsFragment extends SupportMapFragment implements
             GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(),
                     mActivity, 0).show();
             Log.e(TAG, "" + connectionResult.getErrorCode());
-            return;
         }
     }
 
