@@ -49,29 +49,30 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:gravity="bottom"
-        android:layout_weight="0.5">
+        android:layout_weight="0.5"
+        android:weightSum="1">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="@string/Username"
             android:ems="10"
             android:id="@+id/editText2"
             android:layout_gravity="center_horizontal"
-            android:textColor="@color/textColorLoginScreen"/>
+            android:textColorHint="@color/textColorLoginScreen"
+            android:hint="@string/Username" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:ems="10"
-            android:text="@string/Password"
+            android:hint="@string/Password"
             android:id="@+id/editText"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="0dp"
             android:layout_marginTop="0dp"
-            android:textColor="@color/textColorLoginScreen"/>
+            android:textColorHint="@color/textColorLoginScreen"/>
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"

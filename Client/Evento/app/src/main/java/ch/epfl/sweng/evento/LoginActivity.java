@@ -20,6 +20,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
 
 
 
@@ -73,6 +74,8 @@ public class LoginActivity extends AppCompatActivity implements
                 .addScope(new Scope(Scopes.EMAIL))
                 .build();
 
+        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        signInButton.setColorScheme(SignInButton.COLOR_DARK);
         // Sign in if clicked
         findViewById(R.id.sign_in_button).setOnClickListener(this);
 
