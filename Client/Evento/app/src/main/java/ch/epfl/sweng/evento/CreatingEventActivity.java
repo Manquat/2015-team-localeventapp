@@ -135,10 +135,14 @@ public class CreatingEventActivity extends AppCompatActivity implements
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-
-
-
- 
+                Toast.makeText(
+                        getApplicationContext(),
+                        mListDataHeader.get(groupPosition)
+                                + " : "
+                                + mListDataChild.get(
+                                mListDataHeader.get(groupPosition)).get(
+                                childPosition), Toast.LENGTH_SHORT)
+                        .show();
                 return false;
             }
         });
