@@ -240,7 +240,7 @@ public class MapsFragment extends SupportMapFragment implements
         Event prevEvent;
         int iTot = 0;
 
-        do {
+/*        do {
             prevEvent = EventDatabase.INSTANCE.getFirstEvent();
             for (int j = 0; j < NUMBER_OF_EVENT && iTot < NUMBER_OF_MARKERS; j++, iTot++) {
                 double tempLatitude = latitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
@@ -263,6 +263,27 @@ public class MapsFragment extends SupportMapFragment implements
                 ));
                 mClusterManager.cluster();
             }
-        } while (iTot < NUMBER_OF_MARKERS);
+        } while (iTot < NUMBER_OF_MARKERS);*/
+
+        ArrayList<Event> eventArrayList = EventDatabase.INSTANCE.getAllEvents();
+        for(int i = 0; i< eventArrayList.size(); i++){
+            prevEvent = eventArrayList.get(i);
+            mClusterManager.addItem( new Event(
+                    prevEvent.getID(),
+                    prevEvent.getTitle(),
+                    prevEvent.getDescription(),
+                    //tempLatitude,
+                    prevEvent.getLatitude(),
+                    //tempLongitude,
+                    prevEvent.getLongitude(),
+                    prevEvent.getAddress(),
+                    prevEvent.getCreator(),
+                    prevEvent.getTags(),
+                    prevEvent.getStartDate(),
+                    prevEvent.getEndDate()
+            ));
+            mClusterManager.cluster();
+        }
+
     }
 }
