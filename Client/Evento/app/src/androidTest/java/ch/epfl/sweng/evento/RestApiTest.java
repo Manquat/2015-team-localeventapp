@@ -224,7 +224,7 @@ public class RestApiTest {
     private static final  Event e = new Event(10, "Ping-Pong at Sat 2", "Beer, ping-pong... let's beerpong",
             46.519428, 6.580847, "Satellite", "Guillaume Meyrat", new HashSet<String>(), date, date);
     private static final String EVENT_TO_CREATE_seri = Serializer.event(e);
-    
+
 
 
     @Test
