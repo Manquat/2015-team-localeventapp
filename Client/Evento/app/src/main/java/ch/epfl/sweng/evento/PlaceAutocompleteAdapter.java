@@ -20,7 +20,6 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.text.style.CharacterStyle;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -194,7 +193,6 @@ public class PlaceAutocompleteAdapter
      */
     private ArrayList<AutocompletePrediction> getAutocomplete(CharSequence constraint) {
         if (mGoogleApiClient.isConnected()) {
-            Log.i(TAG, "Starting autocomplete query for: " + constraint);
 
             // Submit the query to the autocomplete API and retrieve a PendingResult that will
             // contain the results when the query completes.
@@ -213,18 +211,14 @@ public class PlaceAutocompleteAdapter
             if (!status.isSuccess()) {
                 Toast.makeText(getContext(), "Error contacting API: " + status.toString(),
                         Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Error getting autocomp. predict API call: " + status.toString());
                 autocompletePredictions.release();
                 return null;
             }
 
-            Log.i(TAG, "Completed.Received" + autocompletePredictions.getCount()
-                    + " predictions.");
 
             // Freeze the results immutable representation that can be stored safely.
             return DataBufferUtils.freezeAndClose(autocompletePredictions);
         }
-        Log.e(TAG, "Google API client is not connected for auto query.");
         return null;
     }
 
