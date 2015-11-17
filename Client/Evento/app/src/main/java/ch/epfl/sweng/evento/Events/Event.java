@@ -52,7 +52,8 @@ public Event(int id,
         mTags = tags;
         mStartDate = new CustomDate(startDate);
         mEndDate = new CustomDate(endDate);
-        setPicture(picture);
+        //setPicture(picture);
+    mPicture = samplePicture();
     }
     
     public Event(int id,
@@ -94,7 +95,7 @@ public Event(int id,
         mTags = tags;
         mStartDate = new CustomDate();
         mEndDate = new CustomDate();
-        mPicture = "";
+        mPicture = samplePicture();
     }
 
 
@@ -199,6 +200,7 @@ public Event(int id,
             return bitmap;
         } catch (Exception e) {
             e.getMessage();
+            Log.d("NULL IMAGE",mPicture );
             return null;
         }
     }

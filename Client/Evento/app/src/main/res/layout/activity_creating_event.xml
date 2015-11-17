@@ -232,9 +232,8 @@
         android:id="@+id/pictureView"
         android:layout_below="@+id/pictureButton"
         android:layout_alignStart="@+id/pictureButton"
-        android:minWidth="200dp"
-        android:minHeight="200dp"
-        android:maxWidth="300dp" />
+        android:minHeight="400dp"
+        android:minWidth="400dp" />
 
 
 </RelativeLayout>

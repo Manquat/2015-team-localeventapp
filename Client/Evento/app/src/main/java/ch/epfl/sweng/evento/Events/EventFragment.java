@@ -54,7 +54,6 @@ public class EventFragment extends Fragment {
 
         ImageView pictureView = (ImageView) rootView.findViewById(R.id.eventPictureView);
         pictureView.setImageBitmap(mEvent.getPicture());
-
         Button joinEvent = (Button) rootView.findViewById(R.id.joinEvent);
         joinEvent.setOnClickListener(new View.OnClickListener() {
 

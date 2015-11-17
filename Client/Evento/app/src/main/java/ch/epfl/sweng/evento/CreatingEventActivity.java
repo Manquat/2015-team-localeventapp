@@ -309,6 +309,7 @@ public class CreatingEventActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         ImageView viewImage = (ImageView) findViewById(R.id.pictureView);
         Uri selectedImage = data.getData();
         String[] filePath = { MediaStore.Images.Media.DATA };
@@ -320,10 +321,9 @@ public class CreatingEventActivity extends AppCompatActivity
         cursor.close();
 
         Bitmap picture = (BitmapFactory.decodeFile(picturePath));
-        int size = 300;
+        int size = 200;
         Bitmap scaledPicture = Bitmap.createScaledBitmap(picture, size, (int)(size*((double)picture.getHeight()/(double)picture.getWidth())), false);
         //75k
-        //Log.w("path of image from gallery......******************.........", picturePath "");
         viewImage.setImageBitmap(scaledPicture);
     }
 
