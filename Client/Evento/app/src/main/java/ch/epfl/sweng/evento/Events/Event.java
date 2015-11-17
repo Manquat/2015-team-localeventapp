@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -143,7 +144,7 @@ public Event(int id,
     }
 
     public String getProperDateString(){
-        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
         timeFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         String time = timeFormat.format(this.getCalendarStart().getTime());
         return time;
