@@ -47,6 +47,7 @@ public class GetTask extends AsyncTask<String, Void, String> {
             // get HTTP response code and get the event ONLY in case of success
             int responseCode = 0;
             responseCode = conn.getResponseCode();
+            Log.v(TAG, "responseCode " + Integer.toString(responseCode));
             if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END) {
                 throw new RestException("Invalid HTTP response code");
             }

@@ -270,7 +270,7 @@ public class MapsFragment extends SupportMapFragment implements
         Event prevEvent;
         int iTot = 0;
 
-        do {
+/*        do {
             // getting the first event from the database
             prevEvent = EventDatabase.INSTANCE.getFirstEvent();
 
@@ -287,8 +287,10 @@ public class MapsFragment extends SupportMapFragment implements
                         prevEvent.getID(),
                         prevEvent.getTitle(),
                         prevEvent.getDescription(),
-                        tempLatitude,
-                        tempLongitude,
+                        //tempLatitude,
+                        prevEvent.getLatitude(),
+                        //tempLongitude,
+                        prevEvent.getLongitude(),
                         prevEvent.getAddress(),
                         prevEvent.getCreator(),
                         prevEvent.getTags(),
@@ -296,8 +298,27 @@ public class MapsFragment extends SupportMapFragment implements
                         prevEvent.getEndDate()
                 ));
             }
-            // refresh the cluster to assemble the markers
+        } while (iTot < NUMBER_OF_MARKERS);*/
+
+        ArrayList<Event> eventArrayList = EventDatabase.INSTANCE.getAllEvents();
+        for(int i = 0; i< eventArrayList.size(); i++){
+            prevEvent = eventArrayList.get(i);
+            mClusterManager.addItem( new Event(
+                    prevEvent.getID(),
+                    prevEvent.getTitle(),
+                    prevEvent.getDescription(),
+                    //tempLatitude,
+                    prevEvent.getLatitude(),
+                    //tempLongitude,
+                    prevEvent.getLongitude(),
+                    prevEvent.getAddress(),
+                    prevEvent.getCreator(),
+                    prevEvent.getTags(),
+                    prevEvent.getStartDate(),
+                    prevEvent.getEndDate()
+            ));
             mClusterManager.cluster();
-        } while (iTot < NUMBER_OF_MARKERS);
+        }
+
     }
 }

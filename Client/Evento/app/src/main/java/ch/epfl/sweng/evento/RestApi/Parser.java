@@ -33,6 +33,7 @@ public class Parser {
 //            tags.add(jsonTags.getString(i));
 //        }
 
+        final JSONObject json = jsonObject;
 
         try {
             return new Event(jsonObject.getInt("id"),
@@ -43,10 +44,13 @@ public class Parser {
                     jsonObject.getString("address"),
                     jsonObject.getString("creator"),
                     new HashSet<String>());
+
         } catch (IllegalArgumentException e) {
             throw new JSONException("Invalid question structure");
         }
     }
+
+    //new HashSet<String>(){{ add(json.getString("tags"));}});
 
     public static ArrayList<Event> parseFromJSONMultiple(String response) throws JSONException {
         ArrayList<Event> eventArrayList = new ArrayList<>();
