@@ -99,6 +99,18 @@ public Event(int id,
         mPicture = "";
     }
 
+    /**
+     * Easy way to print a event in a log
+     * Not equivalent to serialized event (RestApi.Serializer) which provide string event acceptable
+     * for the server
+     */
+    public String toString() {
+        String s = this.getTitle()+ ", " + this.getDescription() + ", " + this.getAddress()
+                + ", (" + Double.toString(this.getLatitude()) + ", " + Double.toString(this.getLongitude())
+                + "), " + this.getCreator() + ", (" + this.getProperDateString();
+        return s;
+    }
+
 
     public void setPicture(String picture) {
         mPicture = picture;
