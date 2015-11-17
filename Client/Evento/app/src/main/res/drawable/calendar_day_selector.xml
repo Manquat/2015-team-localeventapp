@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         app:state_current_day="true"
-        android:drawable="@drawable/selected_day"/>
+        android:drawable="@drawable/calendar_selected_event_day"/>
 
     <item
-        android:drawable="@drawable/default_day"/>
+        android:drawable="@drawable/calendar_event_default_day"/>
 
 </selector>
