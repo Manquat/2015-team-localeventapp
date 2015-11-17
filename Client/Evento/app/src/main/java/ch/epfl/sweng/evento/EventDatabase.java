@@ -135,4 +135,8 @@ public enum EventDatabase {
     public EventSet filter(Event.CustomDate startDate) {return mEventSet.filter(startDate);}
 
 
+    public void refresh() {
+        mEventSet.clear();
+        loadNewEvents();
+    }
 }

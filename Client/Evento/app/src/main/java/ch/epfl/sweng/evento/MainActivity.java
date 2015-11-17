@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else if (id == R.id.action_refresh){
             Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + mPager.getCurrentItem());
-            ((ContentFragment)page).onResume();
+            ((ContentFragment)page).refreshFromServer();
         }
 
         return super.onOptionsItemSelected(item);
