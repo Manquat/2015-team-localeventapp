@@ -35,7 +35,6 @@ import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
 import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
-import ch.epfl.sweng.evento.common.logger.Log;
 import ch.epfl.sweng.evento.tabsFragment.ContentFragment;
 import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             Arrays.asList("Maps", "Events", "Calendar"));
     private static final int MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = ServerUrl.get();
+    private static final String urlServer = Settings.getServerUrl();
     private ArrayList<Event> mEventArrayList = new ArrayList<>();
 
 

@@ -77,6 +77,8 @@ public class RestApiTest {
 
 
 
+
+
     @Before
     public void setUp() throws Exception {
         connection = Mockito.mock(HttpURLConnection.class);
@@ -304,6 +306,16 @@ public class RestApiTest {
 
         Thread.sleep(500);
 
+    }
+
+
+    private static final Event.CustomDate eventDate = new Event.CustomDate(2012, 10, 1, 0, 0);
+    private static final String stringDate = "2012-10-31T23:00:00Z";
+
+    @Test
+    public void testDateToProperString() {
+        Event e = new Event(0, "foo", "foo", 0, 0, "foo", "foo", new HashSet<String>(), eventDate, eventDate);
+        assertEquals(stringDate, e.getProperDateString());
     }
 
 

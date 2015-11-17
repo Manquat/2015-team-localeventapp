@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventPageAdapter;
-import ch.epfl.sweng.evento.common.logger.Log;
 
 public class EventActivity extends AppCompatActivity {
 
