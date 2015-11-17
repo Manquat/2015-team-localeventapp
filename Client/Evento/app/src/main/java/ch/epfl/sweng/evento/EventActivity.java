@@ -7,9 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventPageAdapter;
+import ch.epfl.sweng.evento.common.logger.Log;
 
 public class EventActivity extends AppCompatActivity {
 
@@ -22,6 +22,7 @@ public class EventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_event);
 
         // Creating the Toolbar and setting it as the Toolbar for the activity
@@ -30,6 +31,7 @@ public class EventActivity extends AppCompatActivity {
 
         // Creating the EventPageAdapter
         mAdapter = new EventPageAdapter(getSupportFragmentManager());
+
 
         // Assigning ViewPager View and setting the adapter
         mPager = (ViewPager) findViewById(R.id.pager);
@@ -41,6 +43,7 @@ public class EventActivity extends AppCompatActivity {
         if (bundle != null) {
             currentEventSignature = bundle.getLong(KEYCURRENTEVENT);
         }
+
 
         // Set the position of the page viewer at the correct event
         mPager.setCurrentItem(EventDatabase.INSTANCE.getPosition(currentEventSignature));

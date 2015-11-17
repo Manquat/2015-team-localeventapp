@@ -19,6 +19,7 @@ package ch.epfl.sweng.evento;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,8 @@ import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
 import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.common.logger.Log;
+import ch.epfl.sweng.evento.tabsFragment.ContentFragment;
 import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
 
@@ -64,14 +67,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Get some event
-        RestApi restApi = new RestApi(networkProvider, urlServer);
-        restApi.getMultiplesEvent(new GetMultipleResponseCallback() {
-            @Override
-            public void onDataReceived(ArrayList<Event> eventArrayList) {
-                mEventArrayList.addAll(eventArrayList);
-            }
-        });
 
         // Creating the Toolbar and setting it as the Toolbar for the activity
         mToolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -125,13 +120,17 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
 
         int id = item.getItemId();
-
+        // based on the current position you can then cast the page to the correct
+        // class and call the method:
         if(id == R.id.action_createAnEvent){
             Intent intent = new Intent(this, CreatingEventActivity.class);
             startActivity(intent);
         } else if (id == R.id.action_search){
             Intent intent = new Intent(this, SearchActivity.class);
             startActivity(intent);
+        } else if (id == R.id.action_refresh){
+            Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + mPager.getCurrentItem());
+            ((ContentFragment)page).refreshFromServer();
         }
 
         return super.onOptionsItemSelected(item);

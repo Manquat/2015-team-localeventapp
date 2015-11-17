@@ -24,6 +24,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,6 +53,7 @@ public class MapsFragment extends SupportMapFragment implements
         ConnectionCallbacks,
         OnConnectionFailedListener,
         OnMyLocationButtonClickListener {
+
     private static final String TAG = "MapsFragment";   // LogCat tag
     private static final int NUMBER_OF_MARKERS = 100;                       // Number of marker that will be displayed
     private static final int NUMBER_OF_EVENT = 10;
@@ -238,7 +240,7 @@ public class MapsFragment extends SupportMapFragment implements
         Event prevEvent;
         int iTot = 0;
 
-        do {
+/*        do {
             prevEvent = EventDatabase.INSTANCE.getFirstEvent();
             for (int j = 0; j < NUMBER_OF_EVENT && iTot < NUMBER_OF_MARKERS; j++, iTot++) {
                 double tempLatitude = latitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
@@ -249,8 +251,10 @@ public class MapsFragment extends SupportMapFragment implements
                         prevEvent.getID(),
                         prevEvent.getTitle(),
                         prevEvent.getDescription(),
-                        tempLatitude,
-                        tempLongitude,
+                        //tempLatitude,
+                        prevEvent.getLatitude(),
+                        //tempLongitude,
+                        prevEvent.getLongitude(),
                         prevEvent.getAddress(),
                         prevEvent.getCreator(),
                         prevEvent.getTags(),
@@ -259,6 +263,27 @@ public class MapsFragment extends SupportMapFragment implements
                 ));
                 mClusterManager.cluster();
             }
-        } while (iTot < NUMBER_OF_MARKERS);
+        } while (iTot < NUMBER_OF_MARKERS);*/
+
+        ArrayList<Event> eventArrayList = EventDatabase.INSTANCE.getAllEvents();
+        for(int i = 0; i< eventArrayList.size(); i++){
+            prevEvent = eventArrayList.get(i);
+            mClusterManager.addItem( new Event(
+                    prevEvent.getID(),
+                    prevEvent.getTitle(),
+                    prevEvent.getDescription(),
+                    //tempLatitude,
+                    prevEvent.getLatitude(),
+                    //tempLongitude,
+                    prevEvent.getLongitude(),
+                    prevEvent.getAddress(),
+                    prevEvent.getCreator(),
+                    prevEvent.getTags(),
+                    prevEvent.getStartDate(),
+                    prevEvent.getEndDate()
+            ));
+            mClusterManager.cluster();
+        }
+
     }
 }

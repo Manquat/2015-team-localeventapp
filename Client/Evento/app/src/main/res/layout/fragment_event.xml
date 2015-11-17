@@ -86,4 +86,11 @@
         android:text="description"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Join the event !"
+        android:id="@+id/joinEvent"
+        android:layout_gravity="center_horizontal" />
+
 </LinearLayout>
