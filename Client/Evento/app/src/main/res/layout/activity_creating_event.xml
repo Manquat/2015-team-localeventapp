@@ -221,7 +221,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add a picture"
+        android:text="@string/createEvent_buttonAddEvent"
         android:id="@+id/pictureButton"
         android:layout_below="@+id/submitEvent"
         android:layout_alignEnd="@+id/submitEvent" />
