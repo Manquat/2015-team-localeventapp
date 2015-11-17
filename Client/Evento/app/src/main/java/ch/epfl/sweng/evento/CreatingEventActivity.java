@@ -122,7 +122,9 @@ public class CreatingEventActivity extends AppCompatActivity
         // Expendable list for category choice
         setTagExpandableList();
 
-        setValidateButtonAndSend(validateButton, pictureButton);
+        setValidateButtonAndSend(validateButton);
+
+        setPictureButton(pictureButton);
     }
 
 
@@ -171,7 +173,7 @@ public class CreatingEventActivity extends AppCompatActivity
         }
     }
 
-    private void setValidateButtonAndSend(Button validateButton, Button pictureButton) {
+    private void setValidateButtonAndSend(Button validateButton) {
         validateButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -237,7 +239,9 @@ public class CreatingEventActivity extends AppCompatActivity
 
             }
         });
+    }
 
+    private void setPictureButton(Button pictureButton) {
         pictureButton.setOnClickListener(new View.OnClickListener() {
 
                                              @Override
