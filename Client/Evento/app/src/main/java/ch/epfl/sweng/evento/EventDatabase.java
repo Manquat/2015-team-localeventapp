@@ -30,7 +30,7 @@ public enum EventDatabase {
 
     private EventDatabase() {
         mEventSet = new EventSet();
-        mRestAPI = new RestApi(new DefaultNetworkProvider(), ServerUrl.get());
+        mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
 
         //temporary mock events
         Event.Date start = new Event.Date(2015, 10, 12, 18, 30);

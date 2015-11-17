@@ -28,7 +28,7 @@ public class CreatingEventActivity extends AppCompatActivity implements
         TimePickerDialog.OnTimeSetListener {
 
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = ServerUrl.get();
+    private static final String urlServer = Settings.getServerUrl();
 
     private TextView mStartDateView;
     private TextView mEndDateView;
@@ -43,6 +43,7 @@ public class CreatingEventActivity extends AppCompatActivity implements
     private HashMap<String, List<String>> mListDataChild;
 
 
+    @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                           int dayOfMonth) {
         if (!mStartOrEndDate) startDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
@@ -51,6 +52,7 @@ public class CreatingEventActivity extends AppCompatActivity implements
         mTimeFragment.show(getFragmentManager(), "timePicker");
     }
 
+    @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         if (!mStartOrEndDate) {
             startDate.setTime(hourOfDay, minute);
@@ -135,7 +137,6 @@ public class CreatingEventActivity extends AppCompatActivity implements
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                // TODO Auto-generated method stub
                 Toast.makeText(
                         getApplicationContext(),
                         mListDataHeader.get(groupPosition)

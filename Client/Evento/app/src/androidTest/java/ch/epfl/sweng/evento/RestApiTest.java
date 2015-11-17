@@ -149,6 +149,7 @@ public class RestApiTest {
         getTask.execute().get();
 
     }
+    
 
     @Test
     public void testGetEventLocal() throws IOException, InterruptedException {
