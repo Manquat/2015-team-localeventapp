@@ -65,7 +65,7 @@ public class PostTask extends AsyncTask<String, String, String> {
             // get back response code and put it in response string (in case of success)
             int responseCode = 0;
             responseCode = conn.getResponseCode();
-            Log.d("HERE", "responseCode" + Integer.toString(responseCode));
+            Log.v(TAG, "responseCode " + Integer.toString(responseCode));
             if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END) {
                 throw new RestException("Invalid HTTP response code");
             } else {
