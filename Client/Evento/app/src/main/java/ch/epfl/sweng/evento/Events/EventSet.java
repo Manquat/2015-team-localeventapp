@@ -1,6 +1,7 @@
 package ch.epfl.sweng.evento.Events;
 
 import android.location.Location;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -11,8 +12,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-
-import ch.epfl.sweng.evento.common.logger.Log;
 
 /**
  * Created by Val on 24.10.2015.

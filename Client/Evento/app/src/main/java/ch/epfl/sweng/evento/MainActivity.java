@@ -32,12 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
-import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
-import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
-import ch.epfl.sweng.evento.RestApi.RestApi;
-import ch.epfl.sweng.evento.common.logger.Log;
 import ch.epfl.sweng.evento.tabsFragment.ContentFragment;
-import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
 
 /**

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -40,7 +41,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         mContext = context;
 
         // Initialize the calendar grid at the current date
-        mCalendarGrid = new CalendarGrid(new GregorianCalendar(2015, Calendar.DECEMBER, 25));
+        mCalendarGrid = new CalendarGrid(new GregorianCalendar());
     }
 
 //---------------------------------------------------------------------------------------------
@@ -102,36 +103,36 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
             }
 
             // get a reference of the day button
-            Button button = (Button) rootView.findViewById(R.id.cell_button_view);
+            CalendarDay day = (CalendarDay) rootView.findViewById(R.id.cell_button_view);
 
-            if (button == null) {
+            if (day == null) {
                 Log.e(TAG, "No button in the view");
                 throw new NullPointerException("No button in the view");
             }
 
-            button.setText(String.valueOf(mCalendarGrid.getDay(position)));
-            button.setOnClickListener(this);
+            day.setText(String.valueOf(mCalendarGrid.getDay(position)));
+            day.setOnClickListener(this);
 
             // adding the TAG to store the date position in the grid inside the button
-            button.setTag(R.id.position_tag, String.valueOf(position));
+            day.setTag(R.id.position_tag, String.valueOf(position));
 
             // by default all the text are disable (grey color)
-            button.setTextColor(ContextCompat.getColor(mContext, R.color.colorDisableMonth));
-            button.setActivated(false);
+            day.setTextColor(ContextCompat.getColor(mContext, R.color.colorDisableMonth));
+            day.setStateCurrentDay(false);
 
             if (mCalendarGrid.isCurrentMonth(position)) {
-                button.setTextColor(ContextCompat.getColor(mContext, R.color.defaultTextColor));
+                day.setStateCurrentMonth(true);
             }
 
             if (mCalendarGrid.isCurrentDay(position)) {
-                button.setActivated(true);
+                day.setStateCurrentDay(true);
             }
 
             // highlight the current day by changing it textColor
             GregorianCalendar calendar = new GregorianCalendar();
             if (mCalendarGrid.getDayOfYear(position) == calendar.get(Calendar.DAY_OF_YEAR)
                     && mCalendarGrid.getCurrentYear() == calendar.get(Calendar.YEAR)) {
-                button.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+                day.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
             }
         }
 
@@ -154,10 +155,6 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
     @Override
     public void onClick(View v) {
         int position = Integer.valueOf((String) v.getTag(R.id.position_tag));
-
-        String day = mCalendarGrid.getStringDate(position);
-
-        //Toast.makeText(mContext, "Test " + day, Toast.LENGTH_SHORT).show();
 
         mCalendarGrid.setFocusedDay(position);
         notifyDataSetChanged();
