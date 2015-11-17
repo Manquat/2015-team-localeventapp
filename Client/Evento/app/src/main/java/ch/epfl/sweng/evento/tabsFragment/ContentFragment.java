@@ -47,6 +47,7 @@ import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
  */
 public class ContentFragment extends Fragment implements MyView.OnToggledListener {
 
+    private static final String TAG = "ContentFragment";
     private final int PADDING = 5;
     private static final int NUMBER_OF_EVENT = 50;
 
@@ -67,7 +68,7 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
     private Vector<MyView> mMyViews;
 
     /**
-     * @return a new instance of {@link ContentFragment}, adding the parameters into a bundle and
+     * Create a new instance of {@link ContentFragment}, adding the parameters into a bundle and
      * setting them as arguments.
      */
     public ContentFragment() {
@@ -102,7 +103,7 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
         /*String idString = v.getIdX() + ":" + v.getIdY();
 
         Toast.makeText(mActivity,
-                "Toogled:\n" +
+                "Toggled:\n" +
                         idString + "\n" +
                         touchOn,
                 Toast.LENGTH_SHORT).show();*/
@@ -140,9 +141,9 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
         boolean[] tmpBooleanRow = new boolean[mNumberOfColumn];
         Span tmpSpanSmtgOrNot = Span.NOTHING;
         for (int yPos = 0, countEvent = 0; countEvent < NUMBER_OF_EVENT; yPos++) {
-            Log.d("yPos :", Integer.toString(yPos));
-            Log.d("Event :", Integer.toString(countEvent));
-            Log.d("Number of row :", Integer.toString(mNumberOfRow));
+            Log.d(TAG, "yPos :" + Integer.toString(yPos));
+            Log.d(TAG, "Event :" + Integer.toString(countEvent));
+            Log.d(TAG, "Number of row :" + Integer.toString(mNumberOfRow));
 
             for (int xPos = 0; xPos < mNumberOfColumn && countEvent < NUMBER_OF_EVENT; xPos++, countEvent++) {
                 MyView tView = new MyView(view.getContext(), xPos, yPos);
@@ -158,7 +159,7 @@ public class ContentFragment extends Fragment implements MyView.OnToggledListene
                             mDisplayOrNot.get(yPos + 1)[xPos] = false;
                             break;
                         default:
-                            Log.d("Warning ", "ContentFragment.OnCreateView.mEvent_DoesntMAtch");
+                            Log.d(TAG, "Warning : ContentFragment.OnCreateView.mEvent_DoesNotMatch");
                             break;
                     }
                     tView.setOnToggledListener(this);

@@ -5,7 +5,6 @@ import android.location.Location;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -179,11 +178,7 @@ public class EventSet {
     }
 
     public int size() {
-        if(mEvents == null) {
-            return 0;
-        } else {
-            return mEvents.size();
-        }
+        return mEvents.size();
     }
 
     public int eventsLeftAfter(Event event)

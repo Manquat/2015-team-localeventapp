@@ -10,8 +10,6 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.NetworkProvider;
 
@@ -20,7 +18,7 @@ import ch.epfl.sweng.evento.NetworkProvider;
  * This allow main thread to send four basic action to Django server: GET, POST, PUT, DELETE
  *
  * Each of the method ask for a Callback allowing the main thread to make an action when the task ends
- * The method return a RESULT string that can be an event (in case of Get) or an HTTPcode (others)
+ * The method return a RESULT string that can be an event (in case of Get) or an HTTP code (others)
  * In case of FAILURE, response is null and main thread has to deal with it in his callback.
  * (exceptions are logged in Log.e with tag RestException)
  *
@@ -49,39 +47,15 @@ public class RestApi{
             @Override
             public void onTaskComplete(String response){
                 Event event = null;
-                if (response != null) //TODO treat this problem nicely
-                {
-                    try
-                    {
+                if (response != null) {
+                    try {
                         JSONObject JsonResponse = new JSONObject(response);
                         event = Parser.parseFromJSON(JsonResponse);
-                    } catch (JSONException e)
-                    {
-                        Log.e("RestException", "Exception thrown in getEvent", e);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "Exception thrown in getEvent", e);
                     }
-
                 }
                 callback.onDataReceived(event);
-            }
-        }).execute();
-    }
-
-    public void getMultiplesEvent(final GetMultipleResponseCallback callback){
-        String restUrl = UrlMaker.getLots(mUrlServer);
-        new GetTask(restUrl, mNetworkProvider, new RestTaskCallback (){
-            @Override
-            public void onTaskComplete(String response){
-                ArrayList<Event> eventArrayList = null;
-                if (response != null)
-                {
-                    try {
-                         eventArrayList= Parser.parseFromJSONMultiple(response);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "exception in JSON parser");
-                    }
-
-                }
-                callback.onDataReceived(eventArrayList);
             }
         }).execute();
     }
