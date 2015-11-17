@@ -309,8 +309,8 @@ public class RestApiTest {
     }
 
 
-    private static final Event.CustomDate eventDate = new Event.CustomDate(2012, 10, 1, 0, 0);
-    private static final String stringDate = "2012-10-31T23:00:00Z";
+    private static final Event.CustomDate eventDate = new Event.CustomDate(2012, 10, 2, 5, 5);
+    private static final String stringDate = "2012-11-02T04:05:00Z";
 
     @Test
     public void testDateToProperString() {
