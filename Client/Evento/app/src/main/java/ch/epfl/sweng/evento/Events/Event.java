@@ -145,7 +145,7 @@ public Event(int id,
 
     public String getProperDateString(){
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
-        timeFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
         String time = timeFormat.format(this.getCalendarStart().getTime());
         return time;
     }
