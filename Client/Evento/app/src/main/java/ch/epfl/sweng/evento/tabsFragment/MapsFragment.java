@@ -222,65 +222,24 @@ public class MapsFragment extends SupportMapFragment implements
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient); //may return null in case of non connected device
         }
 
-        // introduction of randomness
-        Random random = new Random();
-
-        // conversion of the location into a LatLng
-        double latitude = 0.;
-        double longitude = 0.;
-        if (mLastLocation != null) {
-            latitude = mLastLocation.getLatitude();
-            longitude = mLastLocation.getLongitude();
-        }
-        double zoomScale = 1.0 / 60.0;
-
         mMap.clear();
         mClusterManager.clearItems();
 
-        Event prevEvent;
-        int iTot = 0;
-
-/*        do {
-            prevEvent = EventDatabase.INSTANCE.getFirstEvent();
-            for (int j = 0; j < NUMBER_OF_EVENT && iTot < NUMBER_OF_MARKERS; j++, iTot++) {
-                double tempLatitude = latitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
-                double tempLongitude = longitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
-
-                prevEvent = EventDatabase.INSTANCE.getNextEvent(prevEvent);
-                mClusterManager.addItem( new Event(
-                        prevEvent.getID(),
-                        prevEvent.getTitle(),
-                        prevEvent.getDescription(),
-                        //tempLatitude,
-                        prevEvent.getLatitude(),
-                        //tempLongitude,
-                        prevEvent.getLongitude(),
-                        prevEvent.getAddress(),
-                        prevEvent.getCreator(),
-                        prevEvent.getTags(),
-                        prevEvent.getStartDate(),
-                        prevEvent.getEndDate()
-                ));
-                mClusterManager.cluster();
-            }
-        } while (iTot < NUMBER_OF_MARKERS);*/
-
+        // add all event to the cluster manager of map
         ArrayList<Event> eventArrayList = EventDatabase.INSTANCE.getAllEvents();
         for(int i = 0; i< eventArrayList.size(); i++){
-            prevEvent = eventArrayList.get(i);
+            Event tempEvent = eventArrayList.get(i);
             mClusterManager.addItem( new Event(
-                    prevEvent.getID(),
-                    prevEvent.getTitle(),
-                    prevEvent.getDescription(),
-                    //tempLatitude,
-                    prevEvent.getLatitude(),
-                    //tempLongitude,
-                    prevEvent.getLongitude(),
-                    prevEvent.getAddress(),
-                    prevEvent.getCreator(),
-                    prevEvent.getTags(),
-                    prevEvent.getStartDate(),
-                    prevEvent.getEndDate()
+                    tempEvent.getID(),
+                    tempEvent.getTitle(),
+                    tempEvent.getDescription(),
+                    tempEvent.getLatitude(),
+                    tempEvent.getLongitude(),
+                    tempEvent.getAddress(),
+                    tempEvent.getCreator(),
+                    tempEvent.getTags(),
+                    tempEvent.getStartDate(),
+                    tempEvent.getEndDate()
             ));
             mClusterManager.cluster();
         }
