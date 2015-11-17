@@ -67,7 +67,7 @@ public class SearchActivity extends AppCompatActivity
     private DatePickerDialogFragment mDateFragment;
 
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = ServerUrl.get();
+    private static final String urlServer = Settings.getServerUrl();
 
 
     @Override

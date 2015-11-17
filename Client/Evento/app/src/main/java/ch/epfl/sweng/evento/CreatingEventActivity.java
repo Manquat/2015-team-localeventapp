@@ -59,7 +59,7 @@ public class CreatingEventActivity extends AppCompatActivity
 
 
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = ServerUrl.get();
+    private static final String urlServer = Settings.getServerUrl();
 
 
     private TextView mStartDateView;
@@ -307,6 +307,7 @@ public class CreatingEventActivity extends AppCompatActivity
                             mListDataHeader.get(groupPosTmp)).get(
                             childPosTmp));
                 }};
+
                 Toast.makeText(
                         getApplicationContext(),
                         mListDataHeader.get(groupPosition)

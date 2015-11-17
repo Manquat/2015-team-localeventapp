@@ -40,7 +40,7 @@ import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.tabsFragment.Maps.EventClusterManager;
-import ch.epfl.sweng.evento.ServerUrl;
+import ch.epfl.sweng.evento.Settings;
 
 
 /**

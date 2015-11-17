@@ -34,7 +34,7 @@ public enum EventDatabase {
 
     EventDatabase() {
         mEventSet = new EventSet();
-        mRestAPI = new RestApi(new DefaultNetworkProvider(), ServerUrl.get());
+        mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
 
         loadNewEvents();
     }
