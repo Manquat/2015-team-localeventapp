@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
+    <ch.epfl.sweng.evento.tabsFragment.Calendar.CalendarDay
         android:id="@+id/cell_button_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
