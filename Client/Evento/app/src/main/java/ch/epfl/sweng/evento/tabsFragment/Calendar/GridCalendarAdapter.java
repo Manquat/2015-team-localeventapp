@@ -120,6 +120,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
             day.setTextColor(ContextCompat.getColor(mContext, R.color.colorDisableMonth));
             day.setStateCurrentDay(false);
             day.setStateCurrentMonth(false);
+            day.setStateHaveEvents(false);
 
             if (mCalendarGrid.isCurrentMonth(position)) {
                 day.setStateCurrentMonth(true);
