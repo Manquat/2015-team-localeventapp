@@ -135,17 +135,21 @@ public Event(int id,
     }
 
     public GregorianCalendar getCalendarStart() {
-        return new GregorianCalendar(mStartDate.getYear(), mStartDate.getMonth(), mStartDate.getDay(),
+        GregorianCalendar cal = new GregorianCalendar(mStartDate.getYear(), mStartDate.getMonth(), mStartDate.getDay(),
                 mStartDate.getHour(), mStartDate.getMinutes());
+        cal.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+        return cal;
     }
     public GregorianCalendar getCalendarEnd() {
-        return new GregorianCalendar(mEndDate.getYear(), mEndDate.getMonth(), mEndDate.getDay(),
+        GregorianCalendar cal = new GregorianCalendar(mEndDate.getYear(), mEndDate.getMonth(), mEndDate.getDay(),
                 mEndDate.getHour(), mEndDate.getMinutes());
+        cal.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+        return cal;
     }
 
     public String getProperDateString(){
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
-        timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
+        timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
         String time = timeFormat.format(this.getCalendarStart().getTime());
         return time;
     }

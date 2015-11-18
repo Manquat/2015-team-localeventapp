@@ -315,8 +315,8 @@ public class RestApiTest {
     @Test
     public void testDateToProperString() {
         Event e = new Event(0, "foo", "foo", 0, 0, "foo", "foo", new HashSet<String>(), eventDate, eventDate);
-        assertEquals("java.util.GregorianCalendar[time=?,areFieldsSet=false,lenient=true,zone=Europe/Zurich,firstDayOfWeek=2,minimalDaysInFirstWeek=4,ERA=?,YEAR=2012,MONTH=10,WEEK_OF_YEAR=?,WEEK_OF_MONTH=?,DAY_OF_MONTH=2,DAY_OF_YEAR=?,DAY_OF_WEEK=?,DAY_OF_WEEK_IN_MONTH=?,AM_PM=?,HOUR=?,HOUR_OF_DAY=5,MINUTE=5,SECOND=?,MILLISECOND=?,ZONE_OFFSET=?,DST_OFFSET=?]", e.getCalendarStart().toString());
         assertEquals(stringDate, e.getProperDateString());
+
     }
 
 
