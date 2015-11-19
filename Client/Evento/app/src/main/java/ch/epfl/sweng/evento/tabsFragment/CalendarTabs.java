@@ -2,7 +2,6 @@ package ch.epfl.sweng.evento.tabsFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,26 +11,27 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.Events.EventListViewAdapter;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.tabsFragment.Calendar.GridCalendarAdapter;
 
 /**
  * Created by Gautier on 21/10/2015.
  */
-public class CalendarTabs extends Fragment implements Button.OnClickListener {
+public class CalendarTabs extends Fragment implements Button.OnClickListener, Updatable {
 //---------------------------------------------------------------------------------------------
 //----Members----------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
-    private GridCalendarAdapter mGridCalendarAdapter;
-    private TextView mCurrentDate;
-    private LinearLayout mBaseLayout;
-    private TextView    mTestText;
+    private GridCalendarAdapter  mGridCalendarAdapter;
+    private TextView             mCurrentDate;
+    private LinearLayout         mBaseLayout;
+    private EventListViewAdapter mEventListAdapter;
 
 //---------------------------------------------------------------------------------------------
 //----Callbacks--------------------------------------------------------------------------------
@@ -42,8 +42,8 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
 
-        GridView gridView = (GridView) view.findViewById(R.id.gridview);
-        mGridCalendarAdapter = new GridCalendarAdapter(view.getContext());
+        GridView gridView = (GridView) view.findViewById(R.id.gridView);
+        mGridCalendarAdapter = new GridCalendarAdapter(view.getContext(), this);
         gridView.setAdapter(mGridCalendarAdapter);
 
         Button nextButton = (Button) view.findViewById(R.id.nextButton);
@@ -55,6 +55,12 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener {
         mCurrentDate = (TextView) view.findViewById(R.id.dayTitle);
 
         mBaseLayout = (LinearLayout) view.findViewById(R.id.calendar_base_layout);
+
+        ListView listView = (ListView) view.findViewById(R.id.calendar_list_event);
+        mEventListAdapter = new EventListViewAdapter(view.getContext(),
+                new ArrayList<Event>(0), getActivity());
+        listView.setAdapter(mEventListAdapter);
+        listView.setOnItemClickListener(mEventListAdapter);
 
         update();
 
@@ -80,19 +86,13 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener {
 //----Methods----------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
-    private void update() {
+    public void update() {
         updateDate();
 
-        Collection<Event> events = mGridCalendarAdapter.getCurrentEvents();
+        List<Event> events = mGridCalendarAdapter.getCurrentEvents();
+        mEventListAdapter.setEvents(events);
 
-        if (events != null) {
-            for (Event event : events) {
-                TextView eventTextView = new TextView(getContext());
-                eventTextView.setText(event.getTitle());
-
-                mBaseLayout.addView(eventTextView);
-            }
-        }
+        mBaseLayout.invalidate();
     }
 
     private void updateDate() {

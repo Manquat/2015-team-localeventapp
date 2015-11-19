@@ -40,7 +40,7 @@
     </LinearLayout>
 
     <GridView
-        android:id="@+id/gridview"
+        android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="350dp"
         android:numColumns="7"
@@ -50,6 +50,9 @@
         android:gravity="center"
         android:layout_gravity="top|center_horizontal" />
 
-    
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/calendar_list_event"/>
 
 </LinearLayout>

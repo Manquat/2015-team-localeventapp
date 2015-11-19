@@ -1,6 +1,8 @@
 package ch.epfl.sweng.evento.tabsFragment.Calendar;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -67,6 +69,10 @@ public class CalendarGrid {
 //---------------------------------------------------------------------------------------------
 //----Get--------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
+
+    public Calendar getFocusedDate() {
+        return new GregorianCalendar(mCurrentYear, mCurrentMonth, mDays.get(mIndexOfCurrentDay));
+    }
 
     public int getCurrentMonth() {
         return mCurrentMonth;
@@ -175,7 +181,7 @@ public class CalendarGrid {
      * @param position the position of the day in the grid
      * @return a calendar initialize at the date of the day pointed
      */
-    private Calendar getDateFromPosition(int position) {
+    public Calendar getDateFromPosition(int position) {
         int effectiveMonth = mCurrentMonth;
 
         switch (mCurrent.get(position)) {

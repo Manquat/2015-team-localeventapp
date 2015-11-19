@@ -61,9 +61,11 @@ public class EventClusterManager extends ClusterManager<Event> implements
         init();
     }
 
-    public EventClusterManager(Context context, GoogleMap map, MarkerManager markerManager) {
+    public EventClusterManager(Context context, GoogleMap map, Activity parentActivity, MarkerManager markerManager) {
         super(context, map, markerManager);
         mContext = context;
+        mMap = map;
+        mActivity = parentActivity;
         init();
     }
 

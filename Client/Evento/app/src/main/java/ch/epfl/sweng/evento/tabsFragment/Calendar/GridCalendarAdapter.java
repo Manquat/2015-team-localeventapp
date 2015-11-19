@@ -16,12 +16,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventSet;
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.tabsFragment.Updatable;
 
 /**
  * Adapter for the GridView that display the CalendarCells
@@ -34,26 +36,34 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 //----Members----------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
-    private Context mContext;
+    private Context      mContext;
     private CalendarGrid mCalendarGrid;
-    private Collection<Event> mEvents = null;
+    private List<Event>  mEvents = null;
+    private Updatable    mUpdatableParent;
 
 //---------------------------------------------------------------------------------------------
 //----Constructor------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
-    public GridCalendarAdapter(Context context) {
+    public GridCalendarAdapter(Context context, Updatable updatableParent) {
         super();
         mContext = context;
+        mUpdatableParent = updatableParent;
 
         // Initialize the calendar grid at the current date
-        mCalendarGrid = new CalendarGrid(new GregorianCalendar());
+        GregorianCalendar actualDate = new GregorianCalendar();
+        mCalendarGrid = new CalendarGrid(actualDate);
+        mEvents = EventDatabase.INSTANCE.filter(actualDate);
     }
 
 //---------------------------------------------------------------------------------------------
 //----Get--------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
+    /**
+     * Getting the number of cells in the grid view
+     * @return the number of cells including the first row that display the days of the week
+     */
     @Override
     public int getCount() {
         return NUMBER_OF_CELLS;
@@ -64,8 +74,18 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         return null;
     }
 
+    /**
+     * Get the unique id of the day at this position in the grid view
+     * @param position position in the grid view
+     * @return if it's a day return the date in millisecond, otherwise return 0
+     */
     @Override
     public long getItemId(int position) {
+        if (position > 7) {
+            Calendar calendar = mCalendarGrid.getDateFromPosition(position - 7);
+            return calendar.getTimeInMillis();
+        }
+
         return 0;
     }
 
@@ -137,20 +157,21 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
                 day.setStateCurrentDay(true);
             }
 
-            // highlight the current day by changing it textColor
+            // highlight the actual day by changing the textColor
             GregorianCalendar calendar = new GregorianCalendar();
-            if (mCalendarGrid.getDayOfYear(position) == calendar.get(Calendar.DAY_OF_YEAR)
-                    && mCalendarGrid.getCurrentYear() == calendar.get(Calendar.YEAR)) {
+            if (mCalendarGrid.getDayOfYear(position) == calendar.get(Calendar.DAY_OF_YEAR) &&
+                    mCalendarGrid.getCurrentMonth() == calendar.get(Calendar.MONTH)) {
                 day.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
             }
 
-            ArrayList<Event> events = new ArrayList<>();
-            events.add(EventSet.getErrorEvent());
+            List<Event> events = EventDatabase.INSTANCE.filter(mCalendarGrid.getDateFromPosition(position));
+
             if (events != null) {
                 day.setStateHaveEvents(true);
 
                 if (day.getStateCurrentDay()) {
                     mEvents = events;
+                    mUpdatableParent.update();
                 }
             }
         }
@@ -171,7 +192,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
      * Return the events at the current selected day
      * @return Collection of event order as ID
      */
-    public Collection<Event> getCurrentEvents() {
+    public List<Event> getCurrentEvents() {
         return mEvents;
     }
 
@@ -184,7 +205,9 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         int position = Integer.valueOf((String) v.getTag(R.id.position_tag));
 
         mCalendarGrid.setFocusedDay(position);
+        mEvents = null;
         notifyDataSetChanged();
+        mUpdatableParent.update();
     }
 
 //---------------------------------------------------------------------------------------------
@@ -193,11 +216,13 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
     public void nextMonth() {
         mCalendarGrid.nextMonth();
+        mEvents = null;
         notifyDataSetChanged();
     }
 
     public void prevMonth() {
         mCalendarGrid.prevMonth();
+        mEvents = null;
         notifyDataSetChanged();
     }
 }
