@@ -67,7 +67,6 @@ public class SearchActivity extends AppCompatActivity
     private DatePickerDialogFragment mDateFragment;
 
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = ServerUrl.get();
 
 
 
@@ -121,7 +120,7 @@ public class SearchActivity extends AppCompatActivity
 
             @Override
             public void onClick(View view) {
-                RestApi restApi = new RestApi(networkProvider, urlServer);
+                RestApi restApi = new RestApi(networkProvider, getResources().getString(R.string.url_server));
 
                 if(startDate == null){
                     startDate = new Event.CustomDate(2000, 1, 1, 0, 0);

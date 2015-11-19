@@ -80,13 +80,14 @@ public class CreatingEventActivity extends AppCompatActivity
     private double longitude = 0.0;
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
             new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
+    private TimePickerDialogFragment mTimeFragment;
 
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                           int dayOfMonth) {
-        if (!mStartOrEndDate) startDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
-        else endDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
+        if (!mStartOrEndDate) startDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
+        else endDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
         mTimeFragment = new TimePickerDialogFragment();
         mTimeFragment.show(getFragmentManager(), "timePicker");
     }
@@ -151,52 +152,6 @@ public class CreatingEventActivity extends AppCompatActivity
         setValidateButtonAndSend(validateButton);
 
         setPictureButton(pictureButton);
-    }
-
-
-    /**
-     * On date set register the chosen date and call the time picker
-     *
-     * @param view
-     * @param year
-     * @param monthOfYear
-     * @param dayOfMonth
-     */
-    @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear,
-                          int dayOfMonth) {
-        if (mStartOrEndDate == false)
-            startDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
-        else endDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
-        if (mDisplayTimeFragment == true) {
-            DialogFragment mTimeFragment = new TimePickerDialogFragment();
-            mTimeFragment.show(getFragmentManager(), "timePicker");
-            mDisplayTimeFragment = false;
-        }
-    }
-
-    /**
-     * On time set register the time and display the chosen date/time in the text field
-     *
-     * @param view
-     * @param hourOfDay
-     * @param minute
-     */
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        if (!mStartOrEndDate) {
-            startDate.setTime(hourOfDay, minute);
-            String s = Integer.toString(startDate.getMonth() + 1) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
-                    " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes());
-            // display text to user
-            mStartDateView.setText(s);
-        } else {
-            endDate.setTime(hourOfDay, minute);
-            String s = Integer.toString(endDate.getMonth() + 1) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) +
-                    " at " + Integer.toString(endDate.getHour()) + ":" + Integer.toString(endDate.getMinutes());
-            // display text to user
-            mEndDateView.setText(s);
-        }
     }
 
     private void setValidateButtonAndSend(Button validateButton) {
