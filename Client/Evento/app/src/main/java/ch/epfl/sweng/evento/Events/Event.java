@@ -10,13 +10,9 @@ import com.google.maps.android.clustering.ClusterItem;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Set;
 import java.util.TimeZone;
-
-import ch.epfl.sweng.evento.R;
 
 /**
  * Created by Val on 15.10.2015.
@@ -133,8 +129,7 @@ public Event(int id,
     public String getProperDateString(){
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         timeFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        String time = timeFormat.format(this.getCalendarStart().getTime());
-        return time;
+        return timeFormat.format(this.getCalendarStart().getTime());
     }
 
     public void debugLogEvent() {
@@ -205,8 +200,7 @@ public Event(int id,
      */
     public Bitmap getPicture() {
         byte[] encodeByte = Base64.decode(mPicture, Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-        return bitmap;
+        return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
     }
 
     @Override

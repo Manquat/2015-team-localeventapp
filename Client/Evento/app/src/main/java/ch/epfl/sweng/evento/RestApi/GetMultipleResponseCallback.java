@@ -1,6 +1,6 @@
 package ch.epfl.sweng.evento.RestApi;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
 
@@ -9,5 +9,5 @@ import ch.epfl.sweng.evento.Events.Event;
  */
 public abstract class GetMultipleResponseCallback {
 
-    public abstract void onDataReceived(ArrayList<Event> eventArrayList);
+    public abstract void onDataReceived(List<Event> eventArrayList);
 }

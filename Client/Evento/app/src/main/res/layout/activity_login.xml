@@ -68,7 +68,7 @@
 
     </LinearLayout>
 
-    <!--Futur facebook login button
+    <!--Future facebook login button
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
         android:layout_width="wrap_content"

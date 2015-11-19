@@ -6,13 +6,11 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -282,7 +280,7 @@ public class EventSet {
      * This method returns an error Event.
      * This is just temporary before implementing good exception handling
      *
-     * @return
+     * @return an error event
      */
     static public Event getErrorEvent() {
         return new Event(0,
@@ -322,6 +320,6 @@ public class EventSet {
         // new ArrayList<Element>(Arrays.asList(array))
 
 
-        return new ArrayList<Event>(mEvents.values());
+        return new ArrayList<>(mEvents.values());
     }
 }

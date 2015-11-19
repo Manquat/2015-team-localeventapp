@@ -12,37 +12,34 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/calendar_date_height">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/calendar_button_width"
+            android:layout_height="match_parent"
             android:text="@string/prev"
-            android:id="@+id/prevButton"
-            android:layout_weight="1"/>
+            android:id="@+id/prevButton" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
             android:id="@+id/dayTitle"
             android:layout_weight="5"
             android:gravity="center"/>
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/calendar_button_width"
+            android:layout_height="match_parent"
             android:text="@string/next"
-            android:id="@+id/nextButton"
-            android:layout_weight="1"/>
+            android:id="@+id/nextButton" />
 
     </LinearLayout>
 
     <GridView
         android:id="@+id/gridView"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="@dimen/calendar_grid_view_height"
         android:numColumns="7"
         android:verticalSpacing="@dimen/calendar_grid_view_spacing"
         android:horizontalSpacing="@dimen/calendar_grid_view_spacing"
