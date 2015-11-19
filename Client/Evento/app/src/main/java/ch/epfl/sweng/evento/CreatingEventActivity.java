@@ -59,7 +59,7 @@ public class CreatingEventActivity extends AppCompatActivity
 
 
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = ServerUrl.get();
+    private static final String urlServer = Settings.getServerUrl();
 
 
     private TextView mStartDateView;
@@ -80,6 +80,32 @@ public class CreatingEventActivity extends AppCompatActivity
     private double longitude = 0.0;
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
             new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
+
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                          int dayOfMonth) {
+        if (!mStartOrEndDate) startDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
+        else endDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
+        mTimeFragment = new TimePickerDialogFragment();
+        mTimeFragment.show(getFragmentManager(), "timePicker");
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        if (!mStartOrEndDate) {
+            startDate.setTime(hourOfDay, minute);
+            String s = Integer.toString(startDate.getMonth()) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
+                    " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes());
+            mStartDateView.setText(s);
+        } else {
+            endDate.setTime(hourOfDay, minute);
+            String s = Integer.toString(endDate.getMonth()) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) +
+                    " at " + Integer.toString(endDate.getHour()) + ":" + Integer.toString(endDate.getMinutes());
+            mEndDateView.setText(s);
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
