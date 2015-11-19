@@ -2,13 +2,21 @@ package ch.epfl.sweng.evento.tabsFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.util.Collection;
+
+import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.tabsFragment.Calendar.GridCalendarAdapter;
 
@@ -22,6 +30,8 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener {
 
     private GridCalendarAdapter mGridCalendarAdapter;
     private TextView mCurrentDate;
+    private LinearLayout mBaseLayout;
+    private TextView    mTestText;
 
 //---------------------------------------------------------------------------------------------
 //----Callbacks--------------------------------------------------------------------------------
@@ -43,7 +53,11 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener {
         prevButton.setOnClickListener(this);
 
         mCurrentDate = (TextView) view.findViewById(R.id.dayTitle);
-        updateDate();
+
+        mBaseLayout = (LinearLayout) view.findViewById(R.id.calendar_base_layout);
+
+        update();
+
         return view;
     }
 
@@ -52,11 +66,11 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener {
         switch (v.getId()) {
             case R.id.nextButton:
                 mGridCalendarAdapter.nextMonth();
-                updateDate();
+                update();
                 break;
             case R.id.prevButton:
                 mGridCalendarAdapter.prevMonth();
-                updateDate();
+                update();
                 break;
             default:
         }
@@ -65,6 +79,21 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener {
 //---------------------------------------------------------------------------------------------
 //----Methods----------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
+
+    private void update() {
+        updateDate();
+
+        Collection<Event> events = mGridCalendarAdapter.getCurrentEvents();
+
+        if (events != null) {
+            for (Event event : events) {
+                TextView eventTextView = new TextView(getContext());
+                eventTextView.setText(event.getTitle());
+
+                mBaseLayout.addView(eventTextView);
+            }
+        }
+    }
 
     private void updateDate() {
         mCurrentDate.setText(mGridCalendarAdapter.getStringDate());

@@ -251,7 +251,7 @@ public class EventSet {
      *
      * @return
      */
-    private Event getErrorEvent() {
+    static public Event getErrorEvent() {
         return new Event(0,
                 "ERROR",
                 "The Event doesn't exist or wasn't there",

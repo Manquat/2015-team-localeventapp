@@ -4,6 +4,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Button;
 
+import java.util.Collection;
+
+import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
 
 /**

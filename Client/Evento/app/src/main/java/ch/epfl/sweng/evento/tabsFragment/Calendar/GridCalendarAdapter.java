@@ -12,10 +12,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import ch.epfl.sweng.evento.EventDatabase;
+import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.Events.EventSet;
 import ch.epfl.sweng.evento.R;
 
 /**
@@ -31,6 +36,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
     private Context mContext;
     private CalendarGrid mCalendarGrid;
+    private Collection<Event> mEvents = null;
 
 //---------------------------------------------------------------------------------------------
 //----Constructor------------------------------------------------------------------------------
@@ -137,6 +143,16 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
                     && mCalendarGrid.getCurrentYear() == calendar.get(Calendar.YEAR)) {
                 day.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
             }
+
+            ArrayList<Event> events = new ArrayList<>();
+            events.add(EventSet.getErrorEvent());
+            if (events != null) {
+                day.setStateHaveEvents(true);
+
+                if (day.getStateCurrentDay()) {
+                    mEvents = events;
+                }
+            }
         }
 
         return rootView;
@@ -149,6 +165,14 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
      */
     public String getStringDate() {
         return mCalendarGrid.getStringDate();
+    }
+
+    /**
+     * Return the events at the current selected day
+     * @return Collection of event order as ID
+     */
+    public Collection<Event> getCurrentEvents() {
+        return mEvents;
     }
 
 //---------------------------------------------------------------------------------------------
