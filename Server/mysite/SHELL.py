@@ -10,44 +10,30 @@ from rest_framework.response import Response
 from User.models import User
 from User.serializers import UserSerializer
 from oauth2client import client, crypt
+from base64 import b64decode, b64encode
 
 
-
-token = "ya29.LQI9JjiDLX_E7rkW9wbnKDEN8t-0-6NPRMM2B9bNhImr8Hq9Z-uVL9l4NjR4D7rzxhxLDA"
-CLIENT_ID = "1038367220496-ceugpt9chaqucpjhhglmced2d2tat2lm.apps.googleusercontent.com"
-WEB_CLIENT_ID = "60350226207-ph9a1g0iuakvfe8bd7bbku01ktr40aur.apps.googleusercontent.com"
+token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjU2ODlkYWY2ODgzMTBmMzVmNDE5NmE5MTM3ZTdiZjhjZGZlNTU0ODkifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhdWQiOiIyNzQwNTg0NDE4MjctcTFqcTV2MDhzYnA5aTRnYmRmcHBxNjBxcTdqcmllanYuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDIxNDg0OTIyMjMzMDE5NTg0OTQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXpwIjoiMjc0MDU4NDQxODI3LWsxYjBjb2YwdnNrbDA3OW5lMTQ4MjIwaDFvMGdqYjk3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiZW1haWwiOiJlaW5zYW1lcl9zaWVkbGVyQGhvdG1haWwuY29tIiwiaWF0IjoxNDQ4MDI5NTc4LCJleHAiOjE0NDgwMzMxNzgsIm5hbWUiOiJlaW5zYW1lcl9zaWVkbGVyQGhvdG1haWwuY29tIn0.q9yvyJwu7XGpjWhTR_X4TYaDJX-kDf0yBMtYGvI74aXlL1ExtqlWmxd87HMRJg9vths23-f--lPulDWrPtiEWJb_e61eTwOl3ZxapZecm2dEAZAQj5VgVGUN_6RhK6Ou_zFixOn-PAgzIdwdraUnAIkGy1eESnIZDfEWW7lKB5mu9VVxPPihhuue5Q3BwWeHL1tZw6Q0YXI9OkLt27pGbBTxHY47Y8LqowMGtuO6lQzvm-WECuik5tNgs7Hi3_djgf4eUZDQ-N5YLPCzzcVLy0VDoQ2UceMW3w8tckkZnaGH_gSxUXaoJiYFhQiJCAysoFVfM6UDdeydCIZ4eYM7mA"
+WEB_CLIENT_ID = "274058441827-q1jq5v08sbp9i4gbdfppq60qq7jriejv.apps.googleusercontent.com"
+CLIENT_ID = "274058441827-k1b0cof0vskl079ne148220h1o0gjb97.apps.googleusercontent.com"
 # (Receive token by HTTPS POST)
+#idinfo = client.verify_id_token(token, WEB_CLIENT_ID)
+type(token)
+print b64encode(token)
+print b64decode(b64encode(token))
+#print idinfo
+try:
 
-idinfo = client.verify_id_token(token, CLIENT_ID)
-
-print idinfo
-
-# (Receive token by HTTPS POST)
-
-
-"""
-    try:
-        idinfo = client.verify_id_token(token, CLIENT_ID)
-        # If multiple clients access the backend server:
-        if idinfo['aud'] not in [WEB_CLIENT_ID]:
-            raise crypt.AppIdentityError("Unrecognized client.")
-        if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
-            raise crypt.AppIdentityError("Wrong issuer.")
-    except crypt.AppIdentityError:
-        return Response(status=status.HTTP_412_PRECONDITION_FAILED)
-    Userid = idinfo['sub']
-    try:
-        user = User.objects.filter(userid__equal = Userid)
-        return Response(status=status.HTTP_202_ACCEPTED)
-    except User.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    print "noooo"
-    # If multiple clients access the backend server:
+    idinfo = client.verify_id_token(token, WEB_CLIENT_ID)
+    print idinfo
+# If multiple clients access the backend server:
     if idinfo['aud'] not in [WEB_CLIENT_ID]:
+        #print "fuck"
         raise crypt.AppIdentityError("Unrecognized client.")
     if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
         raise crypt.AppIdentityError("Wrong issuer.")
-except crypt.AppIdentityError:
-    print "noooo"
-print idinfo['sub']
-"""
+    print "Authenticated"
+except crypt.AppIdentityError is True:
+    print "Fuck"
+
+#print "fnished"

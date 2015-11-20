@@ -6,13 +6,27 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from events.models import Event
 from events.serializers import EventSerializer
+from oauth2client import client, crypt
 import datetime
-
+from base64 import b64decode,b64encode
 @api_view(['GET', 'POST'])
 def event_list(request, format=None):
     """
     List all events, or create an event.
     """
+
+    if 'HTTP_TOKEN' not in request.META:
+        values = request.META.items()
+        values.sort()
+        html = []
+        for k, v in values:
+            html.append("<tr><td>%s</td><td>%s</td></tr>" % (k, v))
+        return HttpResponse("<table>%s</table>" % "\n".join(html))
+    token = request.META['HTTP_TOKEN']
+    #token = token.strip().decode('base64')
+
+    if validate_user(token) is False:
+        return  HttpResponse(token)
     if request.method == 'GET':
         events = Event.objects.all()
         serializer = EventSerializer(events, many=True)
@@ -89,3 +103,36 @@ def event_request(request, fromdate, todate, mLongitude, mLatitude, mDistance, m
     if request.method == 'GET':
         serializer = EventSerializer(event[:mNE], many=True)
         return Response(serializer.data)
+
+
+def validate_user(token):
+    """
+    Validate User.
+    """
+
+    WEB_CLIENT_ID = "274058441827-q1jq5v08sbp9i4gbdfppq60qq7jriejv.apps.googleusercontent.com"
+    CLIENT_ID = "274058441827-k1b0cof0vskl079ne148220h1o0gjb97.apps.googleusercontent.com"
+    # (Receive token by HTTPS POST)
+    #token2 = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjU2ODlkYWY2ODgzMTBmMzVmNDE5NmE5MTM3ZTdiZjhjZGZlNTU0ODkifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhdWQiOiIyNzQwNTg0NDE4MjctcTFqcTV2MDhzYnA5aTRnYmRmcHBxNjBxcTdqcmllanYuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDIxNDg0OTIyMjMzMDE5NTg0OTQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXpwIjoiMjc0MDU4NDQxODI3LWsxYjBjb2YwdnNrbDA3OW5lMTQ4MjIwaDFvMGdqYjk3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiZW1haWwiOiJlaW5zYW1lcl9zaWVkbGVyQGhvdG1haWwuY29tIiwiaWF0IjoxNDQ4MDM3OTE5LCJleHAiOjE0NDgwNDE1MTksIm5hbWUiOiJlaW5zYW1lcl9zaWVkbGVyQGhvdG1haWwuY29tIn0.WNUm6qZGzHw71JZZsymcnzSdN7i4OP3NQLYpDBvmlbaPKvuQiwq5hTjkPIb8zmQJ3CbhwXGxFClS61GcrunV4f1t1zhfQ0PNpYMGcajUEz3ChYlwUxB2o7LwWBaYr3L427ej2GMcQQBfhmEnxN8m5zXs3wWcVDcFVqAQm301Vd-yOvRRKq5uLcSdWcIcjiVR3C-QZTHqpGs1vhmLe_Z0V-_1pUtf2ZfnvmOVRW-AGtoQ_qInrirvsU4rtIJiOgvNrH6vPrl75nxe82eHaqLWgoBSkilhMEbLT0ML1CrBaJfc2B-nZxTjNOFoDTTHjCysQxhmT9Y1b0J9kkEGIokrng
+    token2 =  'e'
+    #token = b64decode(token)
+    #token = b64encode(token)
+    """
+    if token == token2:
+        return True
+    else :
+        return False
+        """
+    try:
+        idinfo = client.verify_id_token(token, WEB_CLIENT_ID)
+        # If multiple clients access the backend server:
+        if idinfo['aud'] not in [WEB_CLIENT_ID]:
+            raise crypt.AppIdentityError("Unrecognized client.")
+        if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+            raise crypt.AppIdentityError("Wrong issuer.")
+        return True
+
+    except crypt.AppIdentityError is True:
+        return False
+
+    return False
