@@ -42,7 +42,7 @@ public class CalendarGrid {
      * Create a grid focused on the day given by the actual position of the calendar
      * @param focusedDay a Calendar at the wanted date, he will not be modified
      */
-    CalendarGrid(Calendar focusedDay) {
+    public CalendarGrid(Calendar focusedDay) {
         this(focusedDay.get(Calendar.DAY_OF_MONTH), focusedDay.get(Calendar.MONTH),
                 focusedDay.get(Calendar.YEAR));
     }
@@ -54,14 +54,12 @@ public class CalendarGrid {
      * @param month the month wanted
      * @param year the year wanted
      */
-    CalendarGrid(int day, int month, int year) {
+    public CalendarGrid(int day, int month, int year) {
         // initialize the parameters
         for (int i = 0; i < NUMBER_OF_CELLS; i++) {
             mDays.add(0);
             mCurrent.add(Current.CURRENT);
         }
-
-        setFocusedMonth(month, year);
 
         setFocusedDay(day, month, year);
     }
