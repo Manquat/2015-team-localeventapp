@@ -42,6 +42,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -49,8 +50,10 @@ import java.util.Random;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
 import ch.epfl.sweng.evento.RestApi.PostCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.tabsFragment.ContentFragment;
 
 public class SearchActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener {
@@ -61,51 +64,21 @@ public class SearchActivity extends AppCompatActivity
     private Event.CustomDate startDate;
     private Event.CustomDate endDate;
     private boolean mStartOrEndDate;
-    private boolean mDisplayTimeFragment;
     private DatePickerDialogFragment mDateFragment;
-    private DialogFragment mTimeFragment;
-    private ExpendableList mListAdapter;
-    private ExpandableListView mExpListView;
-    private List<String> mListDataHeader;
-    private HashMap<String, List<String>> mListDataChild;
-    private GoogleApiClient mGoogleApiClient;
-    private AutoCompleteTextView mAutocompleteView;
-    private TextView mPlaceDetailsText;
-    private TextView mPlaceDetailsAttribution;
-    private PlaceAutocompleteAdapter mAdapter;
 
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = ServerUrl.get();
-
-
-
-    public void onDateSet(DatePicker view, int year, int monthOfYear,
-                          int dayOfMonth) {
-        if(mStartOrEndDate == false) {
-            startDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
-            String s = Integer.toString(startDate.getMonth()+1) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) ;
-            mStartDateView.setText(s);
-        }
-        else {
-            endDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
-            String s = Integer.toString(endDate.getMonth()+1) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) ;
-            mEndDateView.setText(s);
-        }
-    }
-
-
+    private static final String urlServer = Settings.getServerUrl();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDisplayTimeFragment = false;
         setContentView(R.layout.activity_search);
         Button validateButton = (Button) findViewById(R.id.validate_search);
         mDateFragment = new DatePickerDialogFragment();
         mDateFragment.setListener(this);
 
-        //START DATE
+        // set date picker for startDate
         mStartDateView = (TextView) findViewById(R.id.startDate_search);
         mStartDateView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +88,7 @@ public class SearchActivity extends AppCompatActivity
             }
         });
 
-        //END DATE
+        // set date picker for endDate
         mEndDateView = (TextView) findViewById(R.id.endDate_search);
         mEndDateView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,58 +99,53 @@ public class SearchActivity extends AppCompatActivity
         });
 
 
+        setValidateButtonAndSend(validateButton);
+
+
+    }
+
+    private void setValidateButtonAndSend(Button validateButton) {
         validateButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                TextView title = (TextView) findViewById(R.id.title);
-                TextView description = (TextView) findViewById(R.id.eventDescription);
-                TextView address = (TextView) findViewById(R.id.eventAddress);
-                String titleString = title.getText().toString();
-                String descriptionString = description.getText().toString();
-                String addressString = address.getText().toString();
-
-                // just in case you haven't put any date ;)
-                if (startDate == null) {
-                    startDate = new Event.CustomDate(0, 0, 0, 0, 0);
-                }
-                if (endDate == null) {
-                    endDate = new Event.CustomDate(0, 0, 0, 0, 0);
-                }
-                if (titleString.isEmpty()) {
-                    titleString = "No title";
-                }
-                if (descriptionString.isEmpty()) {
-                    descriptionString = "No description";
-                }
-                if (addressString.isEmpty()) {
-                    addressString = "No address";
-                }
-
-
-                String creator = "Jack Henri";
-                Random rand = new Random();
-                int id = rand.nextInt(10000);
-
-//                Event e = new Event(id, titleString, descriptionString, latitude,
-//                        longitude, addressString, creator,
-//                        new HashSet<String>(),startDate, endDate);
                 RestApi restApi = new RestApi(networkProvider, urlServer);
 
-//                restApi.postEvent(e, new PostCallback() {
-//                    @Override
-//                    public void onPostSuccess(String response) {
-//                        // nothing
-//                    }
-//                });
-                Toast.makeText(getApplicationContext(), "Submitting " + titleString, Toast.LENGTH_SHORT).show();
+                if (startDate == null) {
+                    startDate = new Event.CustomDate(2000, 1, 1, 0, 0);
+                }
+                if (endDate == null) {
+                    endDate = new Event.CustomDate(2020, 1, 1, 0, 0);
+                }
+
+                GregorianCalendar startTime = new GregorianCalendar(startDate.getYear(),
+                        startDate.getMonth(), startDate.getDay());
+                GregorianCalendar endTime = new GregorianCalendar(endDate.getYear(),
+                        endDate.getMonth(), endDate.getDay());
+
+                EventDatabase.INSTANCE.loadByDate(startTime, endTime);
+
+
+                Toast.makeText(getApplicationContext(), "Load events...", Toast.LENGTH_SHORT).show();
 
                 finish();
 
             }
         });
+    }
 
-
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                          int dayOfMonth) {
+        if (mStartOrEndDate == false) {
+            startDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
+            String s = Integer.toString(startDate.getMonth() + 1) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear());
+            mStartDateView.setText(s);
+        } else {
+            endDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
+            String s = Integer.toString(endDate.getMonth() + 1) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear());
+            mEndDateView.setText(s);
+        }
     }
 
 

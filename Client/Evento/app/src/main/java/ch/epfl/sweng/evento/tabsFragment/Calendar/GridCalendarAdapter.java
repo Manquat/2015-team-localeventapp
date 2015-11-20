@@ -54,7 +54,6 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
     // create a new ImageView for each item referenced by the Adapter
     @Override
     public View getView(int gridPosition, View convertView, ViewGroup parent) {
-        Log.d(TAG, "getView ...");
 
         View rootView = convertView;
 
@@ -103,7 +102,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
             button.setActivated(false);
 
             if (mCalendarGrid.isCurrentMonth(position)) {
-                button.setTextColor(ContextCompat.getColor(mContext, R.color.colorCurrentMonth));
+                button.setTextColor(ContextCompat.getColor(mContext, R.color.defaultTextColor));
             }
 
             if (mCalendarGrid.isCurrentDay(position)) {

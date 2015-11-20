@@ -10,6 +10,9 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.NetworkProvider;
 
@@ -57,6 +60,48 @@ public class RestApi{
 
                 }
                 callback.onDataReceived(event);
+            }
+        }).execute();
+    }
+
+    public void getMultiplesEvent(final GetMultipleResponseCallback callback){
+        String restUrl = UrlMaker.getAll(mUrlServer);
+        new GetTask(restUrl, mNetworkProvider, new RestTaskCallback (){
+            @Override
+            public void onTaskComplete(String response){
+                ArrayList<Event> eventArrayList = null;
+                if (response != null)
+                {
+                    try {
+                         eventArrayList= Parser.parseFromJSONMultiple(response);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "exception in JSON parser");
+                    }
+
+                }
+                callback.onDataReceived(eventArrayList);
+            }
+        }).execute();
+    }
+
+    public void getMultiplesEventByDate(GregorianCalendar startDate,
+                                        GregorianCalendar endDate,
+                                        final GetMultipleResponseCallback callback) {
+        String restUrl = UrlMaker.getByDate(mUrlServer, startDate, endDate);
+        new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
+            @Override
+            public void onTaskComplete(String result) {
+                ArrayList<Event> eventArrayList = null;
+                if (result != null)
+                {
+                    try {
+                        eventArrayList= Parser.parseFromJSONMultiple(result);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "exception in JSON parser");
+                    }
+
+                }
+                callback.onDataReceived(eventArrayList);
             }
         }).execute();
     }
