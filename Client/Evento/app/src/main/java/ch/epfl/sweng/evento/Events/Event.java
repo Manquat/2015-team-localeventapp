@@ -125,7 +125,6 @@ public Event(int id,
 			bitmap.compress(Bitmap.CompressFormat.PNG,100, outputStream);
 			byte [] b = outputStream.toByteArray();
 			mPicture = Base64.encodeToString(b, Base64.DEFAULT);
-            System.out.println(mPicture.length());
 		}
 		else
 		{
