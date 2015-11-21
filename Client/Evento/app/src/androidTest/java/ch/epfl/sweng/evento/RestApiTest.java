@@ -310,10 +310,5 @@ public class RestApiTest {
 
     }
 
-    @Test
-    public void test() {
-        fail();
-    }
-
 
 }
