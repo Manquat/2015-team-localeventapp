@@ -41,7 +41,7 @@ public enum EventDatabase {
 
 
 
-    void loadNewEvents() {
+    public void loadNewEvents() {
         mRestAPI.getMultiplesEvent(new GetMultipleResponseCallback() {
             @Override
             public void onDataReceived(ArrayList<Event> events) {
@@ -50,7 +50,7 @@ public enum EventDatabase {
         });
     }
 
-    void addAll(ArrayList<Event> events){
+    public void addAll(ArrayList<Event> events){
         for (Event e : events) {
             mEventSet.addEvent(e);
 
