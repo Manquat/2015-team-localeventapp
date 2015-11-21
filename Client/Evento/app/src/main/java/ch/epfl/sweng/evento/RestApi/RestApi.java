@@ -70,14 +70,12 @@ public class RestApi{
             @Override
             public void onTaskComplete(String response){
                 ArrayList<Event> eventArrayList = null;
-                if (response != null)
-                {
+                if (response != null) {
                     try {
                          eventArrayList= Parser.parseFromJSONMultiple(response);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
-
                 }
                 callback.onDataReceived(eventArrayList);
             }
