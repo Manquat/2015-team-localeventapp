@@ -61,8 +61,8 @@ public class Parser {
         response = response.substring(1);
         String[] responseLines = response.split("\n");
         int i;
-        for (i = 0; i < responseLines.length; i++) {
-            JSONObject jsonObject = new JSONObject(responseLines[i]);
+        for (String line : responseLines) {
+            JSONObject jsonObject = new JSONObject(line);
             eventArrayList.add(parseFromJSON(jsonObject));
         }
         return eventArrayList;

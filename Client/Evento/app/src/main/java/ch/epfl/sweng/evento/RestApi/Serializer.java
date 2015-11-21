@@ -16,10 +16,13 @@ import ch.epfl.sweng.evento.Events.Event;
 public final class Serializer {
     private static final String TAG = "Serializer";
 
+    private Serializer(){
+        // private constructor
+    }
+
     public static String event(Event e) {
 
-        String res;
-        res = "{\n"
+        String res = "{\n"
                 + "  \"Event_name\": \"" + e.getTitle() + "\",\n"
                 + "  \"description\": \n"
                 + "    \"" + e.getDescription() + "\" ,\n"
