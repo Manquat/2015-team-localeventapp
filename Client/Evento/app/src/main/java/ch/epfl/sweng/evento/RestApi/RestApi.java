@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.NetworkProvider;
@@ -69,11 +70,11 @@ public class RestApi{
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback (){
             @Override
             public void onTaskComplete(String response){
-                ArrayList<Event> eventArrayList = null;
+                List<Event> eventArrayList = null;
                 if (response != null)
                 {
                     try {
-                         eventArrayList= new ArrayList<Event>(Parser.parseFromJSONMultiple(response));
+                         eventArrayList= Parser.parseFromJSONMultiple(response);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -91,11 +92,11 @@ public class RestApi{
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String result) {
-                ArrayList<Event> eventArrayList = null;
+                List<Event> eventArrayList = null;
                 if (result != null)
                 {
                     try {
-                        eventArrayList= new ArrayList<Event>(Parser.parseFromJSONMultiple(result));
+                        eventArrayList= Parser.parseFromJSONMultiple(result);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
