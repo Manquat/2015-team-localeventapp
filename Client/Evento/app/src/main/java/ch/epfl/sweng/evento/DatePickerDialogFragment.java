@@ -20,12 +20,10 @@ public class DatePickerDialogFragment extends DialogFragment {
     private String TAG = "DatePickerDialogFragment";
     private DatePickerDialog.OnDateSetListener listener;
 
-    public DatePickerDialogFragment()
-    {
+    public DatePickerDialogFragment() {
     }
 
-    public void setListener(DatePickerDialog.OnDateSetListener listener)
-    {
+    public void setListener(DatePickerDialog.OnDateSetListener listener) {
         this.listener = listener;
     }
 
