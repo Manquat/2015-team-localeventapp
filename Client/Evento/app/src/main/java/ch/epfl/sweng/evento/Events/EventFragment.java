@@ -14,7 +14,7 @@ import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 
 /**
- * Created by Tago on 13/11/2015.
+ * Created by Gautier on 13/11/2015.
  */
 public class EventFragment extends Fragment {
 

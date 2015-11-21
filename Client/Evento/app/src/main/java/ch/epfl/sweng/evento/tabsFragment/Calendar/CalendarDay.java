@@ -38,15 +38,15 @@ public class CalendarDay extends Button {
 //----Set--------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
-    boolean getStateCurrentDay() {
+    public boolean getStateCurrentDay() {
         return mIsCurrentDay;
     }
 
-    boolean getStateCurrentMonth() {
+    public boolean getStateCurrentMonth() {
         return mIsCurrentMonth;
     }
 
-    boolean getStateHaveEvents() {
+    public boolean getStateHaveEvents() {
         return mHaveEvents;
     }
 
@@ -54,17 +54,17 @@ public class CalendarDay extends Button {
 //----Set--------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
-    void setStateCurrentDay(boolean isCurrentDay) {
+    public void setStateCurrentDay(boolean isCurrentDay) {
         mIsCurrentDay = isCurrentDay;
         refreshDrawableState();
     }
 
-    void setStateCurrentMonth(boolean isCurrentMonth) {
+    public void setStateCurrentMonth(boolean isCurrentMonth) {
         mIsCurrentMonth = isCurrentMonth;
         refreshDrawableState();
     }
 
-    void setStateHaveEvents(boolean haveEvents) {
+    public void setStateHaveEvents(boolean haveEvents) {
         mHaveEvents = haveEvents;
         refreshDrawableState();
     }
