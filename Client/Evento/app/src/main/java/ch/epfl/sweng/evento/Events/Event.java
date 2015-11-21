@@ -110,8 +110,6 @@ public class Event implements ClusterItem {
 			bitmap.compress(Bitmap.CompressFormat.PNG,100, outputStream);
 			byte [] b = outputStream.toByteArray();
 			mPicture = Base64.encodeToString(b, Base64.DEFAULT);
-		} else {
-			mPicture = "";
 		}
     }
 
