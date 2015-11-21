@@ -225,7 +225,7 @@
         android:text="@string/createEvent_buttonAddEvent"
         android:id="@+id/pictureButton"
         android:layout_below="@+id/gridView"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignStart="@+id/submitEvent" />
 
     <ImageView
         android:layout_width="wrap_content"
