@@ -9,7 +9,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.Set;
+import java.util.TimeZone;
+
+import ch.epfl.sweng.evento.R;
 
 /**
  * Created by Val on 15.10.2015.
@@ -23,31 +31,9 @@ public class Event implements ClusterItem {
     private final String mAddress;
     private final String mCreator;//might be replaced by some kind of User class
     private final Set<String> mTags;
-    private final Date mStartDate;
-    private final Date mEndDate;
+    private CustomDate mStartDate;
+    private CustomDate mEndDate;
     private String mPicture;
-
-    public Event(int id,
-                 String title,
-                 String description,
-                 double latitude,
-                 double longitude,
-                 String address,
-                 String creator,
-                 Set<String> tags,
-                 Date startDate,
-                 Date endDate) {
-        mID = id;
-        mTitle = title;
-        mDescription = description;
-        mLocation = new LatLng(latitude, longitude);
-        mAddress = address;
-        mCreator = creator;
-        mTags = tags;
-        mStartDate = new Date(startDate);
-        mEndDate = new Date(endDate);
-        mPicture = samplePicture();
-    }
 
     public Event(int id,
                  String title,
@@ -64,9 +50,52 @@ public class Event implements ClusterItem {
         mAddress = address;
         mCreator = creator;
         mTags = tags;
-        mStartDate = new Date();
-        mEndDate = new Date();
+        mStartDate = new CustomDate();
+        mEndDate = new CustomDate();
         mPicture = "";
+    }
+
+    public Event(int id,
+                 String title,
+                 String description,
+                 double latitude,
+                 double longitude,
+                 String address,
+                 String creator,
+                 Set<String> tags,
+                 CustomDate startDate,
+                 CustomDate endDate) {
+        this(id, title, description, latitude, longitude, address, creator, tags);
+        mStartDate = new CustomDate(startDate);
+        mEndDate = new CustomDate(endDate);
+        mPicture = samplePicture();
+    }
+
+    public Event(int id,
+                 String title,
+                 String description,
+                 double latitude,
+                 double longitude,
+                 String address,
+                 String creator,
+                 Set<String> tags,
+                 CustomDate startDate,
+                 CustomDate endDate,
+                 Bitmap picture) {
+        this(id, title, description, latitude, longitude, address, creator, tags, startDate, endDate);
+        setPicture(picture);
+    }
+
+    /**
+     * Easy way to print a event in a log
+     * Not equivalent to serialized event (RestApi.Serializer) which provide string event acceptable
+     * for the server
+     */
+    public String toString() {
+        String s = this.getTitle() + ", " + this.getDescription() + ", " + this.getAddress()
+                + ", (" + Double.toString(this.getLatitude()) + ", " + Double.toString(this.getLongitude())
+                + "), " + this.getCreator() + ", (" + this.getProperDateString();
+        return s;
     }
 
 
@@ -74,20 +103,41 @@ public class Event implements ClusterItem {
         mPicture = picture;
     }
 
-    /**
-     * Converts the Bitmap passed in argument into a base64 String representing the image
-     * and then stores it into the member mPicture
-     * @param bitmap the bitmap image to be converted
-     */
     public void setPicture(Bitmap bitmap) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-        byte[] b = outputStream.toByteArray();
-        mPicture = Base64.encodeToString(b, Base64.DEFAULT);
+        if (bitmap != null) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            byte[] b = outputStream.toByteArray();
+            mPicture = Base64.encodeToString(b, Base64.DEFAULT);
+        } else {
+            mPicture = "";
+        }
+
+    }
+
+    public GregorianCalendar getCalendarStart() {
+        GregorianCalendar cal = new GregorianCalendar(mStartDate.getYear(), mStartDate.getMonth(), mStartDate.getDay(),
+                mStartDate.getHour(), mStartDate.getMinutes());
+        cal.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+        return cal;
+    }
+
+    public GregorianCalendar getCalendarEnd() {
+        GregorianCalendar cal = new GregorianCalendar(mEndDate.getYear(), mEndDate.getMonth(), mEndDate.getDay(),
+                mEndDate.getHour(), mEndDate.getMinutes());
+        cal.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+        return cal;
+    }
+
+    public String getProperDateString() {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
+        timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+        String time = timeFormat.format(this.getCalendarStart().getTime());
+        return time;
     }
 
     public void debugLogEvent() {
-        Log.d(TAG, "Event " + mID + " : title : " + mTitle);
+        Log.i(TAG, "Event " + mID + " : title : " + mTitle);
     }
 
     public int getID() {
@@ -122,15 +172,23 @@ public class Event implements ClusterItem {
         return mCreator;
     }
 
+    public String getTagsString() {
+        if (mTags.contains("Foot!") ||
+                mTags.contains("Football")) {
+            return "Football";
+        } else if (mTags.contains("Basketball")) return "Basketball";
+        else return "Basketball";
+    }
+
     public Set<String> getTags() {
         return mTags;
     }
 
-    public Date getStartDate() {
+    public CustomDate getStartDate() {
         return mStartDate;
     }
 
-    public Date getEndDate() {
+    public CustomDate getEndDate() {
         return mEndDate;
     }
 
@@ -141,6 +199,7 @@ public class Event implements ClusterItem {
     /**
      * converts the String member named mPicture that represents a Bitmap image encoded in base64
      * into an actual Bitmap.
+     *
      * @return The Bitmap converted from mPicture
      */
     public Bitmap getPicture() {
@@ -155,8 +214,8 @@ public class Event implements ClusterItem {
     }
 
     /**
-     * The signature of an Event is its Date in the long form to which its ID is appended.
-     * It allows to order Events by starting Date AND by ID at the same time.
+     * The signature of an Event is its CustomDate in the long form to which its ID is appended.
+     * It allows to order Events by starting CustomDate AND by ID at the same time.
      * The ID is written on 6 digits for now.
      *
      * @return the signature of the Event in the form yyyymmddhhmmID
@@ -253,7 +312,8 @@ public class Event implements ClusterItem {
                 "yAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAAAE=";
     }
 
-    public static class Date {
+    public static class CustomDate {
+
         private int mYear;
         private int mMonth;
         private int mDay;
@@ -268,7 +328,7 @@ public class Event implements ClusterItem {
          * This method returns a long representing the date with appended values
          * It makes comparison between 2 Dates trivial and is also used to get an Event's signature
          *
-         * @return the Date in the form yyyymmddhhmm
+         * @return the CustomDate in the form yyyymmddhhmm
          */
         public long toLong() {
             return (long) (Math.pow(10, 8)
@@ -278,7 +338,7 @@ public class Event implements ClusterItem {
                     * mHour + mMinutes);
         }
 
-        public Date() {
+        public CustomDate() {
             mYear = 0;
             mMonth = 0;
             mDay = 0;
@@ -318,7 +378,7 @@ public class Event implements ClusterItem {
             mDay = day;
         }
 
-        public Date(int year, int month, int day, int hour, int minutes) {
+        public CustomDate(int year, int month, int day, int hour, int minutes) {
             mYear = year;
             mMonth = month;
             mDay = day;
@@ -326,7 +386,7 @@ public class Event implements ClusterItem {
             mMinutes = minutes;
         }
 
-        public Date(Date other) {
+        public CustomDate(CustomDate other) {
             mYear = other.mYear;
             mMonth = other.mMonth;
             mDay = other.mDay;

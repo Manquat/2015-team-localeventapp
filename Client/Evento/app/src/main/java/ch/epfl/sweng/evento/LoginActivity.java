@@ -16,6 +16,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 
+import ch.epfl.sweng.evento.Events.Event;
+
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
@@ -107,7 +109,7 @@ public class LoginActivity extends AppCompatActivity implements
 
         final String TAG = "Connection failed.";
 
-        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+        Log.i(TAG, "onConnectionFailed:" + connectionResult);
 
         if (!mIsResolving && mShouldResolve) {
             if (connectionResult.hasResolution()) {
@@ -165,7 +167,7 @@ public class LoginActivity extends AppCompatActivity implements
         final String TAG = "Result of connection.";
 
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
+        Log.i(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
 
         //TODO How does requestCode change?
         if (requestCode == RC_SIGN_IN) {
@@ -185,7 +187,7 @@ public class LoginActivity extends AppCompatActivity implements
         // onConnected indicates that an account was selected on the device, that the selected
         // account has granted any requested permissions to our app and that we were able to
         // establish a service connection to Google Play services.
-        Log.d(TAG, "onConnected:" + bundle);
+        Log.i(TAG, "onConnected:" + bundle);
         mShouldResolve = false;
 
         // Show the signed-in UI

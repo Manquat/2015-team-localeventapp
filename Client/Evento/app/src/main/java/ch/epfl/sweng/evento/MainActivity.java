@@ -19,6 +19,7 @@ package ch.epfl.sweng.evento;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -30,12 +31,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
+import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
+import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.tabsFragment.ContentFragment;
+import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
 
 /**
  * A simple launcher activity containing a summary sample description, sample log and a custom
  * {@link android.support.v4.app.Fragment} which can display a view.
- * <p>
+ * <p/>
  * For devices with displays with a width of 720dp or greater, the sample log is always visible,
  * on other devices it's visibility is controlled by an item on the Action Bar.
  */
@@ -49,12 +56,16 @@ public class MainActivity extends AppCompatActivity {
     private List<CharSequence> mTitles = new ArrayList<CharSequence>(
             Arrays.asList("Maps", "Events", "Calendar"));
     private static final int MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
+    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
+    private static final String urlServer = Settings.getServerUrl();
+    private ArrayList<Event> mEventArrayList = new ArrayList<>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         // Creating the Toolbar and setting it as the Toolbar for the activity
         mToolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -86,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         mTabs.setViewPager(mPager);
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -106,12 +118,17 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
 
         int id = item.getItemId();
-
-        if(id == R.id.action_createAnEvent){
+        // based on the current position you can then cast the page to the correct
+        // class and call the method:
+        if (id == R.id.action_createAnEvent) {
             Intent intent = new Intent(this, CreatingEventActivity.class);
             startActivity(intent);
-        } else if (id == R.id.action_logout){
-
+        } else if (id == R.id.action_search) {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.action_refresh) {
+            Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + mPager.getCurrentItem());
+            ((ContentFragment) page).refreshFromServer();
         }
 
         return super.onOptionsItemSelected(item);

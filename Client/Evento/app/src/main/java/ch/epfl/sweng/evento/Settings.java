@@ -9,7 +9,8 @@ public final class Settings {
     private Settings() {
         // private constructor
     }
-    public static String getServerUrl(){
+
+    public static String getServerUrl() {
         return "https://protected-hamlet-4797.herokuapp.com/";
     }
 }
