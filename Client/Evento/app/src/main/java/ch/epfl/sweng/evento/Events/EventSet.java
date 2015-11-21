@@ -102,6 +102,13 @@ public class EventSet {
         }
     }
 
+    public Event getPrevious(Event current) {
+        if(mEvents.size() > 1){
+            return getPrevious(current.getSignature());
+        }else{
+            return current;
+        }
+    }
 
 
     /**
