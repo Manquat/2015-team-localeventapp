@@ -48,7 +48,6 @@ public final class UrlMaker {
         String url = urlServer + event + accessMaster + Long.toString(startTimeInSec) +
                 "/" + Long.toString(endTimeInSec) +"/46.8/7.1/1500";
 
-        Log.d(TAG, "url : " + url);
         return url;
     }
 }

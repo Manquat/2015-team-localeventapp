@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
@@ -50,11 +51,11 @@ public enum EventDatabase {
         });
     }
 
-    public void addAll(ArrayList<Event> events){
+    public void addAll(List<Event> events){
         for (Event e : events) {
             mEventSet.addEvent(e);
 
-            Log.d("EVENT LOADED ", e.getTitle());
+            Log.i("EVENT LOADED ", e.getTitle());
         }
     }
 
@@ -84,7 +85,7 @@ public enum EventDatabase {
         return mEventSet.getFirst();
     }
 
-    public ArrayList<Event> getAllEvents(){
+    public List<Event> getAllEvents(){
         return mEventSet.toArrayList();
     }
     /**
