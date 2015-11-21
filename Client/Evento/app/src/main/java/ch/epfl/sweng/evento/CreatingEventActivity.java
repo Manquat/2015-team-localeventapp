@@ -96,12 +96,12 @@ public class CreatingEventActivity extends AppCompatActivity
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         if (!mStartOrEndDate) {
-            startDate.set(Calendar.HOUR, hourOfDay);
+            startDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
             startDate.set(Calendar.MINUTE, minute);
             String s = Event.asNiceString(startDate);
             mStartDateView.setText(s);
         } else {
-            endDate.set(Calendar.HOUR, hourOfDay);
+            endDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
             endDate.set(Calendar.MINUTE, minute);
             String s = Event.asNiceString(endDate);
             mEndDateView.setText(s);
@@ -224,14 +224,14 @@ public class CreatingEventActivity extends AppCompatActivity
     }
 
     private void setPictureButton(Button pictureButton) {
-        pictureButton.setOnClickListener(new View.OnClickListener() {
-
-                                             @Override
-                                             public void onClick(View view) {
-                                                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                                 startActivityForResult(intent, 2);
-                                             }
-                                         }
+        pictureButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, 2);
+                    }
+                }
         );
     }
 

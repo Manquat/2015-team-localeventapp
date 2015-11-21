@@ -131,7 +131,7 @@ public Event(int id,
         return calendar.get(Calendar.DAY_OF_MONTH) + "/"
                 + calendar.get(Calendar.MONTH) + "/"
                 + calendar.get(Calendar.YEAR) + " at "
-                 + calendar.get(Calendar.HOUR) + ":"
+                 + calendar.get(Calendar.HOUR_OF_DAY) + ":"
                 + calendar.get(Calendar.MINUTE);
     }
 
@@ -236,7 +236,7 @@ public Event(int id,
         return    100000000*(long) mStartDate.get(GregorianCalendar.YEAR)
                 + 1000000*(long) mStartDate.get(GregorianCalendar.MONTH)
                 + 10000*(long) mStartDate.get(GregorianCalendar.DAY_OF_MONTH)
-                + 100*(long) mStartDate.get(GregorianCalendar.HOUR)
+                + 100*(long) mStartDate.get(GregorianCalendar.HOUR_OF_DAY)
                 + (long) mStartDate.get(GregorianCalendar.MINUTE);
     }
 
