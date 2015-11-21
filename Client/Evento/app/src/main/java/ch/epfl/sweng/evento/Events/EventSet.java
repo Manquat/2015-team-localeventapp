@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -101,13 +102,12 @@ public class EventSet {
         }
     }
 
-    public Event getPrevious(Event current)
-    {
-		if(mEvents.size() > 1){
-			return getPrevious(current.getSignature());
-		}else{
-			return current;
-		}
+    public Event getPrevious(Event current) {
+        if(mEvents.size() > 1){
+            return  getPrevious(current.getSignature());
+        }else{
+            return current;
+        }
     }
 
     /**
@@ -284,11 +284,7 @@ public class EventSet {
         return position;
     }
 
-    public ArrayList<Event> toArrayList(){
-
-
-       // new ArrayList<Element>(Arrays.asList(array))
-
+    public List<Event> toArrayList(){
 
         return new ArrayList<Event> (mEvents.values());
     }
