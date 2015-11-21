@@ -45,7 +45,7 @@ public enum EventDatabase {
     public void loadNewEvents() {
         mRestAPI.getMultiplesEvent(new GetMultipleResponseCallback() {
             @Override
-            public void onDataReceived(ArrayList<Event> events) {
+            public void onDataReceived(List<Event> events) {
                 addAll(events);
             }
         });
@@ -64,7 +64,7 @@ public enum EventDatabase {
     public void loadByDate(GregorianCalendar start, GregorianCalendar end){
         mRestAPI.getMultiplesEventByDate(start, end, new GetMultipleResponseCallback() {
             @Override
-            public void onDataReceived(ArrayList<Event> eventArrayList) {
+            public void onDataReceived(List<Event> eventArrayList) {
                 mEventSet.clear();
                 addAll(eventArrayList);
             }

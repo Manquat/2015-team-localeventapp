@@ -225,7 +225,7 @@ public class MapsFragment extends SupportMapFragment implements
         mClusterManager.clearItems();
 
         // add all event to the cluster manager of map
-        ArrayList<Event> eventArrayList = EventDatabase.INSTANCE.getAllEvents();
+        ArrayList<Event> eventArrayList = new ArrayList<>(EventDatabase.INSTANCE.getAllEvents());
         for(Event e: eventArrayList){
             mClusterManager.addItem(e);
             mClusterManager.cluster();

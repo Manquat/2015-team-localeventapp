@@ -73,7 +73,7 @@ public class RestApi{
                 if (response != null)
                 {
                     try {
-                         eventArrayList= Parser.parseFromJSONMultiple(response);
+                         eventArrayList= new ArrayList<Event>(Parser.parseFromJSONMultiple(response));
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -95,7 +95,7 @@ public class RestApi{
                 if (result != null)
                 {
                     try {
-                        eventArrayList= Parser.parseFromJSONMultiple(result);
+                        eventArrayList= new ArrayList<Event>(Parser.parseFromJSONMultiple(result));
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
