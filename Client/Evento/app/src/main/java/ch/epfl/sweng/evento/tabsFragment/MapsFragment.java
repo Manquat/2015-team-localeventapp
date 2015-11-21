@@ -98,8 +98,7 @@ public class MapsFragment extends SupportMapFragment implements
 
         mContext = view.getContext();
 
-        if (mContext == null)
-        {
+        if (mContext == null) {
             Log.e(TAG, "The actual context don't exist");
             throw new NullPointerException();
         }
@@ -227,20 +226,8 @@ public class MapsFragment extends SupportMapFragment implements
 
         // add all event to the cluster manager of map
         ArrayList<Event> eventArrayList = EventDatabase.INSTANCE.getAllEvents();
-        for(int i = 0; i< eventArrayList.size(); i++){
-            Event tempEvent = eventArrayList.get(i);
-            mClusterManager.addItem( new Event(
-                    tempEvent.getID(),
-                    tempEvent.getTitle(),
-                    tempEvent.getDescription(),
-                    tempEvent.getLatitude(),
-                    tempEvent.getLongitude(),
-                    tempEvent.getAddress(),
-                    tempEvent.getCreator(),
-                    tempEvent.getTags(),
-                    tempEvent.getStartDate(),
-                    tempEvent.getEndDate()
-            ));
+        for(Event e: eventArrayList){
+            mClusterManager.addItem(e);
             mClusterManager.cluster();
         }
 
