@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
 
@@ -52,7 +53,7 @@ public class Parser {
 
     //new HashSet<String>(){{ add(json.getString("tags"));}});
 
-    public static ArrayList<Event> parseFromJSONMultiple(String response) throws JSONException {
+    public static List<Event> parseFromJSONMultiple(String response) throws JSONException {
         ArrayList<Event> eventArrayList = new ArrayList<>();
 
         // split received string into multiple JSONable string
