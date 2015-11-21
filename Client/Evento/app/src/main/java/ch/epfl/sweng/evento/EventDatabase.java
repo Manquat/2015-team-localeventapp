@@ -52,11 +52,9 @@ public enum EventDatabase {
     }
 
     void addAll(List<Event> events) {
-        for (int i = 0; i < events.size(); ++i) {
-            mEventSet.addEvent(events.get(i));
-            Log.d("EVENT LOADED ", Integer.toString(events.size()));
-
-            Log.d("EVENT LOADED ", events.get(i).getTitle());
+        for (Event event: events) {
+            mEventSet.addEvent(event);
+            Log.d("EVENT LOADED ", event.getTitle());
         }
     }
 
