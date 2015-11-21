@@ -51,11 +51,10 @@ public enum EventDatabase {
     }
 
     void addAll(ArrayList<Event> events){
-        for (int i = 0; i < events.size(); ++i) {
-            mEventSet.addEvent(events.get(i));
-            Log.d("EVENT LOADED ", Integer.toString(events.size()));
+        for (Event e : events) {
+            mEventSet.addEvent(e);
 
-            Log.d("EVENT LOADED ", events.get(i).getTitle());
+            Log.d("EVENT LOADED ", e.getTitle());
         }
     }
 
