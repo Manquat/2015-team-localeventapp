@@ -42,6 +42,7 @@ import ch.epfl.sweng.evento.Events.EventsClusterRenderer;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.Settings;
 
 
 /**
@@ -102,9 +103,9 @@ public class MapsFragment extends SupportMapFragment implements
         getMapAsync(this);
 
         mEvents = new ArrayList<Event>();
-        mRestAPI = new RestApi(new DefaultNetworkProvider(), getString(R.string.url_server));
-        for (int i=0; i<NUMBER_OF_EVENT; i++)
-        {
+        mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+
+        for (int i=0; i<NUMBER_OF_EVENT; i++) {
             mRestAPI.getEvent(new GetResponseCallback() {
                 @Override
                 public void onDataReceived(Event event){
@@ -329,11 +330,6 @@ public class MapsFragment extends SupportMapFragment implements
         Event event = cluster.getItems().iterator().next();
         String firstName = event.getTitle();
         Toast.makeText(getContext(), cluster.getSize() + " (including " + firstName + ")", Toast.LENGTH_SHORT).show();
-
-        if (mEventsClick != null) {
-            // clear the actual events click
-            mEventsClick.clear();
-        }
 
         // store the actual events in the member
         mEventsClick = cluster.getItems();

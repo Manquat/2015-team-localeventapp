@@ -28,7 +28,7 @@ public class RestApi{
     private NetworkProvider mNetworkProvider;
     private String mUrlServer;
     // TODO: as soon as the server provide a better way to get event, change it
-    private int mNoEvent = 1;
+    private int mNoEvent = 5;
 
 
     public RestApi(NetworkProvider networkProvider, String urlServer){
@@ -54,6 +54,7 @@ public class RestApi{
                     } catch (JSONException e) {
                         Log.e(TAG, "Exception thrown in getEvent", e);
                     }
+
                 }
                 callback.onDataReceived(event);
             }

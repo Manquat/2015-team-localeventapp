@@ -25,7 +25,7 @@ public class EventActivity extends AppCompatActivity implements
         movementDetector = new GestureDetectorCompat(this, this);
 
 
-        currentEvent = ((EventoApplication) getApplication()).getEventDatabase().getFirstEvent();
+        currentEvent = EventDatabase.INSTANCE.getFirstEvent();
 
         updateFields();
 
@@ -90,18 +90,12 @@ public class EventActivity extends AppCompatActivity implements
     }
 
     private void onSwipeLeft() {
-        currentEvent = ((EventoApplication) getApplication())
-                .getEventDatabase()
-                .getEvent(currentEvent.getID() - 1);
-
+        currentEvent = EventDatabase.INSTANCE.getNextEvent(currentEvent);
         updateFields();
     }
 
     private void onSwipeRight() {
-
-        currentEvent = ((EventoApplication) getApplication())
-                .getEventDatabase()
-                .getEvent(currentEvent.getID() - 1);
+        currentEvent = EventDatabase.INSTANCE.getPreviousEvent(currentEvent);
 
         updateFields();
     }

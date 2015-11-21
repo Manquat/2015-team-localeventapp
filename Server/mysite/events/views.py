@@ -51,7 +51,7 @@ def event_detail(request, pk, format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
-def event_request(request, fromdate, todate, format=None):
+def event_requestdate(request, fromdate, todate, format=None):
     """
     Retrieve 5 events in time frame asked
     """
@@ -66,4 +66,26 @@ def event_request(request, fromdate, todate, format=None):
     #event = Event.objects.all()
     if request.method == 'GET':
         serializer = EventSerializer(event, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def event_request(request, fromdate, todate, mLongitude, mLatitude, mDistance, mNE=100, mId=0):
+    """
+    Eventrequest gives back event information in function of date and distance, optional arguments are Number of Events (default = 100) and starting ID (default = 0)
+    """
+
+    tdate = datetime.datetime.fromtimestamp(float(todate))
+    idate = datetime.datetime.fromtimestamp(float(fromdate))
+
+    maxlongitude= float(mLongitude) + float(mDistance)
+    minlongitude= float(mLongitude) - float(mDistance)
+    maxlatitude = float(mLatitude) + float(mDistance)
+    minlatitude = float(mLatitude) - float(mDistance)
+    try:
+        event = Event.objects.filter(date__range=[idate, tdate]).filter(longitude__range= (minlongitude,maxlongitude)).filter(latitude__range= (minlatitude,maxlatitude)).filter(id__gt= mId)
+    except Event.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    #event = Event.objects.all()
+    if request.method == 'GET':
+        serializer = EventSerializer(event[:mNE], many=True)
         return Response(serializer.data)
