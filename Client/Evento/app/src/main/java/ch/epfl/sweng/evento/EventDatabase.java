@@ -48,6 +48,9 @@ public enum EventDatabase {
     }
 
     public void addAll(ArrayList<Event> events){
+        if(events == null) {
+            return;
+        }
         for (int i = 0; i < events.size(); ++i) {
             mEventSet.addEvent(events.get(i));
             Log.d("EVENT LOADED ", Integer.toString(events.size()));
