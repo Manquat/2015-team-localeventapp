@@ -21,10 +21,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
@@ -32,24 +30,14 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
 import java.util.Vector;
 
-import ch.epfl.sweng.evento.CreatingEventActivity;
-import ch.epfl.sweng.evento.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.EventActivity;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
-import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
-import ch.epfl.sweng.evento.SearchActivity;
-import ch.epfl.sweng.evento.ServerUrl;
 import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 
 /**
@@ -164,15 +152,6 @@ public class ContentFragment extends Fragment {
         mGridLayout.setRowCount(mNumberOfRow);
         mGridLayout.setColumnCount(mNumberOfColumn);
         mGridLayout.removeAllViews();
-        Set<String> tagFoot = new HashSet<String>() {{
-            add("Foot!");
-        }};
-        Set<String> tagBasket = new HashSet<String>() {{
-            add("Basketball");
-        }};
-        Set<String> tagFoot2 = new HashSet<String>() {{
-            add("Football");
-        }};
 
 
         boolean[] tmpBooleanRow = new boolean[mNumberOfColumn];
@@ -201,7 +180,7 @@ public class ContentFragment extends Fragment {
                         tmpSpanSmtgOrNot = Span.NOTHING;
                         tView.setImageResource(R.drawable.football);
                     }
-                    else if(mEvents.get(countEvent).getTags().contains(tagBasket)) {
+                    else if(mEvents.get(countEvent).getTags().contains("Basketball")) {
                         tmpSpanSmtgOrNot = Span.TWO_ROWS;
                         tView.setImageResource(R.drawable.basket);
                         mDisplayOrNot.get(yPos + 1)[xPos] = false;

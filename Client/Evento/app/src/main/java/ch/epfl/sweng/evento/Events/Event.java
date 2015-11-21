@@ -16,6 +16,8 @@ import java.util.GregorianCalendar;
 import java.util.Set;
 import java.util.TimeZone;
 
+import ch.epfl.sweng.evento.R;
+
 /**
  * Created by Val on 15.10.2015.
  */
@@ -172,6 +174,15 @@ public Event(int id,
         return mCreator;
     }
 
+    public String getTagsString() {
+        if(mTags.contains("Foot!") ||
+               mTags.contains("Football")) {
+            return "Football";
+        }
+        else if(mTags.contains("Basketball")) return "Basketball";
+        else return "Basketball";
+    }
+
     public Set<String> getTags() {
         return mTags;
     }
@@ -194,15 +205,10 @@ public Event(int id,
      * @return The Bitmap converted from mPicture
      */
     public Bitmap getPicture() {
-        try {
-            byte[] encodeByte = Base64.decode(mPicture, Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch (Exception e) {
-            e.getMessage();
-            Log.d("NULL IMAGE",mPicture );
-            return null;
-        }
+
+        byte[] encodeByte = Base64.decode(mPicture, Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        return bitmap;
     }
 
     @Override

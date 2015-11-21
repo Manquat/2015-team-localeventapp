@@ -1,8 +1,8 @@
 package ch.epfl.sweng.evento.RestApi;
 
+import android.util.Log;
+
 import java.util.GregorianCalendar;
-import ch.epfl.sweng.evento.common.logger.Log;
-import java.lang.ref.SoftReference;
 
 /**
  * Created by joachimmuth on 22.10.15.

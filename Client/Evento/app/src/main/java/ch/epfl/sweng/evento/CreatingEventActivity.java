@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.RestApi.PostCallback;
@@ -54,12 +55,13 @@ public class CreatingEventActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener,
         GoogleApiClient.OnConnectionFailedListener {
+    private static final String TAG = "CreatingEventActivity";
 
 
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = ServerUrl.get();
+    private static final String urlServer = Settings.getServerUrl();
 
-    private static final String TAG = "CreatingEventActivity";
+
     private TextView mStartDateView;
     private TextView mEndDateView;
     private Event.CustomDate startDate;
@@ -67,46 +69,40 @@ public class CreatingEventActivity extends AppCompatActivity
     private boolean mStartOrEndDate;
     private boolean mDisplayTimeFragment;
     private DatePickerDialogFragment mDateFragment;
-    private DialogFragment mTimeFragment;
-    private ExpendableList mListAdapter;
-    private ExpandableListView mExpListView;
     private List<String> mListDataHeader;
     private HashMap<String, List<String>> mListDataChild;
     private GoogleApiClient mGoogleApiClient;
-    private AutoCompleteTextView mAutocompleteView;
     private TextView mPlaceDetailsText;
     private TextView mPlaceDetailsAttribution;
     private PlaceAutocompleteAdapter mAdapter;
+    private Set<String> mTag;
     private double latitude = 0.0;
     private double longitude = 0.0;
-
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
             new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
+    private TimePickerDialogFragment mTimeFragment;
 
 
+    @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
-        if(mStartOrEndDate == false) startDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
+                          int dayOfMonth) {
+        if (!mStartOrEndDate) startDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
         else endDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
-        if(mDisplayTimeFragment == true) {
-            mTimeFragment = new TimePickerDialogFragment();
-            mTimeFragment.show(getFragmentManager(), "timePicker");
-            mDisplayTimeFragment = false;
-        }
+        mTimeFragment = new TimePickerDialogFragment();
+        mTimeFragment.show(getFragmentManager(), "timePicker");
     }
 
+    @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         if (!mStartOrEndDate) {
             startDate.setTime(hourOfDay, minute);
-            String s = Integer.toString(startDate.getMonth()+1) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
-                    " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes()) ;
-
+            String s = Integer.toString(startDate.getMonth()) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
+                    " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes());
             mStartDateView.setText(s);
         } else {
             endDate.setTime(hourOfDay, minute);
-            String s = Integer.toString(endDate.getMonth()+1) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) +
-                    " at " + Integer.toString(endDate.getHour()) + ":" + Integer.toString(endDate.getMinutes()) ;
-
+            String s = Integer.toString(endDate.getMonth()) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) +
+                    " at " + Integer.toString(endDate.getHour()) + ":" + Integer.toString(endDate.getMinutes());
             mEndDateView.setText(s);
         }
 
@@ -115,15 +111,16 @@ public class CreatingEventActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // display the layout and prepare the configuration
         mDisplayTimeFragment = false;
         setContentView(R.layout.activity_creating_event);
         Button validateButton = (Button) findViewById(R.id.submitEvent);
         mDateFragment = new DatePickerDialogFragment();
         mDateFragment.setListener(this);
-
         final Button pictureButton = (Button) findViewById(R.id.pictureButton);
 
-        //START DATE
+        // listener for date picker startDate
         mStartDateView = (TextView) findViewById(R.id.startDate);
         mStartDateView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +131,7 @@ public class CreatingEventActivity extends AppCompatActivity
             }
         });
 
-        //END DATE
+        // listener for date picker endDate
         mEndDateView = (TextView) findViewById(R.id.endDate);
         mEndDateView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,44 +142,106 @@ public class CreatingEventActivity extends AppCompatActivity
             }
         });
 
-        // ADDRESS
+        // listener for address place picker (googlePlaceAPI)
+        setPlacePickerField();
 
-        // Construct a GoogleApiClient for the {@link Places#GEO_DATA_API} using AutoManage
-        // functionality, which automatically sets up the API client to handle Activity lifecycle
-        // events. If your activity does not extend FragmentActivity, make sure to call connect()
-        // and disconnect() explicitly.
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, 0 /* clientId */, this)
-                .addApi(Places.GEO_DATA_API)
-                .build();
 
-        // Retrieve the AutoCompleteTextView that will display Place suggestions.
-        mAutocompleteView = (AutoCompleteTextView)
-                findViewById(R.id.eventAddress);
+        // Expendable list for category choice
+        setTagExpandableList();
 
-        // Register a listener that receives callbacks when a suggestion has been selected
-        mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
+        setValidateButtonAndSend(validateButton);
 
-        // Retrieve the TextViews that will display details and attributions of the selected place.
-        mPlaceDetailsText = (TextView) findViewById(R.id.place_details);
-        mPlaceDetailsText.setVisibility(View.GONE);
-        mPlaceDetailsAttribution = (TextView) findViewById(R.id.place_attribution);
-        mPlaceDetailsAttribution.setVisibility(View.GONE);
+        setPictureButton(pictureButton);
+    }
 
-        // Set up the adapter that will retrieve suggestions from the Places Geo Data API that cover
-        // the entire world.
-        mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, BOUNDS_GREATER_SYDNEY,
-                null);
-        mAutocompleteView.setAdapter(mAdapter);
+    private void setValidateButtonAndSend(Button validateButton) {
+        validateButton.setOnClickListener(new View.OnClickListener() {
 
-        //CATEGORIES
+            @Override
+            public void onClick(View view) {
+                TextView title = (TextView) findViewById(R.id.title);
+                TextView description = (TextView) findViewById(R.id.eventDescription);
+                TextView address = (TextView) findViewById(R.id.eventAddress);
+                String titleString = title.getText().toString();
+                String descriptionString = description.getText().toString();
+                String addressString = address.getText().toString();
+
+                // just in case you haven't put any date ;)
+                if (startDate == null) {
+                    startDate = new Event.CustomDate(1990, 12, 16, 0, 0);
+                }
+                if (endDate == null) {
+                    endDate = new Event.CustomDate(1992, 1, 16, 0, 0);
+                }
+                if (titleString.isEmpty()) {
+                    titleString = "No title";
+                }
+                if (descriptionString.isEmpty()) {
+                    descriptionString = "No description";
+                }
+                if (addressString.isEmpty()) {
+                    addressString = "No address";
+                }
+
+                ImageView pictureView = (ImageView) findViewById(R.id.pictureView);
+                //Bitmap picture = pictureView.getDrawingCache()
+                Drawable drawable = pictureView.getDrawable();
+                Bitmap picture;
+                if (drawable == null) {
+                    Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+                    picture = Bitmap.createBitmap(100, 100, conf);
+                } else {
+                    picture = ((BitmapDrawable) drawable).getBitmap();
+                }
+
+                String creator = "Jack Henri";
+                Random rand = new Random();
+                int id = rand.nextInt(10000);
+
+
+                Event e = new Event(id, titleString, descriptionString, latitude,
+                        longitude, addressString, creator,
+                        mTag, startDate, endDate, picture);
+
+                Log.d(TAG, "date de l'event: " + e.getStartDate().toString() + " " + e.getEndDate().toString());
+
+                RestApi restApi = new RestApi(networkProvider, urlServer);
+
+                restApi.postEvent(e, new PostCallback() {
+                    @Override
+                    public void onPostSuccess(String response) {
+                        // assert submission
+                        Toast.makeText(getApplicationContext(), "Submitted", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                Toast.makeText(getApplicationContext(), "Submitting " + titleString, Toast.LENGTH_SHORT).show();
+
+                finish();
+
+            }
+        });
+    }
+
+    private void setPictureButton(Button pictureButton) {
+        pictureButton.setOnClickListener(new View.OnClickListener() {
+
+                                             @Override
+                                             public void onClick(View view) {
+                                                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                                 startActivityForResult(intent, 2);
+                                             }
+                                         }
+        );
+    }
+
+
+    private void setTagExpandableList() {
         // get the ListView
-        mExpListView = (ExpandableListView) findViewById(R.id.lvExp);
+        ExpandableListView mExpListView = (ExpandableListView) findViewById(R.id.lvExp);
 
         // preparing list data
         prepareListData();
-
-        mListAdapter = new ExpendableList(getApplicationContext(), mListDataHeader, mListDataChild);
+        ExpendableList mListAdapter = new ExpendableList(getApplicationContext(), mListDataHeader, mListDataChild);
 
         // setting list adapter
         mExpListView.setAdapter(mListAdapter);
@@ -217,7 +276,13 @@ public class CreatingEventActivity extends AppCompatActivity
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                // TODO Auto-generated method stub
+                final int groupPosTmp = groupPosition;
+                final int childPosTmp = childPosition;
+                mTag = new HashSet<String>() {{
+                    add(mListDataChild.get(
+                            mListDataHeader.get(groupPosTmp)).get(
+                            childPosTmp));
+                }};
                 Toast.makeText(
                         getApplicationContext(),
                         mListDataHeader.get(groupPosition)
@@ -229,82 +294,36 @@ public class CreatingEventActivity extends AppCompatActivity
                 return false;
             }
         });
+    }
 
+    // Construct a GoogleApiClient for the {@link Places#GEO_DATA_API} using AutoManage
+    // functionality, which automatically sets up the API client to handle Activity lifecycle
+    // events. If your activity does not extend FragmentActivity, make sure to call connect()
+    // and disconnect() explicitly.
+    private void setPlacePickerField() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, 0 /* clientId */, this)
+                .addApi(Places.GEO_DATA_API)
+                .build();
 
-        validateButton.setOnClickListener(new View.OnClickListener() {
+        // Retrieve the AutoCompleteTextView that will display Place suggestions.
+        AutoCompleteTextView mAutocompleteView = (AutoCompleteTextView)
+                findViewById(R.id.eventAddress);
 
-            @Override
-            public void onClick(View view) {
-                TextView title = (TextView) findViewById(R.id.title);
-                TextView description = (TextView) findViewById(R.id.eventDescription);
-                TextView address = (TextView) findViewById(R.id.eventAddress);
-                String titleString = title.getText().toString();
-                String descriptionString = description.getText().toString();
-                String addressString = address.getText().toString();
+        // Register a listener that receives callbacks when a suggestion has been selected
+        mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
 
-                // just in case you haven't put any date ;)
-                if (startDate == null) {
-                    startDate = new Event.CustomDate(1990, 12, 16, 0, 0);
-                }
-                if (endDate == null) {
-                    endDate = new Event.CustomDate(1992, 1, 16, 0, 0);
-                }
-                if (titleString.isEmpty()) {
-                    titleString = "No title";
-                }
-                if (descriptionString.isEmpty()) {
-                    descriptionString = "No description";
-                }
-                if (addressString.isEmpty()) {
-                    addressString = "No address";
-                }
+        // Retrieve the TextViews that will display details and attributions of the selected place.
+        mPlaceDetailsText = (TextView) findViewById(R.id.place_details);
+        mPlaceDetailsText.setVisibility(View.GONE);
+        mPlaceDetailsAttribution = (TextView) findViewById(R.id.place_attribution);
+        mPlaceDetailsAttribution.setVisibility(View.GONE);
 
-                ImageView pictureView = (ImageView) findViewById(R.id.pictureView);
-                //Bitmap picture = pictureView.getDrawingCache()
-                Drawable drawable = pictureView.getDrawable();
-                Bitmap picture;
-                if(drawable == null){ Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-                    picture = Bitmap.createBitmap(100, 100, conf);
-                } else {
-                    picture = ((BitmapDrawable) drawable).getBitmap();
-                }
-
-                String creator = "Jack Henri";
-                Random rand = new Random();
-                int id = rand.nextInt(10000);
-
-
-                Event e = new Event(id, titleString, descriptionString, latitude,
-                        longitude, addressString, creator,
-                        new HashSet<String>(), startDate, endDate, picture);
-
-                Log.d(TAG, "date de l'event: " + e.getStartDate().toString() + " " + e.getEndDate().toString());
-
-                RestApi restApi = new RestApi(networkProvider, urlServer);
-
-                restApi.postEvent(e, new PostCallback() {
-                    @Override
-                    public void onPostSuccess(String response) {
-                        // assert submission
-                        Toast.makeText(getApplicationContext(), "Submitted", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                Toast.makeText(getApplicationContext(), "Submitting " + titleString, Toast.LENGTH_SHORT).show();
-
-                finish();
-
-            }
-        });
-
-        pictureButton.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View view) {
-                Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 2);
-            }
-            }
-        );
+        // Set up the adapter that will retrieve suggestions from the Places Geo Data API that cover
+        // the entire world.
+        mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, BOUNDS_GREATER_SYDNEY,
+                null);
+        mAutocompleteView.setAdapter(mAdapter);
     }
 
     @Override
@@ -312,7 +331,7 @@ public class CreatingEventActivity extends AppCompatActivity
 
         ImageView viewImage = (ImageView) findViewById(R.id.pictureView);
         Uri selectedImage = data.getData();
-        String[] filePath = { MediaStore.Images.Media.DATA };
+        String[] filePath = {MediaStore.Images.Media.DATA};
 
         Cursor cursor = getContentResolver().query(selectedImage, filePath, null, null, null);
         cursor.moveToFirst();
@@ -321,13 +340,12 @@ public class CreatingEventActivity extends AppCompatActivity
         cursor.close();
 
         Bitmap picture = (BitmapFactory.decodeFile(picturePath));
-        int size = 200;
-        Bitmap scaledPicture = Bitmap.createScaledBitmap(picture, size, (int)(size*((double)picture.getHeight()/(double)picture.getWidth())), false);
+
+        int size = 300;
+        Bitmap scaledPicture = Bitmap.createScaledBitmap(picture, size, (int) (size * ((double) picture.getHeight() / (double) picture.getWidth())), false);
         //75k
         viewImage.setImageBitmap(scaledPicture);
     }
-
-
 
 
     private void prepareListData() {

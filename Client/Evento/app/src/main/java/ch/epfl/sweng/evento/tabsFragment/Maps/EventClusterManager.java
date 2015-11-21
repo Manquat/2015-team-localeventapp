@@ -40,10 +40,18 @@ public class EventClusterManager extends ClusterManager<Event> implements
         GoogleMap.OnInfoWindowClickListener {
     final static String TAG = "EventClusterManager";
 
+//---------------------------------------------------------------------------------------------
+//----Members----------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+
     private Context     mContext;
     private Collection<Event> mEventsClick;
     private Activity    mActivity;
     private GoogleMap   mMap;
+
+//---------------------------------------------------------------------------------------------
+//----Constructor------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
 
     public EventClusterManager(Context context, GoogleMap map, Activity parentActivity) {
         super(context, map);
@@ -53,9 +61,11 @@ public class EventClusterManager extends ClusterManager<Event> implements
         init();
     }
 
-    public EventClusterManager(Context context, GoogleMap map, MarkerManager markerManager) {
+    public EventClusterManager(Context context, GoogleMap map, Activity parentActivity, MarkerManager markerManager) {
         super(context, map, markerManager);
         mContext = context;
+        mMap = map;
+        mActivity = parentActivity;
         init();
     }
 
