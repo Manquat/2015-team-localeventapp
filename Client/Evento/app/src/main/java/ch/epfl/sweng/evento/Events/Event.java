@@ -119,15 +119,12 @@ public Event(int id,
 
     public void setPicture(Bitmap bitmap)
     {
-		if(bitmap != null)
-		{
+		if(bitmap != null) {
 			ByteArrayOutputStream outputStream = new  ByteArrayOutputStream();
 			bitmap.compress(Bitmap.CompressFormat.PNG,100, outputStream);
 			byte [] b = outputStream.toByteArray();
 			mPicture = Base64.encodeToString(b, Base64.DEFAULT);
-		}
-		else
-		{
+		} else {
 			mPicture = "";
 		}
 
