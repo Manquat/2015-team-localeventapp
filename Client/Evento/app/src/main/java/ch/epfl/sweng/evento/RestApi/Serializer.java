@@ -30,7 +30,6 @@ public final class Serializer {
                 + "  \"creator\": \"" + e.getCreator() + "\" \n"
                // + "  \"tags\":" + "Basketball" + "\n"
                 + "}\n";
-        Log.d(TAG, res);
         return res;
     }
 

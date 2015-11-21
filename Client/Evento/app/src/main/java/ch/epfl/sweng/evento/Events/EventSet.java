@@ -273,7 +273,7 @@ public class EventSet {
             ++position;
 
             if (!iterator.hasNext()) {
-                Log.d(TAG, "No such event return the first event");
+                Log.e(TAG, "No such event return the first event");
                 position = 0;
                 break;
             }

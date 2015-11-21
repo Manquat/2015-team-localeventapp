@@ -118,7 +118,6 @@ public class ContentFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("LOG_ContentFragment", "ContentFragmentOnResume");
         if(mView != null) refreshEventSet();
     }
 
@@ -127,7 +126,6 @@ public class ContentFragment extends Fragment {
         mEvents=EventDatabase.INSTANCE.getAllEvents();
         mNumberOfEvent = mEvents.size();
         displayMosaic();
-        Log.d("LOG_ContentFragment", "Refreshing");
         Toast.makeText(mActivity.getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
     }
 
@@ -138,14 +136,12 @@ public class ContentFragment extends Fragment {
         mEvents = EventDatabase.INSTANCE.getAllEvents();
         mNumberOfEvent = mEvents.size();
         displayMosaic();
-        Log.d("LOG_ContentFragment", "Refreshing");
         Toast.makeText(mActivity.getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_mosaic, container, false);
-        Log.d("LOG_ContentFragment", "ContentFragmentOnCreateView");
 
         refreshEventSet();
 
@@ -153,7 +149,6 @@ public class ContentFragment extends Fragment {
     }
 
     private void displayMosaic(){
-        Log.d("LOG_ContentFragment", "DisplayMosaic");
         mGridLayout = (GridLayout) mView.findViewById(R.id.gridLayout);
         mGridLayout.setRowCount(mNumberOfRow);
         mGridLayout.setColumnCount(mNumberOfColumn);
@@ -162,15 +157,9 @@ public class ContentFragment extends Fragment {
 
         boolean[] tmpBooleanRow = new boolean[mNumberOfColumn];
         Span tmpSpanSmtgOrNot = Span.NOTHING;
-        Log.d("LOG_ContentFragment", "DisplayMosaic, starting the outer loop");
         for (int yPos = 0, countEvent = 0; countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; yPos++) {
-            Log.d("yPos :", Integer.toString(yPos));
-            Log.d("Event :", Integer.toString(countEvent));
-            Log.d("Number of row :", Integer.toString(mNumberOfRow));
-            Log.d("LOG_ContentFragment", "DisplayMosaic, starting the inner loop");
 
             for (int xPos = 0; xPos < mNumberOfColumn && countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; xPos++, countEvent++) {
-                Log.d("LOG_ContentFragment", "_CountEvent = " + Integer.toString(countEvent));
                 final MyView tView = new MyView(mView.getContext(), xPos, yPos);
                 tView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -193,7 +182,6 @@ public class ContentFragment extends Fragment {
                     } else {
                         tmpSpanSmtgOrNot = Span.NOTHING;
                         tView.setImageResource(R.drawable.unknown);
-                        Log.d("Warning ", "ContentFragment.OnCreateView.mEvent_DoesntMatch");
                     }
                     mMyViews.add(tView);
 
@@ -227,8 +215,6 @@ public class ContentFragment extends Fragment {
         int pHeight = mGridLayout.getHeight();
         mWidthColumn = 0;
         mHeightRow = 0;
-        Log.d("addView", "width" + Integer.toString(mWidthColumn));
-        Log.d("addView", "height" + Integer.toString(mHeightRow));
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
         params.width = mWidthColumn - 2 * PADDING;
         params.height = mHeightRow - 2 * PADDING;

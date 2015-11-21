@@ -155,7 +155,7 @@ public Event(int id,
     }
 
     public void debugLogEvent() {
-        Log.d(TAG, "Event " + mID + " : title : " + mTitle);
+        Log.i(TAG, "Event " + mID + " : title : " + mTitle);
     }
 
     public int getID() {

@@ -229,7 +229,7 @@ public class CreatingEventActivity extends AppCompatActivity
                         longitude, addressString, creator,
                         mTag, startDate, endDate, picture);
 
-                Log.d(TAG, "Event to send : " + e.toString());
+                Log.i(TAG, "Event to send : " + e.toString());
 
                 restApi.postEvent(e, new PostCallback() {
                     @Override

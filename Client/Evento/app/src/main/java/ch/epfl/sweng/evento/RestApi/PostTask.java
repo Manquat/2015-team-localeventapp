@@ -45,7 +45,6 @@ public class PostTask extends AsyncTask<String, String, String> {
         try {
             // prepare URL and parameter
             String urlParameters = mRequestBody;
-            Log.d("HERE", urlParameters);
             String postData = urlParameters;
             int postDataLength = postData.length();
             URL url = new URL(mRestUrl);

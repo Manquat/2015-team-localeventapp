@@ -54,7 +54,7 @@ public enum EventDatabase {
         for (Event e : events) {
             mEventSet.addEvent(e);
 
-            Log.d("EVENT LOADED ", e.getTitle());
+            Log.i("EVENT LOADED ", e.getTitle());
         }
     }
 
