@@ -45,7 +45,7 @@ import ch.epfl.sweng.evento.Settings;
 
 /**
  * Created by Gautier on 21/10/2015.
- * <p>
+ * <p/>
  * Fragment that hold the Google map.
  */
 public class MapsFragment extends SupportMapFragment implements
@@ -226,7 +226,7 @@ public class MapsFragment extends SupportMapFragment implements
 
         // add all event to the cluster manager of map
         List<Event> eventArrayList = EventDatabase.INSTANCE.getAllEvents();
-        for(Event e: eventArrayList){
+        for (Event e : eventArrayList) {
             mClusterManager.addItem(e);
             mClusterManager.cluster();
         }
