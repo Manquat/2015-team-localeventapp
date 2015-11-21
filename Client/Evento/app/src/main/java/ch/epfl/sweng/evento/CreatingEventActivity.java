@@ -224,14 +224,14 @@ public class CreatingEventActivity extends AppCompatActivity
     }
 
     private void setPictureButton(Button pictureButton) {
-        pictureButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(intent, 2);
-                    }
-                }
+        pictureButton.setOnClickListener(new View.OnClickListener() {
+
+                 @Override
+                 public void onClick(View view) {
+                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                     startActivityForResult(intent, 2);
+                 }
+             }
         );
     }
 
