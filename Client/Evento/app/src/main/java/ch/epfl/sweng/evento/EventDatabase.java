@@ -7,14 +7,11 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventSet;
 import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
-import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 
 /**
@@ -42,7 +39,7 @@ public enum EventDatabase {
 
 
     void loadNewEvents() {
-        mRestAPI.getMultiplesEvent(new GetMultipleResponseCallback() {
+        mRestAPI.getAll(new GetMultipleResponseCallback() {
             @Override
             public void onDataReceived(ArrayList<Event> events) {
                 addAll(events);
@@ -50,7 +47,7 @@ public enum EventDatabase {
         });
     }
 
-    void addAll(ArrayList<Event> events){
+    public void addAll(ArrayList<Event> events){
         for (int i = 0; i < events.size(); ++i) {
             mEventSet.addEvent(events.get(i));
             Log.d("EVENT LOADED ", Integer.toString(events.size()));
@@ -139,4 +136,10 @@ public enum EventDatabase {
         mEventSet.clear();
         loadNewEvents();
     }
+
+    public void clear() {
+        mEventSet.clear();
+    }
+
+
 }

@@ -78,9 +78,8 @@ public class ContentFragment extends Fragment {
     private Vector<MyView> mMyViews;
     private View mView;
     private Toolbar mToolbar;
-
     public Event.CustomDate dateFilter;
-
+    private RestApi mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
     /**
      * Create a new instance of {@link ContentFragment}, adding the parameters into a bundle and
      * setting them as arguments.
@@ -132,20 +131,14 @@ public class ContentFragment extends Fragment {
     }
 
     public void refreshFromServer() {
-        EventDatabase.INSTANCE.refresh();
-        mEvents.clear();
-
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            Log.e(TAG, e.toString());
-        }
-
-        mEvents = EventDatabase.INSTANCE.getAllEvents();
-        mNumberOfEvent = mEvents.size();
-        displayMosaic();
-        Log.d("LOG_ContentFragment", "Refreshing");
-        Toast.makeText(mActivity.getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
+        mRestAPI.getAll(new GetMultipleResponseCallback() {
+            @Override
+            public void onDataReceived(ArrayList<Event> eventArrayList) {
+                EventDatabase.INSTANCE.clear();
+                EventDatabase.INSTANCE.addAll(eventArrayList);
+            }
+        });
+        refreshEventSet();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
