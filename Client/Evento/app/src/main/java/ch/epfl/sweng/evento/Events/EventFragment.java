@@ -47,8 +47,8 @@ public class EventFragment extends Fragment {
 
         titleView.setText(mEvent.getTitle());
         creatorView.setText(mEvent.getCreator());
-        startDateView.setText(mEvent.getStartDate().toString());
-        endDateView.setText(mEvent.getEndDate().toString());
+        startDateView.setText(mEvent.getStartDateAsString());
+        endDateView.setText(mEvent.getEndDateAsString());
         addressView.setText(mEvent.getAddress());
         descriptionView.setText(mEvent.getDescription());
 

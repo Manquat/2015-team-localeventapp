@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -64,8 +65,8 @@ public class CreatingEventActivity extends AppCompatActivity
 
     private TextView mStartDateView;
     private TextView mEndDateView;
-    private Event.CustomDate startDate;
-    private Event.CustomDate endDate;
+    private GregorianCalendar startDate;
+    private GregorianCalendar endDate;
     private boolean mStartOrEndDate;
     private boolean mDisplayTimeFragment;
     private DatePickerDialogFragment mDateFragment;
@@ -86,8 +87,8 @@ public class CreatingEventActivity extends AppCompatActivity
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                           int dayOfMonth) {
-        if (!mStartOrEndDate) startDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
-        else endDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
+        if (!mStartOrEndDate) startDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
+        else endDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
         mTimeFragment = new TimePickerDialogFragment();
         mTimeFragment.show(getFragmentManager(), "timePicker");
     }
@@ -95,14 +96,14 @@ public class CreatingEventActivity extends AppCompatActivity
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         if (!mStartOrEndDate) {
-            startDate.setTime(hourOfDay, minute);
-            String s = Integer.toString(startDate.getMonth()) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
-                    " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes());
+            startDate.set(Calendar.HOUR, hourOfDay);
+            startDate.set(Calendar.MINUTE, minute);
+            String s = Event.asNiceString(startDate);
             mStartDateView.setText(s);
         } else {
-            endDate.setTime(hourOfDay, minute);
-            String s = Integer.toString(endDate.getMonth()) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) +
-                    " at " + Integer.toString(endDate.getHour()) + ":" + Integer.toString(endDate.getMinutes());
+            endDate.set(Calendar.HOUR, hourOfDay);
+            endDate.set(Calendar.MINUTE, minute);
+            String s = Event.asNiceString(endDate);
             mEndDateView.setText(s);
         }
 
@@ -168,10 +169,10 @@ public class CreatingEventActivity extends AppCompatActivity
 
                 // just in case you haven't put any date ;)
                 if (startDate == null) {
-                    startDate = new Event.CustomDate(1990, 12, 16, 0, 0);
+                    startDate = new GregorianCalendar(1990, 12, 16, 0, 0);
                 }
                 if (endDate == null) {
-                    endDate = new Event.CustomDate(1992, 1, 16, 0, 0);
+                    endDate = new GregorianCalendar(1992, 1, 16, 0, 0);
                 }
                 if (titleString.isEmpty()) {
                     titleString = "No title";
@@ -203,7 +204,7 @@ public class CreatingEventActivity extends AppCompatActivity
                         longitude, addressString, creator,
                         mTag, startDate, endDate, picture);
 
-                Log.d(TAG, "date de l'event: " + e.getStartDate().toString() + " " + e.getEndDate().toString());
+                Log.d(TAG, "date de l'event: " + e.getStartDateAsString() + " " + e.getEndDateAsString());
 
                 RestApi restApi = new RestApi(networkProvider, urlServer);
 

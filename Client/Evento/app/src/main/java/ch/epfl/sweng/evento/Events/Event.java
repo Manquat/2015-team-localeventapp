@@ -10,7 +10,9 @@ import com.google.maps.android.clustering.ClusterItem;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -26,55 +28,9 @@ public class Event implements ClusterItem {
     private final String mAddress;
     private final String mCreator;//might be replaced by some kind of User class
     private final Set<String> mTags;
-    private final CustomDate mStartDate;
-    private final CustomDate mEndDate;
+    private final GregorianCalendar mStartDate;
+    private final GregorianCalendar mEndDate;
     private String mPicture;
-
-public Event(int id,
-                 String title,
-                 String description,
-                 double latitude,
-                 double longitude,
-                 String address,
-                 String creator,
-                 Set<String> tags,
-                 CustomDate startDate,
-                 CustomDate endDate,
-                 Bitmap picture) {
-        mID = id;
-        mTitle = title;
-        mDescription = description;
-        mLocation = new LatLng(latitude, longitude);
-        mAddress = address;
-        mCreator = creator;
-        mTags = tags;
-        mStartDate = new CustomDate(startDate);
-        mEndDate = new CustomDate(endDate);
-        //setPicture(picture);
-    mPicture = samplePicture();
-    }
-    
-    public Event(int id,
-                 String title,
-                 String description,
-                 double latitude,
-                 double longitude,
-                 String address,
-                 String creator,
-                 Set<String> tags,
-                 CustomDate startDate,
-                 CustomDate endDate) {
-        mID = id;
-        mTitle = title;
-        mDescription = description;
-        mLocation = new LatLng(latitude, longitude);
-        mAddress = address;
-        mCreator = creator;
-        mTags = tags;
-        mStartDate = new CustomDate(startDate);
-        mEndDate = new CustomDate(endDate);
-        mPicture = samplePicture();
-    }
 
     public Event(int id,
                  String title,
@@ -91,10 +47,56 @@ public Event(int id,
         mAddress = address;
         mCreator = creator;
         mTags = tags;
-        mStartDate = new CustomDate();
-        mEndDate = new CustomDate();
+        mStartDate = new GregorianCalendar();
+        mEndDate = new GregorianCalendar();
         mPicture = samplePicture();
     }
+
+public Event(int id,
+                 String title,
+                 String description,
+                 double latitude,
+                 double longitude,
+                 String address,
+                 String creator,
+                 Set<String> tags,
+                 GregorianCalendar startDate,
+                 GregorianCalendar endDate,
+                 Bitmap picture) {
+        mID = id;
+        mTitle = title;
+        mDescription = description;
+        mLocation = new LatLng(latitude, longitude);
+        mAddress = address;
+        mCreator = creator;
+        mTags = tags;
+        mStartDate = startDate;
+        mEndDate = endDate;
+        setPicture(picture);
+    }
+
+    public Event(int id,
+                 String title,
+                 String description,
+                 double latitude,
+                 double longitude,
+                 String address,
+                 String creator,
+                 Set<String> tags,
+                 GregorianCalendar startDate,
+                 GregorianCalendar endDate) {
+        mID = id;
+        mTitle = title;
+        mDescription = description;
+        mLocation = new LatLng(latitude, longitude);
+        mAddress = address;
+        mCreator = creator;
+        mTags = tags;
+        mStartDate = startDate;
+        mEndDate = endDate;
+        mPicture = samplePicture();
+    }
+
 
 
     public void setPicture(String picture) {
@@ -118,20 +120,29 @@ public Event(int id,
 
     }
 
-    public GregorianCalendar getCalendarStart() {
-        return new GregorianCalendar(mStartDate.getYear(), mStartDate.getMonth(), mStartDate.getDay(),
-                mStartDate.getHour(), mStartDate.getMinutes());
-    }
-    public GregorianCalendar getCalendarEnd() {
-        return new GregorianCalendar(mEndDate.getYear(), mEndDate.getMonth(), mEndDate.getDay(),
-                mEndDate.getHour(), mEndDate.getMinutes());
-    }
 
     public String getProperDateString(){
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         timeFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        return timeFormat.format(this.getCalendarStart().getTime());
+        return timeFormat.format(this.getStartDate().getTime());
     }
+
+    static public String asNiceString(GregorianCalendar calendar){
+        return calendar.get(Calendar.DAY_OF_MONTH) + "/"
+                + calendar.get(Calendar.MONTH) + "/"
+                + calendar.get(Calendar.YEAR) + " at "
+                 + calendar.get(Calendar.HOUR) + ":"
+                + calendar.get(Calendar.MINUTE);
+    }
+
+    public String getStartDateAsString(){
+        return asNiceString(mStartDate);
+    }
+
+    public String getEndDateAsString(){
+        return asNiceString(mEndDate);
+    }
+
 
     public void debugLogEvent() {
         Log.d(TAG, "Event " + mID + " : title : " + mTitle);
@@ -182,11 +193,11 @@ public Event(int id,
         return mTags;
     }
 
-    public CustomDate getStartDate() {
+    public GregorianCalendar getStartDate() {
         return mStartDate;
     }
 
-    public CustomDate getEndDate() {
+    public GregorianCalendar getEndDate() {
         return mEndDate;
     }
 
@@ -218,11 +229,19 @@ public Event(int id,
      * @return the signature of the Event in the form yyyymmddhhmmID
      */
     public long getSignature() {
-        return (100000 * getStartDate().toLong() + (long) getID());
+        return (100000 * getCalendarAsLong() + (long) getID());
+    }
+
+    public long getCalendarAsLong(){
+        return    100000000*(long) mStartDate.get(GregorianCalendar.YEAR)
+                + 1000000*(long) mStartDate.get(GregorianCalendar.MONTH)
+                + 10000*(long) mStartDate.get(GregorianCalendar.DAY_OF_MONTH)
+                + 100*(long) mStartDate.get(GregorianCalendar.HOUR)
+                + (long) mStartDate.get(GregorianCalendar.MINUTE);
     }
 
     //This is a temporary method to test if the server can handle very long strings
-    public String samplePicture() {
+    static public String samplePicture() {
         return "Qk2uFAAAAAAAAIoEAAB8AAAAxwAAAMcAAAABAAgAAQAAACQQAAASCwAAEgsAAAABAAAAAQAAAAD/ " +
                 "AAD/AAD/AAAAAAAA/0JHUnMAAAAAAAAAAFS4HvwAAAAAAAAAAGZmZvwAAAAAAAAAAMT1KP8AAAAA " +
                 "AAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAMDAwABI " +
@@ -308,89 +327,6 @@ public Event(int id,
                 "AQ35AwUM/AMAEPsDABL8BAQpAAAACQAD+Sb7AwAJAQMAE/wDAQ35AwUM/AMAEPsDABL8BAQpAAAA " +
                 "yAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAAAE=";
     }
-
-    public static class CustomDate {
-
-        private int mYear;
-        private int mMonth;
-        private int mDay;
-        private int mHour;
-        private int mMinutes;
-
-        public String toString() {
-            return mYear + "/" + mMonth + "/" + mDay + "  " + mHour + ":" + mMinutes;
-        }
-
-        /**
-         * This method returns a long representing the date with appended values
-         * It makes comparison between 2 Dates trivial and is also used to get an Event's signature
-         * @return the CustomDate in the form yyyymmddhhmm
-         */
-        public long toLong() {
-            return (long) (Math.pow(10, 8)
-                    * mYear + Math.pow(10, 6)
-                    * mMonth + Math.pow(10, 4)
-                    * mDay + Math.pow(10, 2)
-                    * mHour + mMinutes);
-        }
-
-        public CustomDate() {
-            mYear = 0;
-            mMonth = 0;
-            mDay = 0;
-            mHour = 0;
-            mMinutes = 0;
-        }
-
-        public void setTime(int hour, int minutes) {
-            mHour = hour;
-            mMinutes = minutes;
-        }
-
-        public int getYear() {
-            return mYear;
-        }
-
-        public int getMonth() {
-            return mMonth;
-        }
-
-        public int getDay() {
-            return mDay;
-        }
-
-        public int getMinutes() {
-            return mMinutes;
-        }
-
-        public int getHour() {
-            return mHour;
-        }
-
-
-        public void setDate(int year, int month, int day) {
-            mYear = year;
-            mMonth = month;
-            mDay = day;
-        }
-
-        public CustomDate(int year, int month, int day, int hour, int minutes) {
-            mYear = year;
-            mMonth = month;
-            mDay = day;
-            mHour = hour;
-            mMinutes = minutes;
-        }
-
-        public CustomDate(CustomDate other) {
-            mYear = other.mYear;
-            mMonth = other.mMonth;
-            mDay = other.mDay;
-            mHour = other.mHour;
-            mMinutes = other.mMinutes;
-        }
-    }
-
 }
 
 

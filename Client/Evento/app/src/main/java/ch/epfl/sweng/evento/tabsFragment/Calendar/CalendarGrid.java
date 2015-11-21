@@ -179,7 +179,7 @@ public class CalendarGrid {
      * @param position the position of the day in the grid
      * @return a calendar initialize at the date of the day pointed
      */
-    public Calendar getDateFromPosition(int position) {
+    public GregorianCalendar getDateFromPosition(int position) {
         int effectiveMonth = mCurrentMonth;
 
         switch (mCurrent.get(position)) {

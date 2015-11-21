@@ -53,7 +53,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         // Initialize the calendar grid at the current date
         GregorianCalendar actualDate = new GregorianCalendar();
         mCalendarGrid = new CalendarGrid(actualDate);
-        mEvents = EventDatabase.INSTANCE.filter(actualDate);
+        mEvents = EventDatabase.INSTANCE.filter(actualDate).toArrayList();
     }
 
 //---------------------------------------------------------------------------------------------
@@ -164,7 +164,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
                 day.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
             }
 
-            List<Event> events = EventDatabase.INSTANCE.filter(mCalendarGrid.getDateFromPosition(position));
+            List<Event> events = EventDatabase.INSTANCE.filter(mCalendarGrid.getDateFromPosition(position)).toArrayList();
 
             if (events != null) {
                 day.setStateHaveEvents(true);

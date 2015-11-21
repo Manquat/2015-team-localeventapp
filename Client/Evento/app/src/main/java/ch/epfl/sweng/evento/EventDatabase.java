@@ -138,13 +138,11 @@ public enum EventDatabase {
         return mEventSet.filter(tag);
     }
 
-    public EventSet filter(Event.CustomDate startDate) {
+    public EventSet filter(GregorianCalendar startDate) {
         return mEventSet.filter(startDate);
     }
 
-    public List<Event> filter(Calendar calendar) {
-        return mEventSet.filter(calendar);
-    }
+    public EventSet filterOnDay(GregorianCalendar calendar) {return mEventSet.filterOnDay(calendar);}
 
 
     public void refresh() {
