@@ -128,7 +128,6 @@ public class ContentFragment extends Fragment {
         mNumberOfEvent = mEvents.size();
         displayMosaic();
         Log.d("LOG_ContentFragment", "Refreshing");
-        Toast.makeText(mActivity.getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
     }
 
     public void refreshFromServer() {
@@ -140,6 +139,7 @@ public class ContentFragment extends Fragment {
                 EventDatabase.INSTANCE.clear();
                 EventDatabase.INSTANCE.addAll(eventArrayList);
                 refreshEventSet();
+                Toast.makeText(mActivity.getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -145,7 +145,7 @@ public class SearchActivity extends AppCompatActivity
                     }
                 });
 
-                Toast.makeText(getApplicationContext(), "Load events...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Load events by search parameters", Toast.LENGTH_SHORT).show();
 
 
 

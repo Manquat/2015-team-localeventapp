@@ -59,6 +59,13 @@ public enum EventDatabase {
         }
     }
 
+    public void addOne(Event e) {
+        if(e== null){
+            return;
+        }
+        mEventSet.addEvent(e);
+    }
+
 
 
     public void loadByDate(GregorianCalendar start, GregorianCalendar end){
