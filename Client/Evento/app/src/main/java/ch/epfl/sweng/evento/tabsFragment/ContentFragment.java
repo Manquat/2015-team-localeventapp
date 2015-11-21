@@ -135,12 +135,6 @@ public class ContentFragment extends Fragment {
         EventDatabase.INSTANCE.refresh();
         mEvents.clear();
 
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            Log.e(TAG, e.toString());
-        }
-
         mEvents = EventDatabase.INSTANCE.getAllEvents();
         mNumberOfEvent = mEvents.size();
         displayMosaic();
