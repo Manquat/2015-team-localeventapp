@@ -20,14 +20,19 @@ public class CalendarDay extends Button {
 //---------------------------------------------------------------------------------------------
     private static final int NUMBER_OF_STATES = 3;
 
-    private boolean mIsCurrentDay = false;
-    private boolean mIsCurrentMonth = false;
-    private boolean mHaveEvents = false;
+    private boolean mIsCurrentDay = false;      // is it the current day
+    private boolean mIsCurrentMonth = false;    // is it a day of the current month
+    private boolean mHaveEvents = false;        // have this day some events
 
 //---------------------------------------------------------------------------------------------
 //----Constructor------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
+    /**
+     * Constructor that just call the one of button
+     * @param context context where the button is used
+     * @param attrs attributes of the button
+     */
     public CalendarDay(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -36,14 +41,26 @@ public class CalendarDay extends Button {
 //----Set--------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
+    /**
+     * Getter for the CurrentDay state
+     * @return the state of the CurrentDay state
+     */
     public boolean getStateCurrentDay() {
         return mIsCurrentDay;
     }
 
+    /**
+     * Getter for the CurrentMonth state
+     * @return the state of the CurrentMonth state
+     */
     public boolean getStateCurrentMonth() {
         return mIsCurrentMonth;
     }
 
+    /**
+     * Getter for the HaveEvents state
+     * @return the state of the HaveEvents state
+     */
     public boolean getStateHaveEvents() {
         return mHaveEvents;
     }
@@ -52,16 +69,28 @@ public class CalendarDay extends Button {
 //----Set--------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
+    /**
+     * Setter for the CurrentDay state
+     * @param isCurrentDay the state wanted for the CurrentDay state
+     */
     public void setStateCurrentDay(boolean isCurrentDay) {
         mIsCurrentDay = isCurrentDay;
         refreshDrawableState();
     }
 
+    /**
+     * Setter for the CurrentMonth state
+     * @param isCurrentMonth the state wanted for the CurrentMonth state
+     */
     public void setStateCurrentMonth(boolean isCurrentMonth) {
         mIsCurrentMonth = isCurrentMonth;
         refreshDrawableState();
     }
 
+    /**
+     * Setter for the HaveEvents state
+     * @param haveEvents the state wanted for the HaveEvents state
+     */
     public void setStateHaveEvents(boolean haveEvents) {
         mHaveEvents = haveEvents;
         refreshDrawableState();

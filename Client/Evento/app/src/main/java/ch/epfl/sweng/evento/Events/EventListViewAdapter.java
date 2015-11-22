@@ -17,7 +17,7 @@ import ch.epfl.sweng.evento.EventActivity;
 import ch.epfl.sweng.evento.R;
 
 /**
- * Created by Gautier on 19/11/2015.
+ * List view adapter that can be used to display the list of event given in the constructor
  */
 public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
 //---------------------------------------------------------------------------------------------
@@ -32,6 +32,12 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
 //----Constructor------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
+    /**
+     * Constructor of the class
+     * @param context the context where the list adapter is used
+     * @param events the events that compose the list
+     * @param parentActivity the activity where the list adapter is used
+     */
     public EventListViewAdapter(Context context, List<Event> events, Activity parentActivity) {
         super();
 
@@ -86,6 +92,10 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
 //----Set--------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
+    /**
+     * Setter for the events
+     * @param events the events display in the list adapter
+     */
     public void setEvents(List<Event> events)
     {
         mEvents = events;

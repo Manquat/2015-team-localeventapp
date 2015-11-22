@@ -31,15 +31,23 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 //----Members----------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
-    private Context      mContext;
-    private CalendarGrid mCalendarGrid;
-    private List<Event>  mEvents = null;
-    private Updatable    mUpdatableParent;
+    private Context      mContext;          // the context where the adapter is used
+    private CalendarGrid mCalendarGrid;     // the container of all the information
+    private List<Event>  mEvents = null;    // the events at the current day
+    private Updatable    mUpdatableParent;  // the parent that holds the grid and will be update when something
+                                            // changed in the adapter.
 
 //---------------------------------------------------------------------------------------------
 //----Constructor------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
+    /**
+     * Constructor
+     *
+     * @param context         the context where the adapter is used
+     * @param updatableParent the parent that holds the grid and will be update when something
+     *                        changed in the adapter.
+     */
     public GridCalendarAdapter(Context context, Updatable updatableParent) {
         super();
         mContext = context;
@@ -57,6 +65,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
     /**
      * Getting the number of cells in the grid view
+     *
      * @return the number of cells including the first row that display the days of the week
      */
     @Override
@@ -71,6 +80,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
     /**
      * Get the unique id of the day at this position in the grid view
+     *
      * @param position position in the grid view
      * @return if it's a day return the date in millisecond, otherwise return 0
      */
@@ -185,6 +195,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
     /**
      * Return the events at the current selected day
+     *
      * @return Collection of event order as ID
      */
     public List<Event> getCurrentEvents() {

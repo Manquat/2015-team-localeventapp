@@ -43,7 +43,7 @@ public class EventClusterManager extends ClusterManager<Event> implements
 //----Members----------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
-    private Context     mContext;
+    private Context mContext;
     private Collection<Event> mEventsClick;
     private Activity mActivity;
     private GoogleMap mMap;

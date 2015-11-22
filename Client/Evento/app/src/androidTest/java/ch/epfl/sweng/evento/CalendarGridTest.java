@@ -16,6 +16,7 @@ import ch.epfl.sweng.evento.tabsFragment.Calendar.CalendarGrid;
 import static java.util.Locale.setDefault;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 
 /**
  * Created by Gautier on 20/11/2015.
@@ -66,71 +67,59 @@ public class CalendarGridTest {
 
     @Test
     public void getDayException() {
-        boolean getDayException = false;
         try {
             mGrid.getDay(42);
+            fail();
         }
         catch (IndexOutOfBoundsException e) {
             //pass the test;
-            getDayException = true;
         }
-        assertTrue(getDayException);
 
-        getDayException = false;
         try {
             mGrid.getDay(-1);
+            fail();
         }
         catch (IndexOutOfBoundsException e) {
             //pass the test
-            getDayException = true;
         }
-        assertTrue(getDayException);
     }
 
     @Test
     public void isCurrentMonthException() {
-        boolean exception = false;
         try {
             mGrid.isCurrentMonth(-1);
+            fail();
         }
         catch (IndexOutOfBoundsException e) {
             //pass the test
-            exception = true;
         }
-        assertTrue(exception);
 
-        exception = false;
         try {
             mGrid.isCurrentMonth(42);
+            fail();
         }
         catch (IndexOutOfBoundsException e) {
             //pass the test
-            exception = true;
         }
-        assertTrue(exception);
     }
 
     @Test
     public void setFocusedDayException() {
-        boolean exception = false;
         try {
             mGrid.setFocusedDay(-1);
+            fail();
         }
         catch (IndexOutOfBoundsException e) {
             //pass the test
-            exception = true;
         }
-        assertTrue(exception);
 
-        exception = false;
         try {
             mGrid.setFocusedDay(42);
+            fail();
         }
         catch (IndexOutOfBoundsException e) {
             //pass the test
-            exception = true;
         }
-        assertTrue(exception);
     }
 
     @Test

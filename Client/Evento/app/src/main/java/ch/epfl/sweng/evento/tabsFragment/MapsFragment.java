@@ -157,6 +157,7 @@ public class MapsFragment extends SupportMapFragment implements
 
     /**
      * Call when the GoogleApiClient is connected
+     *
      * @param bundle
      */
     @Override
@@ -169,6 +170,7 @@ public class MapsFragment extends SupportMapFragment implements
 
     /**
      * Call when the connection of the GoogleApiClient is suspended
+     *
      * @param i
      */
     @Override
@@ -210,6 +212,7 @@ public class MapsFragment extends SupportMapFragment implements
 //---------------------------------------------------------------------------------------------
 //----Methods----------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
+
     /**
      * Zoom on the the position of the user and draw some markers
      */

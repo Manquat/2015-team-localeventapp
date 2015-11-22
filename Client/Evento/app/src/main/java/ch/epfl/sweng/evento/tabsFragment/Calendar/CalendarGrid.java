@@ -28,9 +28,9 @@ public class CalendarGrid {
 
     // Is the days associate in the current month
     private List<Current> mCurrent = new ArrayList<>(NUMBER_OF_CELLS);
-    private int mIndexOfCurrentDay;
-    private int mCurrentMonth;
-    private int mCurrentYear;
+    private int mIndexOfCurrentDay; // the index of the current day in the list of mDays and mCurrent
+    private int mCurrentMonth;      // the current month (0 for january, ...)
+    private int mCurrentYear;       // the current year
 
 //---------------------------------------------------------------------------------------------
 //----Constructor------------------------------------------------------------------------------
@@ -276,6 +276,12 @@ public class CalendarGrid {
                 focusedDay.get(Calendar.YEAR));
     }
 
+    /**
+     * Set the day selected
+     * @param day day of the month wanted
+     * @param month month of the year wanted (0 for january,...)
+     * @param year year wanted
+     */
     public void setFocusedDay(int day, int month, int year) {
         if (month != mCurrentMonth || year != mCurrentYear) {
             setFocusedMonth(month, year);
