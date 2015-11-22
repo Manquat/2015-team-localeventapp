@@ -4,13 +4,11 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Button;
 
-import java.util.Collection;
-
-import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
 
 /**
- * Created by Gautier on 17/11/2015.
+ * Extension of the base button class to add some custom features : new stats that are specify for
+ * the day of the calendar
  */
 public class CalendarDay extends Button {
     public static final int[] STATE_CURRENT_DAY = {R.attr.state_current_day};

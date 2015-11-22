@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.MarkerManager;
 import com.google.maps.android.clustering.Cluster;
@@ -24,12 +23,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ch.epfl.sweng.evento.EventActivity;
-import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
 
 /**
- * Created by Gautier on 02/11/2015.
+ * Extension of the cluster manager class to centralize all the management of the markers of the
+ * map in one place
  */
 public class EventClusterManager extends ClusterManager<Event> implements
         ClusterManager.OnClusterClickListener<Event>,

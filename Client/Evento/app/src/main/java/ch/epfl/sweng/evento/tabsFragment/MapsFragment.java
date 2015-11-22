@@ -23,19 +23,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 
 import ch.epfl.sweng.evento.EventDatabase;
-import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventsClusterRenderer;
 import ch.epfl.sweng.evento.tabsFragment.Maps.EventClusterManager;
 
 
 /**
- * Created by Gautier on 21/10/2015.
- * <p/>
  * Fragment that hold the Google map.
  */
 public class MapsFragment extends SupportMapFragment implements
@@ -45,8 +39,6 @@ public class MapsFragment extends SupportMapFragment implements
         OnMyLocationButtonClickListener {
 
     private static final String TAG = "MapsFragment";   // LogCat tag
-    private static final int NUMBER_OF_MARKERS = 100;                       // Number of marker that will be displayed
-    private static final int NUMBER_OF_EVENT = 10;
     private static final float ZOOM_LEVEL = 15.0f;                          // Zoom level of the map at the beginning
 
 
@@ -245,11 +237,7 @@ public class MapsFragment extends SupportMapFragment implements
         mClusterManager.clearItems();
 
         // add all event to the cluster manager of map
-        List<Event> eventArrayList = EventDatabase.INSTANCE.getAllEvents();
-        for (Event e : eventArrayList) {
-            mClusterManager.addItem(e);
-            mClusterManager.cluster();
-        }
-
+        mClusterManager.addItems(EventDatabase.INSTANCE.getAllEvents());
+        mClusterManager.cluster();
     }
 }

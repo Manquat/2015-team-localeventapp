@@ -1,11 +1,5 @@
 package ch.epfl.sweng.evento.RestApi;
 
-import android.util.Log;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
-
 import ch.epfl.sweng.evento.Events.Event;
 
 /**

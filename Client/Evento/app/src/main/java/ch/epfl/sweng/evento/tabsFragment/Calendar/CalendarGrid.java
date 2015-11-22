@@ -1,8 +1,6 @@
 package ch.epfl.sweng.evento.tabsFragment.Calendar;
 
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -11,7 +9,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
- * Created by Gautier on 28/10/2015.
+ * Container of the info relative to the calendar
  */
 public class CalendarGrid {
     private static final String TAG = "CalendarGrid";
@@ -205,7 +203,7 @@ public class CalendarGrid {
      * If it's not found return -1
      *
      * @param day the day search in the current month
-     * @return
+     * @return the index in the actual grid
      */
     private int getIndexOfDay(int day) {
         int iFind = -1;

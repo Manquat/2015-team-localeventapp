@@ -8,20 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Events.Event;
-import ch.epfl.sweng.evento.Events.EventSet;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.tabsFragment.Updatable;
 

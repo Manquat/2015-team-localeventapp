@@ -4,19 +4,14 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventSet;
 import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
-import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 
 /**

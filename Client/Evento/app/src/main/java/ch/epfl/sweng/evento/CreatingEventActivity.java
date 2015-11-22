@@ -1,7 +1,6 @@
 package ch.epfl.sweng.evento;
 
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -40,7 +39,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;

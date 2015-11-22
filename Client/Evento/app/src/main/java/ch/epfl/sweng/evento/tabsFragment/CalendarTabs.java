@@ -12,7 +12,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
@@ -21,7 +20,8 @@ import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.tabsFragment.Calendar.GridCalendarAdapter;
 
 /**
- * Created by Gautier on 21/10/2015.
+ * The fragment that holds the calendar and the listView that display the events at the current
+ * selected date
  */
 public class CalendarTabs extends Fragment implements Button.OnClickListener, Updatable {
 //---------------------------------------------------------------------------------------------

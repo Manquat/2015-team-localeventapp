@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +37,6 @@ import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.RestApi;
-import ch.epfl.sweng.evento.SearchActivity;
-import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 
 /**
