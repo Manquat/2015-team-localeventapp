@@ -138,7 +138,7 @@ public class SearchActivity extends AppCompatActivity
 
                 mRestApi.getWithFilter(startTime, endTime, latitude, longitude, radius, new GetMultipleResponseCallback() {
                     @Override
-                    public void onDataReceived(ArrayList<Event> eventArrayList) {
+                    public void onDataReceived(List<Event> eventArrayList) {
                         EventDatabase.INSTANCE.clear();
                         EventDatabase.INSTANCE.addAll(eventArrayList);
                         finish();

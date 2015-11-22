@@ -27,7 +27,7 @@ public class PutTask extends AsyncTask<String, String, String> {
     private NetworkProvider mNetworkProvider;
 
 
-    public PutTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback){
+    public PutTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback) {
         this.mRestUrl = restUrl;
         this.mRequestBody = requestBody;
         this.mCallback = callback;

@@ -102,8 +102,6 @@ public class ContentFragment extends Fragment {
     }
 
 
-
-
     public enum Span {NOTHING, TWO_ROWS, TWO_COLUMNS}
 
 
@@ -118,13 +116,12 @@ public class ContentFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("LOG_ContentFragment", "ContentFragmentOnResume");
-        if(mView != null) refreshEventSet();
+        if (mView != null) refreshEventSet();
     }
 
-    public void refreshEventSet(){
+    public void refreshEventSet() {
 
-        mEvents=EventDatabase.INSTANCE.getAllEvents();
+        mEvents = EventDatabase.INSTANCE.getAllEvents();
         mNumberOfEvent = mEvents.size();
         displayMosaic();
         Log.d("LOG_ContentFragment", "Refreshing");
@@ -135,7 +132,7 @@ public class ContentFragment extends Fragment {
 
         mRestAPI.getAll(new GetMultipleResponseCallback() {
             @Override
-            public void onDataReceived(ArrayList<Event> eventArrayList) {
+            public void onDataReceived(List<Event> eventArrayList) {
                 EventDatabase.INSTANCE.clear();
                 EventDatabase.INSTANCE.addAll(eventArrayList);
                 refreshEventSet();
@@ -143,19 +140,18 @@ public class ContentFragment extends Fragment {
             }
         });
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_mosaic, container, false);
-        Log.d("LOG_ContentFragment", "ContentFragmentOnCreateView");
 
         refreshEventSet();
 
         return mView;
     }
 
-    private void displayMosaic(){
-        Log.d("LOG_ContentFragment", "DisplayMosaic");
+    private void displayMosaic() {
         mGridLayout = (GridLayout) mView.findViewById(R.id.gridLayout);
         mGridLayout.setRowCount(mNumberOfRow);
         mGridLayout.setColumnCount(mNumberOfColumn);
@@ -164,38 +160,30 @@ public class ContentFragment extends Fragment {
 
         boolean[] tmpBooleanRow = new boolean[mNumberOfColumn];
         Span tmpSpanSmtgOrNot = Span.NOTHING;
-        Log.d("LOG_ContentFragment", "DisplayMosaic, starting the outer loop");
         for (int yPos = 0, countEvent = 0; countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; yPos++) {
-            Log.d("yPos :", Integer.toString(yPos));
-            Log.d("Event :", Integer.toString(countEvent));
-            Log.d("Number of row :", Integer.toString(mNumberOfRow));
-            Log.d("LOG_ContentFragment", "DisplayMosaic, starting the inner loop");
 
             for (int xPos = 0; xPos < mNumberOfColumn && countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; xPos++, countEvent++) {
-                Log.d("LOG_ContentFragment", "_CountEvent = " + Integer.toString(countEvent));
                 final MyView tView = new MyView(mView.getContext(), xPos, yPos);
                 tView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(mActivity, EventActivity.class);
-                        intent.putExtra(EventActivity.KEYCURRENTEVENT, mEvents.get(tView.getIdX()+tView.getIdY()*mNumberOfColumn).getSignature());
+                        intent.putExtra(EventActivity.KEYCURRENTEVENT, mEvents.get(tView.getIdX() + tView.getIdY() * mNumberOfColumn).getSignature());
                         mActivity.startActivity(intent);
                     }
                 });
                 if (mDisplayOrNot.get(yPos)[xPos]) {
-                    if(mEvents.get(countEvent).getTags().contains("Foot!") ||
+                    if (mEvents.get(countEvent).getTags().contains("Foot!") ||
                             mEvents.get(countEvent).getTags().contains("Football")) {
                         tmpSpanSmtgOrNot = Span.NOTHING;
                         tView.setImageResource(R.drawable.football);
-                    }
-                    else if(mEvents.get(countEvent).getTags().contains("Basketball")) {
+                    } else if (mEvents.get(countEvent).getTags().contains("Basketball")) {
                         tmpSpanSmtgOrNot = Span.TWO_ROWS;
                         tView.setImageResource(R.drawable.basket);
                         mDisplayOrNot.get(yPos + 1)[xPos] = false;
                     } else {
                         tmpSpanSmtgOrNot = Span.NOTHING;
                         tView.setImageResource(R.drawable.unknown);
-                        Log.d("Warning ", "ContentFragment.OnCreateView.mEvent_DoesntMatch");
                     }
                     mMyViews.add(tView);
 
@@ -224,13 +212,12 @@ public class ContentFragment extends Fragment {
             }
         }
     }
+
     private void addViewToGridLayout(View view, int row, int column, int rowSpan, int columnSpan) {
         int pWidth = mGridLayout.getWidth();
         int pHeight = mGridLayout.getHeight();
         mWidthColumn = 0;
         mHeightRow = 0;
-        Log.d("addView", "width" + Integer.toString(mWidthColumn));
-        Log.d("addView", "height" + Integer.toString(mHeightRow));
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
         params.width = mWidthColumn - 2 * PADDING;
         params.height = mHeightRow - 2 * PADDING;

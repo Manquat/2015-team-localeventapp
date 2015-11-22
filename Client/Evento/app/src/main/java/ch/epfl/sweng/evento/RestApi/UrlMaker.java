@@ -53,8 +53,6 @@ public final class UrlMaker {
         String url = urlServer + event + accessMaster + Long.toString(startTimeInSec)
                 + "/" + Long.toString(endTimeInSec) +"/"+ Double.toString(latitude)+ "/"
                 + Double.toString(longitude) + "/" + Double.toString(radius);
-
-        Log.d(TAG, "url : " + url);
         return url;
     }
 }

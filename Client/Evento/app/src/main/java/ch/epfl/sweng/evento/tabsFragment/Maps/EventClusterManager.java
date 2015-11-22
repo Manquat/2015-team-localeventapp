@@ -40,10 +40,10 @@ public class EventClusterManager extends ClusterManager<Event> implements
         GoogleMap.OnInfoWindowClickListener {
     final static String TAG = "EventClusterManager";
 
-    private Context     mContext;
+    private Context mContext;
     private Collection<Event> mEventsClick;
-    private Activity    mActivity;
-    private GoogleMap   mMap;
+    private Activity mActivity;
+    private GoogleMap mMap;
 
     public EventClusterManager(Context context, GoogleMap map, Activity parentActivity) {
         super(context, map);
@@ -79,7 +79,7 @@ public class EventClusterManager extends ClusterManager<Event> implements
     public boolean onClusterClick(Cluster<Event> cluster) {
         Collection<Event> events = new ArrayList<>(cluster.getItems()); //defensive copy to avoid the border effect
         if (events.size() == 0) {
-            Log.d(TAG, "this cluster is empty");
+            Log.e(TAG, "this cluster is empty");
             throw new OutOfMemoryError();
         } else {
             // Show a toast with some info when the cluster is clicked.
@@ -180,7 +180,7 @@ public class EventClusterManager extends ClusterManager<Event> implements
         switch (mEventsClick.size()) {
             case 0:
                 view = null;
-                Log.d(TAG, "No actual event clicked");
+                Log.e(TAG, "No actual event clicked");
                 break;
             case 1:
                 view = ViewGroup.inflate(mContext, R.layout.infomarker_event, null);

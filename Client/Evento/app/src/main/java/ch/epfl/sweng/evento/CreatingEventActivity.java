@@ -178,6 +178,7 @@ public class CreatingEventActivity extends AppCompatActivity
      * a new event.
      * Also check if some field are empty and complete with default parameter to avoid crash
      * Send the created event through restAPI
+     *
      * @param validateButton
      */
     private void setValidateButtonAndSend(Button validateButton) {
@@ -229,7 +230,7 @@ public class CreatingEventActivity extends AppCompatActivity
                         longitude, addressString, creator,
                         mTag, startDate, endDate, picture);
 
-                Log.d(TAG, "Event to send : " + e.toString());
+                Log.i(TAG, "Event to send : " + e.toString());
 
                 restApi.postEvent(e, new PostCallback() {
                     @Override
@@ -249,12 +250,12 @@ public class CreatingEventActivity extends AppCompatActivity
     private void setPictureButton(Button pictureButton) {
         pictureButton.setOnClickListener(new View.OnClickListener() {
 
-                                             @Override
-                                             public void onClick(View view) {
-                                                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                                 startActivityForResult(intent, 2);
-                                             }
-                                         }
+                 @Override
+                 public void onClick(View view) {
+                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                     startActivityForResult(intent, 2);
+                 }
+             }
         );
     }
 

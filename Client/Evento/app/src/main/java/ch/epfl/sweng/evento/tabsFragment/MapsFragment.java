@@ -45,7 +45,7 @@ import ch.epfl.sweng.evento.Settings;
 
 /**
  * Created by Gautier on 21/10/2015.
- * <p>
+ * <p/>
  * Fragment that hold the Google map.
  */
 public class MapsFragment extends SupportMapFragment implements
@@ -98,8 +98,7 @@ public class MapsFragment extends SupportMapFragment implements
 
         mContext = view.getContext();
 
-        if (mContext == null)
-        {
+        if (mContext == null) {
             Log.e(TAG, "The actual context don't exist");
             throw new NullPointerException();
         }
@@ -226,21 +225,9 @@ public class MapsFragment extends SupportMapFragment implements
         mClusterManager.clearItems();
 
         // add all event to the cluster manager of map
-        ArrayList<Event> eventArrayList = EventDatabase.INSTANCE.getAllEvents();
-        for(int i = 0; i< eventArrayList.size(); i++){
-            Event tempEvent = eventArrayList.get(i);
-            mClusterManager.addItem( new Event(
-                    tempEvent.getID(),
-                    tempEvent.getTitle(),
-                    tempEvent.getDescription(),
-                    tempEvent.getLatitude(),
-                    tempEvent.getLongitude(),
-                    tempEvent.getAddress(),
-                    tempEvent.getCreator(),
-                    tempEvent.getTags(),
-                    tempEvent.getStartDate(),
-                    tempEvent.getEndDate()
-            ));
+        List<Event> eventArrayList = EventDatabase.INSTANCE.getAllEvents();
+        for (Event e : eventArrayList) {
+            mClusterManager.addItem(e);
             mClusterManager.cluster();
         }
 

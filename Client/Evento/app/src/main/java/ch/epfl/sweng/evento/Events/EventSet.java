@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -34,7 +35,7 @@ public class EventSet {
     }
 
 
-    public void clear(){
+    public void clear() {
         mEvents.clear();
     }
 
@@ -54,6 +55,7 @@ public class EventSet {
      * This method returns the first Event in the TreeMap. Since the Events are sorted by their
      * StartDate and then by their ID, the first Event is the closest in time from when the call
      * is made
+     *
      * @return The first Event
      */
     public Event getFirst() {
@@ -65,18 +67,18 @@ public class EventSet {
         }
     }
 
-    public Event getNext(Event current)
-    {
-		if(mEvents.size() > 1){
-			return getNext(current.getSignature());
-		}else{
-			return current;
-		}
+    public Event getNext(Event current) {
+        if (mEvents.size() > 1) {
+            return getNext(current.getSignature());
+        } else {
+            return current;
+        }
 
     }
 
     /**
      * Returns the Event with the closest higher signature from the one passed in argument
+     *
      * @param signature the reference signature to define which Event is the next one
      * @return the Event with the closest signature
      */
@@ -101,17 +103,18 @@ public class EventSet {
         }
     }
 
-    public Event getPrevious(Event current)
-    {
-		if(mEvents.size() > 1){
-			return getPrevious(current.getSignature());
-		}else{
-			return current;
-		}
+    public Event getPrevious(Event current) {
+        if (mEvents.size() > 1) {
+            return getPrevious(current.getSignature());
+        } else {
+            return current;
+        }
     }
+
 
     /**
      * Returns the Event with the closest lower signature from the one passed in argument
+     *
      * @param signature the reference signature
      * @return the Event with the closest lower signature
      */
@@ -142,6 +145,7 @@ public class EventSet {
     /**
      * Adds an event to the Map
      * Verifies the Event is not already in the Map
+     *
      * @param event the Event to be added
      */
     public void addEvent(Event event) {
@@ -191,6 +195,7 @@ public class EventSet {
 
     /**
      * Returns a set of Events that have the tag passed in argument in their own tags
+     *
      * @param tag the tag used to filter the set
      * @return a filtered set of Events
      */
@@ -215,7 +220,6 @@ public class EventSet {
     }
 
     /**
-     *
      * @return the number of Events stored in the set
      */
     public int size() {
@@ -225,6 +229,7 @@ public class EventSet {
     /**
      * Calculates the number of Events left after the one passed in argument
      * This is useful to know when to get new Events
+     *
      * @param event the reference Event
      * @return the number of Events left in the set
      */
@@ -265,7 +270,7 @@ public class EventSet {
     }
 
     public int getPosition(long signature) {
-        int position =0;
+        int position = 0;
         Iterator<Long> iterator = mEvents.keySet().iterator();
         boolean stop = false;
 
@@ -273,7 +278,7 @@ public class EventSet {
             ++position;
 
             if (!iterator.hasNext()) {
-                Log.d(TAG, "No such event return the first event");
+                Log.e(TAG, "No such event return the first event");
                 position = 0;
                 break;
             }
@@ -284,12 +289,7 @@ public class EventSet {
         return position;
     }
 
-    public ArrayList<Event> toArrayList(){
-
-
-       // new ArrayList<Element>(Arrays.asList(array))
-
-
-        return new ArrayList<Event> (mEvents.values());
+    public List<Event> toArrayList() {
+        return new ArrayList<Event>(mEvents.values());
     }
 }
