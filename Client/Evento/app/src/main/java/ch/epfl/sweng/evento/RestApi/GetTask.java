@@ -26,7 +26,7 @@ public class GetTask extends AsyncTask<String, Void, String> {
     private RestTaskCallback mCallback;
     private NetworkProvider mNetworkProvider;
 
-    public GetTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback){
+    public GetTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback) {
 
         this.mRestUrl = restUrl;
         this.mCallback = callback;
@@ -70,6 +70,7 @@ public class GetTask extends AsyncTask<String, Void, String> {
 
     /**
      * fetch the HTTP response and parse it into readable JSON String
+     *
      * @param conn
      * @return
      * @throws IOException

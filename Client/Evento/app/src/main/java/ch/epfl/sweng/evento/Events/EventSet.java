@@ -110,6 +110,7 @@ public class EventSet {
         }
     }
 
+
     /**
      * Returns the Event with the closest lower signature from the one passed in argument
      *
@@ -303,7 +304,7 @@ public class EventSet {
             ++position;
 
             if (!iterator.hasNext()) {
-                Log.d(TAG, "No such event return the first event");
+                Log.e(TAG, "No such event return the first event");
                 position = 0;
                 break;
             }
@@ -314,12 +315,7 @@ public class EventSet {
         return position;
     }
 
-    public ArrayList<Event> toArrayList() {
-
-
-        // new ArrayList<Element>(Arrays.asList(array))
-
-
-        return new ArrayList<>(mEvents.values());
+    public List<Event> toArrayList() {
+        return new ArrayList<Event>(mEvents.values());
     }
 }

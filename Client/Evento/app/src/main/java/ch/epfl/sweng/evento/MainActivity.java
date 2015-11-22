@@ -32,13 +32,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
+import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
+import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.tabsFragment.ContentFragment;
 import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
 
 /**
  * A simple launcher activity containing a summary sample description, sample log and a custom
  * {@link android.support.v4.app.Fragment} which can display a view.
- * <p>
+ * <p/>
  * For devices with displays with a width of 720dp or greater, the sample log is always visible,
  * on other devices it's visibility is controlled by an item on the Action Bar.
  */
@@ -93,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -116,15 +118,15 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         // based on the current position you can then cast the page to the correct
         // class and call the method:
-        if(id == R.id.action_createAnEvent){
+        if (id == R.id.action_createAnEvent) {
             Intent intent = new Intent(this, CreatingEventActivity.class);
             startActivity(intent);
-        } else if (id == R.id.action_search){
+        } else if (id == R.id.action_search) {
             Intent intent = new Intent(this, SearchActivity.class);
             startActivity(intent);
-        } else if (id == R.id.action_refresh){
+        } else if (id == R.id.action_refresh) {
             Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + mPager.getCurrentItem());
-            ((ContentFragment)page).refreshFromServer();
+            ((ContentFragment) page).refreshFromServer();
         }
 
         return super.onOptionsItemSelected(item);

@@ -97,7 +97,7 @@ public class CalendarGrid {
                 cal = new GregorianCalendar(mCurrentYear, mCurrentMonth + 1, mDays.get(position));
                 break;
             default:
-                Log.d(TAG, "No such Current Type!");
+                Log.e(TAG, "No such Current Type!");
                 throw new AssertionError(Current.values());
         }
 
@@ -131,7 +131,7 @@ public class CalendarGrid {
                 tag = "NEXT_MONTH";
                 break;
             default:
-                Log.d(TAG, "No such Current Type!");
+                Log.e(TAG, "No such Current Type!");
                 throw new AssertionError(Current.values());
         }
 
@@ -192,7 +192,7 @@ public class CalendarGrid {
                 effectiveMonth -= 1;
                 break;
             default:
-                Log.d(TAG, "No such Current enum");
+                Log.e(TAG, "No such Current enum");
                 throw new AssertionError(Current.values());
         }
 
