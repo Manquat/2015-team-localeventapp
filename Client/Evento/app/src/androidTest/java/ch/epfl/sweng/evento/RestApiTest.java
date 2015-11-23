@@ -78,6 +78,8 @@ public class RestApiTest {
 
 
 
+
+
     @Before
     public void setUp() throws Exception {
         connection = Mockito.mock(HttpURLConnection.class);
@@ -217,19 +219,16 @@ public class RestApiTest {
             + "    \"Beer, ping-pong... let's beerpong\" ,\n"
             + "  \"latitude\": 46.519428,\n"
             + "  \"longitude\": 6.580847,\n"
-            + "  \"address\": \"Satellite\", \n "
-            + "  \"creator\": \"Guillaume Meyrat\"\n"
+            + "  \"address\": \"Satellite\", \n"
+            + "  \"date\" : \"1991-01-15T23:00:00Z\",\n "
+            + "   \"creator\": \"Guillaume Meyrat\"\n"
             + "}\n";
 
+    private static final Event.CustomDate date = new Event.CustomDate(1990, 12, 16, 0, 0);
     private static final  Event e = new Event(10, "Ping-Pong at Sat 2", "Beer, ping-pong... let's beerpong",
-            46.519428, 6.580847, "Satellite", "Guillaume Meyrat", new HashSet<String>());
+            46.519428, 6.580847, "Satellite", "Guillaume Meyrat", new HashSet<String>(), date, date);
     private static final String EVENT_TO_CREATE_seri = Serializer.event(e);
 
-
-    @Test
-    public void testSerializer2() {
-        assertEquals("event are correctly serialized", EVENT_TO_CREATE, EVENT_TO_CREATE_seri);
-    }
 
 
     @Test
@@ -307,6 +306,17 @@ public class RestApiTest {
         });
 
         Thread.sleep(500);
+
+    }
+
+
+    private static final Event.CustomDate eventDate = new Event.CustomDate(2012, 10, 2, 5, 5);
+    private static final String stringDate = "2012-11-02T05:05:00Z";
+
+    @Test
+    public void testDateToProperString() {
+        Event e = new Event(0, "foo", "foo", 0, 0, "foo", "foo", new HashSet<String>(), eventDate, eventDate);
+        assertEquals(stringDate, e.getProperDateString());
 
     }
 

@@ -3,106 +3,270 @@ package ch.epfl.sweng.evento;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.places.AutocompletePrediction;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.RestApi.PostCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 
-public class CreatingEventActivity extends AppCompatActivity implements
-        DatePickerDialog.OnDateSetListener,
-        TimePickerDialog.OnTimeSetListener {
+public class CreatingEventActivity extends AppCompatActivity
+        implements DatePickerDialog.OnDateSetListener,
+        TimePickerDialog.OnTimeSetListener,
+        GoogleApiClient.OnConnectionFailedListener {
+    private static final String TAG = "CreatingEventActivity";
+
 
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
     private static final String urlServer = Settings.getServerUrl();
 
+
     private TextView mStartDateView;
     private TextView mEndDateView;
-    private Event.Date startDate;
-    private Event.Date endDate;
+    private Event.CustomDate startDate;
+    private Event.CustomDate endDate;
     private boolean mStartOrEndDate;
-    private DialogFragment mDateFragment;
-    private DialogFragment mTimeFragment;
-    private ExpendableList mListAdapter;
-    private ExpandableListView mExpListView;
+    private boolean mDisplayTimeFragment;
+    private DatePickerDialogFragment mDateFragment;
     private List<String> mListDataHeader;
     private HashMap<String, List<String>> mListDataChild;
-
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear,
-                          int dayOfMonth) {
-        if (!mStartOrEndDate) startDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
-        else endDate = new Event.Date(year, monthOfYear, dayOfMonth, 0, 0);
-        mTimeFragment = new TimePickerDialogFragment();
-        mTimeFragment.show(getFragmentManager(), "timePicker");
-    }
-
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        if (!mStartOrEndDate) {
-            startDate.setTime(hourOfDay, minute);
-            String s = Integer.toString(startDate.getMonth()) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
-                    " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes());
-            mStartDateView.setText(s);
-        } else {
-            endDate.setTime(hourOfDay, minute);
-            String s = Integer.toString(endDate.getMonth()) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) +
-                    " at " + Integer.toString(endDate.getHour()) + ":" + Integer.toString(endDate.getMinutes());
-            mEndDateView.setText(s);
-        }
-
-    }
+    private GoogleApiClient mGoogleApiClient;
+    private TextView mPlaceDetailsText;
+    private TextView mPlaceDetailsAttribution;
+    private PlaceAutocompleteAdapter mAdapter;
+    private Set<String> mTag;
+    private double latitude = 0.0;
+    private double longitude = 0.0;
+    private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
+            new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // display the layout and prepare the configuration
+        mDisplayTimeFragment = false;
         setContentView(R.layout.activity_creating_event);
         Button validateButton = (Button) findViewById(R.id.submitEvent);
         mDateFragment = new DatePickerDialogFragment();
+        mDateFragment.setListener(this);
+        final Button pictureButton = (Button) findViewById(R.id.pictureButton);
 
-        //START DATE
+        // listener for date picker startDate
         mStartDateView = (TextView) findViewById(R.id.startDate);
         mStartDateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mDisplayTimeFragment = true;
                 mStartOrEndDate = false;
                 mDateFragment.show(getFragmentManager(), "datePicker");
             }
         });
 
-        //END DATE
+        // listener for date picker endDate
         mEndDateView = (TextView) findViewById(R.id.endDate);
         mEndDateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mDisplayTimeFragment = true;
                 mStartOrEndDate = true;
                 mDateFragment.show(getFragmentManager(), "datePicker");
             }
         });
 
-        //CATEGORIES
+        // listener for address place picker (googlePlaceAPI)
+        setPlacePickerField();
+
+
+        // Expendable list for category choice
+        setTagExpandableList();
+
+        setValidateButtonAndSend(validateButton);
+
+        setPictureButton(pictureButton);
+    }
+
+
+    /**
+     * On date set register the chosen date and call the time picker
+     *
+     * @param view
+     * @param year
+     * @param monthOfYear
+     * @param dayOfMonth
+     */
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                          int dayOfMonth) {
+        if (mStartOrEndDate == false)
+            startDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
+        else endDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
+        if (mDisplayTimeFragment == true) {
+            DialogFragment mTimeFragment = new TimePickerDialogFragment();
+            mTimeFragment.show(getFragmentManager(), "timePicker");
+            mDisplayTimeFragment = false;
+        }
+    }
+
+    /**
+     * On time set register the time and display the chosen date/time in the text field
+     *
+     * @param view
+     * @param hourOfDay
+     * @param minute
+     */
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        if (!mStartOrEndDate) {
+            startDate.setTime(hourOfDay, minute);
+            String s = Integer.toString(startDate.getMonth() + 1) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
+                    " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes());
+            // display text to user
+            mStartDateView.setText(s);
+        } else {
+            endDate.setTime(hourOfDay, minute);
+            String s = Integer.toString(endDate.getMonth() + 1) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) +
+                    " at " + Integer.toString(endDate.getHour()) + ":" + Integer.toString(endDate.getMinutes());
+            // display text to user
+            mEndDateView.setText(s);
+        }
+    }
+
+    /**
+     * prepare button parameter, put all texts present in the TextViews into variable to prepare
+     * a new event.
+     * Also check if some field are empty and complete with default parameter to avoid crash
+     * Send the created event through restAPI
+     *
+     * @param validateButton
+     */
+    private void setValidateButtonAndSend(Button validateButton) {
+        validateButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                RestApi restApi = new RestApi(networkProvider, urlServer);
+                TextView title = (TextView) findViewById(R.id.title);
+                TextView description = (TextView) findViewById(R.id.eventDescription);
+                TextView address = (TextView) findViewById(R.id.eventAddress);
+                String titleString = title.getText().toString();
+                String descriptionString = description.getText().toString();
+                String addressString = address.getText().toString();
+                ImageView pictureView = (ImageView) findViewById(R.id.pictureView);
+                Drawable drawable = pictureView.getDrawable();
+                Bitmap picture;
+
+                // default value completion
+                if (startDate == null) {
+                    startDate = new Event.CustomDate(1990, 12, 16, 0, 0);
+                }
+                if (endDate == null) {
+                    endDate = new Event.CustomDate(1992, 1, 16, 0, 0);
+                }
+                if (titleString.isEmpty()) {
+                    titleString = "No title";
+                }
+                if (descriptionString.isEmpty()) {
+                    descriptionString = "No description";
+                }
+                if (addressString.isEmpty()) {
+                    addressString = "No address";
+                }
+                if (drawable == null) {
+                    Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+                    picture = Bitmap.createBitmap(100, 100, conf);
+                } else {
+                    picture = ((BitmapDrawable) drawable).getBitmap();
+                }
+
+                // mock creator and random id (ID will be assigned server side)
+                String creator = "Jack Henri";
+                Random rand = new Random();
+                int id = rand.nextInt(10000);
+
+                // event creation and send
+                Event e = new Event(id, titleString, descriptionString, latitude,
+                        longitude, addressString, creator,
+                        mTag, startDate, endDate, picture);
+
+                Log.i(TAG, "Event to send : " + e.toString());
+
+                restApi.postEvent(e, new PostCallback() {
+                    @Override
+                    public void onPostSuccess(String response) {
+                        // assert submission
+                        Toast.makeText(getApplicationContext(), "Submitted", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                Toast.makeText(getApplicationContext(), "Submitting " + titleString, Toast.LENGTH_SHORT).show();
+
+                finish();
+
+            }
+        });
+    }
+
+    private void setPictureButton(Button pictureButton) {
+        pictureButton.setOnClickListener(new View.OnClickListener() {
+
+                 @Override
+                 public void onClick(View view) {
+                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                     startActivityForResult(intent, 2);
+                 }
+             }
+        );
+    }
+
+
+    private void setTagExpandableList() {
         // get the ListView
-        mExpListView = (ExpandableListView) findViewById(R.id.lvExp);
+        ExpandableListView mExpListView = (ExpandableListView) findViewById(R.id.lvExp);
 
         // preparing list data
         prepareListData();
-
-        mListAdapter = new ExpendableList(getApplicationContext(), mListDataHeader, mListDataChild);
+        ExpendableList mListAdapter = new ExpendableList(getApplicationContext(), mListDataHeader, mListDataChild);
 
         // setting list adapter
         mExpListView.setAdapter(mListAdapter);
@@ -137,6 +301,14 @@ public class CreatingEventActivity extends AppCompatActivity implements
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
+                final int groupPosTmp = groupPosition;
+                final int childPosTmp = childPosition;
+                mTag = new HashSet<String>() {{
+                    add(mListDataChild.get(
+                            mListDataHeader.get(groupPosTmp)).get(
+                            childPosTmp));
+                }};
+
                 Toast.makeText(
                         getApplicationContext(),
                         mListDataHeader.get(groupPosition)
@@ -148,48 +320,58 @@ public class CreatingEventActivity extends AppCompatActivity implements
                 return false;
             }
         });
-
-
-        validateButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                TextView title = (TextView) findViewById(R.id.title);
-                final String titleString = title.getText().toString();
-                TextView description = (TextView) findViewById(R.id.eventDescription);
-                final String descriptionString = description.getText().toString();
-                TextView address = (TextView) findViewById(R.id.eventAddress);
-                final String addressString = address.getText().toString();
-
-
-                double latitude = 0.0;
-                double longitude = 0.0;
-                String creator = "Jack Henri";
-                Random rand = new Random();
-                int id = rand.nextInt(10000);
-
-                Event e = new Event(id,
-                        titleString,
-                        descriptionString,
-                        latitude,
-                        longitude,
-                        addressString,
-                        creator,
-                        new HashSet<String>(),
-                        startDate,
-                        endDate);
-                RestApi restApi = new RestApi(networkProvider, urlServer);
-
-                restApi.postEvent(e, new PostCallback() {
-                    @Override
-                    public void onPostSuccess(String response) {
-                        // nothing
-                    }
-                });
-                Toast.makeText(getApplicationContext(), "Submitting " + titleString, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
+
+    // Construct a GoogleApiClient for the {@link Places#GEO_DATA_API} using AutoManage
+    // functionality, which automatically sets up the API client to handle Activity lifecycle
+    // events. If your activity does not extend FragmentActivity, make sure to call connect()
+    // and disconnect() explicitly.
+    private void setPlacePickerField() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, 0 /* clientId */, this)
+                .addApi(Places.GEO_DATA_API)
+                .build();
+
+        // Retrieve the AutoCompleteTextView that will display Place suggestions.
+        AutoCompleteTextView mAutocompleteView = (AutoCompleteTextView)
+                findViewById(R.id.eventAddress);
+
+        // Register a listener that receives callbacks when a suggestion has been selected
+        mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
+
+        // Retrieve the TextViews that will display details and attributions of the selected place.
+        mPlaceDetailsText = (TextView) findViewById(R.id.place_details);
+        mPlaceDetailsText.setVisibility(View.GONE);
+        mPlaceDetailsAttribution = (TextView) findViewById(R.id.place_attribution);
+        mPlaceDetailsAttribution.setVisibility(View.GONE);
+
+        // Set up the adapter that will retrieve suggestions from the Places Geo Data API that cover
+        // the entire world.
+        mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, BOUNDS_GREATER_SYDNEY,
+                null);
+        mAutocompleteView.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        ImageView viewImage = (ImageView) findViewById(R.id.pictureView);
+        Uri selectedImage = data.getData();
+        String[] filePath = {MediaStore.Images.Media.DATA};
+
+        Cursor cursor = getContentResolver().query(selectedImage, filePath, null, null, null);
+        cursor.moveToFirst();
+        int columnIndex = cursor.getColumnIndex(filePath[0]);
+        String picturePath = cursor.getString(columnIndex);
+        cursor.close();
+
+        Bitmap picture = (BitmapFactory.decodeFile(picturePath));
+        int size = 300;
+        Bitmap scaledPicture = Bitmap.createScaledBitmap(picture, size, (int) (size * ((double) picture.getHeight() / (double) picture.getWidth())), false);
+        //75k
+        //Log.w("path of image from gallery......******************.........", picturePath "");
+        viewImage.setImageBitmap(scaledPicture);
+    }
+
 
     private void prepareListData() {
         mListDataHeader = new ArrayList<String>();
@@ -218,6 +400,113 @@ public class CreatingEventActivity extends AppCompatActivity implements
         mListDataChild.put(mListDataHeader.get(0), sport);
         mListDataChild.put(mListDataHeader.get(1), party);
         mListDataChild.put(mListDataHeader.get(2), stuff);
+    }
+
+    /**
+     * Listener that handles selections from suggestions from the AutoCompleteTextView that
+     * displays Place suggestions.
+     * Gets the place id of the selected item and issues a request to the Places Geo Data API
+     * to retrieve more details about the place.
+     *
+     * @see com.google.android.gms.location.places.GeoDataApi#getPlaceById(com.google.android.gms.common.api.GoogleApiClient,
+     * String...)
+     */
+    private AdapterView.OnItemClickListener mAutocompleteClickListener
+            = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            /*
+             Retrieve the place ID of the selected item from the Adapter.
+             The adapter stores each Place suggestion in a AutocompletePrediction from which we
+             read the place ID and title.
+              */
+            final AutocompletePrediction item = mAdapter.getItem(position);
+            final String placeId = item.getPlaceId();
+            final CharSequence primaryText = item.getPrimaryText(null);
+
+            Log.i(TAG, "Autocomplete item selected: " + primaryText);
+
+            /*
+             Issue a request to the Places Geo Data API to retrieve a Place object with additional
+             details about the place.
+              */
+            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
+                    .getPlaceById(mGoogleApiClient, placeId);
+            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+
+//            Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
+//                    Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "Called getPlaceById to get Place details for " + placeId);
+        }
+    };
+
+    /**
+     * Callback for results from a Places Geo Data API query that shows the first place result in
+     * the details view on screen.
+     */
+    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
+            = new ResultCallback<PlaceBuffer>() {
+        @Override
+        public void onResult(PlaceBuffer places) {
+            if (!places.getStatus().isSuccess()) {
+                // Request did not complete successfully
+                Log.e(TAG, "Place query did not complete. Error: " + places.getStatus().toString());
+                places.release();
+                return;
+            }
+            // Get the Place object from the buffer.
+            final Place place = places.get(0);
+
+            // set longitude and latitude
+            latitude = place.getLatLng().latitude;
+            longitude = place.getLatLng().longitude;
+
+            // Format details of the place for display and show it in a TextView.
+            mPlaceDetailsText.setText(formatPlaceDetails(getResources(), place.getName(),
+                    place.getId(), place.getAddress(), place.getPhoneNumber(),
+                    place.getWebsiteUri()));
+
+            // Display the third party attributions if set.
+            final CharSequence thirdPartyAttribution = places.getAttributions();
+            if (thirdPartyAttribution == null) {
+                mPlaceDetailsAttribution.setVisibility(View.GONE);
+            } else {
+                mPlaceDetailsAttribution.setVisibility(View.VISIBLE);
+                mPlaceDetailsAttribution.setText(Html.fromHtml(thirdPartyAttribution.toString()));
+            }
+
+            Log.i(TAG, "Place details received: " + place.getName());
+
+            places.release();
+        }
+    };
+
+    private static Spanned formatPlaceDetails(Resources res, CharSequence name, String id,
+                                              CharSequence address, CharSequence phoneNumber, Uri websiteUri) {
+        Log.e(TAG, res.getString(R.string.place_details, name, id, address, phoneNumber,
+                websiteUri));
+        return Html.fromHtml(res.getString(R.string.place_details, name, id, address, phoneNumber,
+                websiteUri));
+
+    }
+
+    /**
+     * Called when the Activity could not connect to Google Play services and the auto manager
+     * could resolve the error automatically.
+     * In this case the API is not available and notify the user.
+     *
+     * @param connectionResult can be inspected to determine the cause of the failure
+     */
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+        Log.e(TAG, "onConnectionFailed: ConnectionResult.getErrorCode() = "
+                + connectionResult.getErrorCode());
+
+        // TODO(Developer): Check error code and notify the user of error state and resolution.
+        Toast.makeText(this,
+                "Could not connect to Google API Client: Error " + connectionResult.getErrorCode(),
+                Toast.LENGTH_SHORT).show();
     }
 
 }

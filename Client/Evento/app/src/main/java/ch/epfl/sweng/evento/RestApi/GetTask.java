@@ -26,7 +26,7 @@ public class GetTask extends AsyncTask<String, Void, String> {
     private RestTaskCallback mCallback;
     private NetworkProvider mNetworkProvider;
 
-    public GetTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback){
+    public GetTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback) {
 
         this.mRestUrl = restUrl;
         this.mCallback = callback;
@@ -47,6 +47,7 @@ public class GetTask extends AsyncTask<String, Void, String> {
             // get HTTP response code and get the event ONLY in case of success
             int responseCode = 0;
             responseCode = conn.getResponseCode();
+            Log.v(TAG, "responseCode " + Integer.toString(responseCode));
             if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END) {
                 throw new RestException("Invalid HTTP response code");
             }
@@ -69,6 +70,7 @@ public class GetTask extends AsyncTask<String, Void, String> {
 
     /**
      * fetch the HTTP response and parse it into readable JSON String
+     *
      * @param conn
      * @return
      * @throws IOException

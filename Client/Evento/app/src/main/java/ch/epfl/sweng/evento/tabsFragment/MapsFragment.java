@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -20,14 +19,11 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
@@ -37,42 +33,35 @@ import java.util.List;
 import java.util.Random;
 
 import ch.epfl.sweng.evento.DefaultNetworkProvider;
+import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventsClusterRenderer;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.tabsFragment.Maps.EventClusterManager;
 import ch.epfl.sweng.evento.Settings;
 
 
 /**
  * Created by Gautier on 21/10/2015.
- * <p>
+ * <p/>
  * Fragment that hold the Google map.
  */
 public class MapsFragment extends SupportMapFragment implements
         OnMapReadyCallback,
         ConnectionCallbacks,
         OnConnectionFailedListener,
-        OnMyLocationButtonClickListener,
-        InfoWindowAdapter,
-        ClusterManager.OnClusterClickListener<Event>,
-        ClusterManager.OnClusterInfoWindowClickListener<Event>,
-        ClusterManager.OnClusterItemClickListener<Event>,
-        ClusterManager.OnClusterItemInfoWindowClickListener<Event> {
+        OnMyLocationButtonClickListener {
+
     private static final String TAG = "MapsFragment";   // LogCat tag
     private static final int NUMBER_OF_MARKERS = 100;                       // Number of marker that will be displayed
-    private static final int NUMBER_OF_EVENT = 5;
+    private static final int NUMBER_OF_EVENT = 10;
     private static final float ZOOM_LEVEL = 15.0f;                          // Zoom level of the map at the beginning
 
     private GoogleMap mMap;
     private Location mLastLocation;
-    private static final Event mockEvent = new Event(1, "Event1", "This is a first event", 1.1, 1.1,
-            "1 long street", "alfredo", new HashSet<String>(), new Event.Date(), new Event.Date());   // a mock event that would be replicated all over the map
-    private List<Event> mEvents;
-    private Collection<Event> mEventsClick;        // the events actually click
-    private RestApi mRestAPI;
-    private ClusterManager<Event> mClusterManager;  // Manage the clustering of the marker
+    private EventClusterManager mClusterManager;  // Manage the clustering of the marker and the callback associate
 
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
@@ -100,22 +89,19 @@ public class MapsFragment extends SupportMapFragment implements
         mContainer = container;
         View view = super.onCreateView(inflater, mContainer, savedInstanceState);
 
-        getMapAsync(this);
-
-        mEvents = new ArrayList<Event>();
-        mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-
-        for (int i=0; i<NUMBER_OF_EVENT; i++) {
-            mRestAPI.getEvent(new GetResponseCallback() {
-                @Override
-                public void onDataReceived(Event event){
-                    mEvents.add(event);
-
-                }
-            }); //TODO remove the cast once the change in restAPI is made
+        if (view == null) {
+            Log.e(TAG, "The maps view cannot be created");
+            throw new NullPointerException();
         }
 
+        getMapAsync(this);
+
         mContext = view.getContext();
+
+        if (mContext == null) {
+            Log.e(TAG, "The actual context don't exist");
+            throw new NullPointerException();
+        }
 
         mGoogleApiClient = new GoogleApiClient.Builder(mContext)
                 .addApi(LocationServices.API)
@@ -151,20 +137,16 @@ public class MapsFragment extends SupportMapFragment implements
 
         mMap.setMyLocationEnabled(true);
         mMap.setOnMyLocationButtonClickListener(this);
-        mMap.setInfoWindowAdapter(this);
 
         // Initialize the manager with the context and the map.
-        mClusterManager = new ClusterManager<Event>(mActivity.getApplicationContext(), mMap);
+        mClusterManager = new EventClusterManager(mActivity.getApplicationContext(), mMap, getActivity());
         mClusterManager.setRenderer(new EventsClusterRenderer(getContext(), mMap, mClusterManager, null));
 
         // Point the map's listeners at the listeners implemented by the cluster manager.
+        mMap.setOnInfoWindowClickListener(mClusterManager);
         mMap.setOnCameraChangeListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
-
-        mClusterManager.setOnClusterClickListener(this);
-        mClusterManager.setOnClusterInfoWindowClickListener(this);
-        mClusterManager.setOnClusterItemClickListener(this);
-        mClusterManager.setOnClusterItemInfoWindowClickListener(this);
+        mMap.setInfoWindowAdapter(mClusterManager);
 
         if (mGoogleApiClient.isConnected()) {
             zoomOnUser();
@@ -239,123 +221,15 @@ public class MapsFragment extends SupportMapFragment implements
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient); //may return null in case of non connected device
         }
 
-        if (mEvents.size() == 0) {
-            mEvents.add(mockEvent);
-        }
-
-        // introduction of randomness
-        Random random = new Random();
-
-        // conversion of the location into a LatLng
-        double latitude = 0.;
-        double longitude = 0.;
-        if (mLastLocation != null) {
-            latitude = mLastLocation.getLatitude();
-            longitude = mLastLocation.getLongitude();
-        }
-        double zoomScale = 1.0 / 60.0;
-
         mMap.clear();
         mClusterManager.clearItems();
 
-        for (int i = 0; i < NUMBER_OF_MARKERS; i++) {
-            double tempLatitude = latitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
-            double tempLongitude = longitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
-
-            int iEvent = i % mEvents.size();
-            mClusterManager.addItem(new Event(mEvents.get(iEvent).getID(),
-                    mEvents.get(iEvent).getTitle(),
-                    mEvents.get(iEvent).getDescription(),
-                    tempLatitude,
-                    tempLongitude,
-                    mEvents.get(iEvent).getAddress(),
-                    mEvents.get(iEvent).getCreator(),
-                    mEvents.get(iEvent).getTags()));
-        }
-    }
-
-    /**
-     * Call before creating the marker of the event
-     *
-     * @param marker the marker that will be displayed
-     * @return null to let's the default view display or a view that will be used instead
-     */
-    @Override
-    public View getInfoWindow(Marker marker) {
-        // return null to let's the default view display or a view that will be used instead
-        return null;
-    }
-
-    /**
-     * Personalise the info pop-up of the marker
-     *
-     * @param marker the marker where the user have click
-     * @return The view that represent the info bubble
-     */
-    @Override
-    public View getInfoContents(Marker marker) {
-        // return null to let's the default view display or a view that will be display inside the
-        // default view
-
-        View view;
-
-        switch (mEventsClick.size()) {
-            case 1:
-                view = getLayoutInflater(null).inflate(R.layout.infomarker_event, mContainer, false);
-                Event event = mEventsClick.iterator().next();
-                TextView tvTitle = (TextView) view.findViewById(R.id.info_title);
-                tvTitle.setText(event.getTitle());
-
-                TextView tvDescription = (TextView) view.findViewById(R.id.info_description);
-                tvDescription.setText(event.getDescription());
-                break;
-            default:
-                view = getLayoutInflater(null).inflate(R.layout.infomarker_cluster, mContainer, false);
-
-                LinearLayout layout = (LinearLayout) view.findViewById(R.id.list_event);
-                for (Event iEvent : mEventsClick) {
-                    TextView textView = new TextView(mContext);
-                    textView.setText(iEvent.getTitle());
-                    layout.addView(textView);
-                }
+        // add all event to the cluster manager of map
+        List<Event> eventArrayList = EventDatabase.INSTANCE.getAllEvents();
+        for (Event e : eventArrayList) {
+            mClusterManager.addItem(e);
+            mClusterManager.cluster();
         }
 
-
-        return view;
-    }
-
-    @Override
-    public boolean onClusterClick(Cluster<Event> cluster) {
-        // Show a toast with some info when the cluster is clicked.
-        Event event = cluster.getItems().iterator().next();
-        String firstName = event.getTitle();
-        Toast.makeText(getContext(), cluster.getSize() + " (including " + firstName + ")", Toast.LENGTH_SHORT).show();
-
-        // store the actual events in the member
-        mEventsClick = cluster.getItems();
-
-        return false;
-    }
-
-    @Override
-    public void onClusterInfoWindowClick(Cluster<Event> cluster) {
-        // TODO Does nothing, but you could go to a list of the events.
-    }
-
-    @Override
-    public boolean onClusterItemClick(Event event) {
-        if (mEventsClick == null) {
-            mEventsClick = new ArrayList<Event>();
-        }
-
-        mEventsClick.clear();
-        mEventsClick.add(event);
-        // TODO Does nothing, but you could go into the event's page, for example.
-        return false;
-    }
-
-    @Override
-    public void onClusterItemInfoWindowClick(Event event) {
-        // TODO Does nothing, but you could go into the user's profile page, for example.
     }
 }
