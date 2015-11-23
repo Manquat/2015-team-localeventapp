@@ -16,17 +16,12 @@ def event_list(request, format=None):
     """
 
     if 'HTTP_TOKEN' not in request.META:
-        values = request.META.items()
-        values.sort()
-        html = []
-        for k, v in values:
-            html.append("<tr><td>%s</td><td>%s</td></tr>" % (k, v))
-        return HttpResponse("<table>%s</table>" % "\n".join(html))
+        return Response(status=status.HTTP_403_FORBIDDEN)
     token = request.META['HTTP_TOKEN']
-    #token = token.strip().decode('base64')
 
     if validate_user(token) is False:
-        return  HttpResponse(token)
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
     if request.method == 'GET':
         events = Event.objects.all()
         serializer = EventSerializer(events, many=True)
@@ -44,6 +39,14 @@ def event_detail(request, pk, format=None):
     """
     Retrieve, update or delete an event.
     """
+    if 'HTTP_TOKEN' not in request.META:
+
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    token = request.META['HTTP_TOKEN']
+
+    if validate_user(token) is False:
+        return  Response(status=status.HTTP_403_FORBIDDEN)
+
     try:
         event = Event.objects.get(pk=pk)
     except Event.DoesNotExist:
@@ -70,6 +73,13 @@ def event_requestdate(request, fromdate, todate, format=None):
     Retrieve 5 events in time frame asked
     """
 
+    if 'HTTP_TOKEN' not in request.META:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    token = request.META['HTTP_TOKEN']
+
+    if validate_user(token) is False:
+        return  Response(status=status.HTTP_403_FORBIDDEN)
+
     tdate = datetime.datetime.fromtimestamp(float(todate))
     idate = datetime.datetime.fromtimestamp(float(fromdate))
 
@@ -87,6 +97,13 @@ def event_request(request, fromdate, todate, mLongitude, mLatitude, mDistance, m
     """
     Eventrequest gives back event information in function of date and distance, optional arguments are Number of Events (default = 100) and starting ID (default = 0)
     """
+
+    if 'HTTP_TOKEN' not in request.META:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    token = request.META['HTTP_TOKEN']
+
+    if validate_user(token) is False:
+        return  Response(status=status.HTTP_403_FORBIDDEN)
 
     tdate = datetime.datetime.fromtimestamp(float(todate))
     idate = datetime.datetime.fromtimestamp(float(fromdate))

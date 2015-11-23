@@ -37,3 +37,11 @@ except crypt.AppIdentityError is True:
     print "Fuck"
 
 #print "fnished"
+"""
+        values = request.META.items()
+        values.sort()
+        html = []
+        for k, v in values:
+            html.append("<tr><td>%s</td><td>%s</td></tr>" % (k, v))
+        #return HttpResponse("<table>%s</table>" % "\n".join(html))
+        """

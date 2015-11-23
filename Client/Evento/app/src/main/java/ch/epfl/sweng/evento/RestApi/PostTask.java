@@ -17,6 +17,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 
 import ch.epfl.sweng.evento.NetworkProvider;
+import ch.epfl.sweng.evento.Settings;
 
 /**
  * An AsyncTask implementation for performing POSTs.
@@ -54,6 +55,7 @@ public class PostTask extends AsyncTask<String, String, String> {
             conn.setInstanceFollowRedirects(false);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("token", Settings.INSTANCE.getIdToken());
             conn.setRequestProperty("charset", "utf-8");
             conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));
             conn.setUseCaches(false);

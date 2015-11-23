@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity
     private static final String TAG = "LoginActivity";
     private GoogleApiClient mGoogleApiClient;
     public String mEmail = "bla";
-    public String idtoken = null;
+    public String mIdToken = null;
     // Request code to use when launching the resolution activity
     private static final int REQUEST_RESOLVE_ERROR = 1001;
             static final int REQUEST_CODE_RECOVER_FROM_AUTH_ERROR = 1002;
@@ -100,12 +100,15 @@ public class LoginActivity extends AppCompatActivity
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
                 .build();
 
         mResolvingError = savedInstanceState != null
                 && savedInstanceState.getBoolean(STATE_RESOLVING_ERROR, false);
-
+        //mGoogleApiClient.connect();
         //getIdToken();
+
     }
 
 
@@ -140,9 +143,11 @@ public class LoginActivity extends AppCompatActivity
     @Override
     public void onConnected(Bundle connectionHint) {
         //pickUserAccount();
-        getIdToken();
+        //getIdToken();
         // Connected to Google Play services!
-        // The good stuff goes here.
+        //
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -212,6 +217,7 @@ public class LoginActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
+
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
             // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
@@ -222,6 +228,14 @@ public class LoginActivity extends AppCompatActivity
             //GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             Log.d(TAG, "onActivityResult:GET_TOKEN:success:" + result.getStatus());
             Log.d(TAG, "onActivityResult:GET_TOKEN:success:" + result.getStatus().isSuccess());
+            //Intent intent = new Intent(this, MainActivity.class);
+            //startActivity(intent);
+            GoogleSignInAccount acct = result.getSignInAccount();
+            mIdToken = acct.getIdToken();
+
+            // Show signed-in UI.
+            Log.d(TAG, "idToken:" + mIdToken);
+            Settings.INSTANCE.setIdToken(mIdToken);
         } else {
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
@@ -230,7 +244,13 @@ public class LoginActivity extends AppCompatActivity
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
                 public void onResult(GoogleSignInResult googleSignInResult) {
-                    //hideProgressDialog();
+
+                    GoogleSignInAccount acct = googleSignInResult.getSignInAccount();
+                    mIdToken = acct.getIdToken();
+
+                    // Show signed-in UI.
+                    Log.d(TAG, "idToken:" + mIdToken);
+                    Settings.INSTANCE.setIdToken(mIdToken);
                     //handleSignInResult(googleSignInResult);
                 }
             });
@@ -264,10 +284,11 @@ public class LoginActivity extends AppCompatActivity
 
             if (result.isSuccess()) {
                 GoogleSignInAccount acct = result.getSignInAccount();
-                String idToken = acct.getIdToken();
+                mIdToken = acct.getIdToken();
 
                 // Show signed-in UI.
-                Log.d(TAG, "idToken:" + idToken);
+                Log.d(TAG, "idToken:" + mIdToken);
+                Settings.INSTANCE.setIdToken(mIdToken);
 
                 // TODO(user): send token to server and validate server-side
             }
