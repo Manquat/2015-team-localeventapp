@@ -199,8 +199,6 @@ public class LoginActivity extends AppCompatActivity implements
             mGoogleApiClient.connect();
         }
 
-            //
-
         if (requestCode == RC_GET_TOKEN){
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             Log.d(TAG, "onActivityResult:GET_TOKEN:success:" + result.getStatus().isSuccess());
@@ -242,13 +240,14 @@ public class LoginActivity extends AppCompatActivity implements
         // Show the signed-in UI
         // showSignedInUI();
 
-        // Launch ID Token function
+        // Get additional informations such as Name, Email and Id.
         getProfilInfo();
+        // Get the Id Token
         getIdToken();
 
-
+        //Go to the main activity after successful login
         Intent intent = new Intent(this, MainActivity.class);
-        //startActivity(intent);
+        startActivity(intent);
     }
 
 
