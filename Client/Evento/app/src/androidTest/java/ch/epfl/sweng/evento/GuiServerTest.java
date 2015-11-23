@@ -17,6 +17,8 @@ import org.hamcrest.Description;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static junit.framework.Assert.assertEquals;
 
 import ch.epfl.sweng.evento.Events.Event;
@@ -67,7 +69,11 @@ public class GuiServerTest {
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
         onView(withText("Create an event")).perform(click());
 
-        pressBack(); // to hide the keyboard
+        Thread.sleep(1000);
+        closeSoftKeyboard();
+
+        Thread.sleep(1000);
+        //pressBack(); // to hide the keyboard
         onView(withId(R.id.submitEvent)).perform(scrollTo(),click());
 
         Thread.sleep(1000); // wait for event to be sent
