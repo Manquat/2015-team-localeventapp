@@ -5,12 +5,22 @@ package ch.epfl.sweng.evento;
  */
 
 
-public final class Settings {
+public enum Settings {
+    INSTANCE;
+    private String mIdToken;
+
     private Settings() {
         // private constructor
     }
 
     public static String getServerUrl() {
-        return "https://protected-hamlet-4797.herokuapp.com/";
+        return "http://128.179.181.67:8000/";
+    }
+
+    public String getIdToken() {
+        return mIdToken;
+    }
+    public void setIdToken(String IdToken) {
+        this.mIdToken = IdToken;
     }
 }

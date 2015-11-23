@@ -17,6 +17,6 @@ idate = datetime.datetime.fromtimestamp(float(fromdate))
 event = Event.objects.filter(date__range=[idate, tdate])
 
 
-serializer = EventSerializer(event,many=True)
+serializer = EventSerializer(event, many=True)
 
 print serializer.data

@@ -41,6 +41,7 @@ public enum EventDatabase {
     }
 
 
+
     public void loadNewEvents() {
         mRestAPI.getMultiplesEvent(new GetMultipleResponseCallback() {
             @Override

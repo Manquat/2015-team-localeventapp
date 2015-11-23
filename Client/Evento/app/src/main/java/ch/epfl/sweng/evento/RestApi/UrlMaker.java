@@ -21,11 +21,11 @@ public final class UrlMaker {
 
 
     public static String get(String urlServer, int noEvent) {
-        return urlServer + event + accessMaster + String.valueOf(noEvent) + ".json";
+        return urlServer + event  + String.valueOf(noEvent) + ".json";
     }
 
     public static final String getAll(String urlServer) {
-        String url = urlServer + event + accessMaster;//+ "1212300400/1483225200/46.8/7.1/1500";
+        String url = urlServer + event ;//+ "1212300400/1483225200/46.8/7.1/1500";
         return url;
     }
 
@@ -35,17 +35,17 @@ public final class UrlMaker {
     }
 
     public static String put(String urlServer, int id) {
-        return urlServer + event + accessMaster + Integer.toString(id);
+        return urlServer + event  + Integer.toString(id);
     }
 
     public static String delete(String urlServer, int id) {
-        return urlServer + event + accessMaster + Integer.toString(id);
+        return urlServer + event  + Integer.toString(id);
     }
 
     public static String getByDate(String urlServer, GregorianCalendar startDate, GregorianCalendar endDate) {
         long startTimeInSec = startDate.getTimeInMillis() / 1000;
         long endTimeInSec = endDate.getTimeInMillis() / 1000;
-        String url = urlServer + event + accessMaster + Long.toString(startTimeInSec) +
+        String url = urlServer + event + Long.toString(startTimeInSec) +
                 "/" + Long.toString(endTimeInSec) + "/46.8/7.1/1500";
 
         return url;
