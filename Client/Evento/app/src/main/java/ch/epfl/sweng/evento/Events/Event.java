@@ -30,8 +30,8 @@ public class Event implements ClusterItem {
     private final String mAddress;
     private final String mCreator;//might be replaced by some kind of User class
     private final Set<String> mTags;
-    private GregorianCalendar mStartDate;
-    private GregorianCalendar mEndDate;
+    private Calendar mStartDate;
+    private Calendar mEndDate;
     private String mPicture;
 
     public Event(int id,
@@ -62,8 +62,8 @@ public Event(int id,
                  String address,
                  String creator,
                  Set<String> tags,
-                 GregorianCalendar startDate,
-                 GregorianCalendar endDate,
+                 Calendar startDate,
+                 Calendar endDate,
                  Bitmap picture) {
         this(id, title, description, latitude, longitude, address, creator, tags,startDate,endDate);
         mStartDate = startDate;
@@ -79,8 +79,8 @@ public Event(int id,
                  String address,
                  String creator,
                  Set<String> tags,
-                 GregorianCalendar startDate,
-                 GregorianCalendar endDate) {
+                 Calendar startDate,
+                 Calendar endDate) {
         this(id, title, description, latitude, longitude, address, creator, tags);
         mStartDate = startDate;
         mEndDate = endDate;
@@ -124,7 +124,7 @@ public Event(int id,
         return timeFormat.format(this.getStartDate().getTime());
     }
 
-    static public String asNiceString(GregorianCalendar calendar){
+    static public String asNiceString(Calendar calendar){
         return calendar.get(Calendar.DAY_OF_MONTH) + "/"
                 + calendar.get(Calendar.MONTH) + "/"
                 + calendar.get(Calendar.YEAR) + " at "
@@ -189,11 +189,11 @@ public Event(int id,
         return mTags;
     }
 
-    public GregorianCalendar getStartDate() {
+    public Calendar getStartDate() {
         return mStartDate;
     }
 
-    public GregorianCalendar getEndDate() {
+    public Calendar getEndDate() {
         return mEndDate;
     }
 

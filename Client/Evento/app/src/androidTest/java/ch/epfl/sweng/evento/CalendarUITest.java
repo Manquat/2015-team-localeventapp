@@ -21,7 +21,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
- * Created by Gautier on 20/11/2015.
+ * Test the calendar tab at the UI level (black box approach)
  */
 
 @RunWith(AndroidJUnit4.class)

@@ -19,7 +19,7 @@ import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
 /**
- * Created by Gautier on 20/11/2015.
+ * Test the CalendarGrid class (white box approach)
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
