@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+
 /**
  * Created by Val on 24.10.2015.
  */
@@ -111,6 +112,7 @@ public class EventSet {
             return current;
         }
     }
+
 
     /**
      * Returns the Event with the closest lower signature from the one passed in argument
@@ -305,7 +307,7 @@ public class EventSet {
             ++position;
 
             if (!iterator.hasNext()) {
-                Log.d(TAG, "No such event return the first event");
+                Log.e(TAG, "No such event return the first event");
                 position = 0;
                 break;
             }
@@ -316,12 +318,7 @@ public class EventSet {
         return position;
     }
 
-    public ArrayList<Event> toArrayList() {
-
-
-        // new ArrayList<Element>(Arrays.asList(array))
-
-
+    public List<Event> toArrayList() {
         return new ArrayList<Event>(mEvents.values());
     }
 }

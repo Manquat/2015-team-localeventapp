@@ -80,33 +80,6 @@ public class CreatingEventActivity extends AppCompatActivity
     private double longitude = 0.0;
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
             new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
-    private TimePickerDialogFragment mTimeFragment;
-
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear,
-                          int dayOfMonth) {
-        if (!mStartOrEndDate) startDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
-        else endDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
-        mTimeFragment = new TimePickerDialogFragment();
-        mTimeFragment.show(getFragmentManager(), "timePicker");
-    }
-
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        if (!mStartOrEndDate) {
-            startDate.setTime(hourOfDay, minute);
-            String s = Integer.toString(startDate.getMonth()) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
-                    " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes());
-            mStartDateView.setText(s);
-        } else {
-            endDate.setTime(hourOfDay, minute);
-            String s = Integer.toString(endDate.getMonth()) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) +
-                    " at " + Integer.toString(endDate.getHour()) + ":" + Integer.toString(endDate.getMinutes());
-            mEndDateView.setText(s);
-        }
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,19 +127,77 @@ public class CreatingEventActivity extends AppCompatActivity
         setPictureButton(pictureButton);
     }
 
+
+    /**
+     * On date set register the chosen date and call the time picker
+     *
+     * @param view
+     * @param year
+     * @param monthOfYear
+     * @param dayOfMonth
+     */
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                          int dayOfMonth) {
+        if (mStartOrEndDate == false)
+            startDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
+        else endDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
+        if (mDisplayTimeFragment == true) {
+            DialogFragment mTimeFragment = new TimePickerDialogFragment();
+            mTimeFragment.show(getFragmentManager(), "timePicker");
+            mDisplayTimeFragment = false;
+        }
+    }
+
+    /**
+     * On time set register the time and display the chosen date/time in the text field
+     *
+     * @param view
+     * @param hourOfDay
+     * @param minute
+     */
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        if (!mStartOrEndDate) {
+            startDate.setTime(hourOfDay, minute);
+            String s = Integer.toString(startDate.getMonth() + 1) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
+                    " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes());
+            // display text to user
+            mStartDateView.setText(s);
+        } else {
+            endDate.setTime(hourOfDay, minute);
+            String s = Integer.toString(endDate.getMonth() + 1) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) +
+                    " at " + Integer.toString(endDate.getHour()) + ":" + Integer.toString(endDate.getMinutes());
+            // display text to user
+            mEndDateView.setText(s);
+        }
+    }
+
+    /**
+     * prepare button parameter, put all texts present in the TextViews into variable to prepare
+     * a new event.
+     * Also check if some field are empty and complete with default parameter to avoid crash
+     * Send the created event through restAPI
+     *
+     * @param validateButton
+     */
     private void setValidateButtonAndSend(Button validateButton) {
         validateButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
+                RestApi restApi = new RestApi(networkProvider, urlServer);
                 TextView title = (TextView) findViewById(R.id.title);
                 TextView description = (TextView) findViewById(R.id.eventDescription);
                 TextView address = (TextView) findViewById(R.id.eventAddress);
                 String titleString = title.getText().toString();
                 String descriptionString = description.getText().toString();
                 String addressString = address.getText().toString();
+                ImageView pictureView = (ImageView) findViewById(R.id.pictureView);
+                Drawable drawable = pictureView.getDrawable();
+                Bitmap picture;
 
-                // just in case you haven't put any date ;)
+                // default value completion
                 if (startDate == null) {
                     startDate = new Event.CustomDate(1990, 12, 16, 0, 0);
                 }
@@ -182,11 +213,6 @@ public class CreatingEventActivity extends AppCompatActivity
                 if (addressString.isEmpty()) {
                     addressString = "No address";
                 }
-
-                ImageView pictureView = (ImageView) findViewById(R.id.pictureView);
-                //Bitmap picture = pictureView.getDrawingCache()
-                Drawable drawable = pictureView.getDrawable();
-                Bitmap picture;
                 if (drawable == null) {
                     Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
                     picture = Bitmap.createBitmap(100, 100, conf);
@@ -194,18 +220,17 @@ public class CreatingEventActivity extends AppCompatActivity
                     picture = ((BitmapDrawable) drawable).getBitmap();
                 }
 
+                // mock creator and random id (ID will be assigned server side)
                 String creator = "Jack Henri";
                 Random rand = new Random();
                 int id = rand.nextInt(10000);
 
-
+                // event creation and send
                 Event e = new Event(id, titleString, descriptionString, latitude,
                         longitude, addressString, creator,
                         mTag, startDate, endDate, picture);
 
-                Log.d(TAG, "date de l'event: " + e.getStartDate().toString() + " " + e.getEndDate().toString());
-
-                RestApi restApi = new RestApi(networkProvider, urlServer);
+                Log.i(TAG, "Event to send : " + e.toString());
 
                 restApi.postEvent(e, new PostCallback() {
                     @Override
@@ -225,12 +250,12 @@ public class CreatingEventActivity extends AppCompatActivity
     private void setPictureButton(Button pictureButton) {
         pictureButton.setOnClickListener(new View.OnClickListener() {
 
-                                             @Override
-                                             public void onClick(View view) {
-                                                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                                 startActivityForResult(intent, 2);
-                                             }
-                                         }
+                 @Override
+                 public void onClick(View view) {
+                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                     startActivityForResult(intent, 2);
+                 }
+             }
         );
     }
 
@@ -283,6 +308,7 @@ public class CreatingEventActivity extends AppCompatActivity
                             mListDataHeader.get(groupPosTmp)).get(
                             childPosTmp));
                 }};
+
                 Toast.makeText(
                         getApplicationContext(),
                         mListDataHeader.get(groupPosition)

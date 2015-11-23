@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -30,54 +31,9 @@ public class Event implements ClusterItem {
     private final String mAddress;
     private final String mCreator;//might be replaced by some kind of User class
     private final Set<String> mTags;
-    private final CustomDate mStartDate;
-    private final CustomDate mEndDate;
+    private CustomDate mStartDate;
+    private CustomDate mEndDate;
     private String mPicture;
-
-public Event(int id,
-                 String title,
-                 String description,
-                 double latitude,
-                 double longitude,
-                 String address,
-                 String creator,
-                 Set<String> tags,
-                 CustomDate startDate,
-                 CustomDate endDate,
-                 Bitmap picture) {
-        mID = id;
-        mTitle = title;
-        mDescription = description;
-        mLocation = new LatLng(latitude, longitude);
-        mAddress = address;
-        mCreator = creator;
-        mTags = tags;
-        mStartDate = new CustomDate(startDate);
-        mEndDate = new CustomDate(endDate);
-        setPicture(picture);
-    }
-    
-    public Event(int id,
-                 String title,
-                 String description,
-                 double latitude,
-                 double longitude,
-                 String address,
-                 String creator,
-                 Set<String> tags,
-                 CustomDate startDate,
-                 CustomDate endDate) {
-        mID = id;
-        mTitle = title;
-        mDescription = description;
-        mLocation = new LatLng(latitude, longitude);
-        mAddress = address;
-        mCreator = creator;
-        mTags = tags;
-        mStartDate = new CustomDate(startDate);
-        mEndDate = new CustomDate(endDate);
-        mPicture = samplePicture();
-    }
 
     public Event(int id,
                  String title,
@@ -99,46 +55,89 @@ public Event(int id,
         mPicture = "";
     }
 
+    public Event(int id,
+                 String title,
+                 String description,
+                 double latitude,
+                 double longitude,
+                 String address,
+                 String creator,
+                 Set<String> tags,
+                 CustomDate startDate,
+                 CustomDate endDate) {
+        this(id, title, description, latitude, longitude, address, creator, tags);
+        mStartDate = new CustomDate(startDate);
+        mEndDate = new CustomDate(endDate);
+        mPicture = samplePicture();
+    }
+
+    public Event(int id,
+                 String title,
+                 String description,
+                 double latitude,
+                 double longitude,
+                 String address,
+                 String creator,
+                 Set<String> tags,
+                 CustomDate startDate,
+                 CustomDate endDate,
+                 Bitmap picture) {
+        this(id, title, description, latitude, longitude, address, creator, tags, startDate, endDate);
+        setPicture(picture);
+    }
+
+    /**
+     * Easy way to print a event in a log
+     * Not equivalent to serialized event (RestApi.Serializer) which provide string event acceptable
+     * for the server
+     */
+    public String toString() {
+        String s = this.getTitle() + ", " + this.getDescription() + ", " + this.getAddress()
+                + ", (" + Double.toString(this.getLatitude()) + ", " + Double.toString(this.getLongitude())
+                + "), " + this.getCreator() + ", (" + this.getProperDateString();
+        return s;
+    }
+
 
     public void setPicture(String picture) {
         mPicture = picture;
     }
 
-    public void setPicture(Bitmap bitmap)
-    {
-		if(bitmap != null)
-		{
-			ByteArrayOutputStream outputStream = new  ByteArrayOutputStream();
-			bitmap.compress(Bitmap.CompressFormat.PNG,100, outputStream);
-			byte [] b = outputStream.toByteArray();
-			mPicture = Base64.encodeToString(b, Base64.DEFAULT);
-            System.out.println(mPicture.length());
-		}
-		else
-		{
-			mPicture = "";
-		}
+    public void setPicture(Bitmap bitmap) {
+        if (bitmap != null) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            byte[] b = outputStream.toByteArray();
+            mPicture = Base64.encodeToString(b, Base64.DEFAULT);
+        } else {
+            mPicture = "";
+        }
 
     }
 
     public GregorianCalendar getCalendarStart() {
-        return new GregorianCalendar(mStartDate.getYear(), mStartDate.getMonth(), mStartDate.getDay(),
+        GregorianCalendar cal = new GregorianCalendar(mStartDate.getYear(), mStartDate.getMonth(), mStartDate.getDay(),
                 mStartDate.getHour(), mStartDate.getMinutes());
-    }
-    public GregorianCalendar getCalendarEnd() {
-        return new GregorianCalendar(mEndDate.getYear(), mEndDate.getMonth(), mEndDate.getDay(),
-                mEndDate.getHour(), mEndDate.getMinutes());
+        cal.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+        return cal;
     }
 
-    public String getProperDateString(){
-        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        timeFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+    public GregorianCalendar getCalendarEnd() {
+        GregorianCalendar cal = new GregorianCalendar(mEndDate.getYear(), mEndDate.getMonth(), mEndDate.getDay(),
+                mEndDate.getHour(), mEndDate.getMinutes());
+        cal.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+        return cal;
+    }
+
+    public String getProperDateString() {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
+        timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
         String time = timeFormat.format(this.getCalendarStart().getTime());
         return time;
     }
 
     public void debugLogEvent() {
-        Log.d(TAG, "Event " + mID + " : title : " + mTitle);
+        Log.i(TAG, "Event " + mID + " : title : " + mTitle);
     }
 
     public int getID() {
@@ -174,11 +173,10 @@ public Event(int id,
     }
 
     public String getTagsString() {
-        if(mTags.contains("Foot!") ||
-               mTags.contains("Football")) {
+        if (mTags.contains("Foot!") ||
+                mTags.contains("Football")) {
             return "Football";
-        }
-        else if(mTags.contains("Basketball")) return "Basketball";
+        } else if (mTags.contains("Basketball")) return "Basketball";
         else return "Basketball";
     }
 
@@ -201,6 +199,7 @@ public Event(int id,
     /**
      * converts the String member named mPicture that represents a Bitmap image encoded in base64
      * into an actual Bitmap.
+     *
      * @return The Bitmap converted from mPicture
      */
     public Bitmap getPicture() {
@@ -328,6 +327,7 @@ public Event(int id,
         /**
          * This method returns a long representing the date with appended values
          * It makes comparison between 2 Dates trivial and is also used to get an Event's signature
+         *
          * @return the CustomDate in the form yyyymmddhhmm
          */
         public long toLong() {
