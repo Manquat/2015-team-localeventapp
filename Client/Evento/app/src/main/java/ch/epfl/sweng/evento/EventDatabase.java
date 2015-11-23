@@ -131,11 +131,11 @@ public enum EventDatabase {
         return mEventSet.filter(tag);
     }
 
-    public EventSet filter(GregorianCalendar startDate) {
+    public EventSet filter(Calendar startDate) {
         return mEventSet.filter(startDate);
     }
 
-    public EventSet filterOnDay(GregorianCalendar calendar) {return mEventSet.filterOnDay(calendar);}
+    public EventSet filterOnDay(Calendar calendar) {return mEventSet.filterOnDay(calendar);}
 
 
 

@@ -213,7 +213,7 @@ public class EventSet {
      * @param startDate
      * @return
      */
-    public EventSet filter(GregorianCalendar startDate) {
+    public EventSet filter(Calendar startDate) {
         EventSet newEventSet = new EventSet();
         for (Event event : mEvents.values()) {
             if (event.getStartDate().get(Calendar.YEAR) >= startDate.get(Calendar.YEAR) &&
@@ -226,12 +226,11 @@ public class EventSet {
     }
 
     /**
-<<<<<<< HEAD
      * Returns a set of all the Events that start on the same day as the date passed in argument
      * @param calendar
      * @return
      */
-    public EventSet filterOnDay(GregorianCalendar calendar){
+    public EventSet filterOnDay(Calendar calendar){
         EventSet newEventSet = new EventSet();
         for (Event event : mEvents.values()) {
             if (event.getStartDate().get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH) &&

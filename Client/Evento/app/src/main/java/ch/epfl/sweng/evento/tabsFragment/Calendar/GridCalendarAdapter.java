@@ -169,9 +169,9 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
                 day.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
             }
 
-            List<Event> events = EventDatabase.INSTANCE.filter(mCalendarGrid.getDateFromPosition(position)).toArrayList();
+            List<Event> events = EventDatabase.INSTANCE.filterOnDay(mCalendarGrid.getDateFromPosition(position)).toArrayList();
 
-            if (events != null) {
+            if (events.size() != 0) {
                 day.setStateHaveEvents(true);
 
                 if (day.getStateCurrentDay()) {
