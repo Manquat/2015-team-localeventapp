@@ -40,7 +40,7 @@ import static org.hamcrest.Matchers.is;
 /** Tests the GUI against the real server */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class GuiEventAndServerInteractionTest {
+public class GuiServerTest {
     private String TAG = "LoadAndPostTest";
 
     @Rule
