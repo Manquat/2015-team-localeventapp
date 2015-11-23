@@ -73,6 +73,8 @@ public class SearchActivity extends AppCompatActivity
     private TextView mPlaceDetailsText;
     private PlaceAutocompleteAdapter mAdapter;
 
+    private GoogleApiClient mGoogleApiClient;
+
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
     private static final String urlServer = Settings.getServerUrl();
 
@@ -198,7 +200,7 @@ public class SearchActivity extends AppCompatActivity
     }
 
 
-    private GoogleApiClient mGoogleApiClient;
+
     /**
      * Listener that handles selections from suggestions from the AutoCompleteTextView that
      * displays Place suggestions.
