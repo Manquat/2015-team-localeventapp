@@ -11,17 +11,12 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-<<<<<<< HEAD
-import java.util.Set;
-import java.util.TreeMap;
-
-=======
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
 
->>>>>>> origin/master
+
 /**
  * Created by Val on 24.10.2015.
  */
@@ -352,12 +347,7 @@ public class EventSet {
         return position;
     }
 
-<<<<<<< HEAD
-    public ArrayList<Event> toArrayList() {
-        return new ArrayList<>(mEvents.values());
-=======
     public List<Event> toArrayList() {
         return new ArrayList<Event>(mEvents.values());
->>>>>>> origin/master
     }
 }
