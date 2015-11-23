@@ -29,7 +29,7 @@ public class DatePickerDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        if(listener == null) {
+        if (listener == null) {
             Log.e(TAG, "listener is null");
         }
         // Use the current date as the default date in the picker

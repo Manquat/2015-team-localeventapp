@@ -12,7 +12,9 @@ import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
+
+import java.util.Locale;
+
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -28,8 +30,8 @@ public class Event implements ClusterItem {
     private final String mAddress;
     private final String mCreator;//might be replaced by some kind of User class
     private final Set<String> mTags;
-    private final GregorianCalendar mStartDate;
-    private final GregorianCalendar mEndDate;
+    private GregorianCalendar mStartDate;
+    private GregorianCalendar mEndDate;
     private String mPicture;
 
     public Event(int id,
@@ -63,13 +65,7 @@ public Event(int id,
                  GregorianCalendar startDate,
                  GregorianCalendar endDate,
                  Bitmap picture) {
-        mID = id;
-        mTitle = title;
-        mDescription = description;
-        mLocation = new LatLng(latitude, longitude);
-        mAddress = address;
-        mCreator = creator;
-        mTags = tags;
+        this(id, title, description, latitude, longitude, address, creator, tags,startDate,endDate);
         mStartDate = startDate;
         mEndDate = endDate;
         setPicture(picture);
@@ -85,16 +81,22 @@ public Event(int id,
                  Set<String> tags,
                  GregorianCalendar startDate,
                  GregorianCalendar endDate) {
-        mID = id;
-        mTitle = title;
-        mDescription = description;
-        mLocation = new LatLng(latitude, longitude);
-        mAddress = address;
-        mCreator = creator;
-        mTags = tags;
+        this(id, title, description, latitude, longitude, address, creator, tags);
         mStartDate = startDate;
         mEndDate = endDate;
         mPicture = samplePicture();
+    }
+
+    /**
+     * Easy way to print a event in a log
+     * Not equivalent to serialized event (RestApi.Serializer) which provide string event acceptable
+     * for the server
+     */
+    public String toString() {
+        String s = this.getTitle() + ", " + this.getDescription() + ", " + this.getAddress()
+                + ", (" + Double.toString(this.getLatitude()) + ", " + Double.toString(this.getLongitude())
+                + "), " + this.getCreator() + ", (" + this.getProperDateString();
+        return s;
     }
 
 
@@ -103,20 +105,15 @@ public Event(int id,
         mPicture = picture;
     }
 
-    public void setPicture(Bitmap bitmap)
-    {
-		if(bitmap != null)
-		{
-			ByteArrayOutputStream outputStream = new  ByteArrayOutputStream();
-			bitmap.compress(Bitmap.CompressFormat.PNG,100, outputStream);
-			byte [] b = outputStream.toByteArray();
-			mPicture = Base64.encodeToString(b, Base64.DEFAULT);
-            System.out.println(mPicture.length());
-		}
-		else
-		{
-			mPicture = "";
-		}
+    public void setPicture(Bitmap bitmap) {
+        if (bitmap != null) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            byte[] b = outputStream.toByteArray();
+            mPicture = Base64.encodeToString(b, Base64.DEFAULT);
+        } else {
+            mPicture = "";
+        }
 
     }
 
@@ -145,7 +142,7 @@ public Event(int id,
 
 
     public void debugLogEvent() {
-        Log.d(TAG, "Event " + mID + " : title : " + mTitle);
+        Log.i(TAG, "Event " + mID + " : title : " + mTitle);
     }
 
     public int getID() {
@@ -181,11 +178,10 @@ public Event(int id,
     }
 
     public String getTagsString() {
-        if(mTags.contains("Foot!") ||
-               mTags.contains("Football")) {
+        if (mTags.contains("Foot!") ||
+                mTags.contains("Football")) {
             return "Football";
-        }
-        else if(mTags.contains("Basketball")) return "Basketball";
+        } else if (mTags.contains("Basketball")) return "Basketball";
         else return "Basketball";
     }
 
@@ -208,6 +204,7 @@ public Event(int id,
     /**
      * converts the String member named mPicture that represents a Bitmap image encoded in base64
      * into an actual Bitmap.
+     *
      * @return The Bitmap converted from mPicture
      */
     public Bitmap getPicture() {
