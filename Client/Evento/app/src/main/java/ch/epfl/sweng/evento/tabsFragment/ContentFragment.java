@@ -29,6 +29,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Vector;
 
@@ -37,6 +38,10 @@ import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.RestApi;
+
+import ch.epfl.sweng.evento.SearchActivity;
+import ch.epfl.sweng.evento.Settings;
+
 import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 
 /**
@@ -66,7 +71,7 @@ public class ContentFragment extends Fragment {
     private View mView;
     private Toolbar mToolbar;
 
-    public Event.CustomDate dateFilter;
+    public GregorianCalendar dateFilter;
 
     /**
      * Create a new instance of {@link ContentFragment}, adding the parameters into a bundle and

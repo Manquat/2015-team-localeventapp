@@ -29,6 +29,7 @@ import ch.epfl.sweng.evento.Events.EventsClusterRenderer;
 import ch.epfl.sweng.evento.tabsFragment.Maps.EventClusterManager;
 
 
+
 /**
  * Fragment that hold the Google map.
  */

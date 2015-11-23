@@ -208,16 +208,42 @@ public class EventSet {
         return newEventSet;
     }
 
-    public EventSet filter(Event.CustomDate startDate) {
+    /**
+     * Returns a set of all the Events that start after the date passed in argument
+     * @param startDate
+     * @return
+     */
+    public EventSet filter(GregorianCalendar startDate) {
         EventSet newEventSet = new EventSet();
         for (Event event : mEvents.values()) {
-            if (event.getStartDate().toLong() >= startDate.toLong()) {
+            if (event.getStartDate().get(Calendar.YEAR) >= startDate.get(Calendar.YEAR) &&
+                    event.getStartDate().get(Calendar.MONTH) >= startDate.get(Calendar.MONTH) &&
+                    event.getStartDate().get(Calendar.DAY_OF_MONTH) >= startDate.get(Calendar.DAY_OF_MONTH)) {
                 newEventSet.addEvent(event);
             }
         }
         return newEventSet;
     }
 
+    /**
+<<<<<<< HEAD
+     * Returns a set of all the Events that start on the same day as the date passed in argument
+     * @param calendar
+     * @return
+     */
+    public EventSet filterOnDay(GregorianCalendar calendar){
+        EventSet newEventSet = new EventSet();
+        for (Event event : mEvents.values()) {
+            if (event.getStartDate().get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH) &&
+                    event.getStartDate().get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
+                    event.getStartDate().get(Calendar.YEAR) == calendar.get(Calendar.YEAR)) {
+                newEventSet.addEvent(event);
+            }
+        }
+        return newEventSet;
+    }
+
+    /*
     public List<Event> filter(Calendar calendar) {
         ArrayList<Event> filteredEvent = new ArrayList<>();
         for (Event event : mEvents.values()) {
@@ -244,8 +270,11 @@ public class EventSet {
 
         return filteredEvent;
     }
+*/
 
     /**
+=======
+>>>>>>> origin/master
      * @return the number of Events stored in the set
      */
     public int size() {
@@ -291,8 +320,8 @@ public class EventSet {
                 "",
                 "",
                 new HashSet<String>(),
-                new Event.CustomDate(),
-                new Event.CustomDate());
+                new GregorianCalendar(),
+                new GregorianCalendar());
     }
 
     public int getPosition(long signature) {

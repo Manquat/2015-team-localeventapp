@@ -38,23 +38,22 @@ public class EventFragment extends Fragment {
     }
 
     private void updateFields(View rootView) {
-        TextView titleView = (TextView) rootView.findViewById(R.id.titleView);
-        TextView creatorView = (TextView) rootView.findViewById(R.id.creatorView);
-        TextView startDateView = (TextView) rootView.findViewById(R.id.startDateView);
-        TextView endDateView = (TextView) rootView.findViewById(R.id.endDateView);
-        TextView addressView = (TextView) rootView.findViewById(R.id.addressView);
-        TextView descriptionView = (TextView) rootView.findViewById(R.id.descriptionView);
+        TextView titleView = (TextView) rootView.findViewById(R.id.event_title_view);
+        TextView creatorView = (TextView) rootView.findViewById(R.id.event_creator_view);
+        TextView startDateView = (TextView) rootView.findViewById(R.id.event_start_date_view);
+        TextView endDateView = (TextView) rootView.findViewById(R.id.event_end_date_view);
+        TextView addressView = (TextView) rootView.findViewById(R.id.event_address_view);
+        TextView descriptionView = (TextView) rootView.findViewById(R.id.event_description_view);
 
         titleView.setText(mEvent.getTitle());
-        creatorView.setText(getString(R.string.eventFrag_createdBy, mEvent.getCreator()));
-        startDateView.setText(getString(R.string.eventFrag_from, mEvent.getStartDate().toString()));
-        endDateView.setText(getString(R.string.eventFrag_to, mEvent.getEndDate().toString()));
-        addressView.setText(getString(R.string.eventFrag_at, mEvent.getAddress()));
+        creatorView.setText(mEvent.getCreator());
+        startDateView.setText(mEvent.getStartDateAsString());
+        endDateView.setText(mEvent.getEndDateAsString());
+        addressView.setText(mEvent.getAddress());
         descriptionView.setText(mEvent.getDescription());
 
         ImageView pictureView = (ImageView) rootView.findViewById(R.id.eventPictureView);
         pictureView.setImageBitmap(mEvent.getPicture());
-
         Button joinEvent = (Button) rootView.findViewById(R.id.joinEvent);
         joinEvent.setOnClickListener(new View.OnClickListener() {
 

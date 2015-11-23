@@ -9,6 +9,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import ch.epfl.sweng.evento.Events.Event;
@@ -20,13 +21,14 @@ public class SearchActivity extends AppCompatActivity
     private static final String TAG = "SearchActivity";
     private TextView mStartDateView;
     private TextView mEndDateView;
-    private Event.CustomDate startDate;
-    private Event.CustomDate endDate;
+    private GregorianCalendar startDate;
+    private GregorianCalendar endDate;
     private boolean mStartOrEndDate;
     private DatePickerDialogFragment mDateFragment;
 
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
 
+    private static final String urlServer = Settings.getServerUrl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,17 +71,17 @@ public class SearchActivity extends AppCompatActivity
             public void onClick(View view) {
                 RestApi restApi = new RestApi(networkProvider, getResources().getString(R.string.url_server));
 
-                if (startDate == null) {
-                    startDate = new Event.CustomDate(2000, 1, 1, 0, 0);
+                if(startDate == null){
+                    startDate = new GregorianCalendar(2000, 1, 1, 0, 0);
                 }
-                if (endDate == null) {
-                    endDate = new Event.CustomDate(2020, 1, 1, 0, 0);
+                if(endDate == null){
+                    endDate = new GregorianCalendar(2020, 1, 1, 0, 0);
                 }
 
-                GregorianCalendar startTime = new GregorianCalendar(startDate.getYear(),
-                        startDate.getMonth(), startDate.getDay());
-                GregorianCalendar endTime = new GregorianCalendar(endDate.getYear(),
-                        endDate.getMonth(), endDate.getDay());
+                GregorianCalendar startTime = new GregorianCalendar(startDate.get(Calendar.YEAR),
+                        startDate.get(Calendar.MONTH), startDate.get(Calendar.DAY_OF_MONTH));
+                GregorianCalendar endTime = new GregorianCalendar(endDate.get(Calendar.YEAR),
+                        endDate.get(Calendar.MONTH), endDate.get(Calendar.DAY_OF_MONTH));
 
                 EventDatabase.INSTANCE.loadByDate(startTime, endTime);
 
@@ -95,13 +97,18 @@ public class SearchActivity extends AppCompatActivity
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                           int dayOfMonth) {
-        if (mStartOrEndDate == false) {
-            startDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
-            String s = Integer.toString(startDate.getMonth() + 1) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear());
+        if(mStartOrEndDate == false) {
+            startDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
+            String s = Integer.toString(startDate.get(Calendar.MONTH)+1) + "/"
+                    + Integer.toString(startDate.get(Calendar.DAY_OF_MONTH)) + "/"
+                    + Integer.toString(startDate.get(Calendar.YEAR)) ;
             mStartDateView.setText(s);
-        } else {
-            endDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
-            String s = Integer.toString(endDate.getMonth() + 1) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear());
+        }
+        else {
+            endDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
+            String s = Integer.toString(endDate.get(Calendar.MONTH)+1) + "/"
+                    + Integer.toString(endDate.get(Calendar.DAY_OF_MONTH)) + "/"
+                    + Integer.toString(endDate.get(Calendar.YEAR)) ;
             mEndDateView.setText(s);
         }
     }

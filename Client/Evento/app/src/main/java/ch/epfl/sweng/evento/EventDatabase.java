@@ -49,7 +49,6 @@ public enum EventDatabase {
     public void addAll(List<Event> events) {
         for (Event e : events) {
             mEventSet.addEvent(e);
-
             Log.i(TAG, "EVENT LOADED " + e.getTitle());
         }
     }
@@ -132,13 +131,13 @@ public enum EventDatabase {
         return mEventSet.filter(tag);
     }
 
-    public EventSet filter(Event.CustomDate startDate) {
+    public EventSet filter(GregorianCalendar startDate) {
         return mEventSet.filter(startDate);
     }
 
-    public List<Event> filter(Calendar calendar) {
-        return mEventSet.filter(calendar);
-    }
+    public EventSet filterOnDay(GregorianCalendar calendar) {return mEventSet.filterOnDay(calendar);}
+
+
 
 
     public void refresh() {

@@ -42,8 +42,10 @@
     <string name="search_endDate">End Date</string>
     <string name="search_buttonValidate">Validate</string>
     <string name="createEvent_buttonAddEvent">Add a picture</string>
-    <string name="eventFrag_createdBy">"Created by %1$s"</string>
-    <string name="eventFrag_from">"From %1$s"</string>
-    <string name="eventFrag_to">"to %1$s"</string>
-    <string name="eventFrag_at">"at %1$s"</string>
+    <string name="eventFrag_createdBy">Created by : </string>
+    <string name="eventFrag_from">From : </string>
+    <string name="eventFrag_to">to : </string>
+    <string name="eventFrag_at">at : </string>
+    <string name="eventFrag_tags">Tags : </string>
+    <string name="eventFrag_description">Descrition : </string>
 </resources>
