@@ -1,17 +1,21 @@
 package ch.epfl.sweng.evento.tabsFragment;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
@@ -23,7 +27,10 @@ import ch.epfl.sweng.evento.tabsFragment.Calendar.GridCalendarAdapter;
  * The fragment that holds the calendar and the listView that display the events at the current
  * selected date
  */
-public class CalendarTabs extends Fragment implements Button.OnClickListener, Updatable {
+public class CalendarTabs extends Fragment implements
+        Button.OnClickListener,
+        Updatable,
+        DatePickerDialog.OnDateSetListener {
 //---------------------------------------------------------------------------------------------
 //----Members----------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
@@ -32,6 +39,7 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener, Up
     private TextView             mCurrentDate;
     private LinearLayout         mBaseLayout;
     private EventListViewAdapter mEventListAdapter;
+    private DatePickerDialog     mDatePicker;
 
 //---------------------------------------------------------------------------------------------
 //----Callbacks--------------------------------------------------------------------------------
@@ -53,6 +61,17 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener, Up
         prevButton.setOnClickListener(this);
 
         mCurrentDate = (TextView) view.findViewById(R.id.dayTitle);
+
+        // show a date picker when click on the date
+        GregorianCalendar actualDate = new GregorianCalendar();
+        mDatePicker = new DatePickerDialog(getContext(), this, actualDate.get(Calendar.YEAR),
+                actualDate.get(Calendar.MONTH), actualDate.get(Calendar.DAY_OF_MONTH));
+        mCurrentDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDatePicker.show();
+            }
+        });
 
         mBaseLayout = (LinearLayout) view.findViewById(R.id.calendar_base_layout);
 
@@ -80,6 +99,11 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener, Up
                 break;
             default:
         }
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        mGridCalendarAdapter.setFocusedDate(new GregorianCalendar(year, monthOfYear, dayOfMonth));
     }
 
 //---------------------------------------------------------------------------------------------

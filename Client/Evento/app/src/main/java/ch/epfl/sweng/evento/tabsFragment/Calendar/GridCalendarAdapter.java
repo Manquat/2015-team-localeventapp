@@ -165,7 +165,8 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
             // highlight the actual day by changing the textColor
             GregorianCalendar calendar = new GregorianCalendar();
             if (mCalendarGrid.getDayOfYear(position) == calendar.get(Calendar.DAY_OF_YEAR) &&
-                    mCalendarGrid.getCurrentMonth() == calendar.get(Calendar.MONTH)) {
+                    mCalendarGrid.getCurrentMonth() == calendar.get(Calendar.MONTH) &&
+                    mCalendarGrid.getCurrentYear() == calendar.get(Calendar.YEAR)) {
                 day.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
             }
 
@@ -200,6 +201,12 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
      */
     public List<Event> getCurrentEvents() {
         return mEvents;
+    }
+
+    public void setFocusedDate(Calendar focusedDate) {
+        mCalendarGrid.setFocusedDay(focusedDate);
+        notifyDataSetChanged();
+        mUpdatableParent.update();
     }
 
 //---------------------------------------------------------------------------------------------
