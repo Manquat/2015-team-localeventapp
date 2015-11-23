@@ -204,8 +204,7 @@ public class Event implements ClusterItem {
      */
     public Bitmap getPicture() {
         byte[] encodeByte = Base64.decode(mPicture, Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-        return bitmap;
+        return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
     }
 
     @Override
