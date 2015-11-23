@@ -23,8 +23,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.List;
 
 
 import ch.epfl.sweng.evento.EventDatabase;
