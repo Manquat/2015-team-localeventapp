@@ -64,7 +64,6 @@ public class GuiServerTest {
 
         // save the number of events
         numOfEvent = EventDatabase.INSTANCE.getSize();
-        Log.d(TAG, "number of event : " + numOfEvent);
 
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
         onView(withText("Create an event")).perform(click());
@@ -83,7 +82,6 @@ public class GuiServerTest {
 
         Thread.sleep(1000); // wait for the app to be refreshed
 
-        Log.d(TAG, "number of event : " + numOfEvent);
         assertEquals("After creating one event, we get one more event refreshing the app",
                 numOfEvent+1, EventDatabase.INSTANCE.getSize());
 
