@@ -1,12 +1,13 @@
 package ch.epfl.sweng.evento.RestApi;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
 
@@ -14,24 +15,16 @@ import ch.epfl.sweng.evento.Events.Event;
  * Created by joachimmuth on 16.10.15.
  */
 public class Parser {
+    private static final String TAG = "Parser";
 
     public static ArrayList<Event> events(String s) {
-        ArrayList<Event> events = null;
-        return events;
+        return null;
     }
 
     public static Event parseFromJSON(JSONObject jsonObject) throws JSONException {
 
-        // Check that jsonObject have requiered field
-        // TODO: choose whether other fields are requiered or optional
-        if (!(jsonObject.get("id") instanceof Integer)
-                || !(jsonObject.get("Event_name") instanceof String)
-                ) {
-            throw new JSONException("Invalid question structure");
-        }
 
-
-        // TODO: when the tag to Event will be added ;)
+        // when the tag to Event will be added ;)
 //        JSONArray jsonTags = jsonObject.getJSONArray("tags");
 //        List<String> tags = new ArrayList<String>();
 //        for (int i = 0; i < jsonTags.length(); ++i) {
@@ -41,6 +34,7 @@ public class Parser {
 //            tags.add(jsonTags.getString(i));
 //        }
 
+        final JSONObject json = jsonObject;
 
         try {
             return new Event(jsonObject.getInt("id"),
@@ -51,8 +45,26 @@ public class Parser {
                     jsonObject.getString("address"),
                     jsonObject.getString("creator"),
                     new HashSet<String>());
+
         } catch (IllegalArgumentException e) {
             throw new JSONException("Invalid question structure");
         }
+    }
+
+    //new HashSet<String>(){{ add(json.getString("tags"));}});
+
+    public static List<Event> parseFromJSONMultiple(String response) throws JSONException {
+        ArrayList<Event> eventArrayList = new ArrayList<>();
+
+        // split received string into multiple JSONable string
+        response = response.replace("},{", "}\n{");
+        response = response.substring(1);
+        String[] responseLines = response.split("\n");
+        int i;
+        for (String line : responseLines) {
+            JSONObject jsonObject = new JSONObject(line);
+            eventArrayList.add(parseFromJSON(jsonObject));
+        }
+        return eventArrayList;
     }
 }

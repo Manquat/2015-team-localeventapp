@@ -13,11 +13,12 @@ import ch.epfl.sweng.evento.NetworkProvider;
  * Created by joachimmuth on 22.10.15.
  */
 public class DeleteTask extends AsyncTask<String, Void, String> {
+    private static final String TAG = "DeleteTask";
     private static final int HTTP_SUCCESS_START = 200;
     private static final int HTTP_SUCCESS_END = 299;
-    private String mRestUrl;
-    private RestTaskCallback mCallback;
-    private NetworkProvider mNetworkProvider;
+    private final String mRestUrl;
+    private final RestTaskCallback mCallback;
+    private final NetworkProvider mNetworkProvider;
 
     public DeleteTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback) {
         this.mRestUrl = restUrl;
@@ -41,6 +42,7 @@ public class DeleteTask extends AsyncTask<String, Void, String> {
             // get back HTTP response code and store it in response (in case of success)
             int responseCode = 0;
             responseCode = conn.getResponseCode();
+            Log.v(TAG, "responseCode " + Integer.toString(responseCode));
             if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END) {
                 throw new RestException("Invalid HTTP response code");
             } else {
@@ -48,9 +50,9 @@ public class DeleteTask extends AsyncTask<String, Void, String> {
             }
 
         } catch (IOException e) {
-            Log.e("RestException", "Exception thrown in GetTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         } catch (RestException e) {
-            Log.e("RestException", "Exception thrown in GetTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         }
 
         return response;

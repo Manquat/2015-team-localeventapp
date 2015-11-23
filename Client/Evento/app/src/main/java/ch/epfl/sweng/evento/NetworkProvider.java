@@ -12,11 +12,10 @@ import java.net.URL;
 public interface NetworkProvider {
 
     /**
-     *
      * @param url a valid HTTP or HTTPS URL
      * @return a new (@link HttpURLConnection) object successful connections
-     * @throws IOException if the connection couln not be established or if the
-     * URL is not HTTP/HTTPS
+     * @throws IOException if the connection could not be established or if the
+     *                     URL is not HTTP/HTTPS
      */
     HttpURLConnection getConnection(URL url) throws IOException;
 

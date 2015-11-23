@@ -4,7 +4,9 @@ package ch.epfl.sweng.evento.RestApi;
  * Created by cerschae on 15/10/2015.
  */
 
+import android.annotation.TargetApi;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 
 import java.io.IOException;
@@ -20,6 +22,7 @@ import ch.epfl.sweng.evento.NetworkProvider;
  * An AsyncTask implementation for performing POSTs.
  */
 public class PostTask extends AsyncTask<String, String, String> {
+    private static final String TAG = "PostTask";
     private static final int HTTP_SUCCESS_START = 200;
     private static final int HTTP_SUCCESS_END = 299;
     private final NetworkProvider mNetworkProvider;
@@ -28,13 +31,14 @@ public class PostTask extends AsyncTask<String, String, String> {
     private String mRequestBody;
 
 
-    public PostTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback){
+    public PostTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback) {
         this.mNetworkProvider = networkProvider;
         this.mRestUrl = restUrl;
         this.mRequestBody = requestBody;
         this.mCallback = callback;
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected String doInBackground(String... arg0) {
         String response = null;
@@ -60,6 +64,7 @@ public class PostTask extends AsyncTask<String, String, String> {
             // get back response code and put it in response string (in case of success)
             int responseCode = 0;
             responseCode = conn.getResponseCode();
+            Log.v(TAG, "responseCode " + Integer.toString(responseCode));
             if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END) {
                 throw new RestException("Invalid HTTP response code");
             } else {
@@ -67,18 +72,18 @@ public class PostTask extends AsyncTask<String, String, String> {
             }
 
         } catch (MalformedURLException e) {
-            Log.e("RestException", "Exception thrown in PostTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         } catch (ProtocolException e) {
-            Log.e("RestException", "Exception thrown in PostTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         } catch (IOException e) {
-            Log.e("RestException", "Exception thrown in PostTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         } catch (RestException e) {
-            Log.e("RestException", "Exception thrown in PostTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         }
         return response;
     }
 
-        @Override
+    @Override
     protected void onPostExecute(String result) {
         mCallback.onTaskComplete(result);
         super.onPostExecute(result);

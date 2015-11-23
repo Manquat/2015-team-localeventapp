@@ -19,13 +19,14 @@ import ch.epfl.sweng.evento.NetworkProvider;
  * An AsyncTask implementation for performing GETs.
  */
 public class GetTask extends AsyncTask<String, Void, String> {
+    private static final String TAG = "GetTask";
     private static final int HTTP_SUCCESS_START = 200;
     private static final int HTTP_SUCCESS_END = 299;
     private String mRestUrl;
     private RestTaskCallback mCallback;
     private NetworkProvider mNetworkProvider;
 
-    public GetTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback){
+    public GetTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback) {
 
         this.mRestUrl = restUrl;
         this.mCallback = callback;
@@ -46,6 +47,7 @@ public class GetTask extends AsyncTask<String, Void, String> {
             // get HTTP response code and get the event ONLY in case of success
             int responseCode = 0;
             responseCode = conn.getResponseCode();
+            Log.v(TAG, "responseCode " + Integer.toString(responseCode));
             if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END) {
                 throw new RestException("Invalid HTTP response code");
             }
@@ -53,9 +55,9 @@ public class GetTask extends AsyncTask<String, Void, String> {
             response = fetchContent(conn);
 
         } catch (IOException e) {
-            Log.e("RestException", "Exception thrown in GetTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         } catch (RestException e) {
-            Log.e("RestException", "Exception thrown in GetTask", e);
+            Log.e(TAG, "Exception thrown in doInBackground", e);
         }
         return response;
     }
@@ -68,6 +70,7 @@ public class GetTask extends AsyncTask<String, Void, String> {
 
     /**
      * fetch the HTTP response and parse it into readable JSON String
+     *
      * @param conn
      * @return
      * @throws IOException
@@ -84,8 +87,7 @@ public class GetTask extends AsyncTask<String, Void, String> {
                 out.append(line + "\n");
             }
 
-            String result = out.toString();
-            return result;
+            return out.toString();
         } finally {
             if (reader != null) {
                 reader.close();
