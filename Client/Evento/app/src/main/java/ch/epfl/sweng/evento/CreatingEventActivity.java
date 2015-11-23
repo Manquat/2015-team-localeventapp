@@ -155,19 +155,32 @@ public class CreatingEventActivity extends AppCompatActivity
         setPictureButton(pictureButton);
     }
 
+
+    /**
+     * prepare button parameter, put all texts present in the TextViews into variable to prepare
+     * a new event.
+     * Also check if some field are empty and complete with default parameter to avoid crash
+     * Send the created event through restAPI
+     *
+     * @param validateButton
+     */
     private void setValidateButtonAndSend(Button validateButton) {
         validateButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
+                RestApi restApi = new RestApi(networkProvider, urlServer);
                 TextView title = (TextView) findViewById(R.id.title);
                 TextView description = (TextView) findViewById(R.id.eventDescription);
                 TextView address = (TextView) findViewById(R.id.eventAddress);
                 String titleString = title.getText().toString();
                 String descriptionString = description.getText().toString();
                 String addressString = address.getText().toString();
+                ImageView pictureView = (ImageView) findViewById(R.id.pictureView);
+                Drawable drawable = pictureView.getDrawable();
+                Bitmap picture;
 
-                // just in case you haven't put any date ;)
+                // default value completion
                 if (startDate == null) {
                     startDate = new GregorianCalendar(1990, 12, 16, 0, 0);
                 }
@@ -183,11 +196,6 @@ public class CreatingEventActivity extends AppCompatActivity
                 if (addressString.isEmpty()) {
                     addressString = "No address";
                 }
-
-                ImageView pictureView = (ImageView) findViewById(R.id.pictureView);
-                //Bitmap picture = pictureView.getDrawingCache()
-                Drawable drawable = pictureView.getDrawable();
-                Bitmap picture;
                 if (drawable == null) {
                     Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
                     picture = Bitmap.createBitmap(100, 100, conf);
@@ -195,18 +203,17 @@ public class CreatingEventActivity extends AppCompatActivity
                     picture = ((BitmapDrawable) drawable).getBitmap();
                 }
 
+                // mock creator and random id (ID will be assigned server side)
                 String creator = "Jack Henri";
                 Random rand = new Random();
                 int id = rand.nextInt(10000);
 
-
+                // event creation and send
                 Event e = new Event(id, titleString, descriptionString, latitude,
                         longitude, addressString, creator,
                         mTag, startDate, endDate, picture);
 
-                Log.d(TAG, "date de l'event: " + e.getStartDateAsString() + " " + e.getEndDateAsString());
 
-                RestApi restApi = new RestApi(networkProvider, urlServer);
 
                 restApi.postEvent(e, new PostCallback() {
                     @Override
@@ -224,14 +231,14 @@ public class CreatingEventActivity extends AppCompatActivity
     }
 
     private void setPictureButton(Button pictureButton) {
-        pictureButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(intent, 2);
-                    }
-                }
+        pictureButton.setOnClickListener(new View.OnClickListener() {
+
+                 @Override
+                 public void onClick(View view) {
+                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                     startActivityForResult(intent, 2);
+                 }
+             }
         );
     }
 
@@ -284,6 +291,7 @@ public class CreatingEventActivity extends AppCompatActivity
                             mListDataHeader.get(groupPosTmp)).get(
                             childPosTmp));
                 }};
+
                 Toast.makeText(
                         getApplicationContext(),
                         mListDataHeader.get(groupPosition)

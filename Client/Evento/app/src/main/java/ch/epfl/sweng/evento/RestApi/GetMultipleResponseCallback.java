@@ -1,5 +1,9 @@
 package ch.epfl.sweng.evento.RestApi;
 
+<<<<<<< HEAD
+=======
+import java.util.ArrayList;
+>>>>>>> origin/master
 import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;

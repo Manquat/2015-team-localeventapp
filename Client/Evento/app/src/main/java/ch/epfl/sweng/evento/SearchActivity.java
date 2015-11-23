@@ -69,26 +69,7 @@ public class SearchActivity extends AppCompatActivity
 
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
 
-
-
-    public void onDateSet(DatePicker view, int year, int monthOfYear,
-                          int dayOfMonth) {
-        if(mStartOrEndDate == false) {
-            startDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
-            String s = Integer.toString(startDate.get(Calendar.MONTH)+1) + "/"
-                    + Integer.toString(startDate.get(Calendar.DAY_OF_MONTH)) + "/"
-                    + Integer.toString(startDate.get(Calendar.YEAR)) ;
-            mStartDateView.setText(s);
-        }
-        else {
-            endDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
-            String s = Integer.toString(endDate.get(Calendar.MONTH)+1) + "/"
-                    + Integer.toString(endDate.get(Calendar.DAY_OF_MONTH)) + "/"
-                    + Integer.toString(endDate.get(Calendar.YEAR)) ;
-            mEndDateView.setText(s);
-        }
-    }
-
+    private static final String urlServer = Settings.getServerUrl();
 
 
 
@@ -100,7 +81,7 @@ public class SearchActivity extends AppCompatActivity
         mDateFragment = new DatePickerDialogFragment();
         mDateFragment.setListener(this);
 
-        //START DATE
+        // set date picker for startDate
         mStartDateView = (TextView) findViewById(R.id.startDate_search);
         mStartDateView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,7 +91,7 @@ public class SearchActivity extends AppCompatActivity
             }
         });
 
-        //END DATE
+        // set date picker for endDate
         mEndDateView = (TextView) findViewById(R.id.endDate_search);
         mEndDateView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +102,12 @@ public class SearchActivity extends AppCompatActivity
         });
 
 
+        setValidateButtonAndSend(validateButton);
+
+
+    }
+
+    private void setValidateButtonAndSend(Button validateButton) {
         validateButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -148,8 +135,25 @@ public class SearchActivity extends AppCompatActivity
 
             }
         });
+    }
 
-
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                          int dayOfMonth) {
+        if(mStartOrEndDate == false) {
+            startDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
+            String s = Integer.toString(startDate.get(Calendar.MONTH)+1) + "/"
+                    + Integer.toString(startDate.get(Calendar.DAY_OF_MONTH)) + "/"
+                    + Integer.toString(startDate.get(Calendar.YEAR)) ;
+            mStartDateView.setText(s);
+        }
+        else {
+            endDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
+            String s = Integer.toString(endDate.get(Calendar.MONTH)+1) + "/"
+                    + Integer.toString(endDate.get(Calendar.DAY_OF_MONTH)) + "/"
+                    + Integer.toString(endDate.get(Calendar.YEAR)) ;
+            mEndDateView.setText(s);
+        }
     }
 
 

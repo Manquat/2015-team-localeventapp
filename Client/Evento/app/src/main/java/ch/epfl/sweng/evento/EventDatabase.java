@@ -42,7 +42,7 @@ public enum EventDatabase {
     }
 
 
-    void loadNewEvents() {
+    public void loadNewEvents() {
         mRestAPI.getMultiplesEvent(new GetMultipleResponseCallback() {
             @Override
             public void onDataReceived(List<Event> events) {
@@ -51,12 +51,10 @@ public enum EventDatabase {
         });
     }
 
-    void addAll(List<Event> events) {
-        for (int i = 0; i < events.size(); ++i) {
-            mEventSet.addEvent(events.get(i));
-            Log.d("EVENT LOADED ", Integer.toString(events.size()));
-
-            Log.d("EVENT LOADED ", events.get(i).getTitle());
+    public void addAll(List<Event> events) {
+        for (Event e : events) {
+            mEventSet.addEvent(e);
+            Log.i(TAG, "EVENT LOADED " + e.getTitle());
         }
     }
 
@@ -85,7 +83,7 @@ public enum EventDatabase {
         return mEventSet.getFirst();
     }
 
-    public ArrayList<Event> getAllEvents() {
+    public List<Event> getAllEvents() {
         return mEventSet.toArrayList();
     }
 
@@ -143,6 +141,8 @@ public enum EventDatabase {
     }
 
     public EventSet filterOnDay(GregorianCalendar calendar) {return mEventSet.filterOnDay(calendar);}
+
+
 
 
     public void refresh() {
