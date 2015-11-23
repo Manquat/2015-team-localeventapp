@@ -46,10 +46,10 @@ public class EventFragment extends Fragment {
         TextView descriptionView = (TextView) rootView.findViewById(R.id.descriptionView);
 
         titleView.setText(mEvent.getTitle());
-        creatorView.setText("Created by " + mEvent.getCreator());
-        startDateView.setText("From  " + mEvent.getStartDate().toString());
-        endDateView.setText("to    " + mEvent.getEndDate().toString());
-        addressView.setText("at    " + mEvent.getAddress());
+        creatorView.setText(getString(R.string.eventFrag_createdBy, mEvent.getCreator()));
+        startDateView.setText(getString(R.string.eventFrag_from, mEvent.getStartDate().toString()));
+        endDateView.setText(getString(R.string.eventFrag_to, mEvent.getEndDate().toString()));
+        addressView.setText(getString(R.string.eventFrag_at, mEvent.getAddress()));
         descriptionView.setText(mEvent.getDescription());
 
         ImageView pictureView = (ImageView) rootView.findViewById(R.id.eventPictureView);
@@ -61,6 +61,7 @@ public class EventFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity().getApplicationContext(), "Submitted", Toast.LENGTH_SHORT).show();
+                getActivity().finish();
             }
         });
     }

@@ -67,25 +67,7 @@ public class SearchActivity extends AppCompatActivity
     private DatePickerDialogFragment mDateFragment;
 
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = ServerUrl.get();
-
-
-
-    public void onDateSet(DatePicker view, int year, int monthOfYear,
-                          int dayOfMonth) {
-        if(mStartOrEndDate == false) {
-            startDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
-            String s = Integer.toString(startDate.getMonth()+1) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) ;
-            mStartDateView.setText(s);
-        }
-        else {
-            endDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
-            String s = Integer.toString(endDate.getMonth()+1) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) ;
-            mEndDateView.setText(s);
-        }
-    }
-
-
+    private static final String urlServer = Settings.getServerUrl();
 
 
     @Override
@@ -96,7 +78,7 @@ public class SearchActivity extends AppCompatActivity
         mDateFragment = new DatePickerDialogFragment();
         mDateFragment.setListener(this);
 
-        //START DATE
+        // set date picker for startDate
         mStartDateView = (TextView) findViewById(R.id.startDate_search);
         mStartDateView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +88,7 @@ public class SearchActivity extends AppCompatActivity
             }
         });
 
-        //END DATE
+        // set date picker for endDate
         mEndDateView = (TextView) findViewById(R.id.endDate_search);
         mEndDateView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,16 +99,22 @@ public class SearchActivity extends AppCompatActivity
         });
 
 
+        setValidateButtonAndSend(validateButton);
+
+
+    }
+
+    private void setValidateButtonAndSend(Button validateButton) {
         validateButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 RestApi restApi = new RestApi(networkProvider, urlServer);
 
-                if(startDate == null){
+                if (startDate == null) {
                     startDate = new Event.CustomDate(2000, 1, 1, 0, 0);
                 }
-                if(endDate == null){
+                if (endDate == null) {
                     endDate = new Event.CustomDate(2020, 1, 1, 0, 0);
                 }
 
@@ -144,8 +132,20 @@ public class SearchActivity extends AppCompatActivity
 
             }
         });
+    }
 
-
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                          int dayOfMonth) {
+        if (mStartOrEndDate == false) {
+            startDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
+            String s = Integer.toString(startDate.getMonth() + 1) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear());
+            mStartDateView.setText(s);
+        } else {
+            endDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
+            String s = Integer.toString(endDate.getMonth() + 1) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear());
+            mEndDateView.setText(s);
+        }
     }
 
 

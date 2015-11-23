@@ -7,17 +7,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventPageAdapter;
-import ch.epfl.sweng.evento.common.logger.Log;
 
 public class EventActivity extends AppCompatActivity {
 
     public static final String KEYCURRENTEVENT = "CurrentEventKey";
 
 
-    private ViewPager           mPager;
-    private EventPageAdapter    mAdapter;
+    private ViewPager mPager;
+    private EventPageAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +70,10 @@ public class EventActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        if(id == R.id.action_createAnEvent){
+        if (id == R.id.action_createAnEvent) {
             Intent intent = new Intent(this, CreatingEventActivity.class);
             startActivity(intent);
-        } else if (id == R.id.action_logout){
+        } else if (id == R.id.action_logout) {
 
         }
 

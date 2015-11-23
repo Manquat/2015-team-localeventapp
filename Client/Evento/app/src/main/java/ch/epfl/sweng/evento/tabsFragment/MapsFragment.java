@@ -40,12 +40,12 @@ import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.tabsFragment.Maps.EventClusterManager;
-import ch.epfl.sweng.evento.ServerUrl;
+import ch.epfl.sweng.evento.Settings;
 
 
 /**
  * Created by Gautier on 21/10/2015.
- * <p>
+ * <p/>
  * Fragment that hold the Google map.
  */
 public class MapsFragment extends SupportMapFragment implements
@@ -98,8 +98,7 @@ public class MapsFragment extends SupportMapFragment implements
 
         mContext = view.getContext();
 
-        if (mContext == null)
-        {
+        if (mContext == null) {
             Log.e(TAG, "The actual context don't exist");
             throw new NullPointerException();
         }
@@ -222,66 +221,13 @@ public class MapsFragment extends SupportMapFragment implements
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient); //may return null in case of non connected device
         }
 
-        // introduction of randomness
-        Random random = new Random();
-
-        // conversion of the location into a LatLng
-        double latitude = 0.;
-        double longitude = 0.;
-        if (mLastLocation != null) {
-            latitude = mLastLocation.getLatitude();
-            longitude = mLastLocation.getLongitude();
-        }
-        double zoomScale = 1.0 / 60.0;
-
         mMap.clear();
         mClusterManager.clearItems();
 
-        Event prevEvent;
-        int iTot = 0;
-
-/*        do {
-            prevEvent = EventDatabase.INSTANCE.getFirstEvent();
-            for (int j = 0; j < NUMBER_OF_EVENT && iTot < NUMBER_OF_MARKERS; j++, iTot++) {
-                double tempLatitude = latitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
-                double tempLongitude = longitude + random.nextDouble() * zoomScale - 0.5 * zoomScale;
-
-                prevEvent = EventDatabase.INSTANCE.getNextEvent(prevEvent);
-                mClusterManager.addItem( new Event(
-                        prevEvent.getID(),
-                        prevEvent.getTitle(),
-                        prevEvent.getDescription(),
-                        //tempLatitude,
-                        prevEvent.getLatitude(),
-                        //tempLongitude,
-                        prevEvent.getLongitude(),
-                        prevEvent.getAddress(),
-                        prevEvent.getCreator(),
-                        prevEvent.getTags(),
-                        prevEvent.getStartDate(),
-                        prevEvent.getEndDate()
-                ));
-                mClusterManager.cluster();
-            }
-        } while (iTot < NUMBER_OF_MARKERS);*/
-
-        ArrayList<Event> eventArrayList = EventDatabase.INSTANCE.getAllEvents();
-        for(int i = 0; i< eventArrayList.size(); i++){
-            prevEvent = eventArrayList.get(i);
-            mClusterManager.addItem( new Event(
-                    prevEvent.getID(),
-                    prevEvent.getTitle(),
-                    prevEvent.getDescription(),
-                    //tempLatitude,
-                    prevEvent.getLatitude(),
-                    //tempLongitude,
-                    prevEvent.getLongitude(),
-                    prevEvent.getAddress(),
-                    prevEvent.getCreator(),
-                    prevEvent.getTags(),
-                    prevEvent.getStartDate(),
-                    prevEvent.getEndDate()
-            ));
+        // add all event to the cluster manager of map
+        List<Event> eventArrayList = EventDatabase.INSTANCE.getAllEvents();
+        for (Event e : eventArrayList) {
+            mClusterManager.addItem(e);
             mClusterManager.cluster();
         }
 

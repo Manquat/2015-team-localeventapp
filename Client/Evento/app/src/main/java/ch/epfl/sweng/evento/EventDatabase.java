@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
@@ -34,37 +35,34 @@ public enum EventDatabase {
 
     EventDatabase() {
         mEventSet = new EventSet();
-        mRestAPI = new RestApi(new DefaultNetworkProvider(), ServerUrl.get());
+        mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
 
         loadNewEvents();
     }
 
 
-
-    void loadNewEvents() {
+    public void loadNewEvents() {
         mRestAPI.getMultiplesEvent(new GetMultipleResponseCallback() {
             @Override
-            public void onDataReceived(ArrayList<Event> events) {
+            public void onDataReceived(List<Event> events) {
                 addAll(events);
             }
         });
     }
 
-    void addAll(ArrayList<Event> events){
-        for (int i = 0; i < events.size(); ++i) {
-            mEventSet.addEvent(events.get(i));
-            Log.d("EVENT LOADED ", Integer.toString(events.size()));
+    public void addAll(List<Event> events) {
+        for (Event e : events) {
+            mEventSet.addEvent(e);
 
-            Log.d("EVENT LOADED ", events.get(i).getTitle());
+            Log.i(TAG, "EVENT LOADED " + e.getTitle());
         }
     }
 
 
-
-    public void loadByDate(GregorianCalendar start, GregorianCalendar end){
+    public void loadByDate(GregorianCalendar start, GregorianCalendar end) {
         mRestAPI.getMultiplesEventByDate(start, end, new GetMultipleResponseCallback() {
             @Override
-            public void onDataReceived(ArrayList<Event> eventArrayList) {
+            public void onDataReceived(List<Event> eventArrayList) {
                 mEventSet.clear();
                 addAll(eventArrayList);
             }
@@ -85,12 +83,14 @@ public enum EventDatabase {
         return mEventSet.getFirst();
     }
 
-    public ArrayList<Event> getAllEvents(){
+    public List<Event> getAllEvents() {
         return mEventSet.toArrayList();
     }
+
     /**
      * This method returns the next Event after the one passed in argument, in the order of starting
      * CustomDate and ID. If 'current' is the last one, it will return it instead.
+     *
      * @param current the current Event which is the reference to get the next Event
      * @return the Event that is right after the 'current' Event in the starting CustomDate order
      */
@@ -100,8 +100,7 @@ public enum EventDatabase {
 
     public Event get(int position) {
         Event currentEvent = getFirstEvent();
-        for (int i = 0; i <= position; i++)
-        {
+        for (int i = 0; i <= position; i++) {
             currentEvent = getNextEvent(currentEvent);
         }
         return currentEvent;
@@ -116,13 +115,18 @@ public enum EventDatabase {
     /**
      * This method returns the previous Event before the one passed in argument, in the order of starting
      * CustomDate and ID. If 'current' is the first one, it will return it instead.
+     *
      * @param current the current Event which is the reference to get the previous Event
      * @return the Event that is right before the 'current' Event in the starting CustomDate order
      */
 
-    public Event getPreviousEvent(Event current) {return mEventSet.getPrevious(current);}
+    public Event getPreviousEvent(Event current) {
+        return mEventSet.getPrevious(current);
+    }
 
-    public EventSet filter(LatLng latLng, double distance) {return mEventSet.filter(latLng, distance);}
+    public EventSet filter(LatLng latLng, double distance) {
+        return mEventSet.filter(latLng, distance);
+    }
 
     public EventSet filter(Set<String> tags) {
         return mEventSet.filter(tags);
@@ -132,7 +136,9 @@ public enum EventDatabase {
         return mEventSet.filter(tag);
     }
 
-    public EventSet filter(Event.CustomDate startDate) {return mEventSet.filter(startDate);}
+    public EventSet filter(Event.CustomDate startDate) {
+        return mEventSet.filter(startDate);
+    }
 
 
     public void refresh() {

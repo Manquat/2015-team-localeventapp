@@ -1,7 +1,8 @@
 package ch.epfl.sweng.evento.RestApi;
 
+import android.util.Log;
+
 import java.util.GregorianCalendar;
-import ch.epfl.sweng.evento.common.logger.Log;
 import java.lang.ref.SoftReference;
 
 /**
@@ -24,7 +25,7 @@ public final class UrlMaker {
     }
 
     public static final String getAll(String urlServer) {
-        String url = urlServer + event + accessMaster ;//+ "1212300400/1483225200/46.8/7.1/1500";
+        String url = urlServer + event + accessMaster;//+ "1212300400/1483225200/46.8/7.1/1500";
         return url;
     }
 
@@ -42,12 +43,11 @@ public final class UrlMaker {
     }
 
     public static String getByDate(String urlServer, GregorianCalendar startDate, GregorianCalendar endDate) {
-        long startTimeInSec = startDate.getTimeInMillis()/1000;
-        long endTimeInSec = endDate.getTimeInMillis()/1000;
+        long startTimeInSec = startDate.getTimeInMillis() / 1000;
+        long endTimeInSec = endDate.getTimeInMillis() / 1000;
         String url = urlServer + event + accessMaster + Long.toString(startTimeInSec) +
-                "/" + Long.toString(endTimeInSec) +"/46.8/7.1/1500";
+                "/" + Long.toString(endTimeInSec) + "/46.8/7.1/1500";
 
-        Log.d(TAG, "url : " + url);
         return url;
     }
 }
