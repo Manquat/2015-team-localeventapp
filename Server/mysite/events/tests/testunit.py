@@ -15,31 +15,31 @@ class TestEvent(unittest.TestCase):
         del self.event
 
     def test_basic_name(self):
-        assert self.event.Event_name =="Coffeebreak"
+        self.assertEqual(self.event.Event_name, "Coffeebreak")
 
     def test_basic_creator(self):
-        assert self.event.creator == "Christoph"
+        self.assertEqual(self.event.creator, "Christoph")
 
     def test_basic_description(self):
-        assert self.event.description == "This is my Coffeebreak"
+        self.assertEqual(self.event.description,  "This is my Coffeebreak")
 
     def test_basic_latitude(self):
-        assert self.event.latitude == 100.45
+        self.assertEqual(self.event.latitude,  100.45)
 
     def test_basic_longitude(self):
-        assert self.event.longitude == 150.45
+        self.assertEqual(self.event.longitude,  150.45)
 
     def test_basic_date(self):
-        assert self.event.date == "2015-11-10T13:04:48.356000Z"
+        self.assertEqual(self.event.date,  "2015-11-10T13:04:48.356000Z")
 
     def test_basic_duration(self):
-        assert self.event.duration == "02:00:00"
+        self.assertEqual(self.event.duration,  "02:00:00")
 
     def test_basic_tags(self):
-        assert self.event.tags == "Coffee"
+        self.assertEqual(self.event.tags,  "Coffee")
 
     def test_basic_image(self):
-        assert self.event.image == "ME"
+        self.assertEqual(self.event.image,  "ME")
 
 
 class TestSerializer(unittest.TestCase):
@@ -99,7 +99,7 @@ class TestViews(unittest.TestCase):
         content = JSONRenderer().render(response.data)
         stream = BytesIO(content)
         data = JSONParser().parse(stream)
-        assert data["Event_name"] =="Coffeebreak"
+        assert data["Event_name"] == "Coffeebreak"
         assert data["creator"] == "Christoph"
         assert data["description"] == "This is my Coffeebreak"
         assert data["latitude"] == 100.45
