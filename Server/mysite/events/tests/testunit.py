@@ -74,17 +74,40 @@ class TestViews(unittest.TestCase):
     def test_event_list_get(self):
         c = Client()
         response = c.get('/events/Gandalf/')
-        print response
+        content = JSONRenderer().render(response.data)
+        stream = BytesIO(content)
+        data = JSONParser().parse(stream)
+        assert data[0]["Event_name"] =="Coffeebreak"
+        assert data[0]["creator"] == "Christoph"
+        assert data[0]["description"] == "This is my Coffeebreak"
+        assert data[0]["latitude"] == 100.45
+        assert data[0]["longitude"] == 150.45
+        assert data[0]["date"] == "2008-11-22T19:53:42Z"
+        assert data[0]["duration"] == "00:00:02"
+        assert data[0]["tags"] == "Coffee"
+        assert data[0]["image"] == "ME"
         assert response.status_code == 200
 
     def test_event_list_post(self):
         c = Client()
-        response = response = c.post('/events/Gandalf/', {'id':2,'Event_name': 'Go back to work', 'creator': 'Boss'})
+        response = c.post('/events/Gandalf/', {'id':2,'Event_name': 'Go back to work', 'creator': 'Boss'})
         assert response.status_code == 201
 
     def test_event_detail_get(self):
         c = Client()
         response = c.get('/events/Gandalf/1')
+        content = JSONRenderer().render(response.data)
+        stream = BytesIO(content)
+        data = JSONParser().parse(stream)
+        assert data["Event_name"] =="Coffeebreak"
+        assert data["creator"] == "Christoph"
+        assert data["description"] == "This is my Coffeebreak"
+        assert data["latitude"] == 100.45
+        assert data["longitude"] == 150.45
+        assert data["date"] == "2008-11-22T19:53:42Z"
+        assert data["duration"] == "00:00:02"
+        assert data["tags"] == "Coffee"
+        assert data["image"] == "ME"
         assert response.status_code == 200
     """
     def test_event_detail_put(self):
