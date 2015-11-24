@@ -88,7 +88,8 @@ public class InfiniteViewPager extends ViewPager {
 
     private void initInfiniteViewPager() {
         setCurrentItem(PAGE_POSITION_CENTER);
-        setOnPageChangeListener(new OnPageChangeListener() {
+        clearOnPageChangeListeners();
+        addOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float positionOffset, int positionOffsetPixels) {
                 if (mListener != null && getAdapter() != null) {
