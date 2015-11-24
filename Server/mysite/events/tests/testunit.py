@@ -5,6 +5,8 @@ from django.utils.six import BytesIO
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 import datetime
+from  pytz import timezone
+
 
 class TestEvent(unittest.TestCase):
     "Basic tests"
@@ -57,16 +59,16 @@ class TestSerializer(unittest.TestCase):
         stream = BytesIO(content)
         data = JSONParser().parse(stream)
         serializer = EventSerializer(data=data)
-        assert serializer.is_valid() == True
+        self.assertEqual(serializer.is_valid(), True)
 
 from django.test.client import Client
 
 class TestViews(unittest.TestCase):
-
     def setUp(self):
+        EST = timezone('America/New_York')
         event = Event.objects.all()
         event.delete()
-        self.event = Event.objects.create(id = 1, Event_name="Coffeebreak", creator="Christoph", description="This is my Coffeebreak", latitude=100.45, longitude=150.45, address="New York, Manhattan", date = datetime.datetime(2008, 11, 22, 19, 53, 42), duration = datetime.timedelta(00,02,00,00), tags = "Coffee", image = "ME")
+        self.event = Event.objects.create(id = 1, Event_name="Coffeebreak", creator="Christoph", description="This is my Coffeebreak", latitude=100.45, longitude=150.45, address="New York, Manhattan", date =  datetime.datetime.now().isoformat(), duration = datetime.timedelta(00,02,00,00), tags = "Coffee", image = "ME")
     def tearDown(self):
         event = Event.objects.all()
         event.delete()
@@ -77,21 +79,22 @@ class TestViews(unittest.TestCase):
         content = JSONRenderer().render(response.data)
         stream = BytesIO(content)
         data = JSONParser().parse(stream)
-        assert data[0]["Event_name"] =="Coffeebreak"
-        assert data[0]["creator"] == "Christoph"
-        assert data[0]["description"] == "This is my Coffeebreak"
-        assert data[0]["latitude"] == 100.45
-        assert data[0]["longitude"] == 150.45
-        assert data[0]["date"] == "2008-11-22T19:53:42Z"
-        assert data[0]["duration"] == "00:00:02"
-        assert data[0]["tags"] == "Coffee"
-        assert data[0]["image"] == "ME"
-        assert response.status_code == 200
+
+        self.assertEqual(self.event.Event_name, data[0]["Event_name"])
+        self.assertEqual(self.event.creator, data[0]["creator"])
+        self.assertEqual(self.event.description, data[0]["description"])
+        self.assertEqual(self.event.latitude,  data[0]["latitude"])
+        self.assertEqual(self.event.longitude, data[0]["longitude"])
+        self.assertEqual(self.event.date+"Z",  data[0]["date"])
+        self.assertEqual("00:00:02", data[0]["duration"])
+        self.assertEqual(self.event.tags,  data[0]["tags"])
+        self.assertEqual(self.event.image,  data[0]["image"])
+        self.assertEqual(200,response.status_code)
 
     def test_event_list_post(self):
         c = Client()
         response = c.post('/events/Gandalf/', {'id':2,'Event_name': 'Go back to work', 'creator': 'Boss'})
-        assert response.status_code == 201
+        self.assertEqual(201,response.status_code)
 
     def test_event_detail_get(self):
         c = Client()
@@ -99,16 +102,17 @@ class TestViews(unittest.TestCase):
         content = JSONRenderer().render(response.data)
         stream = BytesIO(content)
         data = JSONParser().parse(stream)
-        assert data["Event_name"] == "Coffeebreak"
-        assert data["creator"] == "Christoph"
-        assert data["description"] == "This is my Coffeebreak"
-        assert data["latitude"] == 100.45
-        assert data["longitude"] == 150.45
-        assert data["date"] == "2008-11-22T19:53:42Z"
-        assert data["duration"] == "00:00:02"
-        assert data["tags"] == "Coffee"
-        assert data["image"] == "ME"
-        assert response.status_code == 200
+        self.assertEqual(self.event.Event_name, data["Event_name"])
+        self.assertEqual(self.event.creator, data["creator"])
+        self.assertEqual(self.event.description, data["description"])
+        self.assertEqual(self.event.latitude,  data["latitude"])
+        self.assertEqual(self.event.longitude, data["longitude"])
+        self.assertEqual(self.event.date+"Z",  data["date"])    #datetime object RFC 3339 (+Z) against ISO 8601 for non naive time objects
+        self.assertEqual("00:00:02", data["duration"])          #timedelta object do not have string representation
+        self.assertEqual(self.event.tags,  data["tags"])
+        self.assertEqual(self.event.image,  data["image"])
+        self.assertEqual(200,response.status_code)
+
     """
     def test_event_detail_put(self):
         c = Client()
