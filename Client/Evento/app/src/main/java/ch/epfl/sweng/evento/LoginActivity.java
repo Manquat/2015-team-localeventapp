@@ -108,6 +108,8 @@ public class LoginActivity extends AppCompatActivity
                 && savedInstanceState.getBoolean(STATE_RESOLVING_ERROR, false);
         //mGoogleApiClient.connect();
         //getIdToken();
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
 
     }
 
@@ -146,8 +148,7 @@ public class LoginActivity extends AppCompatActivity
         //getIdToken();
         // Connected to Google Play services!
         //
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+
     }
 
     @Override
@@ -236,6 +237,8 @@ public class LoginActivity extends AppCompatActivity
             // Show signed-in UI.
             Log.d(TAG, "idToken:" + mIdToken);
             Settings.INSTANCE.setIdToken(mIdToken);
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         } else {
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
@@ -245,13 +248,6 @@ public class LoginActivity extends AppCompatActivity
                 @Override
                 public void onResult(GoogleSignInResult googleSignInResult) {
 
-                    GoogleSignInAccount acct = googleSignInResult.getSignInAccount();
-                    mIdToken = acct.getIdToken();
-
-                    // Show signed-in UI.
-                    Log.d(TAG, "idToken:" + mIdToken);
-                    Settings.INSTANCE.setIdToken(mIdToken);
-                    //handleSignInResult(googleSignInResult);
                 }
             });
         }
@@ -265,6 +261,18 @@ public class LoginActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            GoogleSignInAccount acct = result.getSignInAccount();
+            mIdToken = acct.getIdToken();
+            Log.d(TAG, "idToken:" + mIdToken);
+            Settings.INSTANCE.setIdToken(mIdToken);
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+
         if (requestCode == REQUEST_RESOLVE_ERROR) {
             mResolvingError = false;
             if (resultCode == RESULT_OK) {
