@@ -52,7 +52,8 @@ public class MapsFragment extends SupportMapFragment implements
         OnMapReadyCallback,
         ConnectionCallbacks,
         OnConnectionFailedListener,
-        OnMyLocationButtonClickListener {
+        OnMyLocationButtonClickListener,
+        Refreshable {
 
     private static final String TAG = "MapsFragment";   // LogCat tag
     private static final int NUMBER_OF_MARKERS = 100;                       // Number of marker that will be displayed
@@ -231,5 +232,10 @@ public class MapsFragment extends SupportMapFragment implements
             mClusterManager.cluster();
         }
 
+    }
+
+    @Override
+    public void refresh() {
+        addEventsMarker();
     }
 }

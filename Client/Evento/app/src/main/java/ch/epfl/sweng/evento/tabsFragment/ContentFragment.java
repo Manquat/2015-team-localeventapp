@@ -21,10 +21,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
@@ -32,23 +30,16 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
 import java.util.Vector;
 
-import ch.epfl.sweng.evento.CreatingEventActivity;
 import ch.epfl.sweng.evento.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.EventActivity;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
-import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
-import ch.epfl.sweng.evento.SearchActivity;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 
@@ -56,7 +47,7 @@ import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
  * Simple Fragment used to display some meaningful content for each page in the sample's
  * {@link android.support.v4.view.ViewPager}.
  */
-public class ContentFragment extends Fragment {
+public class ContentFragment extends Fragment implements Refreshable{
 
 
     final int PADDING = 5;
@@ -116,10 +107,10 @@ public class ContentFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (mView != null) refreshEventSet();
+        if (mView != null) refresh();
     }
 
-    public void refreshEventSet() {
+    public void refresh() {
 
         mEvents = EventDatabase.INSTANCE.getAllEvents();
         mNumberOfEvent = mEvents.size();
@@ -135,7 +126,7 @@ public class ContentFragment extends Fragment {
             public void onDataReceived(List<Event> eventArrayList) {
                 EventDatabase.INSTANCE.clear();
                 EventDatabase.INSTANCE.addAll(eventArrayList);
-                refreshEventSet();
+                refresh();
                 Toast.makeText(mActivity.getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
             }
         });
@@ -146,7 +137,7 @@ public class ContentFragment extends Fragment {
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_mosaic, container, false);
 
-        refreshEventSet();
+        refresh();
 
         return mView;
     }

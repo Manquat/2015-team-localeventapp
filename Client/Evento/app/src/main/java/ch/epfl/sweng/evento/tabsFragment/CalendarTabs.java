@@ -15,7 +15,7 @@ import ch.epfl.sweng.evento.tabsFragment.Calendar.GridCalendarAdapter;
 /**
  * Created by Gautier on 21/10/2015.
  */
-public class CalendarTabs extends Fragment implements Button.OnClickListener {
+public class CalendarTabs extends Fragment implements Button.OnClickListener, Refreshable  {
     private GridCalendarAdapter mGridCalendarAdapter;
     private TextView mCurrentDate;
 
@@ -56,5 +56,10 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener {
 
     private void updateDate() {
         mCurrentDate.setText(mGridCalendarAdapter.getStringDate());
+    }
+
+    @Override
+    public void refresh() {
+
     }
 }
