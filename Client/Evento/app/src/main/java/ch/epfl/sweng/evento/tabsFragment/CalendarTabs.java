@@ -28,11 +28,10 @@ import ch.epfl.sweng.evento.R;
  */
 public class CalendarTabs extends Fragment implements
         Button.OnClickListener,
-        Updatable,
+        Refreshable,
         DatePickerDialog.OnDateSetListener {
-//---------------------------------------------------------------------------------------------
-//----Members----------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
+
 
     private GridInfinitePageAdapter mGridCalendarAdapter;
     private TextView                mCurrentDate;
@@ -86,7 +85,7 @@ public class CalendarTabs extends Fragment implements
         listView.setOnItemClickListener(mEventListAdapter);
 
         mBaseView = view;
-        update();
+        refresh();
 
         return view;
     }
@@ -111,9 +110,8 @@ public class CalendarTabs extends Fragment implements
         mGridCalendarAdapter.setFocusedDate(new GregorianCalendar(year, monthOfYear, dayOfMonth));
     }
 
-//---------------------------------------------------------------------------------------------
-//----Methods----------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
+
 
 
     public void refresh() {

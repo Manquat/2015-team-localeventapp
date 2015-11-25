@@ -52,7 +52,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         this(context, updatableParent, new GregorianCalendar());
     }
 
-    public GridCalendarAdapter(Context context, Updatable updatableParent, Calendar focusedDate) {
+    public GridCalendarAdapter(Context context, Refreshable updatableParent, Calendar focusedDate) {
         super();
         mContext = context;
         mUpdatableParent = updatableParent;
@@ -208,12 +208,10 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
     public void setFocusedDate(Calendar focusedDate) {
         mCalendarGrid.setFocusedDay(focusedDate);
         notifyDataSetChanged();
-        mUpdatableParent.update();
+        mUpdatableParent.refresh();
     }
 
-//---------------------------------------------------------------------------------------------
-//----Callbacks-------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
 
 
 

@@ -17,23 +17,23 @@ import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.InfinitePagerAdapter.internal.Constants;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.tabsFragment.Calendar.GridCalendarAdapter;
-import ch.epfl.sweng.evento.tabsFragment.Updatable;
+import ch.epfl.sweng.evento.tabsFragment.Refreshable;
 
 /**
  * An infinite page adapter for the grid of the calendar
  */
-public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> implements Updatable, InfiniteViewPager.OnInfinitePageChangeListener {
+public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> implements Refreshable, InfiniteViewPager.OnInfinitePageChangeListener {
     private Context mContext;
     private int mDayOfMonth;
     private int mYear;
-    private Updatable mParent;
+    private Refreshable mParent;
 
     /**
      * Standard constructor.
      *
      * @param targetedMonth the initial month the calendar should start at.
      */
-    public GridInfinitePageAdapter(int targetedDayOfMonth, Integer targetedMonth, int targetedYear, Context context, Updatable updatableParent) {
+    public GridInfinitePageAdapter(int targetedDayOfMonth, Integer targetedMonth, int targetedYear, Context context, Refreshable updatableParent) {
         super(targetedMonth);
         mContext = context;
         mDayOfMonth = targetedDayOfMonth;
@@ -78,20 +78,20 @@ public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> imple
     }
 
     @Override
-    public void update() {
-        mParent.update();
+    public void refresh() {
+        mParent.refresh();
     }
 
     public  void nextMonth() {
         setCurrentIndicator(getNextIndicator());
         fillPage(Constants.PAGE_POSITION_CENTER);
-        update();
+        refresh();
     }
 
     public void prevMonth() {
         setCurrentIndicator(getPreviousIndicator());
         fillPage(Constants.PAGE_POSITION_CENTER);
-        update();
+        refresh();
     }
 
     public void setFocusedDate(Calendar focusedDate) {
@@ -99,7 +99,7 @@ public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> imple
         mDayOfMonth = focusedDate.get(Calendar.DAY_OF_MONTH);
         setCurrentIndicator(focusedDate.get(Calendar.MONTH));
         fillPage(Constants.PAGE_POSITION_CENTER);
-        update();
+        refresh();
     }
 
     public List<Event> getCurrentEvents() {
@@ -115,16 +115,16 @@ public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> imple
 
     @Override
     public void onPageScrolled(Object indicator, float positionOffset, int positionOffsetPixels) {
-        update();
+        refresh();
     }
 
     @Override
     public void onPageSelected(Object indicator) {
-        update();
+        refresh();
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        update();
+        refresh();
     }
 }
