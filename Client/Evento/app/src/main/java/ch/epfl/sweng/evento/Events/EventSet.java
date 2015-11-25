@@ -242,38 +242,7 @@ public class EventSet {
         return newEventSet;
     }
 
-    /*
-    public List<Event> filter(Calendar calendar) {
-        ArrayList<Event> filteredEvent = new ArrayList<>();
-        for (Event event : mEvents.values()) {
-            if (event.getStartDate().getDay() == calendar.get(Calendar.DAY_OF_MONTH) &&
-                    event.getStartDate().getMonth() == calendar.get(Calendar.MONTH) &&
-                    event.getStartDate().getYear() == calendar.get(Calendar.YEAR)) {
-                filteredEvent.add(event);
-            }
-        }
-
-        if (filteredEvent.size() == 0) {
-            // mock the presence of event at the actual date
-            GregorianCalendar cal = new GregorianCalendar();
-            if (cal.get(Calendar.YEAR) == calendar.get(Calendar.YEAR) &&
-                    cal.get(Calendar.DAY_OF_YEAR) == calendar.get(Calendar.DAY_OF_YEAR)) {
-                filteredEvent.addAll(mEvents.values());
-                filteredEvent.add(getErrorEvent());
-                filteredEvent.add(getErrorEvent());
-            }
-            else {
-                filteredEvent = null;
-            }
-        }
-
-        return filteredEvent;
-    }
-*/
-
     /**
-=======
->>>>>>> origin/master
      * @return the number of Events stored in the set
      */
     public int size() {

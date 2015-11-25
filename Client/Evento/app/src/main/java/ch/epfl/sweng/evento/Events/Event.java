@@ -226,7 +226,7 @@ public Event(int id,
      * @return the signature of the Event in the form yyyymmddhhmmID
      */
     public long getSignature() {
-        return (100000 * getCalendarAsLong() + (long) getID());
+        return (100000 * mStartDate.getTimeInMillis() + (long) getID());
     }
 
     public long getCalendarAsLong(){
@@ -238,7 +238,7 @@ public Event(int id,
     }
 
     //This is a temporary method to test if the server can handle very long strings
-    static public String samplePicture() {
+    public static String samplePicture() {
         return "Qk2uFAAAAAAAAIoEAAB8AAAAxwAAAMcAAAABAAgAAQAAACQQAAASCwAAEgsAAAABAAAAAQAAAAD/ " +
                 "AAD/AAD/AAAAAAAA/0JHUnMAAAAAAAAAAFS4HvwAAAAAAAAAAGZmZvwAAAAAAAAAAMT1KP8AAAAA " +
                 "AAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAMDAwABI " +
