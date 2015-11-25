@@ -18,7 +18,8 @@ import java.util.Locale;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.tabsFragment.Updatable;
+import ch.epfl.sweng.evento.tabsFragment.Refreshable;
+
 
 /**
  * Adapter for the GridView that display the CalendarCells
@@ -27,19 +28,17 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
     private static final String TAG = "GridCalendarAdapter";
     private static final int NUMBER_OF_CELLS = 7 * 7; // the line for the day of the week, and 6 lines for all the day of the month
 
-//---------------------------------------------------------------------------------------------
-//----Members----------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
+
 
     private Context      mContext;          // the context where the adapter is used
     private CalendarGrid mCalendarGrid;     // the container of all the information
     private List<Event>  mEvents = null;    // the events at the current day
-    private Updatable    mUpdatableParent;  // the parent that holds the grid and will be update when something
+    private Refreshable mUpdatableParent;  // the parent that holds the grid and will be update when something
                                             // changed in the adapter.
 
-//---------------------------------------------------------------------------------------------
-//----Constructor------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
+
 
     /**
      * Constructor
@@ -48,7 +47,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
      * @param updatableParent the parent that holds the grid and will be update when something
      *                        changed in the adapter.
      */
-    public GridCalendarAdapter(Context context, Updatable updatableParent) {
+    public GridCalendarAdapter(Context context, Refreshable updatableParent) {
         super();
         mContext = context;
         mUpdatableParent = updatableParent;
@@ -59,9 +58,8 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         mEvents = EventDatabase.INSTANCE.filter(actualDate).toArrayList();
     }
 
-//---------------------------------------------------------------------------------------------
-//----Get--------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
+
 
     /**
      * Getting the number of cells in the grid view
@@ -176,7 +174,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
                 if (day.getStateCurrentDay()) {
                     mEvents = events;
-                    mUpdatableParent.update();
+                    mUpdatableParent.refresh();
                 }
             }
         }
@@ -202,9 +200,8 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         return mEvents;
     }
 
-//---------------------------------------------------------------------------------------------
-//----Callbacks-------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
+
 
     @Override
     public void onClick(View v) {
@@ -213,12 +210,11 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         mCalendarGrid.setFocusedDay(position);
         mEvents = null;
         notifyDataSetChanged();
-        mUpdatableParent.update();
+        mUpdatableParent.refresh();
     }
 
-//---------------------------------------------------------------------------------------------
-//----Methods----------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
+
 
     public void nextMonth() {
         mCalendarGrid.nextMonth();

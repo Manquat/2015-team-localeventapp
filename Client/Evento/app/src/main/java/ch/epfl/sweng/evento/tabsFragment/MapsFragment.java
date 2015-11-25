@@ -44,9 +44,8 @@ public class MapsFragment extends SupportMapFragment implements
     private static final float ZOOM_LEVEL = 15.0f;                          // Zoom level of the map at the beginning
 
 
-//---------------------------------------------------------------------------------------------
-//----Members----------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
+
 
     private GoogleMap mMap;
     private Location mLastLocation;
@@ -60,9 +59,8 @@ public class MapsFragment extends SupportMapFragment implements
     private ViewGroup mContainer;
     private View mView;
 
-//---------------------------------------------------------------------------------------------
-//----Constructor------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
+
 
     /**
      * Constructor by default mandatory for fragment class
@@ -71,9 +69,8 @@ public class MapsFragment extends SupportMapFragment implements
         super();
     }
 
-//---------------------------------------------------------------------------------------------
-//----Callbacks--------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -212,9 +209,8 @@ public class MapsFragment extends SupportMapFragment implements
         return false;
     }
 
-//---------------------------------------------------------------------------------------------
-//----Methods----------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
+
 
     /**
      * Zoom on the the position of the user and draw some markers

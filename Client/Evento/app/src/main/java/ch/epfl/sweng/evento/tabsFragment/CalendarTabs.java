@@ -23,7 +23,7 @@ import ch.epfl.sweng.evento.tabsFragment.Calendar.GridCalendarAdapter;
  * The fragment that holds the calendar and the listView that display the events at the current
  * selected date
  */
-public class CalendarTabs extends Fragment implements Button.OnClickListener, Refreshable, Updatable  {
+public class CalendarTabs extends Fragment implements Button.OnClickListener, Refreshable  {
 
 
     private GridCalendarAdapter  mGridCalendarAdapter;
@@ -31,9 +31,7 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener, Re
     private LinearLayout         mBaseLayout;
     private EventListViewAdapter mEventListAdapter;
 
-//---------------------------------------------------------------------------------------------
-//----Callbacks--------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +58,7 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener, Re
         listView.setAdapter(mEventListAdapter);
         listView.setOnItemClickListener(mEventListAdapter);
 
-        update();
+        refresh();
 
         return view;
     }
@@ -70,21 +68,19 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener, Re
         switch (v.getId()) {
             case R.id.nextButton:
                 mGridCalendarAdapter.nextMonth();
-                update();
+                refresh();
                 break;
             case R.id.prevButton:
                 mGridCalendarAdapter.prevMonth();
-                update();
+                refresh();
                 break;
             default:
         }
     }
 
-//---------------------------------------------------------------------------------------------
-//----Methods----------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
 
-    public void update() {
+
+    public void refresh() {
         updateDate();
 
         List<Event> events = mGridCalendarAdapter.getCurrentEvents();
@@ -95,10 +91,5 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener, Re
 
     private void updateDate() {
         mCurrentDate.setText(mGridCalendarAdapter.getStringDate());
-    }
-
-    @Override
-    public void refresh() {
-
     }
 }
