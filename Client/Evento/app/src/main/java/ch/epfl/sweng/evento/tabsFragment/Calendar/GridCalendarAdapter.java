@@ -49,14 +49,17 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
      *                        changed in the adapter.
      */
     public GridCalendarAdapter(Context context, Updatable updatableParent) {
+        this(context, updatableParent, new GregorianCalendar());
+    }
+
+    public GridCalendarAdapter(Context context, Updatable updatableParent, Calendar focusedDate) {
         super();
         mContext = context;
         mUpdatableParent = updatableParent;
 
-        // Initialize the calendar grid at the current date
-        GregorianCalendar actualDate = new GregorianCalendar();
-        mCalendarGrid = new CalendarGrid(actualDate);
-        mEvents = EventDatabase.INSTANCE.filter(actualDate).toArrayList();
+        // Initialize the calendar grid at the given date
+        mCalendarGrid = new CalendarGrid(focusedDate);
+        mEvents = EventDatabase.INSTANCE.filter(focusedDate).toArrayList();
     }
 
 //---------------------------------------------------------------------------------------------

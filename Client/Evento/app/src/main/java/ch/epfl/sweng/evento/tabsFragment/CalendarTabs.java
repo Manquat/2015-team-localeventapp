@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,6 +19,8 @@ import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventListViewAdapter;
+import ch.epfl.sweng.evento.InfinitePagerAdapter.GridInfinitePageAdapter;
+import ch.epfl.sweng.evento.InfinitePagerAdapter.InfiniteViewPager;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.tabsFragment.Calendar.GridCalendarAdapter;
 
@@ -48,11 +49,19 @@ public class CalendarTabs extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_calendar, container, false);
+        // create the calendar centred on the actual date
+        GregorianCalendar actualDate = new GregorianCalendar();
 
-        GridView gridView = (GridView) view.findViewById(R.id.gridView);
+        // inflate the layout
+        View view = inflater.inflate(R.layout.random_name, container, false);
+
+        // create the infinite page viewer at the actual date
+        InfiniteViewPager pager = (InfiniteViewPager) view.findViewById(R.id.calendar_infinite_pager);
+        pager.setAdapter(new GridInfinitePageAdapter(0, getContext(), actualDate.get(Calendar.YEAR)));
+
+        /*GridView gridView = (GridView) view.findViewById(R.id.gridView);
         mGridCalendarAdapter = new GridCalendarAdapter(view.getContext(), this);
-        gridView.setAdapter(mGridCalendarAdapter);
+        gridView.setAdapter(mGridCalendarAdapter);*/
 
         Button nextButton = (Button) view.findViewById(R.id.nextButton);
         nextButton.setOnClickListener(this);
@@ -63,7 +72,6 @@ public class CalendarTabs extends Fragment implements
         mCurrentDate = (TextView) view.findViewById(R.id.dayTitle);
 
         // show a date picker when click on the date
-        GregorianCalendar actualDate = new GregorianCalendar();
         mDatePicker = new DatePickerDialog(getContext(), this, actualDate.get(Calendar.YEAR),
                 actualDate.get(Calendar.MONTH), actualDate.get(Calendar.DAY_OF_MONTH));
         mCurrentDate.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +89,7 @@ public class CalendarTabs extends Fragment implements
         listView.setAdapter(mEventListAdapter);
         listView.setOnItemClickListener(mEventListAdapter);
 
-        update();
+        //update();
 
         return view;
     }

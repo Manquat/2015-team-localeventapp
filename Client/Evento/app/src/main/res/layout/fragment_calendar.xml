@@ -9,33 +9,6 @@
     android:orientation="vertical"
     android:id="@+id/calendar_base_layout">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/calendar_date_height">
-
-        <Button
-            android:layout_width="@dimen/calendar_button_width"
-            android:layout_height="match_parent"
-            android:text="@string/prev"
-            android:id="@+id/prevButton" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/dayTitle"
-            android:layout_weight="5"
-            android:gravity="center"/>
-
-        <Button
-            android:layout_width="@dimen/calendar_button_width"
-            android:layout_height="match_parent"
-            android:text="@string/next"
-            android:id="@+id/nextButton" />
-
-    </LinearLayout>
-
     <GridView
         android:id="@+id/gridView"
         android:layout_width="match_parent"
@@ -46,10 +19,5 @@
         android:stretchMode="columnWidth"
         android:gravity="center"
         android:layout_gravity="top|center_horizontal" />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/calendar_list_event"/>
 
 </LinearLayout>
