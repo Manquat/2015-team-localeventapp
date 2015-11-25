@@ -36,12 +36,12 @@ public class CalendarTabs extends Fragment implements
 //----Members----------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
-    private GridCalendarAdapter  mGridCalendarAdapter;
-    private TextView             mCurrentDate;
-    private LinearLayout         mBaseLayout;
-    private EventListViewAdapter mEventListAdapter;
-    private DatePickerDialog     mDatePicker;
-
+    private GridInfinitePageAdapter mGridCalendarAdapter;
+    private TextView                mCurrentDate;
+    private View                    mBaseView;
+    private EventListViewAdapter    mEventListAdapter;
+    private DatePickerDialog        mDatePicker;
+    private InfiniteViewPager       mPager;
 //---------------------------------------------------------------------------------------------
 //----Callbacks--------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
@@ -56,12 +56,14 @@ public class CalendarTabs extends Fragment implements
         View view = inflater.inflate(R.layout.random_name, container, false);
 
         // create the infinite page viewer at the actual date
-        InfiniteViewPager pager = (InfiniteViewPager) view.findViewById(R.id.calendar_infinite_pager);
-        pager.setAdapter(new GridInfinitePageAdapter(0, getContext(), actualDate.get(Calendar.YEAR)));
-
-        /*GridView gridView = (GridView) view.findViewById(R.id.gridView);
-        mGridCalendarAdapter = new GridCalendarAdapter(view.getContext(), this);
-        gridView.setAdapter(mGridCalendarAdapter);*/
+        mPager = (InfiniteViewPager) view.findViewById(R.id.calendar_infinite_pager);
+        mGridCalendarAdapter = new GridInfinitePageAdapter(actualDate.get(Calendar.DAY_OF_MONTH),
+                actualDate.get(Calendar.MONTH),
+                actualDate.get(Calendar.YEAR),
+                getContext(),
+                this);
+        mPager.setAdapter(mGridCalendarAdapter);
+        mPager.setOnInfinitePageChangeListener(mGridCalendarAdapter);
 
         Button nextButton = (Button) view.findViewById(R.id.nextButton);
         nextButton.setOnClickListener(this);
@@ -81,15 +83,14 @@ public class CalendarTabs extends Fragment implements
             }
         });
 
-        mBaseLayout = (LinearLayout) view.findViewById(R.id.calendar_base_layout);
-
         ListView listView = (ListView) view.findViewById(R.id.calendar_list_event);
         mEventListAdapter = new EventListViewAdapter(view.getContext(),
                 new ArrayList<Event>(0), getActivity());
         listView.setAdapter(mEventListAdapter);
         listView.setOnItemClickListener(mEventListAdapter);
 
-        //update();
+        mBaseView = view;
+        update();
 
         return view;
     }
@@ -124,7 +125,8 @@ public class CalendarTabs extends Fragment implements
         List<Event> events = mGridCalendarAdapter.getCurrentEvents();
         mEventListAdapter.setEvents(events);
 
-        mBaseLayout.invalidate();
+        mPager.invalidate();
+        mBaseView.invalidate();
     }
 
     private void updateDate() {

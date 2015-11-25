@@ -17,6 +17,7 @@ import java.util.Locale;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.InfinitePagerAdapter.GridInfinitePageAdapter;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.tabsFragment.Updatable;
 
@@ -221,6 +222,8 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         int position = Integer.valueOf((String) v.getTag(R.id.position_tag));
 
         mCalendarGrid.setFocusedDay(position);
+        ((GridInfinitePageAdapter) mUpdatableParent).setFocusedDate(mCalendarGrid.getFocusedDate());
+
         mEvents = null;
         notifyDataSetChanged();
         mUpdatableParent.update();
