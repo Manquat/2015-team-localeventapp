@@ -62,13 +62,13 @@ public class LoginActivity extends AppCompatActivity
     // Request code used to get ID Token
     private static final int RC_GET_TOKEN = 9002;
     // Request Profile information
-    private  static final int RC_GET_PROFIL_INFO = 9001;
+    private static final int RC_GET_PROFIL_INFO = 9001;
     private GoogleApiClient mGoogleApiClient;
     public String mEmail = "bla";
     public String mIdToken = null;
     // Request code to use when launching the resolution activity
     private static final int REQUEST_RESOLVE_ERROR = 1001;
-            static final int REQUEST_CODE_RECOVER_FROM_AUTH_ERROR = 1002;
+    static final int REQUEST_CODE_RECOVER_FROM_AUTH_ERROR = 1002;
     // Unique tag for the error dialog fragment
     private static final String DIALOG_ERROR = "dialog_error";
     // Bool to track whether the app is already resolving an error
@@ -86,12 +86,7 @@ public class LoginActivity extends AppCompatActivity
 
     static final int REQUEST_CODE_PICK_ACCOUNT = 1000;
 
-    private void pickUserAccount() {
-        String[] accountTypes = new String[]{"com.google"};
-        Intent intent = AccountPicker.newChooseAccountIntent(null, null,
-                accountTypes, false, null, null, null, null);
-        startActivityForResult(intent, REQUEST_CODE_PICK_ACCOUNT);
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +119,7 @@ public class LoginActivity extends AppCompatActivity
 
         mResolvingError = savedInstanceState != null
                 && savedInstanceState.getBoolean(STATE_RESOLVING_ERROR, false);
+
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setColorScheme(SignInButton.COLOR_DARK);
         // Sign in if clicked
@@ -222,7 +218,8 @@ public class LoginActivity extends AppCompatActivity
 
     /* A fragment to display an error dialog */
     public static class ErrorDialogFragment extends DialogFragment {
-        public ErrorDialogFragment() { }
+        public ErrorDialogFragment() {
+        }
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -258,7 +255,7 @@ public class LoginActivity extends AppCompatActivity
             // Show signed-in UI.
             Log.d(TAG, "idToken:" + mIdToken);
             Settings.INSTANCE.setIdToken(mIdToken);
-        }else {
+        } else {
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
             // single sign-on will occur in this branch.
@@ -281,13 +278,13 @@ public class LoginActivity extends AppCompatActivity
 
     @Override
     protected void onStop() {
-                mGoogleApiClient.disconnect();
-                super.onStop();
+        mGoogleApiClient.disconnect();
+        super.onStop();
     }
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         final String TAG = "Result of connection.";
@@ -304,7 +301,7 @@ public class LoginActivity extends AppCompatActivity
             mGoogleApiClient.connect();
         }
 
-        if (requestCode == RC_GET_TOKEN){
+        if (requestCode == RC_GET_TOKEN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             Log.d(TAG, "onActivityResult:GET_TOKEN:success:" + result.getStatus().isSuccess());
             Log.d(TAG, "onActivityResult:GET_TOKEN: Status Code: " + result.getStatus().getStatusCode());
@@ -317,7 +314,7 @@ public class LoginActivity extends AppCompatActivity
             }
         }
 
-        if (requestCode == RC_GET_PROFIL_INFO){
+        if (requestCode == RC_GET_PROFIL_INFO) {
 
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             GoogleSignInAccount acct = result.getSignInAccount();
@@ -378,11 +375,11 @@ public class LoginActivity extends AppCompatActivity
      * start an instance of the AsyncTask to get the auth token and do work with it.
      */
     private void getUsername() {
-            if (mEmail == null) {
-                pickUserAccount();
-            } else {
-                new GetUsernameTask(LoginActivity.this, mEmail, SCOPE).execute();
-            }
+        if (mEmail == null) {
+            pickUserAccount();
+        } else {
+            new GetUsernameTask(LoginActivity.this, mEmail, SCOPE).execute();
+        }
     }
 
 
@@ -400,7 +397,7 @@ public class LoginActivity extends AppCompatActivity
                     // The Google Play services APK is old, disabled, or not present.
                     // Show a dialog created by Google Play services that allows
                     // the user to update the APK
-                    int statusCode = ((GooglePlayServicesAvailabilityException)e)
+                    int statusCode = ((GooglePlayServicesAvailabilityException) e)
                             .getConnectionStatusCode();
                     Dialog dialog = GooglePlayServicesUtil.getErrorDialog(statusCode,
                             LoginActivity.this,
@@ -410,7 +407,7 @@ public class LoginActivity extends AppCompatActivity
                     // Unable to authenticate, such as when the user has not yet granted
                     // the app access to the account, but the user can fix this.
                     // Forward the user to an activity in Google Play services.
-                    Intent intent = ((UserRecoverableAuthException)e).getIntent();
+                    Intent intent = ((UserRecoverableAuthException) e).getIntent();
                     startActivityForResult(intent,
                             REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR);
                 }
@@ -429,6 +426,13 @@ public class LoginActivity extends AppCompatActivity
         }
     }
 
+    private void pickUserAccount() {
+        String[] accountTypes = new String[]{"com.google"};
+        Intent intent = AccountPicker.newChooseAccountIntent(null, null,
+                accountTypes, false, null, null, null, null);
+        startActivityForResult(intent, REQUEST_CODE_PICK_ACCOUNT);
+    }
+
     private void getIdToken() {
         // Show an account picker to let the user choose a Google account from the device.
         // If the GoogleSignInOptions only asks for IDToken and/or profile and/or email then no
@@ -437,7 +441,7 @@ public class LoginActivity extends AppCompatActivity
         startActivityForResult(signInIntent, RC_GET_TOKEN);
     }
 
-    private void getProfilInfo(){
+    private void getProfilInfo() {
         //Function calls a startActivityForResult to gather needed Profil information and send where it is needed
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_GET_PROFIL_INFO);
