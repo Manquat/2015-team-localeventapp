@@ -65,7 +65,7 @@ public class RestApi {
         }).execute();
     }
 
-    public void getMultiplesEvent(final GetMultipleResponseCallback callback) {
+    public void getAll(final GetMultipleResponseCallback callback){
         String restUrl = UrlMaker.getAll(mUrlServer);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
@@ -95,6 +95,31 @@ public class RestApi {
                 if (result != null) {
                     try {
                         eventArrayList = Parser.parseFromJSONMultiple(result);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "exception in JSON parser");
+                    }
+
+                }
+                callback.onDataReceived(eventArrayList);
+            }
+        }).execute();
+    }
+
+    public void getWithFilter(GregorianCalendar startTime,
+                              GregorianCalendar endTime,
+                              double latitude,
+                              double longitude,
+                              double radius,
+                              final GetMultipleResponseCallback callback) {
+        String restUrl = UrlMaker.getWithFilter(mUrlServer, startTime, endTime, latitude, longitude, radius);
+        new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
+            @Override
+            public void onTaskComplete(String result) {
+                List<Event> eventArrayList = null;
+                if (result != null)
+                {
+                    try {
+                        eventArrayList= Parser.parseFromJSONMultiple(result);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -153,6 +178,7 @@ public class RestApi {
             }
         }).execute();
     }
+
 
 
 }
