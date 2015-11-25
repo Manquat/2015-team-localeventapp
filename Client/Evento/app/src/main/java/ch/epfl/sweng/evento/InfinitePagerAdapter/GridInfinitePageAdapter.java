@@ -8,7 +8,6 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -55,7 +54,7 @@ public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> imple
     @Override
     public ViewGroup instantiateItem(Integer indicator) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_calendar,
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.calendar_gridview,
                 (ViewGroup) ((Activity) mContext).getWindow().getDecorView().getRootView(), false);
 
         // create a calendar at the wanted month

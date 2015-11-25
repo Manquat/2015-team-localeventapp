@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,7 +21,6 @@ import ch.epfl.sweng.evento.Events.EventListViewAdapter;
 import ch.epfl.sweng.evento.InfinitePagerAdapter.GridInfinitePageAdapter;
 import ch.epfl.sweng.evento.InfinitePagerAdapter.InfiniteViewPager;
 import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.tabsFragment.Calendar.GridCalendarAdapter;
 
 /**
  * The fragment that holds the calendar and the listView that display the events at the current
@@ -53,7 +51,7 @@ public class CalendarTabs extends Fragment implements
         GregorianCalendar actualDate = new GregorianCalendar();
 
         // inflate the layout
-        View view = inflater.inflate(R.layout.random_name, container, false);
+        View view = inflater.inflate(R.layout.fragment_calendar, container, false);
 
         // create the infinite page viewer at the actual date
         mPager = (InfiniteViewPager) view.findViewById(R.id.calendar_infinite_pager);
