@@ -11,6 +11,6 @@ public final class Settings {
     }
 
     public static String getServerUrl() {
-        return "https://128.179.187.105:8000/";
+        return "http://128.179.187.105:8000/";
     }
 }

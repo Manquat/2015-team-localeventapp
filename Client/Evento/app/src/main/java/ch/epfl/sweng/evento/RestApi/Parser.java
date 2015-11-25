@@ -44,7 +44,10 @@ public class Parser {
                     jsonObject.getDouble("longitude"),
                     jsonObject.getString("address"),
                     jsonObject.getString("creator"),
-                    new HashSet<String>());
+                    new HashSet<String>(){{ add(json.getString("tags"));}},
+                    jsonObject.getString("image"),
+                    jsonObject.getString("participants")
+            );
 
         } catch (IllegalArgumentException e) {
             throw new JSONException("Invalid question structure");

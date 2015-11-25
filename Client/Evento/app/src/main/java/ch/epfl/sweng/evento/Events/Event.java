@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
@@ -34,6 +35,9 @@ public class Event implements ClusterItem {
     private CustomDate mStartDate;
     private CustomDate mEndDate;
     private String mPicture;
+    private Set<String> mListOfParticipants; //For now, i assume that username is unique. (we won't get any duplicate elements)
+    private final int mNumberMaxOfParticipants;
+
 
     public Event(int id,
                  String title,
@@ -42,7 +46,9 @@ public class Event implements ClusterItem {
                  double longitude,
                  String address,
                  String creator,
-                 Set<String> tags) {
+                 Set<String> tags,
+                 String image,
+                 String participants) {
         mID = id;
         mTitle = title;
         mDescription = description;
@@ -53,6 +59,10 @@ public class Event implements ClusterItem {
         mStartDate = new CustomDate();
         mEndDate = new CustomDate();
         mPicture = "";
+        mNumberMaxOfParticipants =  10;//TODO
+        mListOfParticipants = new HashSet<String>();
+        mListOfParticipants.add(creator);
+        mListOfParticipants.add("Berb");
     }
 
     public Event(int id,
@@ -65,7 +75,7 @@ public class Event implements ClusterItem {
                  Set<String> tags,
                  CustomDate startDate,
                  CustomDate endDate) {
-        this(id, title, description, latitude, longitude, address, creator, tags);
+        this(id, title, description, latitude, longitude, address, creator, tags, "problem", "problem");
         mStartDate = new CustomDate(startDate);
         mEndDate = new CustomDate(endDate);
         mPicture = samplePicture();
@@ -98,6 +108,45 @@ public class Event implements ClusterItem {
         return s;
     }
 
+    public boolean addParticipant(String participant){
+        if(participant != null) {
+            if (mListOfParticipants.size() < mNumberMaxOfParticipants) {
+                mListOfParticipants.add(participant);
+                return true;
+            } else {
+                Log.d("Event.addParticipant", "Can't add a participant more (" + mListOfParticipants.size() + ")");
+            }
+        }
+        Log.d("Event.addParticipant", "Can't add null as a participant");
+        return false;
+    }
+
+    public Set<String> getAllParticipant() {
+        return mListOfParticipants;
+    }
+
+    public int getMaxNumberOfParticipant() {
+        return mNumberMaxOfParticipants;
+    }
+
+    public boolean removeParticipant(String participant){
+        if(participant != null) {
+            if (checkIfParticipantIsIn(participant)) {
+                mListOfParticipants.remove(participant);
+                return true;
+            } else {
+                Log.d("Event.removeParticipant", participant + " was already not participating.");
+            }
+        }
+        Log.d("Event.addParticipant", "Can't add null as a participant");
+        return false;
+    }
+
+    public boolean checkIfParticipantIsIn(String participant){
+        if(participant != null) return mListOfParticipants.contains(participant);
+        Log.d("Event.checkIfPart.", "Can't check if null is a participant");
+        return false;
+    }
 
     public void setPicture(String picture) {
         mPicture = picture;
@@ -179,6 +228,39 @@ public class Event implements ClusterItem {
         } else if (mTags.contains("Basketball")) return "Basketball";
         else return "Basketball";
     }
+
+    public String getListParticipantString(String separator) {
+        String res = "";
+        if(!mListOfParticipants.isEmpty()){
+            for(String participantName: mListOfParticipants){
+                res += participantName + separator;
+            }
+            Log.d("Event", "Result of ListOfParticipant to String " + res);
+        }
+        return res;
+    }
+
+    public String getListParticipantString() {
+        return getListParticipantString("\\\\");
+    }
+
+    public void setListOfParticipant(String str, char sep1, char sep2){
+        int j = 0;
+        Set<String> res = new HashSet<String>();
+        for(int i = 0; i < str.length(); i = j+2){
+            String name = "";
+            for(j=i; j+1 <= str.length() && (str.charAt(j) != sep1 || str.charAt(j+1) != sep2); ++j){
+                name+=str.charAt(j);
+            }
+            Log.d("Event.ListToString", "Result of iteration " + name);
+            if(res.size() < mNumberMaxOfParticipants) res.add(name);
+        }
+        mListOfParticipants = res;
+    }
+    public void setListOfParticipant(String str){
+        setListOfParticipant(str, '\\', '\\');
+    }
+
 
     public Set<String> getTags() {
         return mTags;

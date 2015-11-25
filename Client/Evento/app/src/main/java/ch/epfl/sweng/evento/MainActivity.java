@@ -61,12 +61,27 @@ public class MainActivity extends AppCompatActivity {
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
     private static final String urlServer = Settings.getServerUrl();
     private ArrayList<Event> mEventArrayList = new ArrayList<>();
+    private static UserProfilInformation user1;
+    private static UserProfilInformation user2;
 
+    public static UserProfilInformation getUser(int user){
+        switch(user){
+            case 1:
+                return user1;
+            case 2:
+                return user2;
+            default:
+                return user1;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        user1 = new UserProfilInformation();
+        user2 = new UserProfilInformation();
 
 
         // Creating the Toolbar and setting it as the Toolbar for the activity
@@ -130,6 +145,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else if (id == R.id.action_refresh) {
             refreshFromServer();
+        } else if (id == R.id.action_manageYourEvent) {
+            Intent intent = new Intent(this, ManageActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

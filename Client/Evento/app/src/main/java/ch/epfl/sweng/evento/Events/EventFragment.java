@@ -2,6 +2,7 @@ package ch.epfl.sweng.evento.Events;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ch.epfl.sweng.evento.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.EventDatabase;
+import ch.epfl.sweng.evento.MainActivity;
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.RestApi.PutCallback;
+import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.Settings;
 
 /**
  * Created by Tago on 13/11/2015.
@@ -19,7 +25,7 @@ import ch.epfl.sweng.evento.R;
 public class EventFragment extends Fragment {
 
     public static final String KEYCURRENTEVENT = "CurrentEvent";
-
+    private RestApi mRestAPI;
     private Event mEvent;
 
     @Override
@@ -60,7 +66,22 @@ public class EventFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity().getApplicationContext(), "Submitted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
+                String listOfParticipant = mEvent.getListParticipantString();
+                mEvent.setListOfParticipant("Bernard\\\\Herve\\\\Thiery\\\\");
+                String listOfParticipant2 = mEvent.getListParticipantString();
+                MainActivity.getUser(1).addMatchedEvent(mEvent);
+                if(!mEvent.addParticipant("Alfred")) {
+                    Log.d("EventFragment.upd.", "addParticipant just returned false");
+                } else {
+                    mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+                    mRestAPI.updateEvent(mEvent,new PutCallback() {
+                        @Override
+                        public void onPostSuccess(String response) {
+                            Log.d("EventFrag.upd.", "Response" + response);
+                        }
+                    });
+                }
                 getActivity().finish();
             }
         });
