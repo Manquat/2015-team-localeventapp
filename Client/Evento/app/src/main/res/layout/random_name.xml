@@ -32,7 +32,7 @@
 
     <ch.epfl.sweng.evento.InfinitePagerAdapter.InfiniteViewPager
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/calendar_grid_view_height"
         android:id="@+id/calendar_infinite_pager" />
 
     <ListView

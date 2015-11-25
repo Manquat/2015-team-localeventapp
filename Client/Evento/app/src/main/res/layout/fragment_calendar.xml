@@ -12,7 +12,7 @@
     <GridView
         android:id="@+id/gridView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/calendar_grid_view_height"
+        android:layout_height="match_parent"
         android:numColumns="7"
         android:verticalSpacing="@dimen/calendar_grid_view_spacing"
         android:horizontalSpacing="@dimen/calendar_grid_view_spacing"
