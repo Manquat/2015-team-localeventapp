@@ -119,9 +119,9 @@ public Event(int id,
 
 
     public String getProperDateString(){
-        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        timeFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        return timeFormat.format(this.getStartDate().getTime());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
+        timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+        return timeFormat.format(mStartDate.getTime());
     }
 
     static public String asNiceString(Calendar calendar){

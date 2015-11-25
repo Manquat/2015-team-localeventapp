@@ -312,7 +312,7 @@ public class RestApiTest {
 
 
     private static final Calendar eventDate = new GregorianCalendar(2012, 10, 2, 5, 5);
-    private static final String stringDate = "2012-11-02T04:05:00Z";
+    private static final String stringDate = "2012-11-02T05:05:00Z";
 
     @Test
     public void testDateToProperString() {
