@@ -20,17 +20,15 @@ import ch.epfl.sweng.evento.R;
  * List view adapter that can be used to display the list of event given in the constructor
  */
 public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
-//---------------------------------------------------------------------------------------------
-//----Members----------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
+
 
     Context     mContext;
     List<Event> mEvents;
     Activity    mActivity;
 
-//---------------------------------------------------------------------------------------------
-//----Constructor------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
+
 
     /**
      * Constructor of the class
@@ -46,9 +44,8 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
         mActivity = parentActivity;
     }
 
-//---------------------------------------------------------------------------------------------
-//----Get--------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
+
 
     @Override
     public int getCount() {
@@ -90,9 +87,8 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
         return rootView;
     }
 
-//---------------------------------------------------------------------------------------------
-//----Set--------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
+
 
     /**
      * Setter for the events
@@ -104,9 +100,8 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
         notifyDataSetChanged();
     }
 
-//---------------------------------------------------------------------------------------------
-//----Callback---------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
+
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

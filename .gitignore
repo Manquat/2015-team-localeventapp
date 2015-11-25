@@ -2,3 +2,6 @@
 *.pyc
 *.css
 /Server/mysite/mysite/static/*
+/Server/mysite/User/migrations
+/Server/mysite/events/fixtures/Event.json
+/Server/mysite/User/migrations/0001_initial.py

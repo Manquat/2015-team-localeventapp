@@ -40,9 +40,7 @@ public class CalendarTabs extends Fragment implements
     private EventListViewAdapter    mEventListAdapter;
     private DatePickerDialog        mDatePicker;
     private InfiniteViewPager       mPager;
-//---------------------------------------------------------------------------------------------
-//----Callbacks--------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,11 +96,11 @@ public class CalendarTabs extends Fragment implements
         switch (v.getId()) {
             case R.id.nextButton:
                 mGridCalendarAdapter.nextMonth();
-                update();
+                refresh();
                 break;
             case R.id.prevButton:
                 mGridCalendarAdapter.prevMonth();
-                update();
+                refresh();
                 break;
             default:
         }
@@ -117,7 +115,8 @@ public class CalendarTabs extends Fragment implements
 //----Methods----------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
-    public void update() {
+
+    public void refresh() {
         updateDate();
 
         List<Event> events = mGridCalendarAdapter.getCurrentEvents();

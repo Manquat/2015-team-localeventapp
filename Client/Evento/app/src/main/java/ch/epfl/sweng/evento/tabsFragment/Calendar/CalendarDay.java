@@ -15,18 +15,12 @@ public class CalendarDay extends Button {
     public static final int[] STATE_CURRENT_MONTH = {R.attr.state_current_month};
     public static final int[] STATE_HAVE_EVENTS = {R.attr.state_have_events};
 
-//---------------------------------------------------------------------------------------------
-//----Members----------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
     private static final int NUMBER_OF_STATES = 3;
 
     private boolean mIsCurrentDay = false;      // is it the current day
     private boolean mIsCurrentMonth = false;    // is it a day of the current month
     private boolean mHaveEvents = false;        // have this day some events
 
-//---------------------------------------------------------------------------------------------
-//----Constructor------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
 
     /**
      * Constructor that just call the one of button
@@ -37,9 +31,6 @@ public class CalendarDay extends Button {
         super(context, attrs);
     }
 
-//---------------------------------------------------------------------------------------------
-//----Set--------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
 
     /**
      * Getter for the CurrentDay state
@@ -65,9 +56,6 @@ public class CalendarDay extends Button {
         return mHaveEvents;
     }
 
-//---------------------------------------------------------------------------------------------
-//----Set--------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
 
     /**
      * Setter for the CurrentDay state
@@ -96,9 +84,6 @@ public class CalendarDay extends Button {
         refreshDrawableState();
     }
 
-//---------------------------------------------------------------------------------------------
-//----Callback---------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
 
     @Override
     protected int[] onCreateDrawableState(int extraSpace) {
