@@ -15,6 +15,7 @@ import java.util.List;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.InfinitePagerAdapter.internal.Constants;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.tabsFragment.Calendar.GridCalendarAdapter;
 import ch.epfl.sweng.evento.tabsFragment.Updatable;
@@ -84,11 +85,13 @@ public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> imple
 
     public  void nextMonth() {
         setCurrentIndicator(getNextIndicator());
+        fillPage(Constants.PAGE_POSITION_CENTER);
         update();
     }
 
     public void prevMonth() {
         setCurrentIndicator(getPreviousIndicator());
+        fillPage(Constants.PAGE_POSITION_CENTER);
         update();
     }
 
@@ -96,6 +99,7 @@ public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> imple
         mYear = focusedDate.get(Calendar.YEAR);
         mDayOfMonth = focusedDate.get(Calendar.DAY_OF_MONTH);
         setCurrentIndicator(focusedDate.get(Calendar.MONTH));
+        fillPage(Constants.PAGE_POSITION_CENTER);
         update();
     }
 
