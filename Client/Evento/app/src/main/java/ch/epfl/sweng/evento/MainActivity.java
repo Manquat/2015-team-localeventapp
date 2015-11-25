@@ -61,10 +61,10 @@ public class MainActivity extends AppCompatActivity {
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
     private static final String urlServer = Settings.getServerUrl();
     private ArrayList<Event> mEventArrayList = new ArrayList<>();
-    private static UserProfilInformation user1;
-    private static UserProfilInformation user2;
+    private static User user1;
+    private static User user2;
 
-    public static UserProfilInformation getUser(int user){
+    public static User getUser(int user){
         switch(user){
             case 1:
                 return user1;
@@ -80,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        user1 = new UserProfilInformation();
-        user2 = new UserProfilInformation();
+        user1 = new User();
+        user2 = new User();
 
 
         // Creating the Toolbar and setting it as the Toolbar for the activity

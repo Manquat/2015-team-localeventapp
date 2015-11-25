@@ -68,10 +68,8 @@ public class EventFragment extends Fragment {
             public void onClick(View view) {
                 Toast.makeText(getActivity().getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
                 String listOfParticipant = mEvent.getListParticipantString();
-                mEvent.setListOfParticipant("Bernard\\\\Herve\\\\Thiery\\\\");
-                String listOfParticipant2 = mEvent.getListParticipantString();
                 MainActivity.getUser(1).addMatchedEvent(mEvent);
-                if(!mEvent.addParticipant("Alfred")) {
+                if(!mEvent.addParticipant(MainActivity.getUser(1))) {
                     Log.d("EventFragment.upd.", "addParticipant just returned false");
                 } else {
                     mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());

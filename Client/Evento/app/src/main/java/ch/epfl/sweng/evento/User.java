@@ -12,13 +12,13 @@ import ch.epfl.sweng.evento.Events.Event;
 /**
  * Created by Gaffinet on 23/11/2015.
  */
-public class UserProfilInformation {
+public class User {
 
 //---------------------------------------------------------------------------------------------
 //----Attributes-------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
-    private static final String TAG = "UserProfilIndormation";
+    private static final String TAG = "User";
 
     private String mUsername;
     private String mEmail;
@@ -31,13 +31,13 @@ public class UserProfilInformation {
     //private Event.CustomDate mStartOfMembership;
 
 
-    public UserProfilInformation(){
+    public User(){
         mUsername = "Alfred";
         mMatchedEvent = new HashSet<>();
         mHostedEvent = new HashSet<>();
     }
 
-    public UserProfilInformation(String username,Set<Event> matchedEvent, Set<Event> hostedEvent){
+    public User(String username,Set<Event> matchedEvent, Set<Event> hostedEvent){
         mUsername = username;
         mMatchedEvent = new HashSet<>(matchedEvent);
         mHostedEvent = new HashSet<>(hostedEvent);

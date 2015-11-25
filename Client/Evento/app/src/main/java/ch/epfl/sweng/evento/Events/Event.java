@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.User;
 
 /**
  * Created by Val on 15.10.2015.
@@ -35,7 +36,7 @@ public class Event implements ClusterItem {
     private CustomDate mStartDate;
     private CustomDate mEndDate;
     private String mPicture;
-    private Set<String> mListOfParticipants; //For now, i assume that username is unique. (we won't get any duplicate elements)
+    private Set<User> mParticipants; //For now, i assume that username is unique. (we won't get any duplicate elements)
     private final int mNumberMaxOfParticipants;
 
 
@@ -48,7 +49,7 @@ public class Event implements ClusterItem {
                  String creator,
                  Set<String> tags,
                  String image,
-                 String participants) {
+                 Set<User> participants) {
         mID = id;
         mTitle = title;
         mDescription = description;
@@ -60,9 +61,7 @@ public class Event implements ClusterItem {
         mEndDate = new CustomDate();
         mPicture = "";
         mNumberMaxOfParticipants =  10;//TODO
-        mListOfParticipants = new HashSet<String>();
-        mListOfParticipants.add(creator);
-        mListOfParticipants.add("Berb");
+        mParticipants = new HashSet<User>(participants);
     }
 
     public Event(int id,
@@ -75,7 +74,7 @@ public class Event implements ClusterItem {
                  Set<String> tags,
                  CustomDate startDate,
                  CustomDate endDate) {
-        this(id, title, description, latitude, longitude, address, creator, tags, "problem", "problem");
+        this(id, title, description, latitude, longitude, address, creator, tags, "image", new HashSet<User>());
         mStartDate = new CustomDate(startDate);
         mEndDate = new CustomDate(endDate);
         mPicture = samplePicture();
@@ -108,21 +107,21 @@ public class Event implements ClusterItem {
         return s;
     }
 
-    public boolean addParticipant(String participant){
+    public boolean addParticipant(User participant){
         if(participant != null) {
-            if (mListOfParticipants.size() < mNumberMaxOfParticipants) {
-                mListOfParticipants.add(participant);
+            if (mParticipants.size() < mNumberMaxOfParticipants) {
+                mParticipants.add(participant);
                 return true;
             } else {
-                Log.d("Event.addParticipant", "Can't add a participant more (" + mListOfParticipants.size() + ")");
+                Log.d("Event.addParticipant", "Can't add a participant more (" + mParticipants.size() + ")");
             }
         }
         Log.d("Event.addParticipant", "Can't add null as a participant");
         return false;
     }
 
-    public Set<String> getAllParticipant() {
-        return mListOfParticipants;
+    public Set<User> getAllParticipant() {
+        return mParticipants;
     }
 
     public int getMaxNumberOfParticipant() {
@@ -132,7 +131,7 @@ public class Event implements ClusterItem {
     public boolean removeParticipant(String participant){
         if(participant != null) {
             if (checkIfParticipantIsIn(participant)) {
-                mListOfParticipants.remove(participant);
+                mParticipants.remove(participant);
                 return true;
             } else {
                 Log.d("Event.removeParticipant", participant + " was already not participating.");
@@ -143,7 +142,7 @@ public class Event implements ClusterItem {
     }
 
     public boolean checkIfParticipantIsIn(String participant){
-        if(participant != null) return mListOfParticipants.contains(participant);
+        if(participant != null) return mParticipants.contains(participant);
         Log.d("Event.checkIfPart.", "Can't check if null is a participant");
         return false;
     }
@@ -231,9 +230,9 @@ public class Event implements ClusterItem {
 
     public String getListParticipantString(String separator) {
         String res = "";
-        if(!mListOfParticipants.isEmpty()){
-            for(String participantName: mListOfParticipants){
-                res += participantName + separator;
+        if(!mParticipants.isEmpty()){
+            for(User participantName: mParticipants){
+                res += participantName.getmUsername() + separator;
             }
             Log.d("Event", "Result of ListOfParticipant to String " + res);
         }
@@ -241,26 +240,12 @@ public class Event implements ClusterItem {
     }
 
     public String getListParticipantString() {
-        return getListParticipantString("\\\\");
+        return getListParticipantString("\n");
     }
 
-    public void setListOfParticipant(String str, char sep1, char sep2){
-        int j = 0;
-        Set<String> res = new HashSet<String>();
-        for(int i = 0; i < str.length(); i = j+2){
-            String name = "";
-            for(j=i; j+1 <= str.length() && (str.charAt(j) != sep1 || str.charAt(j+1) != sep2); ++j){
-                name+=str.charAt(j);
-            }
-            Log.d("Event.ListToString", "Result of iteration " + name);
-            if(res.size() < mNumberMaxOfParticipants) res.add(name);
-        }
-        mListOfParticipants = res;
+    public void setListOfParticipant(Set<User> str){
+        mParticipants = str;
     }
-    public void setListOfParticipant(String str){
-        setListOfParticipant(str, '\\', '\\');
-    }
-
 
     public Set<String> getTags() {
         return mTags;

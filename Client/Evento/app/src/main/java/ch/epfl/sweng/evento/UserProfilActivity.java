@@ -24,9 +24,9 @@ public class UserProfilActivity extends AppCompatActivity {
 
     private String mUsername;
     private String mEmail;
-    private Event.CustomDate mDateOfBirth;
+    //private Event.CustomDate mDateOfBirth;
     private LatLng mHomeAddress;
-    private Event.CustomDate mStartOfMembership;
+    //private Event.CustomDate mStartOfMembership;
 
     private TextView mUsernameView;
     private TextView mEmailView;

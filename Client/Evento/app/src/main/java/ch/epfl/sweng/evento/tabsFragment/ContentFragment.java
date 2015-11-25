@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -176,6 +177,7 @@ public class ContentFragment extends Fragment implements Refreshable{
                         tmpSpanSmtgOrNot = Span.NOTHING;
                         tView.setImageResource(R.drawable.unknown);
                     }
+
                     mMyViews.add(tView);
 
                     switch (tmpSpanSmtgOrNot) {
