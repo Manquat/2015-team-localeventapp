@@ -47,8 +47,8 @@ public class EventFragment extends Fragment {
 
         titleView.setText(mEvent.getTitle());
         creatorView.setText(getString(R.string.eventFrag_createdBy, mEvent.getCreator()));
-        startDateView.setText(getString(R.string.eventFrag_from, mEvent.getStartDate().toString()));
-        endDateView.setText(getString(R.string.eventFrag_to, mEvent.getEndDate().toString()));
+        startDateView.setText(getString(R.string.eventFrag_from, mEvent.getStartDateAsString()));
+        endDateView.setText(getString(R.string.eventFrag_to, mEvent.getStartDateAsString().toString()));
         addressView.setText(getString(R.string.eventFrag_at, mEvent.getAddress()));
         descriptionView.setText(mEvent.getDescription());
 

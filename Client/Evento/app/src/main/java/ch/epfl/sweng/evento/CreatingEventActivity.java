@@ -41,6 +41,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -64,8 +66,8 @@ public class CreatingEventActivity extends AppCompatActivity
 
     private TextView mStartDateView;
     private TextView mEndDateView;
-    private Event.CustomDate startDate;
-    private Event.CustomDate endDate;
+    private Calendar startDate;
+    private Calendar endDate;
     private boolean mStartOrEndDate;
     private boolean mDisplayTimeFragment;
     private DatePickerDialogFragment mDateFragment;
@@ -140,8 +142,8 @@ public class CreatingEventActivity extends AppCompatActivity
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                           int dayOfMonth) {
         if (mStartOrEndDate == false)
-            startDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
-        else endDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
+            startDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
+        else endDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
         if (mDisplayTimeFragment == true) {
             DialogFragment mTimeFragment = new TimePickerDialogFragment();
             mTimeFragment.show(getFragmentManager(), "timePicker");
@@ -159,15 +161,15 @@ public class CreatingEventActivity extends AppCompatActivity
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         if (!mStartOrEndDate) {
-            startDate.setTime(hourOfDay, minute);
-            String s = Integer.toString(startDate.getMonth() + 1) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
-                    " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes());
+            startDate.set(Calendar.HOUR_OF_DAY,hourOfDay);
+            startDate.set(Calendar.MINUTE,minute);
+            String s = Event.calendarAsniceString(startDate);
             // display text to user
             mStartDateView.setText(s);
         } else {
-            endDate.setTime(hourOfDay, minute);
-            String s = Integer.toString(endDate.getMonth() + 1) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) +
-                    " at " + Integer.toString(endDate.getHour()) + ":" + Integer.toString(endDate.getMinutes());
+            endDate.set(Calendar.HOUR_OF_DAY,hourOfDay);
+            endDate.set(Calendar.MINUTE, minute);
+            String s = Event.calendarAsniceString(endDate);
             // display text to user
             mEndDateView.setText(s);
         }
@@ -199,10 +201,10 @@ public class CreatingEventActivity extends AppCompatActivity
 
                 // default value completion
                 if (startDate == null) {
-                    startDate = new Event.CustomDate(1990, 12, 16, 0, 0);
+                    startDate = new GregorianCalendar(1990, 12, 16, 0, 0);
                 }
                 if (endDate == null) {
-                    endDate = new Event.CustomDate(1992, 1, 16, 0, 0);
+                    endDate = new GregorianCalendar(1992, 1, 16, 0, 0);
                 }
                 if (titleString.isEmpty()) {
                     titleString = "No title";

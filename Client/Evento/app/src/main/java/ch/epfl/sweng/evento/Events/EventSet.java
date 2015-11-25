@@ -7,6 +7,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -209,10 +211,10 @@ public class EventSet {
         return newEventSet;
     }
 
-    public EventSet filter(Event.CustomDate startDate) {
+    public EventSet filter(Calendar startDate) {
         EventSet newEventSet = new EventSet();
         for (Event event : mEvents.values()) {
-            if (event.getStartDate().toLong() >= startDate.toLong()) {
+            if (event.getStartDate().getTimeInMillis() >= startDate.getTimeInMillis()) {
                 newEventSet.addEvent(event);
             }
         }
@@ -265,8 +267,8 @@ public class EventSet {
                 "",
                 "",
                 new HashSet<String>(),
-                new Event.CustomDate(),
-                new Event.CustomDate());
+                new GregorianCalendar(),
+                new GregorianCalendar());
     }
 
     public int getPosition(long signature) {

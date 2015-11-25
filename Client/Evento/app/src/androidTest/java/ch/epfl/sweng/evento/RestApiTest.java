@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.concurrent.ExecutionException;
 
@@ -223,7 +224,7 @@ public class RestApiTest {
             + "   \"creator\": \"Guillaume Meyrat\"\n"
             + "}\n";
 
-    private static final Event.CustomDate date = new Event.CustomDate(1990, 12, 16, 0, 0);
+    private static final GregorianCalendar date = new GregorianCalendar(1990, 12, 16, 0, 0);
     private static final  Event e = new Event(10, "Ping-Pong at Sat 2", "Beer, ping-pong... let's beerpong",
             46.519428, 6.580847, "Satellite", "Guillaume Meyrat", new HashSet<String>(), date, date);
     private static final String EVENT_TO_CREATE_seri = Serializer.event(e);
@@ -309,7 +310,7 @@ public class RestApiTest {
     }
 
 
-    private static final Event.CustomDate eventDate = new Event.CustomDate(2012, 10, 2, 5, 5);
+    private static final GregorianCalendar eventDate = new GregorianCalendar(2012, 10, 2, 5, 5);
     private static final String stringDate = "2012-11-02T05:05:00Z";
 
     @Test
