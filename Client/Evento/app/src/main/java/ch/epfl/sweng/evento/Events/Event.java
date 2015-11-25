@@ -149,8 +149,7 @@ public class Event implements ClusterItem {
     public String getProperDateString() {
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
         timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
-        String time = timeFormat.format(this.getStartDate().getTime());
-        return time;
+        return timeFormat.format(mStartDate.getTime());
     }
 
     public void debugLogEvent() {
