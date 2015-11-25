@@ -88,8 +88,6 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
     }
 
 
-
-
     /**
      * Setter for the events
      * @param events the events display in the list adapter
