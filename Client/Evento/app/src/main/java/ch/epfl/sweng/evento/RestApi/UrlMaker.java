@@ -24,7 +24,7 @@ public final class UrlMaker {
     }
 
     public static final String getAll(String urlServer) {
-        String url = urlServer + event + accessMaster;//+ "1212300400/1483225200/46.8/7.1/1500";
+        String url = urlServer + event + accessMaster ;
         return url;
     }
 
@@ -42,11 +42,16 @@ public final class UrlMaker {
     }
 
     public static String getByDate(String urlServer, GregorianCalendar startDate, GregorianCalendar endDate) {
-        long startTimeInSec = startDate.getTimeInMillis() / 1000;
-        long endTimeInSec = endDate.getTimeInMillis() / 1000;
-        String url = urlServer + event + accessMaster + Long.toString(startTimeInSec) +
-                "/" + Long.toString(endTimeInSec) + "/46.8/7.1/1500";
+        return getWithFilter(urlServer, startDate, endDate, 46.8, 7.1, 1500);
+    }
 
+    public static String getWithFilter(String urlServer, GregorianCalendar startTime, GregorianCalendar endTime,
+                                       double latitude, double longitude, double radius) {
+        long startTimeInSec = startTime.getTimeInMillis()/1000;
+        long endTimeInSec = endTime.getTimeInMillis()/1000;
+        String url = urlServer + event + accessMaster + Long.toString(startTimeInSec)
+                + "/" + Long.toString(endTimeInSec) +"/"+ Double.toString(latitude)+ "/"
+                + Double.toString(longitude) + "/" + Double.toString(radius);
         return url;
     }
 }
