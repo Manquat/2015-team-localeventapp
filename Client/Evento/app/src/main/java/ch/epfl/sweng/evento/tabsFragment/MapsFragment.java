@@ -37,7 +37,8 @@ public class MapsFragment extends SupportMapFragment implements
         OnMapReadyCallback,
         ConnectionCallbacks,
         OnConnectionFailedListener,
-        OnMyLocationButtonClickListener {
+        OnMyLocationButtonClickListener,
+        Refreshable {
 
     private static final String TAG = "MapsFragment";   // LogCat tag
     private static final float ZOOM_LEVEL = 15.0f;                          // Zoom level of the map at the beginning
@@ -57,6 +58,7 @@ public class MapsFragment extends SupportMapFragment implements
     private Activity mActivity;                     // not really useful but I think it's more efficient
     private Context mContext;
     private ViewGroup mContainer;
+    private View mView;
 
 //---------------------------------------------------------------------------------------------
 //----Constructor------------------------------------------------------------------------------
@@ -83,16 +85,16 @@ public class MapsFragment extends SupportMapFragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mContainer = container;
-        View view = super.onCreateView(inflater, mContainer, savedInstanceState);
+        mView = super.onCreateView(inflater, mContainer, savedInstanceState);
 
-        if (view == null) {
+        if (mView == null) {
             Log.e(TAG, "The maps view cannot be created");
             throw new NullPointerException();
         }
 
         getMapAsync(this);
 
-        mContext = view.getContext();
+        mContext = mView.getContext();
 
         if (mContext == null) {
             Log.e(TAG, "The actual context don't exist");
@@ -105,7 +107,7 @@ public class MapsFragment extends SupportMapFragment implements
                 .addOnConnectionFailedListener(this)
                 .build();
 
-        return view;
+        return mView;
     }
 
     /**
@@ -244,4 +246,11 @@ public class MapsFragment extends SupportMapFragment implements
         mClusterManager.addItems(EventDatabase.INSTANCE.getAllEvents());
         mClusterManager.cluster();
     }
+
+    @Override
+    public void refresh() {
+        addEventsMarker();
+    }
+
+
 }

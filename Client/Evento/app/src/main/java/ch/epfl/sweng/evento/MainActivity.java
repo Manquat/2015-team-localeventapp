@@ -26,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +34,7 @@ import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.tabsFragment.ContentFragment;
+import ch.epfl.sweng.evento.tabsFragment.Refreshable;
 import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
 
 /**
@@ -124,12 +126,28 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SearchActivity.class);
             startActivity(intent);
         } else if (id == R.id.action_refresh) {
-            Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + mPager.getCurrentItem());
-            ((ContentFragment) page).refreshFromServer();
+            refreshFromServer();
         }
 
         return super.onOptionsItemSelected(item);
 
+    }
+
+    public void refreshFromServer() {
+        RestApi mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+
+        mRestApi.getAll(new GetMultipleResponseCallback() {
+            @Override
+            public void onDataReceived(List<Event> eventArrayList) {
+                EventDatabase.INSTANCE.clear();
+                EventDatabase.INSTANCE.addAll(eventArrayList);
+                Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + mPager.getCurrentItem());
+                if (page instanceof Refreshable){
+                    ((Refreshable) page).refresh();
+                }
+                Toast.makeText(getApplicationContext(),"Refreshed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

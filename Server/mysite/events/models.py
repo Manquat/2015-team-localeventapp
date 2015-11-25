@@ -14,6 +14,7 @@ class Event(models.Model):
     date = models.DateTimeField("date", default=timezone.now())
     duration = models.DurationField("duration", default=timedelta())
     tags = models.CharField(max_length=200, default='Foot!')
+    image = models.TextField(default='No Image')
     def __unicode__(self):
         return self.Event_name
 
