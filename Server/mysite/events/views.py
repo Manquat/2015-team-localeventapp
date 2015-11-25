@@ -58,6 +58,27 @@ def event_detail(request, token, pk, format=None):
         event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+@api_view(['GET', 'DELETE'])
+def event_detailuser(request, token, username, format=None):
+    """
+    Retrieve, update or delete an event.
+    """
+    if validate_user(token) is False:
+        return Response(status=status.HTTP_412_PRECONDITION_FAILED)
+
+    try:
+        event = Event.objects.get(creator=username)
+    except Event.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = EventSerializer(event)
+        return Response(serializer.data)
+
+    elif request.method == 'DELETE':
+        event.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 @api_view(['GET'])
 def event_requestdate(request, token, fromdate, todate, format=None):
 
