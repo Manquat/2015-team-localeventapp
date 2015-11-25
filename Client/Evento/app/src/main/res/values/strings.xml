@@ -17,7 +17,7 @@
     <string name="event_creator">Creator</string>
     <string name="event_start_date">Start Date</string>
     <string name="event_end_date">End Date</string>
-    <string name="event_adress">At</string>
+    <string name="event_address">At</string>
     <string name="event_tags">Tags</string>
     <string name="event_description">Description</string>
     <string name="event_create_punch_line">Create your own event !</string>

@@ -1,18 +1,38 @@
 package ch.epfl.sweng.evento;
 
 import android.app.DatePickerDialog;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.places.AutocompletePrediction;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 
 public class SearchActivity extends AppCompatActivity

@@ -33,6 +33,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
+import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.tabsFragment.ContentFragment;
 import ch.epfl.sweng.evento.tabsFragment.Refreshable;
 import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
