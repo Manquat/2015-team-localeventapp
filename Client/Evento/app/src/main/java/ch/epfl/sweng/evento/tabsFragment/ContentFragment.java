@@ -18,6 +18,7 @@ package ch.epfl.sweng.evento.tabsFragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -177,7 +178,7 @@ public class ContentFragment extends Fragment implements Refreshable{
                         tmpSpanSmtgOrNot = Span.NOTHING;
                         tView.setImageResource(R.drawable.unknown);
                     }
-
+                    tView.setAdjustViewBounds(true);
                     mMyViews.add(tView);
 
                     switch (tmpSpanSmtgOrNot) {
@@ -212,8 +213,15 @@ public class ContentFragment extends Fragment implements Refreshable{
         mWidthColumn = 0;
         mHeightRow = 0;
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-        params.width = mWidthColumn - 2 * PADDING;
-        params.height = mHeightRow - 2 * PADDING;
+        Point size = new Point();
+        mActivity.getWindowManager().getDefaultDisplay().getSize(size);
+        int screenWidth = size.x;
+        int screenHeight = size.y;
+        int halfScreenWidth = (int)(screenWidth *0.5);
+        int quarterScreenWidth = (int)(halfScreenWidth * 0.5);
+        params.width = screenWidth/3-2*PADDING;
+        //params.width = mWidthColumn - 2 * PADDING;
+        //params.height = mHeightRow - 2 * PADDING;
         params.setMargins(PADDING, PADDING, PADDING, PADDING);
         params.columnSpec = GridLayout.spec(column, columnSpan);
         params.rowSpec = GridLayout.spec(row, rowSpan);
