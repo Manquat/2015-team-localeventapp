@@ -160,4 +160,11 @@ public enum EventDatabase {
     }
 
 
+    public int getSize() {
+        if (mEventSet == null){
+            return 0;
+        } else {
+            return mEventSet.size();
+        }
+    }
 }
