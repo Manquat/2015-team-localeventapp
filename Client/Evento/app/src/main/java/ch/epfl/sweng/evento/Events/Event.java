@@ -237,10 +237,10 @@ public class Event implements ClusterItem {
      * @return the signature of the Event in the form yyyymmddhhmmID
      */
     public long getSignature() {
-        return 100000 * getStartDate().getTimeInMillis() + (long) getID();
+        return getStartDate().getTimeInMillis();
     }
 
-    //This is a temporary method to test if the server can handle very long strings
+    //This is a temporary method to test if the sersver can handle very long strings
     public String samplePicture() {
         return "Qk2uFAAAAAAAAIoEAAB8AAAAxwAAAMcAAAABAAgAAQAAACQQAAASCwAAEgsAAAABAAAAAQAAAAD/ " +
                 "AAD/AAD/AAAAAAAA/0JHUnMAAAAAAAAAAFS4HvwAAAAAAAAAAGZmZvwAAAAAAAAAAMT1KP8AAAAA " +
