@@ -20,7 +20,7 @@
     <string name="event_creator">Creator</string>
     <string name="event_start_date">Start Date</string>
     <string name="event_end_date">End Date</string>
-    <string name="event_adress">Address</string>
+    <string name="event_adress">At</string>
     <string name="event_tags">Tags</string>
     <string name="event_description">Description</string>
     <string name="event_create_punch_line">Create your own event !</string>
@@ -49,4 +49,13 @@
     <string name="eventFrag_from">"From %1$s"</string>
     <string name="eventFrag_to">"to %1$s"</string>
     <string name="eventFrag_at">"at %1$s"</string>
+    <string name="locationLabel">Search by location</string>
+    <string name="searchByPlace_hint">location</string>
+    <string name="searchByDateFromText">From    </string>
+    <string name="startDate">start date</string>
+    <string name="searchbyDateTo">To</string>
+    <string name="searchByDateTo">To</string>
+    <string name="searchByDateToHint">end date</string>
+    <string name="searchDistance">In area of</string>
+    <string name="searchArea">radius in km</string>
 </resources>
