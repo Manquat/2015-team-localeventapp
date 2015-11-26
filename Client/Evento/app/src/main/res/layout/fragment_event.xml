@@ -29,12 +29,13 @@
         android:layout_row="1" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/event_image_height"
+        android:scaleType="centerCrop"
         android:id="@+id/eventPictureView"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
         android:layout_column="0"
-        android:layout_columnSpan="1"
+        android:layout_columnSpan="2"
         android:layout_row="2" />
 
     <TextView
