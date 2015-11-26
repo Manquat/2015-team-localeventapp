@@ -41,16 +41,16 @@ public class Event implements ClusterItem {
 
 
 
-    public Event(int id,
-                 String title,
-                 String description,
-                 double latitude,
-                 double longitude,
-                 String address,
-                 String creator,
-                 Set<String> tags,
-                 String image,
-                 Set<User> participants) {
+    public Event( int id,
+                  String title,
+                  String description,
+                  double latitude,
+                  double longitude,
+                  String address,
+                  String creator,
+                  Set<String> tags,
+                  String image,
+                  Set<User> participants) {
         mID = id;
         mTitle = title;
         mDescription = description;
