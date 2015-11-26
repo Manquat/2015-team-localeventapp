@@ -7,7 +7,7 @@ package ch.epfl.sweng.evento;
 
 public enum Settings {
     INSTANCE;
-    private String mIdToken;
+    private String mIdToken = "No Token";
 
     private Settings() {
         // private constructor

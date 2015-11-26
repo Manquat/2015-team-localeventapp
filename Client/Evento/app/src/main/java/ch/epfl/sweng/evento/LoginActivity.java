@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 0;
     private GoogleApiClient mGoogleApiClient;
-    public String mIdToken = null;
+    public String mIdToken = "noToken";
 
 //---------------------------------------------------------------------------------------------
 //----Methods----------------------------------------------------------------------------------
