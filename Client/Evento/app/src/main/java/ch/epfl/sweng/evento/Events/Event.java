@@ -129,7 +129,7 @@ public class Event implements ClusterItem {
         return mNumberMaxOfParticipants;
     }
 
-    public boolean removeParticipant(String participant){
+    public boolean removeParticipant(User participant){
         if(participant != null) {
             if (checkIfParticipantIsIn(participant)) {
                 mParticipants.remove(participant);
@@ -142,7 +142,7 @@ public class Event implements ClusterItem {
         return false;
     }
 
-    public boolean checkIfParticipantIsIn(String participant){
+    public boolean checkIfParticipantIsIn(User participant){
         if(participant != null) return mParticipants.contains(participant);
         Log.d("Event.checkIfPart.", "Can't check if null is a participant");
         return false;
