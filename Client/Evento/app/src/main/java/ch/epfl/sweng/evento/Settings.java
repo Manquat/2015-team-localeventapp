@@ -14,7 +14,7 @@ public enum Settings {
     }
 
     public static String getServerUrl() {
-        return "http://192.168.178.22:8000/";
+        return "http://128.179.181.214:8000/";
     }
 
     public String getIdToken() {
