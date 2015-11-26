@@ -10,7 +10,6 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -77,7 +76,6 @@ public class RestApi {
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
-
                 }
                 callback.onDataReceived(eventArrayList);
             }

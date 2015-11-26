@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
+    <ch.epfl.sweng.evento.tabsFragment.Calendar.CalendarDay
         android:id="@+id/cell_button_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/calendar_day"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/calendar_day_selector"/>
 
 </FrameLayout>

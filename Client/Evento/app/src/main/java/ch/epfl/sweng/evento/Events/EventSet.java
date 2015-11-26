@@ -6,16 +6,13 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-
 
 /**
  * Created by Val on 24.10.2015.
@@ -211,10 +208,35 @@ public class EventSet {
         return newEventSet;
     }
 
+
+    /**
+     * Returns a set of all the Events that start after the date passed in argument
+     *
+     * @param startDate
+     * @return
+     */
     public EventSet filter(Calendar startDate) {
         EventSet newEventSet = new EventSet();
         for (Event event : mEvents.values()) {
             if (event.getStartDate().getTimeInMillis() >= startDate.getTimeInMillis()) {
+                newEventSet.addEvent(event);
+            }
+        }
+        return newEventSet;
+    }
+
+
+    /**
+     * Returns a set of all the Events that start on the same day as the date passed in argument
+     * @param calendar
+     * @return
+     */
+    public EventSet filterOnDay(Calendar calendar){
+        EventSet newEventSet = new EventSet();
+        for (Event event : mEvents.values()) {
+            if (event.getStartDate().get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH) &&
+                    event.getStartDate().get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
+                    event.getStartDate().get(Calendar.YEAR) == calendar.get(Calendar.YEAR)) {
                 newEventSet.addEvent(event);
             }
         }
@@ -257,9 +279,9 @@ public class EventSet {
      * This method returns an error Event.
      * This is just temporary before implementing good exception handling
      *
-     * @return
+     * @return an error event
      */
-    private Event getErrorEvent() {
+    public static Event getErrorEvent() {
         return new Event(0,
                 "ERROR",
                 "The Event doesn't exist or wasn't there",

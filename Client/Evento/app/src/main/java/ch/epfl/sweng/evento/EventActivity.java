@@ -32,7 +32,6 @@ public class EventActivity extends AppCompatActivity {
         // Creating the EventPageAdapter
         mAdapter = new EventPageAdapter(getSupportFragmentManager());
 
-
         // Assigning ViewPager View and setting the adapter
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);

@@ -11,13 +11,12 @@ import com.google.maps.android.clustering.ClusterItem;
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
+
 import java.util.Locale;
+
 import java.util.Set;
 import java.util.TimeZone;
-
-import ch.epfl.sweng.evento.R;
 
 /**
  * Created by Val on 15.10.2015.
@@ -52,7 +51,24 @@ public class Event implements ClusterItem {
         mTags = tags;
         mStartDate = new GregorianCalendar();
         mEndDate = new GregorianCalendar();
-        mPicture = "";
+        mPicture = samplePicture();
+    }
+
+public Event(int id,
+                 String title,
+                 String description,
+                 double latitude,
+                 double longitude,
+                 String address,
+                 String creator,
+                 Set<String> tags,
+                 Calendar startDate,
+                 Calendar endDate,
+                 Bitmap picture) {
+        this(id, title, description, latitude, longitude, address, creator, tags,startDate,endDate);
+        mStartDate = startDate;
+        mEndDate = endDate;
+        setPicture(picture);
     }
 
     public Event(int id,
@@ -66,33 +82,9 @@ public class Event implements ClusterItem {
                  Calendar startDate,
                  Calendar endDate) {
         this(id, title, description, latitude, longitude, address, creator, tags);
-        mStartDate =  new GregorianCalendar(startDate.get(Calendar.YEAR),
-                startDate.get(Calendar.MONTH),
-                startDate.get(Calendar.DAY_OF_MONTH),
-                startDate.get(Calendar.HOUR_OF_DAY),
-                startDate.get(Calendar.MINUTE));
-        mEndDate =  new GregorianCalendar(endDate.get(Calendar.YEAR),
-                endDate.get(Calendar.MONTH),
-                endDate.get(Calendar.DAY_OF_MONTH),
-                endDate.get(Calendar.HOUR_OF_DAY),
-                endDate.get(Calendar.MINUTE));
-
+        mStartDate = startDate;
+        mEndDate = endDate;
         mPicture = samplePicture();
-    }
-
-    public Event(int id,
-                 String title,
-                 String description,
-                 double latitude,
-                 double longitude,
-                 String address,
-                 String creator,
-                 Set<String> tags,
-                 Calendar startDate,
-                 Calendar endDate,
-                 Bitmap picture) {
-        this(id, title, description, latitude, longitude, address, creator, tags, startDate, endDate);
-        setPicture(picture);
     }
 
     /**
@@ -140,17 +132,22 @@ public class Event implements ClusterItem {
 
     }
 
-    /*GregorianCalendar cal = new GregorianCalendar(mStartDate.get(Calendar.YEAR), mStartDate.get(Calendar.MONTH), mStartDate.get(Calendar.DAY_OF_MONTH),
-            mStartDate.get(Calendar.HOUR_OF_DAY), mStartDate.get(Calendar.MINUTE);
-
-    cal.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
-    */
 
     public String getProperDateString(){
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
         timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
         return timeFormat.format(mStartDate.getTime());
     }
+
+    static public String asNiceString(Calendar calendar){
+        return calendar.get(Calendar.DAY_OF_MONTH) + "/"
+                + calendar.get(Calendar.MONTH) + "/"
+                + calendar.get(Calendar.YEAR) + " at "
+                 + calendar.get(Calendar.HOUR_OF_DAY) + ":"
+                + calendar.get(Calendar.MINUTE);
+    }
+
+
 
     public void debugLogEvent() {
         Log.i(TAG, "Event " + mID + " : title : " + mTitle);
@@ -219,9 +216,9 @@ public class Event implements ClusterItem {
      * @return The Bitmap converted from mPicture
      */
     public Bitmap getPicture() {
+
         byte[] encodeByte = Base64.decode(mPicture, Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-        return bitmap;
+        return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
     }
 
     @Override
@@ -242,6 +239,7 @@ public class Event implements ClusterItem {
 
     //This is a temporary method to test if the sersver can handle very long strings
     public String samplePicture() {
+
         return "Qk2uFAAAAAAAAIoEAAB8AAAAxwAAAMcAAAABAAgAAQAAACQQAAASCwAAEgsAAAABAAAAAQAAAAD/ " +
                 "AAD/AAD/AAAAAAAA/0JHUnMAAAAAAAAAAFS4HvwAAAAAAAAAAGZmZvwAAAAAAAAAAMT1KP8AAAAA " +
                 "AAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAMDAwABI " +
@@ -327,7 +325,6 @@ public class Event implements ClusterItem {
                 "AQ35AwUM/AMAEPsDABL8BAQpAAAACQAD+Sb7AwAJAQMAE/wDAQ35AwUM/AMAEPsDABL8BAQpAAAA " +
                 "yAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAAAE=";
     }
-
 }
 
 

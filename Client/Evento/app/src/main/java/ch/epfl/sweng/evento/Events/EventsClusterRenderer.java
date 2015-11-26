@@ -86,7 +86,7 @@ public class EventsClusterRenderer extends DefaultClusterRenderer<Event> {
     protected void onBeforeClusterRendered(Cluster<Event> cluster, MarkerOptions markerOptions) {
         // Draw the clustered event icon
         // at most MAX_NUMBER_OF_IMAGE image
-        List<Drawable> eventsImage = new ArrayList<Drawable>(Math.min(MAX_NUMBER_OF_IMAGE, cluster.getSize()));
+        List<Drawable> eventsImage = new ArrayList<>(Math.min(MAX_NUMBER_OF_IMAGE, cluster.getSize()));
 
         for (Event event : cluster.getItems()) {
             Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.football); // TODO replace the mock image by the real one of the event

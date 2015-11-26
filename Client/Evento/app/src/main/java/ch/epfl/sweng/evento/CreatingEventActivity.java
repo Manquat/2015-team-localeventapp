@@ -1,7 +1,6 @@
 package ch.epfl.sweng.evento;
 
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -41,7 +40,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -82,6 +80,32 @@ public class CreatingEventActivity extends AppCompatActivity
     private double longitude = 0.0;
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
             new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
+    private TimePickerDialogFragment mTimeFragment;
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                          int dayOfMonth) {
+        if (!mStartOrEndDate) startDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
+        else endDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
+        mTimeFragment = new TimePickerDialogFragment();
+        mTimeFragment.show(getFragmentManager(), "timePicker");
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        if (!mStartOrEndDate) {
+            startDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            startDate.set(Calendar.MINUTE, minute);
+            String s = Event.asNiceString(startDate);
+            mStartDateView.setText(s);
+        } else {
+            endDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            endDate.set(Calendar.MINUTE, minute);
+            String s = Event.asNiceString(endDate);
+            mEndDateView.setText(s);
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,52 +151,6 @@ public class CreatingEventActivity extends AppCompatActivity
         setValidateButtonAndSend(validateButton);
 
         setPictureButton(pictureButton);
-    }
-
-
-    /**
-     * On date set register the chosen date and call the time picker
-     *
-     * @param view
-     * @param year
-     * @param monthOfYear
-     * @param dayOfMonth
-     */
-    @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear,
-                          int dayOfMonth) {
-        if (mStartOrEndDate == false)
-            startDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
-        else endDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
-        if (mDisplayTimeFragment == true) {
-            DialogFragment mTimeFragment = new TimePickerDialogFragment();
-            mTimeFragment.show(getFragmentManager(), "timePicker");
-            mDisplayTimeFragment = false;
-        }
-    }
-
-    /**
-     * On time set register the time and display the chosen date/time in the text field
-     *
-     * @param view
-     * @param hourOfDay
-     * @param minute
-     */
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        if (!mStartOrEndDate) {
-            startDate.set(Calendar.HOUR_OF_DAY,hourOfDay);
-            startDate.set(Calendar.MINUTE,minute);
-            String s = Event.calendarAsniceString(startDate);
-            // display text to user
-            mStartDateView.setText(s);
-        } else {
-            endDate.set(Calendar.HOUR_OF_DAY,hourOfDay);
-            endDate.set(Calendar.MINUTE, minute);
-            String s = Event.calendarAsniceString(endDate);
-            // display text to user
-            mEndDateView.setText(s);
-        }
     }
 
     /**
@@ -232,7 +210,7 @@ public class CreatingEventActivity extends AppCompatActivity
                         longitude, addressString, creator,
                         mTag, startDate, endDate, picture);
 
-                Log.i(TAG, "Event to send : " + e.toString());
+
 
                 restApi.postEvent(e, new PostCallback() {
                     @Override
@@ -356,6 +334,7 @@ public class CreatingEventActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         ImageView viewImage = (ImageView) findViewById(R.id.pictureView);
         Uri selectedImage = data.getData();
         String[] filePath = {MediaStore.Images.Media.DATA};
@@ -367,10 +346,10 @@ public class CreatingEventActivity extends AppCompatActivity
         cursor.close();
 
         Bitmap picture = (BitmapFactory.decodeFile(picturePath));
+
         int size = 300;
         Bitmap scaledPicture = Bitmap.createScaledBitmap(picture, size, (int) (size * ((double) picture.getHeight() / (double) picture.getWidth())), false);
         //75k
-        //Log.w("path of image from gallery......******************.........", picturePath "");
         viewImage.setImageBitmap(scaledPicture);
     }
 

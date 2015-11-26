@@ -4,12 +4,8 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -149,6 +145,10 @@ public enum EventDatabase {
     public EventSet filter(Calendar startDate) {
         return mEventSet.filter(startDate);
     }
+
+    public EventSet filterOnDay(Calendar calendar) {return mEventSet.filterOnDay(calendar);}
+
+
 
 
     public void refresh() {

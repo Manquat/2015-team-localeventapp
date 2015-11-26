@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Vector;
 
@@ -41,7 +42,10 @@ import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
+
+import ch.epfl.sweng.evento.SearchActivity;
 import ch.epfl.sweng.evento.Settings;
+
 import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 
 /**
@@ -71,6 +75,7 @@ public class ContentFragment extends Fragment implements Refreshable{
     private View mView;
     private Toolbar mToolbar;
     public Calendar dateFilter;
+
 
     /**
      * Create a new instance of {@link ContentFragment}, adding the parameters into a bundle and
