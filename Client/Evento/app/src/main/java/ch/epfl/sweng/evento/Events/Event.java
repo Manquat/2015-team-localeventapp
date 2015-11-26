@@ -40,6 +40,7 @@ public class Event implements ClusterItem {
     private final int mNumberMaxOfParticipants;
 
 
+
     public Event(int id,
                  String title,
                  String description,
