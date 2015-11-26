@@ -60,7 +60,7 @@ public enum EventDatabase {
                 Log.i(TAG, "EVENT LOADED " + e.getTitle());
             }
         }
-    }
+
 
     public void addOne(Event e) {
         if(e== null){
