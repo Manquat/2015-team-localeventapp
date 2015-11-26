@@ -2,6 +2,7 @@ package ch.epfl.sweng.evento;
 
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.util.Log;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -41,23 +42,24 @@ public class SignatureTest {
     @Test
     public void CalendarDeepCopyTest() {
         Calendar calendar = mSignature.getCalendar();
-        calendar.add(Calendar.YEAR, 1);
+        calendar.add(Calendar.MONTH, 1);
 
         assertEquals(mCalendar, mSignature.getCalendar());
     }
 
     @Test
     public void CompareCalendarTest() {
-        Calendar calendar = mCalendar;
+        Calendar calendar = (Calendar) mCalendar.clone();
         calendar.add(Calendar.MONTH, 1);
+
         Signature signature2 = new Signature(mID, calendar);
 
-        assertEquals(1, mSignature.compare(mSignature, signature2));
+        assertEquals(-1, mSignature.compare(mSignature, signature2));
 
         calendar.add(Calendar.MONTH, -2);
         signature2 = new Signature(mID, calendar);
 
-        assertEquals(-1, mSignature.compare(mSignature, signature2));
+        assertEquals(1, mSignature.compare(mSignature, signature2));
     }
 
     @Test
@@ -65,11 +67,11 @@ public class SignatureTest {
         int id = mID +1;
         Signature signature2 = new Signature(id, mCalendar);
 
-        assertEquals(1, mSignature.compare(mSignature, signature2));
+        assertEquals(-1, mSignature.compare(mSignature, signature2));
 
         id = id -10;
         signature2 = new Signature(id, mCalendar);
 
-        assertEquals(-1, mSignature.compare(mSignature, signature2));
+        assertEquals(1, mSignature.compare(mSignature, signature2));
     }
 }
