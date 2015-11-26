@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><testsuite name="nosetests" tests="1" errors="1" failures="0" skip="0"><testcase classname="nose.failure.Failure" name="runTest" time="0.000"><error type="django.core.exceptions.AppRegistryNotReady" message="Models aren't loaded yet."><![CDATA[Traceback (most recent call last):
+  File "/usr/lib/python2.7/unittest/case.py", line 331, in run
+    testMethod()
+  File "/usr/lib/python2.7/dist-packages/nose/loader.py", line 411, in loadTestsFromName
+    addr.filename, addr.module)
+  File "/usr/lib/python2.7/dist-packages/nose/importer.py", line 47, in importFromPath
+    return self.importFromDir(dir_path, fqname)
+  File "/usr/lib/python2.7/dist-packages/nose/importer.py", line 94, in importFromDir
+    mod = load_module(part_fqname, fh, filename, desc)
+  File "/home/val/Desktop/Sweng/team-localeventapp/Server/mysite/Test2.py", line 16, in <module>
+    content = JSONRenderer().render(serializer.data)
+  File "/usr/local/lib/python2.7/dist-packages/rest_framework/serializers.py", line 503, in data
+    ret = super(Serializer, self).data
+  File "/usr/local/lib/python2.7/dist-packages/rest_framework/serializers.py", line 239, in data
+    self._data = self.to_representation(self.instance)
+  File "/usr/local/lib/python2.7/dist-packages/rest_framework/serializers.py", line 459, in to_representation
+    fields = self._readable_fields
+  File "/usr/local/lib/python2.7/dist-packages/django/utils/functional.py", line 59, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/usr/local/lib/python2.7/dist-packages/rest_framework/serializers.py", line 353, in _readable_fields
+    field for field in self.fields.values()
+  File "/usr/local/lib/python2.7/dist-packages/rest_framework/serializers.py", line 339, in fields
+    for key, value in self.get_fields().items():
+  File "/usr/local/lib/python2.7/dist-packages/rest_framework/serializers.py", line 918, in get_fields
+    info = model_meta.get_field_info(model)
+  File "/usr/local/lib/python2.7/dist-packages/rest_framework/utils/model_meta.py", line 69, in get_field_info
+    reverse_relations = _get_reverse_relationships(opts)
+  File "/usr/local/lib/python2.7/dist-packages/rest_framework/utils/model_meta.py", line 137, in _get_reverse_relationships
+    for relation in opts.get_all_related_objects():
+  File "/usr/local/lib/python2.7/dist-packages/django/db/models/options.py", line 56, in wrapper
+    return fn(*args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/django/db/models/options.py", line 587, in get_all_related_objects
+    include_hidden=include_hidden,
+  File "/usr/local/lib/python2.7/dist-packages/django/db/models/options.py", line 802, in _get_fields
+    all_fields = self._relation_tree
+  File "/usr/local/lib/python2.7/dist-packages/django/utils/functional.py", line 59, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/usr/local/lib/python2.7/dist-packages/django/db/models/options.py", line 709, in _relation_tree
+    return self._populate_directed_relation_graph()
+  File "/usr/local/lib/python2.7/dist-packages/django/db/models/options.py", line 681, in _populate_directed_relation_graph
+    all_models = self.apps.get_models(include_auto_created=True)
+  File "/usr/local/lib/python2.7/dist-packages/django/utils/lru_cache.py", line 101, in wrapper
+    result = user_function(*args, **kwds)
+  File "/usr/local/lib/python2.7/dist-packages/django/apps/registry.py", line 168, in get_models
+    self.check_models_ready()
+  File "/usr/local/lib/python2.7/dist-packages/django/apps/registry.py", line 131, in check_models_ready
+    raise AppRegistryNotReady("Models aren't loaded yet.")
+AppRegistryNotReady: Models aren't loaded yet.
+]]></error></testcase></testsuite>

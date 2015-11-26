@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><testsuite errors="1" failures="0" name="pytest" skips="0" tests="0" time="0.504"><testcase classname="" name="Test2" time="0"><failure message="collection failure">Test2.py:7: in &lt;module&gt;
+&gt;   from rest_framework.decorators import api_view
+/usr/local/lib/python2.7/dist-packages/rest_framework/decorators.py:15: in &lt;module&gt;
+&gt;   from rest_framework.views import APIView
+/usr/local/lib/python2.7/dist-packages/rest_framework/views.py:13: in &lt;module&gt;
+&gt;   from django.views.decorators.csrf import csrf_exempt
+/usr/local/lib/python2.7/dist-packages/django/views/decorators/csrf.py:3: in &lt;module&gt;
+&gt;   from django.middleware.csrf import CsrfViewMiddleware, get_token
+/usr/local/lib/python2.7/dist-packages/django/middleware/csrf.py:14: in &lt;module&gt;
+&gt;   from django.utils.cache import patch_vary_headers
+/usr/local/lib/python2.7/dist-packages/django/utils/cache.py:26: in &lt;module&gt;
+&gt;   from django.core.cache import caches
+/usr/local/lib/python2.7/dist-packages/django/core/cache/__init__.py:34: in &lt;module&gt;
+&gt;   if DEFAULT_CACHE_ALIAS not in settings.CACHES:
+/usr/local/lib/python2.7/dist-packages/django/conf/__init__.py:48: in __getattr__
+&gt;           self._setup(name)
+/usr/local/lib/python2.7/dist-packages/django/conf/__init__.py:42: in _setup
+&gt;               % (desc, ENVIRONMENT_VARIABLE))
+E           ImproperlyConfigured: Requested setting CACHES, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.</failure></testcase></testsuite>
