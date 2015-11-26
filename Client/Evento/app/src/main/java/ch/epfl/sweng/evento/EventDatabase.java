@@ -152,9 +152,6 @@ public enum EventDatabase {
     }
 
     public EventSet filterOnDay(Calendar calendar) {return mEventSet.filterOnDay(calendar);}
-    public List<Event> filter(Calendar calendar) {
-        return mEventSet.filter(calendar);
-    }
 
 
 
