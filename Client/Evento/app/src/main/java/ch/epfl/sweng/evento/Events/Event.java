@@ -36,7 +36,7 @@ public class Event implements ClusterItem {
     private CustomDate mStartDate;
     private CustomDate mEndDate;
     private String mPicture;
-    private Set<User> mParticipants; //For now, i assume that username is unique. (we won't get any duplicate elements)
+    private Set<User> mParticipants;
     private final int mNumberMaxOfParticipants;
 
 
