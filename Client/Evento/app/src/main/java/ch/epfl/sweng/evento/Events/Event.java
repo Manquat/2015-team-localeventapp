@@ -23,7 +23,7 @@ import java.util.TimeZone;
 /**
  * Created by Val on 15.10.2015.
  */
-public class Event implements ClusterItem, Comparator<Event>, Comparable<Event> {
+public class Event implements ClusterItem {
     private static final String TAG = "Event";
     private final int mID;
     private final String mTitle;
@@ -325,48 +325,6 @@ public Event(int id,
                 "AwQtAAAACQAD+Sb7AwAJAQMAE/wDAQ35AwUM/AMAEPsDABL8BAQpAAAACQAD+Sb7AwAJAQMAE/wD " +
                 "AQ35AwUM/AMAEPsDABL8BAQpAAAACQAD+Sb7AwAJAQMAE/wDAQ35AwUM/AMAEPsDABL8BAQpAAAA " +
                 "yAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAAAE=";
-    }
-
-    @Override
-    public int compare(Event lhs, Event rhs) {
-        if (lhs != null && rhs != null) {
-            int compareTo = lhs.getStartDate().compareTo(rhs.getStartDate());
-
-            // same date
-            if (compareTo == 0) {
-                if (lhs.getID() > rhs.getID()) {
-                    // greater
-                    return 1;
-                } else if (lhs.getID() < rhs.getID()) {
-                    // smaller
-                    return -1;
-                }
-                else {
-                    // the same
-                    return 0;
-                }
-            }
-            return compareTo;
-        }
-        else {
-            if (lhs == null && rhs != null) {
-                // by default null is the smallest possible
-                return -1;
-            }
-            else if (lhs != null) {
-                // by default null is the smallest possible
-                return 1;
-            }
-            else {
-                //the same null
-                return 0;
-            }
-        }
-    }
-
-    @Override
-    public int compareTo(@NonNull Event another) {
-        return compare(this, another);
     }
 }
 
