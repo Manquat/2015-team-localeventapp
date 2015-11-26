@@ -35,6 +35,7 @@
     <string name="event_validate">Validate</string>
     <string name="searchFragmentTitle">Filter the events</string>
     <string name="createEvent_title">title</string>
+    <string name="createEvent_participant">Participant : </string>
     <string name="createEvent_creator">creator</string>
     <string name="createEvent_startDate">startDate</string>
     <string name="createEvent_endDate">endDate</string>

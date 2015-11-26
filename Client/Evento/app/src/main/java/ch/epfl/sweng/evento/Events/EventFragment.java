@@ -50,6 +50,7 @@ public class EventFragment extends Fragment {
         TextView endDateView = (TextView) rootView.findViewById(R.id.endDateView);
         TextView addressView = (TextView) rootView.findViewById(R.id.addressView);
         TextView descriptionView = (TextView) rootView.findViewById(R.id.descriptionView);
+        TextView participantView = (TextView) rootView.findViewById(R.id.listParticipantView);
 
         titleView.setText(mEvent.getTitle());
         creatorView.setText(getString(R.string.eventFrag_createdBy, mEvent.getCreator()));
@@ -57,6 +58,7 @@ public class EventFragment extends Fragment {
         endDateView.setText(getString(R.string.eventFrag_to, mEvent.getEndDate().toString()));
         addressView.setText(getString(R.string.eventFrag_at, mEvent.getAddress()));
         descriptionView.setText(mEvent.getDescription());
+        participantView.setText(mEvent.getListParticipantString(", "));
 
         ImageView pictureView = (ImageView) rootView.findViewById(R.id.eventPictureView);
         pictureView.setImageBitmap(mEvent.getPicture());
