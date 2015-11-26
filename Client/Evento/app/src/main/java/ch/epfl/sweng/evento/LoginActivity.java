@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -14,22 +15,23 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 
 public class LoginActivity extends AppCompatActivity
         implements
-        GoogleApiClient.OnConnectionFailedListener
+        GoogleApiClient.OnConnectionFailedListener, View.OnClickListener
         {
 
 //---------------------------------------------------------------------------------------------
 //----Attributes-------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
+    private static final String TAG = "LoginActivity";
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 0;
-    private static final String TAG = "LoginActivity";
     private GoogleApiClient mGoogleApiClient;
     public String mIdToken = null;
 
@@ -59,8 +61,11 @@ public class LoginActivity extends AppCompatActivity
                 .addOnConnectionFailedListener(this)
                 .build();
 
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+
+        // The Color Scheme of the sign in button and setup of the OnClickListener to Sign in if clicked.
+        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        signInButton.setColorScheme(SignInButton.COLOR_DARK);
+        findViewById(R.id.sign_in_button).setOnClickListener(this);
     }
 
     @Override
@@ -90,6 +95,17 @@ public class LoginActivity extends AppCompatActivity
     public void onConnectionFailed(ConnectionResult result) {
         Log.d(TAG, "onConnectionFailed:" + result);
         }
+
+    //@Override
+    public void onClick(View v){
+
+        if(v.getId() == R.id.sign_in_button){
+            //Call sign in function
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+        }
+
+    }
 
     @Override
     protected void onStart() {
@@ -150,14 +166,15 @@ public class LoginActivity extends AppCompatActivity
             }
         }
     }
-            private void validateServerClientID() {
-                String serverClientId = getString(R.string.server_client_id);
-                String suffix = ".apps.googleusercontent.com";
-                if (!serverClientId.trim().endsWith(suffix)) {
-                    String message = "Invalid server client ID in strings.xml, must end with " + suffix;
 
-                    Log.w(TAG, message);
-                    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-                }
-            }
+    private void validateServerClientID() {
+        String serverClientId = getString(R.string.server_client_id);
+        String suffix = ".apps.googleusercontent.com";
+        if (!serverClientId.trim().endsWith(suffix)) {
+            String message = "Invalid server client ID in strings.xml, must end with " + suffix;
+
+            Log.w(TAG, message);
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
+    }
 }
