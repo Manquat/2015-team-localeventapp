@@ -146,7 +146,7 @@ public class Event implements ClusterItem {
     cal.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
     */
 
-    public String getProperDateString() {
+    public String getProperDateString(){
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
         timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
         return timeFormat.format(mStartDate.getTime());

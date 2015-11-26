@@ -18,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Locale;
@@ -314,22 +315,14 @@ public class RestApiTest {
     }
 
 
-    private static final GregorianCalendar eventDate = new GregorianCalendar(TimeZone.getTimeZone("Europe/Zurich"), Locale.FRANCE);
+    private  final Calendar eventDate = new GregorianCalendar(TimeZone.getTimeZone("Europe/Zurich"), Locale.FRANCE);
     private static final String stringDate = "2012-11-02T05:05:00Z";
-
-    /*public String getProperDateString() {
-        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
-        timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
-        return timeFormat.format(mStartDate.getTime());
-    }*/
 
     @Test
     public void testDateToProperString() {
-        eventDate.set(2012,10,2,4,5,0);
+        eventDate.set(2012, 10, 2, 5, 5, 0);
         Event e = new Event(0, "foo", "foo", 0, 0, "foo", "foo", new HashSet<String>(), eventDate, eventDate);
         assertEquals(stringDate, e.getProperDateString());
 
     }
-
-
 }
