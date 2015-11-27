@@ -22,8 +22,7 @@ import com.google.android.gms.common.api.ResultCallback;
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
-        View.OnClickListener
-        {
+        View.OnClickListener {
 
 //---------------------------------------------------------------------------------------------
 //----Attributes-------------------------------------------------------------------------------
@@ -93,12 +92,12 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         Log.d(TAG, "onConnectionFailed:" + result);
-        }
+    }
 
     //@Override
-    public void onClick(View v){
+    public void onClick(View v) {
 
-        if(v.getId() == R.id.sign_in_button){
+        if (v.getId() == R.id.sign_in_button) {
             //Call sign in function
             Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
             startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -124,8 +123,7 @@ public class LoginActivity extends AppCompatActivity implements
                 Settings.INSTANCE.setIdToken(mIdToken);
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
-            }
-            else{
+            } else {
                 Toast.makeText(this, "Could not connect, please try again", Toast.LENGTH_SHORT).show();
             }
         } else {
@@ -161,8 +159,7 @@ public class LoginActivity extends AppCompatActivity implements
                 Settings.INSTANCE.setIdToken(mIdToken);
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
-            }
-            else{
+            } else {
                 Toast.makeText(this, "Could not connect, please try again", Toast.LENGTH_SHORT).show();
             }
         }
