@@ -61,13 +61,13 @@ public class GuiServerTest {
     public void testRefreshPostRefresh() throws InterruptedException {
         int numOfEvent;
 
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getTargetContext());
         onView(withText("Refresh")).perform(click());
 
         // save the number of events
         numOfEvent = EventDatabase.INSTANCE.getSize();
 
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getTargetContext());
         onView(withText("Create an event")).perform(click());
 
         Thread.sleep(1000);
@@ -79,7 +79,7 @@ public class GuiServerTest {
 
         Thread.sleep(1000); // wait for event to be sent
 
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getTargetContext());
         onView(withText("Refresh")).perform(click());
 
         Thread.sleep(1000); // wait for the app to be refreshed
