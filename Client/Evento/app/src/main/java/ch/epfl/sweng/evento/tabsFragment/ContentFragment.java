@@ -42,7 +42,6 @@ import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 
-import ch.epfl.sweng.evento.SearchActivity;
 import ch.epfl.sweng.evento.Settings;
 
 import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
