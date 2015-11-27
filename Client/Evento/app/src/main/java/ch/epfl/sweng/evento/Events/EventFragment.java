@@ -28,9 +28,9 @@ public class EventFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_event, container, false);
 
         Bundle bundle = getArguments();
-        long currentEventSignature = bundle.getLong(KEYCURRENTEVENT);
+        int currentEventID = bundle.getInt(KEYCURRENTEVENT);
 
-        mEvent = EventDatabase.INSTANCE.getEvent(currentEventSignature);
+        mEvent = EventDatabase.INSTANCE.getEvent(currentEventID);
 
         updateFields(rootView);
 

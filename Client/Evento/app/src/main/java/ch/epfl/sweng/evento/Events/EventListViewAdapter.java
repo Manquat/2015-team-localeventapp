@@ -62,7 +62,7 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
 
     @Override
     public long getItemId(int position) {
-        return mEvents.get(position).getSignature();
+        return mEvents.get(position).getID();
     }
 
     @Override

@@ -78,11 +78,11 @@ public enum EventDatabase {
     /**
      * Returns the Event corresponding to the ID passed in argument
      *
-     * @param signature the Signature of the desired Event
+     * @param ID the Signature of the desired Event
      * @return the Event corresponding to the Signature.
      */
-    public Event getEvent(long signature) {
-        return mEventSet.get(signature);
+    public Event getEvent(int ID) {
+        return mEventSet.get(ID);
     }
 
     public Event getFirstEvent() {
@@ -112,8 +112,8 @@ public enum EventDatabase {
         return currentEvent;
     }
 
-    public int getPosition(long signature) {
-        return mEventSet.getPosition(signature);
+    public int getPosition(int ID) {
+        return mEventSet.getPosition(ID);
     }
 
     //public Event getNextEvent(long signature) { return mEventSet.getNext(signature);}

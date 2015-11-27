@@ -220,17 +220,6 @@ public Event(int id,
         return mLocation;
     }
 
-    /**
-     * The signature of an Event is its CustomDate in the long form to which its ID is appended.
-     * It allows to order Events by starting CustomDate AND by ID at the same time.
-     * The ID is written on 6 digits for now.
-     *
-     * @return the signature of the Event in the form yyyymmddhhmmID
-     */
-    public long getSignature() {
-        return (100000 * mStartDate.getTimeInMillis() + (long) getID());
-    }
-
     public long getCalendarAsLong(){
         return    100000000*(long) mStartDate.get(GregorianCalendar.YEAR)
                 + 1000000*(long) mStartDate.get(GregorianCalendar.MONTH)

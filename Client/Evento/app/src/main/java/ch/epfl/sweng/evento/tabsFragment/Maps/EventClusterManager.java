@@ -145,7 +145,7 @@ public class EventClusterManager extends ClusterManager<Event> implements
         // TODO Does nothing, but you could go into the event's page, for example.
 
         Intent intent = new Intent(mContext, EventActivity.class);
-        intent.putExtra(EventActivity.KEYCURRENTEVENT, event.getSignature());
+        intent.putExtra(EventActivity.KEYCURRENTEVENT, event.getID());
         mActivity.startActivity(intent);
     }
 

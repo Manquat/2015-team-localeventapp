@@ -23,8 +23,8 @@ public class EventPageAdapter extends FragmentStatePagerAdapter {
 
         // define the current event for this fragment
         Bundle bundle = new Bundle();
-        bundle.putLong(EventFragment.KEYCURRENTEVENT,
-                EventDatabase.INSTANCE.get(position).getSignature());
+        bundle.putInt(EventFragment.KEYCURRENTEVENT,
+                EventDatabase.INSTANCE.get(position).getID());
         fragment.setArguments(bundle);
 
         return fragment;
