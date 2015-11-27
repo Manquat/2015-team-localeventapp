@@ -43,6 +43,7 @@
     <string name="createEvent_tags">tags</string>
     <string name="createEvent_description">description</string>
     <string name="eventFragment_join">Join the event !</string>
+    <string name="addPictureEvent">Nothing to show</string>
     <string name="search_startDate">Start Date</string>
     <string name="search_endDate">End Date</string>
     <string name="search_buttonValidate">Validate</string>
