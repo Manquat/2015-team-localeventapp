@@ -122,7 +122,7 @@ public class EventClusterManager extends ClusterManager<Event> implements
     @Override
     public boolean onClusterItemClick(Event event) {
         if (mEventsClick == null) {
-            mEventsClick = new ArrayList<Event>();
+            mEventsClick = new ArrayList<>();
         }
 
         mEventsClick.clear();
@@ -152,7 +152,7 @@ public class EventClusterManager extends ClusterManager<Event> implements
      */
     public Collection<Event> getEventsClick() {
         // defensive copy
-        return new ArrayList<Event>(mEventsClick);
+        return new ArrayList<>(mEventsClick);
     }
 
     /**

@@ -14,7 +14,8 @@ import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 
 /**
- * Created by Gautier on 13/11/2015.
+ * Fragment that display an Event with an ID passed as an Extra with the key KEYCURRENTEVENT.
+ * After that allow to swipe left or right to explore the events actually loaded.
  */
 public class EventFragment extends Fragment {
 

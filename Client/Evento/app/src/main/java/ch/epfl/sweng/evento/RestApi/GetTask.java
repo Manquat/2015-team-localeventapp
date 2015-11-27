@@ -84,7 +84,7 @@ public class GetTask extends AsyncTask<String, Void, String> {
                     conn.getInputStream()));
             String line;
             while ((line = reader.readLine()) != null) {
-                out.append(line + "\n");
+                out.append(line).append("\n");
             }
 
             return out.toString();

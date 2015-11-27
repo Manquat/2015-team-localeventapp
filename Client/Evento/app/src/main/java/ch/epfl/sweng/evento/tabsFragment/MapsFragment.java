@@ -51,9 +51,6 @@ public class MapsFragment extends SupportMapFragment implements
     private GoogleApiClient mGoogleApiClient;
 
     private Activity mActivity;                     // not really useful but I think it's more efficient
-    private Context mContext;
-    private ViewGroup mContainer;
-    private View mView;
 
 
     /**
@@ -73,30 +70,29 @@ public class MapsFragment extends SupportMapFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mContainer = container;
-        mView = super.onCreateView(inflater, mContainer, savedInstanceState);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        if (mView == null) {
+        if (view == null) {
             Log.e(TAG, "The maps view cannot be created");
             throw new NullPointerException();
         }
 
         getMapAsync(this);
 
-        mContext = mView.getContext();
+        Context context = view.getContext();
 
-        if (mContext == null) {
+        if (context == null) {
             Log.e(TAG, "The actual context don't exist");
             throw new NullPointerException();
         }
 
-        mGoogleApiClient = new GoogleApiClient.Builder(mContext)
+        mGoogleApiClient = new GoogleApiClient.Builder(context)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
 
-        return mView;
+        return view;
     }
 
     /**

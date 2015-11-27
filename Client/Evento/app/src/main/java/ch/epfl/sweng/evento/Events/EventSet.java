@@ -191,8 +191,8 @@ public class EventSet {
     /**
      * Returns a set of all the Events that start after the date passed in argument
      *
-     * @param startDate
-     * @return
+     * @param startDate Calendar at the date wanted for the filter
+     * @return An EventSet containing the event corresponding to the filter
      */
     public EventSet filter(Calendar startDate) {
         EventSet newEventSet = new EventSet();
@@ -209,15 +209,15 @@ public class EventSet {
     /**
      * Returns a set of all the Events that start on the same day as the date passed in argument
      *
-     * @param calendar
-     * @return
+     * @param day Calendar at the date wanted (ignoring the time)
+     * @return An EventSet containing the event corresponding to the filter
      */
-    public EventSet filterOnDay(Calendar calendar) {
+    public EventSet filterOnDay(Calendar day) {
         EventSet newEventSet = new EventSet();
         for (Event event : mEvents.values()) {
-            if (event.getStartDate().get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH) &&
-                    event.getStartDate().get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
-                    event.getStartDate().get(Calendar.YEAR) == calendar.get(Calendar.YEAR)) {
+            if (event.getStartDate().get(Calendar.DAY_OF_MONTH) == day.get(Calendar.DAY_OF_MONTH) &&
+                    event.getStartDate().get(Calendar.MONTH) == day.get(Calendar.MONTH) &&
+                    event.getStartDate().get(Calendar.YEAR) == day.get(Calendar.YEAR)) {
                 newEventSet.addEvent(event);
             }
         }
@@ -295,6 +295,6 @@ public class EventSet {
     }
 
     public List<Event> toArrayList() {
-        return new ArrayList<Event>(mEvents.values());
+        return new ArrayList<>(mEvents.values());
     }
 }

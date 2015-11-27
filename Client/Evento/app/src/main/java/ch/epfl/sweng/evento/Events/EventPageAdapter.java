@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import ch.epfl.sweng.evento.EventDatabase;
 
 /**
- * Created by Gautier on 13/11/2015.
+ * Page adapter that control the events showed when the user swipe from the EventActivity
  */
 public class EventPageAdapter extends FragmentStatePagerAdapter {
     private static final String TAG = "EventPagerAdapter";

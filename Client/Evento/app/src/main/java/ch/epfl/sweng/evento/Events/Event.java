@@ -20,7 +20,8 @@ import java.util.Set;
 import java.util.TimeZone;
 
 /**
- * Created by Val on 15.10.2015.
+ * The event class that holds all the information related to the event :
+ * date of beginning, date of end, title, owner, .....
  */
 public class Event implements ClusterItem {
     private static final String TAG = "Event";
@@ -94,10 +95,9 @@ public class Event implements ClusterItem {
      * for the server
      */
     public String toString() {
-        String s = this.getTitle() + ", " + this.getDescription() + ", " + this.getAddress()
+        return this.getTitle() + ", " + this.getDescription() + ", " + this.getAddress()
                 + ", (" + Double.toString(this.getLatitude()) + ", " + Double.toString(this.getLongitude())
                 + "), " + this.getCreator() + ", (" + this.getProperDateString();
-        return s;
     }
 
 
