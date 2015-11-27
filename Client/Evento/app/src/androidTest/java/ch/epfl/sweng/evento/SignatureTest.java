@@ -64,12 +64,12 @@ public class SignatureTest {
 
     @Test
     public void CompareIDTest() {
-        int id = mID +1;
+        int id = mID + 1;
         Signature signature2 = new Signature(id, mCalendar);
 
         assertEquals(-1, mSignature.compare(mSignature, signature2));
 
-        id = id -10;
+        id = id - 10;
         signature2 = new Signature(id, mCalendar);
 
         assertEquals(1, mSignature.compare(mSignature, signature2));

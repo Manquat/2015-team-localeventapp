@@ -23,14 +23,13 @@ import ch.epfl.sweng.evento.tabsFragment.Calendar.GridCalendarAdapter;
  * The fragment that holds the calendar and the listView that display the events at the current
  * selected date
  */
-public class CalendarTabs extends Fragment implements Button.OnClickListener, Refreshable  {
+public class CalendarTabs extends Fragment implements Button.OnClickListener, Refreshable {
 
 
-    private GridCalendarAdapter  mGridCalendarAdapter;
-    private TextView             mCurrentDate;
-    private LinearLayout         mBaseLayout;
+    private GridCalendarAdapter mGridCalendarAdapter;
+    private TextView mCurrentDate;
+    private LinearLayout mBaseLayout;
     private EventListViewAdapter mEventListAdapter;
-
 
 
     @Override
@@ -77,7 +76,6 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener, Re
             default:
         }
     }
-
 
 
     public void refresh() {

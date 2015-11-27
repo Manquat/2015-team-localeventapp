@@ -107,10 +107,10 @@ public class SearchActivity extends AppCompatActivity
             public void onClick(View view) {
                 RestApi mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
 
-                if(startDate == null){
+                if (startDate == null) {
                     startDate = new GregorianCalendar(2000, 1, 1, 0, 0);
                 }
-                if(endDate == null){
+                if (endDate == null) {
                     endDate = new GregorianCalendar(2020, 1, 1, 0, 0);
                 }
 
@@ -131,7 +131,6 @@ public class SearchActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(), "Load events by search parameters", Toast.LENGTH_SHORT).show();
 
 
-
             }
         });
     }
@@ -139,18 +138,17 @@ public class SearchActivity extends AppCompatActivity
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                           int dayOfMonth) {
-        if(mStartOrEndDate == false) {
+        if (mStartOrEndDate == false) {
             startDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
-            String s = Integer.toString(startDate.get(Calendar.MONTH)+1) + "/"
+            String s = Integer.toString(startDate.get(Calendar.MONTH) + 1) + "/"
                     + Integer.toString(startDate.get(Calendar.DAY_OF_MONTH)) + "/"
-                    + Integer.toString(startDate.get(Calendar.YEAR)) ;
+                    + Integer.toString(startDate.get(Calendar.YEAR));
             mStartDateView.setText(s);
-        }
-        else {
+        } else {
             endDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
-            String s = Integer.toString(endDate.get(Calendar.MONTH)+1) + "/"
+            String s = Integer.toString(endDate.get(Calendar.MONTH) + 1) + "/"
                     + Integer.toString(endDate.get(Calendar.DAY_OF_MONTH)) + "/"
-                    + Integer.toString(endDate.get(Calendar.YEAR)) ;
+                    + Integer.toString(endDate.get(Calendar.YEAR));
             mEndDateView.setText(s);
         }
     }
@@ -184,7 +182,6 @@ public class SearchActivity extends AppCompatActivity
                 null);
         mAutocompleteView.setAdapter(mAdapter);
     }
-
 
 
     /**

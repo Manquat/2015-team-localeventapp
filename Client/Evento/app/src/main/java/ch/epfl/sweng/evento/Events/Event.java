@@ -23,7 +23,7 @@ import java.util.TimeZone;
 /**
  * Created by Val on 15.10.2015.
  */
-public class Event implements ClusterItem, Comparator<Event>, Comparable<Event> {
+public class Event implements ClusterItem {
     private static final String TAG = "Event";
     private final int mID;
     private final String mTitle;
@@ -56,7 +56,7 @@ public class Event implements ClusterItem, Comparator<Event>, Comparable<Event> 
         mPicture = samplePicture();
     }
 
-public Event(int id,
+    public Event(int id,
                  String title,
                  String description,
                  double latitude,
@@ -67,7 +67,7 @@ public Event(int id,
                  Calendar startDate,
                  Calendar endDate,
                  Bitmap picture) {
-        this(id, title, description, latitude, longitude, address, creator, tags,startDate,endDate);
+        this(id, title, description, latitude, longitude, address, creator, tags, startDate, endDate);
         mStartDate = startDate;
         mEndDate = endDate;
         setPicture(picture);
@@ -102,7 +102,6 @@ public Event(int id,
     }
 
 
-
     public void setPicture(String picture) {
         mPicture = picture;
     }
@@ -120,25 +119,25 @@ public Event(int id,
     }
 
 
-    public String getProperDateString(){
+    public String getProperDateString() {
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
         timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
         return timeFormat.format(mStartDate.getTime());
     }
 
-    static public String asNiceString(Calendar calendar){
+    public static String asNiceString(Calendar calendar) {
         return calendar.get(Calendar.DAY_OF_MONTH) + "/"
                 + calendar.get(Calendar.MONTH) + "/"
                 + calendar.get(Calendar.YEAR) + " at "
-                 + calendar.get(Calendar.HOUR_OF_DAY) + ":"
+                + calendar.get(Calendar.HOUR_OF_DAY) + ":"
                 + calendar.get(Calendar.MINUTE);
     }
 
-    public String getStartDateAsString(){
+    public String getStartDateAsString() {
         return asNiceString(mStartDate);
     }
 
-    public String getEndDateAsString(){
+    public String getEndDateAsString() {
         return asNiceString(mEndDate);
     }
 
@@ -220,11 +219,11 @@ public Event(int id,
         return mLocation;
     }
 
-    public long getCalendarAsLong(){
-        return    100000000*(long) mStartDate.get(GregorianCalendar.YEAR)
-                + 1000000*(long) mStartDate.get(GregorianCalendar.MONTH)
-                + 10000*(long) mStartDate.get(GregorianCalendar.DAY_OF_MONTH)
-                + 100*(long) mStartDate.get(GregorianCalendar.HOUR_OF_DAY)
+    public long getCalendarAsLong() {
+        return 100000000 * (long) mStartDate.get(GregorianCalendar.YEAR)
+                + 1000000 * (long) mStartDate.get(GregorianCalendar.MONTH)
+                + 10000 * (long) mStartDate.get(GregorianCalendar.DAY_OF_MONTH)
+                + 100 * (long) mStartDate.get(GregorianCalendar.HOUR_OF_DAY)
                 + (long) mStartDate.get(GregorianCalendar.MINUTE);
     }
 
@@ -314,48 +313,6 @@ public Event(int id,
                 "AwQtAAAACQAD+Sb7AwAJAQMAE/wDAQ35AwUM/AMAEPsDABL8BAQpAAAACQAD+Sb7AwAJAQMAE/wD " +
                 "AQ35AwUM/AMAEPsDABL8BAQpAAAACQAD+Sb7AwAJAQMAE/wDAQ35AwUM/AMAEPsDABL8BAQpAAAA " +
                 "yAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAAAE=";
-    }
-
-    @Override
-    public int compare(Event lhs, Event rhs) {
-        if (lhs != null && rhs != null) {
-            int compareTo = lhs.getStartDate().compareTo(rhs.getStartDate());
-
-            // same date
-            if (compareTo == 0) {
-                if (lhs.getID() > rhs.getID()) {
-                    // greater
-                    return 1;
-                } else if (lhs.getID() < rhs.getID()) {
-                    // smaller
-                    return -1;
-                }
-                else {
-                    // the same
-                    return 0;
-                }
-            }
-            return compareTo;
-        }
-        else {
-            if (lhs == null && rhs != null) {
-                // by default null is the smallest possible
-                return -1;
-            }
-            else if (lhs != null) {
-                // by default null is the smallest possible
-                return 1;
-            }
-            else {
-                //the same null
-                return 0;
-            }
-        }
-    }
-
-    @Override
-    public int compareTo(@NonNull Event another) {
-        return compare(this, another);
     }
 }
 

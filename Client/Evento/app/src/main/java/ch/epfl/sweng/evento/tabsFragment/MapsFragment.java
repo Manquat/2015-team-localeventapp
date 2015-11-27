@@ -29,7 +29,6 @@ import ch.epfl.sweng.evento.Events.EventsClusterRenderer;
 import ch.epfl.sweng.evento.tabsFragment.Maps.EventClusterManager;
 
 
-
 /**
  * Fragment that hold the Google map.
  */
@@ -42,9 +41,6 @@ public class MapsFragment extends SupportMapFragment implements
 
     private static final String TAG = "MapsFragment";   // LogCat tag
     private static final float ZOOM_LEVEL = 15.0f;                          // Zoom level of the map at the beginning
-
-
-
 
 
     private GoogleMap mMap;
@@ -60,16 +56,12 @@ public class MapsFragment extends SupportMapFragment implements
     private View mView;
 
 
-
-
     /**
      * Constructor by default mandatory for fragment class
      */
     public MapsFragment() {
         super();
     }
-
-
 
 
     @Override
@@ -208,8 +200,6 @@ public class MapsFragment extends SupportMapFragment implements
         // (the camera animates to the user's current position).
         return false;
     }
-
-
 
 
     /**

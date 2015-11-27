@@ -40,14 +40,10 @@ public class EventClusterManager extends ClusterManager<Event> implements
     final static String TAG = "EventClusterManager";
 
 
-
-
     private Context mContext;
     private Collection<Event> mEventsClick;
     private Activity mActivity;
     private GoogleMap mMap;
-
-
 
 
     public EventClusterManager(Context context, GoogleMap map, Activity parentActivity) {

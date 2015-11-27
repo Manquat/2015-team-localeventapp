@@ -48,7 +48,7 @@ public enum EventDatabase {
 
 
     public void addAll(List<Event> events) {
-        if(events == null) {
+        if (events == null) {
             return;
         }
         for (Event e : events) {
@@ -58,7 +58,7 @@ public enum EventDatabase {
     }
 
     public void addOne(Event e) {
-        if(e== null){
+        if (e == null) {
             return;
         }
         mEventSet.addEvent(e);
@@ -146,9 +146,9 @@ public enum EventDatabase {
         return mEventSet.filter(startDate);
     }
 
-    public EventSet filterOnDay(Calendar calendar) {return mEventSet.filterOnDay(calendar);}
-
-
+    public EventSet filterOnDay(Calendar calendar) {
+        return mEventSet.filterOnDay(calendar);
+    }
 
 
     public void refresh() {

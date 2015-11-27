@@ -191,6 +191,7 @@ public class EventSet {
 
     /**
      * Returns a set of all the Events that start after the date passed in argument
+     *
      * @param startDate
      * @return
      */
@@ -208,10 +209,11 @@ public class EventSet {
 
     /**
      * Returns a set of all the Events that start on the same day as the date passed in argument
+     *
      * @param calendar
      * @return
      */
-    public EventSet filterOnDay(Calendar calendar){
+    public EventSet filterOnDay(Calendar calendar) {
         EventSet newEventSet = new EventSet();
         for (Event event : mEvents.values()) {
             if (event.getStartDate().get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH) &&

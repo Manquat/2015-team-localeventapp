@@ -51,7 +51,7 @@ import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
  * Simple Fragment used to display some meaningful content for each page in the sample's
  * {@link android.support.v4.view.ViewPager}.
  */
-public class ContentFragment extends Fragment implements Refreshable{
+public class ContentFragment extends Fragment implements Refreshable {
 
 
     final int PADDING = 5;

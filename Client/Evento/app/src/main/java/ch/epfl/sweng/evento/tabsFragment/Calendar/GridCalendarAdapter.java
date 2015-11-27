@@ -29,15 +29,11 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
     private static final int NUMBER_OF_CELLS = 7 * 7; // the line for the day of the week, and 6 lines for all the day of the month
 
 
-
-
-    private Context      mContext;          // the context where the adapter is used
+    private Context mContext;          // the context where the adapter is used
     private CalendarGrid mCalendarGrid;     // the container of all the information
-    private List<Event>  mEvents = null;    // the events at the current day
+    private List<Event> mEvents = null;    // the events at the current day
     private Refreshable mUpdatableParent;  // the parent that holds the grid and will be update when something
-                                            // changed in the adapter.
-
-
+    // changed in the adapter.
 
 
     /**
@@ -57,8 +53,6 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         mCalendarGrid = new CalendarGrid(actualDate);
         mEvents = EventDatabase.INSTANCE.filter(actualDate).toArrayList();
     }
-
-
 
 
     /**
@@ -201,8 +195,6 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
     }
 
 
-
-
     @Override
     public void onClick(View v) {
         int position = Integer.valueOf((String) v.getTag(R.id.position_tag));
@@ -212,8 +204,6 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         notifyDataSetChanged();
         mUpdatableParent.refresh();
     }
-
-
 
 
     public void nextMonth() {

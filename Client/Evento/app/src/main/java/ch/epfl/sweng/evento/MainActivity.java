@@ -144,10 +144,10 @@ public class MainActivity extends AppCompatActivity {
                 EventDatabase.INSTANCE.clear();
                 EventDatabase.INSTANCE.addAll(eventArrayList);
                 Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + mPager.getCurrentItem());
-                if (page instanceof Refreshable){
+                if (page instanceof Refreshable) {
                     ((Refreshable) page).refresh();
                 }
-                Toast.makeText(getApplicationContext(),"Refreshed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
             }
         });
     }

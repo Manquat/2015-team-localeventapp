@@ -85,7 +85,8 @@ public class CreatingEventActivity extends AppCompatActivity
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                           int dayOfMonth) {
-        if (!mStartOrEndDate) startDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
+        if (!mStartOrEndDate)
+            startDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
         else endDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
         mTimeFragment = new TimePickerDialogFragment();
         mTimeFragment.show(getFragmentManager(), "timePicker");
@@ -211,7 +212,6 @@ public class CreatingEventActivity extends AppCompatActivity
                         mTag, startDate, endDate, picture);
 
 
-
                 restApi.postEvent(e, new PostCallback() {
                     @Override
                     public void onPostSuccess(String response) {
@@ -230,12 +230,12 @@ public class CreatingEventActivity extends AppCompatActivity
     private void setPictureButton(Button pictureButton) {
         pictureButton.setOnClickListener(new View.OnClickListener() {
 
-                 @Override
-                 public void onClick(View view) {
-                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                     startActivityForResult(intent, 2);
-                 }
-             }
+                                             @Override
+                                             public void onClick(View view) {
+                                                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                                 startActivityForResult(intent, 2);
+                                             }
+                                         }
         );
     }
 

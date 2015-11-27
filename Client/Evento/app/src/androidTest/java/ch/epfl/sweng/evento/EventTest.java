@@ -24,7 +24,7 @@ import static junit.framework.Assert.assertEquals;
 @LargeTest
 public class EventTest {
 
-    private  final Calendar eventDate = new GregorianCalendar(TimeZone.getTimeZone("Europe/Zurich"), Locale.FRANCE);
+    private final Calendar eventDate = new GregorianCalendar(TimeZone.getTimeZone("Europe/Zurich"), Locale.FRANCE);
     private static final String stringDate = "2012-11-02T05:05:00Z";
 
     @Test
