@@ -8,7 +8,7 @@ import java.util.Comparator;
 /**
  * Class to represent the key of the EventSet. Unique for every event
  */
-public class Signature implements Comparable<Signature>, Comparator<Signature> {
+public class Signature implements Comparable<Signature> {
     private int mID;
     private Calendar mCalendar;
 
@@ -30,25 +30,26 @@ public class Signature implements Comparable<Signature>, Comparator<Signature> {
 
     @Override
     public int compareTo(@NonNull Signature another) {
-        return compare(this, another);
+        int result = mCalendar.compareTo(another.getCalendar());
+        return (result == 0) ? ((Integer) mID).compareTo(another.getID()) : result;
     }
 
     @Override
-    public int compare(Signature lhs, Signature rhs) {
-        if (lhs != null && rhs != null) {
-            int result = lhs.getCalendar().compareTo(rhs.getCalendar());
-            return (result == 0) ? ((Integer) lhs.getID()).compareTo(rhs.getID()) : result;
-        } else {
-            if (lhs == null && rhs != null) {
-                // by default null is the smallest possible
-                return -1;
-            } else if (lhs != null) {
-                // by default null is the smallest possible
-                return 1;
-            } else {
-                //the same null
-                return 0;
-            }
+    public int hashCode() {
+        return mID + 31*mCalendar.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object objectToCompare) {
+        if (objectToCompare == this) {
+            return true;
         }
+        if (objectToCompare == null || objectToCompare.getClass() != getClass()) {
+            return false;
+        }
+
+        Signature signatureToCompare = (Signature) objectToCompare;
+        return mID == signatureToCompare.getID() &&
+                mCalendar.equals(signatureToCompare.getCalendar());
     }
 }
