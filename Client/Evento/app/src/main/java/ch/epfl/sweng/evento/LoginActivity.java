@@ -20,9 +20,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 
-public class LoginActivity extends AppCompatActivity
-        implements
-        GoogleApiClient.OnConnectionFailedListener, View.OnClickListener
+public class LoginActivity extends AppCompatActivity implements
+        GoogleApiClient.OnConnectionFailedListener,
+        View.OnClickListener
         {
 
 //---------------------------------------------------------------------------------------------
@@ -33,7 +33,6 @@ public class LoginActivity extends AppCompatActivity
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 0;
     private GoogleApiClient mGoogleApiClient;
-    public String mIdToken = "noToken";
 
 //---------------------------------------------------------------------------------------------
 //----Methods----------------------------------------------------------------------------------
@@ -118,6 +117,7 @@ public class LoginActivity extends AppCompatActivity
             Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
             if (result.isSuccess()) {
+                String mIdToken;
                 GoogleSignInAccount acct = result.getSignInAccount();
                 mIdToken = acct.getIdToken();
                 Log.d(TAG, "idToken:" + mIdToken);
@@ -155,6 +155,7 @@ public class LoginActivity extends AppCompatActivity
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount acct = result.getSignInAccount();
+                String mIdToken;
                 mIdToken = acct.getIdToken();
                 Log.d(TAG, "idToken:" + mIdToken);
                 Settings.INSTANCE.setIdToken(mIdToken);

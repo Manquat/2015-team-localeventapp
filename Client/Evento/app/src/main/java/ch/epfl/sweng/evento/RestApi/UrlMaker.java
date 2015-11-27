@@ -21,7 +21,7 @@ public final class UrlMaker {
 
 
     public static String get(String urlServer, int noEvent) {
-        return urlServer + event  + String.valueOf(noEvent) + ".json";
+        return urlServer + event  + noEvent + ".json";
     }
 
     public static final String getAll(String urlServer) {
@@ -35,11 +35,11 @@ public final class UrlMaker {
     }
 
     public static String put(String urlServer, int id) {
-        return urlServer + event  + Integer.toString(id);
+        return urlServer + event  + id;
     }
 
     public static String delete(String urlServer, int id) {
-        return urlServer + event  + Integer.toString(id);
+        return urlServer + event  + id;
     }
 
     public static String getByDate(String urlServer, GregorianCalendar startDate, GregorianCalendar endDate) {
