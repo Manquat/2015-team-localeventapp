@@ -15,6 +15,7 @@ class Event(models.Model):
     duration = models.DurationField("duration", default=timedelta())
     tags = models.CharField(max_length=200, default='Foot!')
     image = models.TextField(default='No Image')
+    participants = models.CharField(max_length=400, default='None')
     def __unicode__(self):
         return self.Event_name
 
