@@ -53,12 +53,12 @@ public class SignatureTest {
 
         Signature signature2 = new Signature(mID, calendar);
 
-        assertEquals(-1, mSignature.compare(mSignature, signature2));
+        assertEquals(-1, mSignature.compareTo(signature2));
 
         calendar.add(Calendar.MONTH, -2);
         signature2 = new Signature(mID, calendar);
 
-        assertEquals(1, mSignature.compare(mSignature, signature2));
+        assertEquals(1, mSignature.compareTo(signature2));
     }
 
     @Test
@@ -66,11 +66,11 @@ public class SignatureTest {
         int id = mID + 1;
         Signature signature2 = new Signature(id, mCalendar);
 
-        assertEquals(-1, mSignature.compare(mSignature, signature2));
+        assertEquals(-1, mSignature.compareTo(signature2));
 
         id = id - 10;
         signature2 = new Signature(id, mCalendar);
 
-        assertEquals(1, mSignature.compare(mSignature, signature2));
+        assertEquals(1, mSignature.compareTo(signature2));
     }
 }
