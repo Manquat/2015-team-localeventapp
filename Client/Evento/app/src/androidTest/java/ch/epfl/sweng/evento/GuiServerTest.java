@@ -56,7 +56,7 @@ public class GuiServerTest {
      * Check the number of events, create a new one, refresh, check if there is a new event
      * @throws InterruptedException
      */
-    @Ignore("Waiting for jenkins solution regarding google play")
+    @Ignore("Waiting for solution")
     @Test
     public void testRefreshPostRefresh() throws InterruptedException {
         int numOfEvent;
