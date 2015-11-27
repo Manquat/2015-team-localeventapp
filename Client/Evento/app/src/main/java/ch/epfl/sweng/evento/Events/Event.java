@@ -2,7 +2,6 @@ package ch.epfl.sweng.evento.Events;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.util.Log;
 
@@ -10,9 +9,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.GregorianCalendar;
 
 import java.util.Locale;
@@ -126,11 +125,8 @@ public class Event implements ClusterItem {
     }
 
     public static String asNiceString(Calendar calendar) {
-        return calendar.get(Calendar.DAY_OF_MONTH) + "/"
-                + calendar.get(Calendar.MONTH) + "/"
-                + calendar.get(Calendar.YEAR) + " at "
-                + calendar.get(Calendar.HOUR_OF_DAY) + ":"
-                + calendar.get(Calendar.MINUTE);
+        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+        return dateFormat.format(calendar.getTime());
     }
 
     public String getStartDateAsString() {

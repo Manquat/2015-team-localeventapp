@@ -27,6 +27,7 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -94,10 +95,7 @@ public class SearchActivity extends AppCompatActivity
         // listener for address place picker (googlePlaceAPI)
         setPlacePickerField();
 
-
         setValidateButtonAndSend(validateButton);
-
-
     }
 
     private void setValidateButtonAndSend(Button validateButton) {
@@ -129,8 +127,6 @@ public class SearchActivity extends AppCompatActivity
                 });
 
                 Toast.makeText(getApplicationContext(), "Load events by search parameters", Toast.LENGTH_SHORT).show();
-
-
             }
         });
     }
@@ -138,17 +134,15 @@ public class SearchActivity extends AppCompatActivity
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                           int dayOfMonth) {
-        if (mStartOrEndDate == false) {
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
+
+        if (!mStartOrEndDate) {
             startDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
-            String s = Integer.toString(startDate.get(Calendar.MONTH) + 1) + "/"
-                    + Integer.toString(startDate.get(Calendar.DAY_OF_MONTH)) + "/"
-                    + Integer.toString(startDate.get(Calendar.YEAR));
+            String s = dateFormat.format(startDate);
             mStartDateView.setText(s);
         } else {
             endDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
-            String s = Integer.toString(endDate.get(Calendar.MONTH) + 1) + "/"
-                    + Integer.toString(endDate.get(Calendar.DAY_OF_MONTH)) + "/"
-                    + Integer.toString(endDate.get(Calendar.YEAR));
+            String s = dateFormat.format(endDate);
             mEndDateView.setText(s);
         }
     }
