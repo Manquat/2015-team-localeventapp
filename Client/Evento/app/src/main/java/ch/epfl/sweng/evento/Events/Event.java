@@ -108,7 +108,9 @@ public class Event implements ClusterItem {
         return s;
     }
 
+
     public boolean addParticipant(User participant){
+
         if(participant != null) {
             if (mParticipants.size() < mNumberMaxOfParticipants) {
                 mParticipants.add(participant);
