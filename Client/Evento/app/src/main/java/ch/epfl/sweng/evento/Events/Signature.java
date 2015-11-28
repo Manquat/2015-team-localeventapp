@@ -3,7 +3,6 @@ package ch.epfl.sweng.evento.Events;
 import android.support.annotation.NonNull;
 
 import java.util.Calendar;
-import java.util.Comparator;
 
 /**
  * Class to represent the key of the EventSet. Unique for every event
@@ -14,24 +13,16 @@ public class Signature implements Comparable<Signature> {
 
     public Signature(int ID, Calendar calendar) {
         mID = ID;
-        mCalendar = calendar;
+
+        // defensive copy
+        mCalendar = Calendar.getInstance();
+        mCalendar.setTime(calendar.getTime());
     }
-
-
-    public int getID() {
-        return mID;
-    }
-
-    public Calendar getCalendar() {
-        //deep copy
-        return (Calendar) mCalendar.clone();
-    }
-
 
     @Override
     public int compareTo(@NonNull Signature another) {
-        int result = mCalendar.compareTo(another.getCalendar());
-        return (result == 0) ? ((Integer) mID).compareTo(another.getID()) : result;
+        int result = mCalendar.compareTo(another.mCalendar);
+        return (result == 0) ? ((Integer) mID).compareTo(another.mID) : result;
     }
 
     @Override
@@ -49,7 +40,7 @@ public class Signature implements Comparable<Signature> {
         }
 
         Signature signatureToCompare = (Signature) objectToCompare;
-        return mID == signatureToCompare.getID() &&
-                mCalendar.equals(signatureToCompare.getCalendar());
+        return mID == signatureToCompare.mID &&
+                mCalendar.equals(signatureToCompare.mCalendar);
     }
 }

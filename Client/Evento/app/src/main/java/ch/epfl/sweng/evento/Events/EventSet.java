@@ -243,7 +243,7 @@ public class EventSet {
 
         if (event != null && mIDs.containsKey(event.getID())) {
             Iterator<Signature> iterator = mEvents.navigableKeySet().iterator();
-            while (iterator.hasNext() && iterator.next().getID() != event.getID()) {
+            while (iterator.hasNext() && mEvents.get(iterator.next()).getID() != event.getID()) {
             }
             while (iterator.hasNext()) {
                 numberOfEvents++;
@@ -279,7 +279,7 @@ public class EventSet {
         Iterator<Signature> iterator = mEvents.keySet().iterator();
         boolean stop = false;
 
-        while (iterator.next().getID() != ID) {
+        while (mEvents.get(iterator.next()).getID() != ID) {
             ++position;
 
             if (!iterator.hasNext()) {

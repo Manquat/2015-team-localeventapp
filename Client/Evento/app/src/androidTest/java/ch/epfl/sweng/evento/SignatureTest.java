@@ -13,6 +13,9 @@ import java.util.GregorianCalendar;
 import ch.epfl.sweng.evento.Events.Signature;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotSame;
+import static junit.framework.Assert.assertTrue;
 
 /**
  * Testing the Signature class
@@ -33,21 +36,43 @@ public class SignatureTest {
     }
 
     @Test
-    public void GetTest() {
-        assertEquals(mID, mSignature.getID());
-        assertEquals(mCalendar, mSignature.getCalendar());
-    }
+    public void equalsTest() {
+        assertTrue(mSignature.equals(mSignature));
 
-    @Test
-    public void CalendarDeepCopyTest() {
-        Calendar calendar = mSignature.getCalendar();
+        Signature signature = new Signature(mID, mCalendar);
+        assertTrue(mSignature.equals(signature));
+        assertTrue(signature.equals(mSignature));
+
+        Signature signature1 = new Signature(mID + 1, mCalendar);
+        assertFalse(signature1.equals(mSignature));
+        assertFalse(mSignature.equals(signature1));
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(mCalendar.getTime());
         calendar.add(Calendar.MONTH, 1);
 
-        assertEquals(mCalendar, mSignature.getCalendar());
+        Signature signature2 = new Signature(mID, calendar);
+        assertFalse(mSignature.equals(signature2));
+        assertFalse(signature2.equals(mSignature));
     }
 
     @Test
-    public void CompareCalendarTest() {
+    public void hashCodeTest() {
+        Signature signature = new Signature(mID, mCalendar);
+        assertEquals(mSignature.hashCode(), signature.hashCode());
+
+        signature = new Signature(mID + 1, mCalendar);
+        assertNotSame(mSignature.hashCode(), signature.hashCode());
+
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(mCalendar.getTime());
+        calendar.add(Calendar.MONTH, 1);
+        signature = new Signature(mID, calendar);
+        assertNotSame(mSignature.hashCode(), signature.hashCode());
+    }
+
+    @Test
+    public void compareCalendarTest() {
         Calendar calendar = (Calendar) mCalendar.clone();
         calendar.add(Calendar.MONTH, 1);
 
@@ -62,7 +87,7 @@ public class SignatureTest {
     }
 
     @Test
-    public void CompareIDTest() {
+    public void compareIDTest() {
         int id = mID + 1;
         Signature signature2 = new Signature(id, mCalendar);
 

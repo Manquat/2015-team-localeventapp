@@ -3,7 +3,6 @@ package ch.epfl.sweng.evento.Events;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
@@ -137,11 +136,6 @@ public class Event implements ClusterItem {
         return asNiceString(mEndDate);
     }
 
-
-    public void debugLogEvent() {
-        Log.i(TAG, "Event " + mID + " : title : " + mTitle);
-    }
-
     public int getID() {
         return mID;
     }
@@ -178,8 +172,11 @@ public class Event implements ClusterItem {
         if (mTags.contains("Foot!") ||
                 mTags.contains("Football")) {
             return "Football";
-        } else if (mTags.contains("Basketball")) return "Basketball";
-        else return "Basketball";
+        } else if (mTags.contains("Basketball")) {
+            return "Basketball";
+        } else {
+            return "Basketball";
+        }
     }
 
     public Set<String> getTags() {
@@ -213,14 +210,6 @@ public class Event implements ClusterItem {
     @Override
     public LatLng getPosition() {
         return mLocation;
-    }
-
-    public long getCalendarAsLong() {
-        return 100000000 * (long) mStartDate.get(GregorianCalendar.YEAR)
-                + 1000000 * (long) mStartDate.get(GregorianCalendar.MONTH)
-                + 10000 * (long) mStartDate.get(GregorianCalendar.DAY_OF_MONTH)
-                + 100 * (long) mStartDate.get(GregorianCalendar.HOUR_OF_DAY)
-                + (long) mStartDate.get(GregorianCalendar.MINUTE);
     }
 
     //This is a temporary method to test if the server can handle very long strings
