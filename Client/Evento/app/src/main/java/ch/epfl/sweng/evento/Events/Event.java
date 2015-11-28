@@ -109,7 +109,6 @@ public class Event implements ClusterItem {
     }
 
     public boolean addParticipant(User participant){
-        
         if(participant != null) {
             if (mParticipants.size() < mNumberMaxOfParticipants) {
                 mParticipants.add(participant);
