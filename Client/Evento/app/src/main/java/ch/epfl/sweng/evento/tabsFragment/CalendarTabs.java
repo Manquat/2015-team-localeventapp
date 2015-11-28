@@ -7,25 +7,38 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.Events.EventListViewAdapter;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.tabsFragment.Calendar.GridCalendarAdapter;
 
 /**
- * Created by Gautier on 21/10/2015.
+ * The fragment that holds the calendar and the listView that display the events at the current
+ * selected date
  */
-public class CalendarTabs extends Fragment implements Button.OnClickListener, Refreshable  {
+public class CalendarTabs extends Fragment implements Button.OnClickListener, Refreshable {
+
+
     private GridCalendarAdapter mGridCalendarAdapter;
     private TextView mCurrentDate;
+    private LinearLayout mBaseLayout;
+    private EventListViewAdapter mEventListAdapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
 
-        GridView gridView = (GridView) view.findViewById(R.id.gridview);
-        mGridCalendarAdapter = new GridCalendarAdapter(view.getContext());
+        GridView gridView = (GridView) view.findViewById(R.id.gridView);
+        mGridCalendarAdapter = new GridCalendarAdapter(view.getContext(), this);
         gridView.setAdapter(mGridCalendarAdapter);
 
         Button nextButton = (Button) view.findViewById(R.id.nextButton);
@@ -35,7 +48,17 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener, Re
         prevButton.setOnClickListener(this);
 
         mCurrentDate = (TextView) view.findViewById(R.id.dayTitle);
-        updateDate();
+
+        mBaseLayout = (LinearLayout) view.findViewById(R.id.calendar_base_layout);
+
+        ListView listView = (ListView) view.findViewById(R.id.calendar_list_event);
+        mEventListAdapter = new EventListViewAdapter(view.getContext(),
+                new ArrayList<Event>(0), getActivity());
+        listView.setAdapter(mEventListAdapter);
+        listView.setOnItemClickListener(mEventListAdapter);
+
+        refresh();
+
         return view;
     }
 
@@ -44,22 +67,27 @@ public class CalendarTabs extends Fragment implements Button.OnClickListener, Re
         switch (v.getId()) {
             case R.id.nextButton:
                 mGridCalendarAdapter.nextMonth();
-                updateDate();
+                refresh();
                 break;
             case R.id.prevButton:
                 mGridCalendarAdapter.prevMonth();
-                updateDate();
+                refresh();
                 break;
             default:
         }
     }
 
-    private void updateDate() {
-        mCurrentDate.setText(mGridCalendarAdapter.getStringDate());
+
+    public void refresh() {
+        updateDate();
+
+        List<Event> events = mGridCalendarAdapter.getCurrentEvents();
+        mEventListAdapter.setEvents(events);
+
+        mBaseLayout.invalidate();
     }
 
-    @Override
-    public void refresh() {
-
+    private void updateDate() {
+        mCurrentDate.setText(mGridCalendarAdapter.getStringDate());
     }
 }

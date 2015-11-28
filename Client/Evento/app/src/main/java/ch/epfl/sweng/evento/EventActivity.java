@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventPageAdapter;
 
 public class EventActivity extends AppCompatActivity {
@@ -32,16 +31,15 @@ public class EventActivity extends AppCompatActivity {
         // Creating the EventPageAdapter
         mAdapter = new EventPageAdapter(getSupportFragmentManager());
 
-
         // Assigning ViewPager View and setting the adapter
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
 
         // get the signature of the current event
-        long currentEventSignature = EventDatabase.INSTANCE.getFirstEvent().getSignature();
+        int currentEventSignature = EventDatabase.INSTANCE.getFirstEvent().getID();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            currentEventSignature = bundle.getLong(KEYCURRENTEVENT);
+            currentEventSignature = bundle.getInt(KEYCURRENTEVENT);
         }
 
 

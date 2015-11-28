@@ -52,8 +52,6 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/searchByDateFromText"
             android:id="@+id/searchByDateFromLabel"
-            android:layout_below="@+id/searchByDateFrom"
-            android:layout_alignParentStart="true"
             android:layout_row="0"
             android:layout_column="0" />
 
@@ -63,7 +61,6 @@
             android:inputType="date"
             android:ems="10"
             android:id="@+id/startDate_search"
-            android:layout_toEndOf="@+id/eventDescription"
             android:hint="@string/startDate"
             android:layout_row="0"
             android:layout_column="1"
@@ -75,8 +72,6 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/searchByDateTo"
             android:id="@+id/endDateLabel"
-            android:layout_below="@+id/eventAddressLabel"
-            android:layout_alignParentStart="true"
             android:layout_row="2"
             android:layout_column="0" />
 
@@ -86,7 +81,6 @@
             android:inputType="date"
             android:ems="10"
             android:id="@+id/endDate_search"
-            android:layout_toEndOf="@+id/eventAddress"
             android:hint="@string/searchByDateToHint"
             android:layout_row="2"
             android:layout_column="1"
@@ -96,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/event_adress"
+            android:text="@string/event_address"
             android:id="@+id/eventAddressLabel"
             android:layout_row="3"
             android:layout_column="0" />
@@ -114,8 +108,6 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/searchDistance"
             android:id="@+id/searchDistance"
-            android:layout_below="@+id/eventAddressLabel"
-            android:layout_alignParentStart="true"
             android:layout_row="4"
             android:layout_column="0" />
 
@@ -125,7 +117,6 @@
             android:inputType="date"
             android:ems="10"
             android:id="@+id/searchDistanceSearch"
-            android:layout_toEndOf="@+id/eventAddress"
             android:hint="@string/searchArea"
             android:layout_row="4"
             android:layout_column="1"
