@@ -13,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import ch.epfl.sweng.evento.NetworkProvider;
+import ch.epfl.sweng.evento.Settings;
 
 /**
  * An AsyncTask implementation for performing PUTs.
@@ -49,6 +50,7 @@ public class PutTask extends AsyncTask<String, String, String> {
             conn.setRequestMethod("PUT");
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("charset", "utf-8");
+            conn.setRequestProperty("token", Settings.INSTANCE.getIdToken());
             conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));
             conn.setUseCaches(false);
             // send data

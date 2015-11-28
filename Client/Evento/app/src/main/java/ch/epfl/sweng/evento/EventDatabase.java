@@ -4,11 +4,7 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
-
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -51,7 +47,7 @@ public enum EventDatabase {
 
 
     public void addAll(List<Event> events) {
-        if(events == null) {
+        if (events == null) {
             return;
         }
         for (Event e : events) {
@@ -60,8 +56,9 @@ public enum EventDatabase {
         }
     }
 
+
     public void addOne(Event e) {
-        if(e== null){
+        if (e == null) {
             return;
         }
         mEventSet.addEvent(e);

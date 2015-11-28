@@ -13,11 +13,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.User;
 
 /**
  * Created by Val on 15.10.2015.
@@ -34,15 +36,21 @@ public class Event implements ClusterItem {
     private CustomDate mStartDate;
     private CustomDate mEndDate;
     private String mPicture;
+    private Set<User> mParticipants;
+    private final int mNumberMaxOfParticipants;
 
-    public Event(int id,
-                 String title,
-                 String description,
-                 double latitude,
-                 double longitude,
-                 String address,
-                 String creator,
-                 Set<String> tags) {
+
+
+    public Event( int id,
+                  String title,
+                  String description,
+                  double latitude,
+                  double longitude,
+                  String address,
+                  String creator,
+                  Set<String> tags,
+                  String image,
+                  Set<User> participants) {
         mID = id;
         mTitle = title;
         mDescription = description;
@@ -53,6 +61,8 @@ public class Event implements ClusterItem {
         mStartDate = new CustomDate();
         mEndDate = new CustomDate();
         mPicture = "";
+        mNumberMaxOfParticipants =  10;//TODO
+        mParticipants = new HashSet<User>(participants);
     }
 
     public Event(int id,
@@ -65,7 +75,7 @@ public class Event implements ClusterItem {
                  Set<String> tags,
                  CustomDate startDate,
                  CustomDate endDate) {
-        this(id, title, description, latitude, longitude, address, creator, tags);
+        this(id, title, description, latitude, longitude, address, creator, tags, "image", new HashSet<User>());
         mStartDate = new CustomDate(startDate);
         mEndDate = new CustomDate(endDate);
         mPicture = samplePicture();
@@ -98,6 +108,45 @@ public class Event implements ClusterItem {
         return s;
     }
 
+    public boolean addParticipant(User participant){
+        if(participant != null) {
+            if (mParticipants.size() < mNumberMaxOfParticipants) {
+                mParticipants.add(participant);
+                return true;
+            } else {
+                Log.d("Event.addParticipant", "Can't add a participant more (" + mParticipants.size() + ")");
+            }
+        }
+        Log.d("Event.addParticipant", "Can't add null as a participant");
+        return false;
+    }
+
+    public Set<User> getAllParticipant() {
+        return mParticipants;
+    }
+
+    public int getMaxNumberOfParticipant() {
+        return mNumberMaxOfParticipants;
+    }
+
+    public boolean removeParticipant(User participant){
+        if(participant != null) {
+            if (checkIfParticipantIsIn(participant)) {
+                mParticipants.remove(participant);
+                return true;
+            } else {
+                Log.d("Event.removeParticipant", participant + " was already not participating.");
+            }
+        }
+        Log.d("Event.addParticipant", "Can't add null as a participant");
+        return false;
+    }
+
+    public boolean checkIfParticipantIsIn(User participant){
+        if(participant != null) return mParticipants.contains(participant);
+        Log.d("Event.checkIfPart.", "Can't check if null is a participant");
+        return false;
+    }
 
     public void setPicture(String picture) {
         mPicture = picture;
@@ -178,6 +227,25 @@ public class Event implements ClusterItem {
             return "Football";
         } else if (mTags.contains("Basketball")) return "Basketball";
         else return "Basketball";
+    }
+
+    public String getListParticipantString(String separator) {
+        String res = "";
+        if(!mParticipants.isEmpty()){
+            for(User participantName: mParticipants){
+                res += participantName.getmUsername() + separator;
+            }
+            Log.d("Event", "Result of ListOfParticipant to String " + res);
+        }
+        return res;
+    }
+
+    public String getListParticipantString() {
+        return getListParticipantString("\n");
+    }
+
+    public void setListOfParticipant(Set<User> str){
+        mParticipants = str;
     }
 
     public Set<String> getTags() {

@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import ch.epfl.sweng.evento.NetworkProvider;
+import ch.epfl.sweng.evento.Settings;
 
 /**
  * Created by joachimmuth on 22.10.15.
@@ -37,6 +38,7 @@ public class DeleteTask extends AsyncTask<String, Void, String> {
             conn.setDoOutput(true);
             // set connection with server
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestProperty("token", Settings.INSTANCE.getIdToken());
             conn.setRequestMethod("DELETE");
             conn.connect();
             // get back HTTP response code and store it in response (in case of success)

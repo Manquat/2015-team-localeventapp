@@ -77,14 +77,30 @@
 
     <TextView
         android:id="@+id/descriptionView"
-        android:layout_width="276dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/addressView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="23dp"
-        android:layout_weight="0.49"
+        android:layout_weight="0.15"
         android:text="@string/createEvent_description"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/participantView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/participantView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="23dp"
+        android:text="@string/createEvent_participant"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listParticipantView"
+        android:layout_gravity="center_horizontal" />
 
     <Button
         android:layout_width="wrap_content"

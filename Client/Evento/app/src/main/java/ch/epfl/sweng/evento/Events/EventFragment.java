@@ -2,6 +2,7 @@ package ch.epfl.sweng.evento.Events;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ch.epfl.sweng.evento.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.EventDatabase;
+import ch.epfl.sweng.evento.MainActivity;
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.RestApi.PutCallback;
+import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.Settings;
 
 /**
  * Created by Tago on 13/11/2015.
@@ -19,7 +25,7 @@ import ch.epfl.sweng.evento.R;
 public class EventFragment extends Fragment {
 
     public static final String KEYCURRENTEVENT = "CurrentEvent";
-
+    private RestApi mRestAPI;
     private Event mEvent;
 
     @Override
@@ -44,6 +50,7 @@ public class EventFragment extends Fragment {
         TextView endDateView = (TextView) rootView.findViewById(R.id.endDateView);
         TextView addressView = (TextView) rootView.findViewById(R.id.addressView);
         TextView descriptionView = (TextView) rootView.findViewById(R.id.descriptionView);
+        TextView participantView = (TextView) rootView.findViewById(R.id.listParticipantView);
 
         titleView.setText(mEvent.getTitle());
         creatorView.setText(getString(R.string.eventFrag_createdBy, mEvent.getCreator()));
@@ -51,6 +58,7 @@ public class EventFragment extends Fragment {
         endDateView.setText(getString(R.string.eventFrag_to, mEvent.getEndDate().toString()));
         addressView.setText(getString(R.string.eventFrag_at, mEvent.getAddress()));
         descriptionView.setText(mEvent.getDescription());
+        participantView.setText(mEvent.getListParticipantString(", "));
 
         ImageView pictureView = (ImageView) rootView.findViewById(R.id.eventPictureView);
         pictureView.setImageBitmap(mEvent.getPicture());
@@ -60,7 +68,20 @@ public class EventFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity().getApplicationContext(), "Submitted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
+                String listOfParticipant = mEvent.getListParticipantString();
+                MainActivity.getUser(1).addMatchedEvent(mEvent);
+                if(!mEvent.addParticipant(MainActivity.getUser(1))) {
+                    Log.d("EventFragment.upd.", "addParticipant just returned false");
+                } else {
+                    mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+                    mRestAPI.updateEvent(mEvent,new PutCallback() {
+                        @Override
+                        public void onPostSuccess(String response) {
+                            Log.d("EventFrag.upd.", "Response" + response);
+                        }
+                    });
+                }
                 getActivity().finish();
             }
         });

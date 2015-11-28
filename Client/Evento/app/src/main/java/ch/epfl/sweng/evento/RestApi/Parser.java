@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.User;
 
 /**
  * Created by joachimmuth on 16.10.15.
@@ -44,7 +45,10 @@ public class Parser {
                     jsonObject.getDouble("longitude"),
                     jsonObject.getString("address"),
                     jsonObject.getString("creator"),
-                    new HashSet<String>());
+                    new HashSet<String>(){{ add(json.getString("tags"));}},
+                    jsonObject.getString("image"),
+                    new HashSet<User>()
+            );
 
         } catch (IllegalArgumentException e) {
             throw new JSONException("Invalid question structure");
