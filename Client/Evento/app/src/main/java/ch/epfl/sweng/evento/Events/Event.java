@@ -114,11 +114,11 @@ public class Event implements ClusterItem {
                 mParticipants.add(participant);
                 return true;
             } else {
-                Log.d("Event.addParticipant", "Can't add a participant more (" + mParticipants.size() + ")");
+                throw new IllegalArgumentException("Cannot add another participant to this Event");
             }
+        } else {
+            throw new IllegalArgumentException("Cannot add a null participant to an Event");
         }
-        Log.d("Event.addParticipant", "Can't add null as a participant");
-        return false;
     }
 
     public Set<User> getAllParticipant() {
@@ -129,23 +129,19 @@ public class Event implements ClusterItem {
         return mNumberMaxOfParticipants;
     }
 
-    public boolean removeParticipant(User participant){
+    public void removeParticipant(User participant){
         if(participant != null) {
             if (checkIfParticipantIsIn(participant)) {
                 mParticipants.remove(participant);
-                return true;
-            } else {
-                Log.d("Event.removeParticipant", participant + " was already not participating.");
             }
+        } else {
+            throw new IllegalArgumentException("Cannot remove a null participant of an Event");
         }
-        Log.d("Event.addParticipant", "Can't add null as a participant");
-        return false;
     }
 
     public boolean checkIfParticipantIsIn(User participant){
         if(participant != null) return mParticipants.contains(participant);
-        Log.d("Event.checkIfPart.", "Can't check if null is a participant");
-        return false;
+        else throw new IllegalArgumentException("Cannot check if a null participant is participating or not.");
     }
 
     public void setPicture(String picture) {
@@ -226,26 +222,7 @@ public class Event implements ClusterItem {
                 mTags.contains("Football")) {
             return "Football";
         } else if (mTags.contains("Basketball")) return "Basketball";
-        else return "Basketball";
-    }
-
-    public String getListParticipantString(String separator) {
-        String res = "";
-        if(!mParticipants.isEmpty()){
-            for(User participantName: mParticipants){
-                res += participantName.getmUsername() + separator;
-            }
-            Log.d("Event", "Result of ListOfParticipant to String " + res);
-        }
-        return res;
-    }
-
-    public String getListParticipantString() {
-        return getListParticipantString("\n");
-    }
-
-    public void setListOfParticipant(Set<User> str){
-        mParticipants = str;
+        else return "Unknown";
     }
 
     public Set<String> getTags() {

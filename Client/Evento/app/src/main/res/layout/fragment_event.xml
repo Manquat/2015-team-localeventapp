@@ -1,112 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/contentLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="1">
+<ScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/titleView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/descriptionView"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/createEvent_title"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <LinearLayout android:orientation="vertical" android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/creatorView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titleView"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/createEvent_creator"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="174dp"
-        android:layout_weight="0.22" >
-
-        <ImageView
+        <TextView
+            android:id="@+id/titleView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/eventPictureView"
-            android:layout_gravity="center"
-            android:minWidth="300dp"
-            android:minHeight="50dp" />
-    </FrameLayout>
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/descriptionView"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/createEvent_title"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:id="@+id/startDateView"
-        android:layout_width="363dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:text="@string/createEvent_startDate"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+            android:id="@+id/creatorView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/titleView"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/createEvent_creator"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/endDateView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/startDateView"
-        android:text="@string/createEvent_endDate"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="174dp"
+            android:layout_weight="0.22" >
 
-    <TextView
-        android:id="@+id/addressView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/endDateView"
-        android:layout_weight="0.10"
-        android:text="@string/createEvent_address"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/eventPictureView"
+                android:layout_gravity="center"
+                android:minWidth="300dp"
+                android:minHeight="50dp" />
+        </FrameLayout>
 
-    <TextView
-        android:id="@+id/tagsView"
-        android:layout_width="292dp"
-        android:layout_height="wrap_content"
-        android:text="@string/createEvent_tags"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView
+            android:id="@+id/startDateView"
+            android:layout_width="363dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="@string/createEvent_startDate"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/descriptionView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/addressView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="23dp"
-        android:layout_weight="0.15"
-        android:text="@string/createEvent_description"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView
+            android:id="@+id/endDateView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/startDateView"
+            android:text="@string/createEvent_endDate"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/participantView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/participantView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="23dp"
-        android:text="@string/createEvent_participant"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView
+            android:id="@+id/addressView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/endDateView"
+            android:layout_weight="0.10"
+            android:text="@string/createEvent_address"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listParticipantView"
-        android:layout_gravity="center_horizontal" />
+        <TextView
+            android:id="@+id/tagsView"
+            android:layout_width="292dp"
+            android:layout_height="wrap_content"
+            android:text="@string/createEvent_tags"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/eventFragment_join"
-        android:id="@+id/joinEvent"
-        android:layout_gravity="center_horizontal" />
+        <TextView
+            android:id="@+id/descriptionView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/addressView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="23dp"
+            android:layout_weight="0.15"
+            android:text="@string/createEvent_description"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/participantView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/participantView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="23dp"
+            android:text="@string/createEvent_participant"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <ExpandableListView
+            android:id="@+id/listParticipantExp"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/eventFragment_join"
+            android:id="@+id/joinEvent"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+
+</ScrollView>

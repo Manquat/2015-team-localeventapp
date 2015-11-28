@@ -80,18 +80,22 @@ public class User {
     public boolean addHostedEvent(Event event) {
         if (event != null) {
             mHostedEvent.add(event);
+            return true;
+        } else {
+            throw new IllegalArgumentException("Cannot add a null event as a Hosted Event");
         }
-        return false;
     }
 
     public boolean addMatchedEvent(Event event) {
         if (event != null) {
             mMatchedEvent.add(event);
+            return true;
+        } else {
+            throw new IllegalArgumentException("Cannot add a null event as a Matched Event");
         }
-        return false;
     }
 
-    public String getMatchedEventString(String separator) {
+    /*public String getMatchedEventString(String separator) {
         String res = "";
         if(!mMatchedEvent.isEmpty()){
             for(Event event: mMatchedEvent){
@@ -117,7 +121,7 @@ public class User {
 
     public String getHostedEventString() {
         return getHostedEventString("\n");
-    }
+    }*/
 
     public void setmUsername(String mUsername) {
         this.mUsername = mUsername;
