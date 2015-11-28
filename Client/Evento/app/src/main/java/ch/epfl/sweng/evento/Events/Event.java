@@ -3,12 +3,12 @@ package ch.epfl.sweng.evento.Events;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -19,7 +19,8 @@ import java.util.Set;
 import java.util.TimeZone;
 
 /**
- * Created by Val on 15.10.2015.
+ * The event class that holds all the information related to the event :
+ * date of beginning, date of end, title, owner, .....
  */
 public class Event implements ClusterItem {
     private static final String TAG = "Event";
@@ -54,7 +55,7 @@ public class Event implements ClusterItem {
         mPicture = samplePicture();
     }
 
-public Event(int id,
+    public Event(int id,
                  String title,
                  String description,
                  double latitude,
@@ -65,7 +66,7 @@ public Event(int id,
                  Calendar startDate,
                  Calendar endDate,
                  Bitmap picture) {
-        this(id, title, description, latitude, longitude, address, creator, tags,startDate,endDate);
+        this(id, title, description, latitude, longitude, address, creator, tags, startDate, endDate);
         mStartDate = startDate;
         mEndDate = endDate;
         setPicture(picture);
@@ -93,12 +94,10 @@ public Event(int id,
      * for the server
      */
     public String toString() {
-        String s = this.getTitle() + ", " + this.getDescription() + ", " + this.getAddress()
+        return this.getTitle() + ", " + this.getDescription() + ", " + this.getAddress()
                 + ", (" + Double.toString(this.getLatitude()) + ", " + Double.toString(this.getLongitude())
                 + "), " + this.getCreator() + ", (" + this.getProperDateString();
-        return s;
     }
-
 
 
     public void setPicture(String picture) {
@@ -118,31 +117,23 @@ public Event(int id,
     }
 
 
-    public String getProperDateString(){
+    public String getProperDateString() {
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
         timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
         return timeFormat.format(mStartDate.getTime());
     }
 
-    static public String asNiceString(Calendar calendar){
-        return calendar.get(Calendar.DAY_OF_MONTH) + "/"
-                + calendar.get(Calendar.MONTH) + "/"
-                + calendar.get(Calendar.YEAR) + " at "
-                 + calendar.get(Calendar.HOUR_OF_DAY) + ":"
-                + calendar.get(Calendar.MINUTE);
+    public static String asNiceString(Calendar calendar) {
+        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+        return dateFormat.format(calendar.getTime());
     }
 
-    public String getStartDateAsString(){
+    public String getStartDateAsString() {
         return asNiceString(mStartDate);
     }
 
-    public String getEndDateAsString(){
+    public String getEndDateAsString() {
         return asNiceString(mEndDate);
-    }
-
-
-    public void debugLogEvent() {
-        Log.i(TAG, "Event " + mID + " : title : " + mTitle);
     }
 
     public int getID() {
@@ -181,8 +172,11 @@ public Event(int id,
         if (mTags.contains("Foot!") ||
                 mTags.contains("Football")) {
             return "Football";
-        } else if (mTags.contains("Basketball")) return "Basketball";
-        else return "Basketball";
+        } else if (mTags.contains("Basketball")) {
+            return "Basketball";
+        } else {
+            return "Basketball";
+        }
     }
 
     public Set<String> getTags() {
@@ -216,25 +210,6 @@ public Event(int id,
     @Override
     public LatLng getPosition() {
         return mLocation;
-    }
-
-    /**
-     * The signature of an Event is its CustomDate in the long form to which its ID is appended.
-     * It allows to order Events by starting CustomDate AND by ID at the same time.
-     * The ID is written on 6 digits for now.
-     *
-     * @return the signature of the Event in the form yyyymmddhhmmID
-     */
-    public long getSignature() {
-        return (100000 * mStartDate.getTimeInMillis() + (long) getID());
-    }
-
-    public long getCalendarAsLong(){
-        return    100000000*(long) mStartDate.get(GregorianCalendar.YEAR)
-                + 1000000*(long) mStartDate.get(GregorianCalendar.MONTH)
-                + 10000*(long) mStartDate.get(GregorianCalendar.DAY_OF_MONTH)
-                + 100*(long) mStartDate.get(GregorianCalendar.HOUR_OF_DAY)
-                + (long) mStartDate.get(GregorianCalendar.MINUTE);
     }
 
     //This is a temporary method to test if the server can handle very long strings

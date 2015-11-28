@@ -24,8 +24,9 @@ public class CalendarDay extends Button {
 
     /**
      * Constructor that just call the one of button
+     *
      * @param context context where the button is used
-     * @param attrs attributes of the button
+     * @param attrs   attributes of the button
      */
     public CalendarDay(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -34,6 +35,7 @@ public class CalendarDay extends Button {
 
     /**
      * Getter for the CurrentDay state
+     *
      * @return the state of the CurrentDay state
      */
     public boolean getStateCurrentDay() {
@@ -42,6 +44,7 @@ public class CalendarDay extends Button {
 
     /**
      * Getter for the CurrentMonth state
+     *
      * @return the state of the CurrentMonth state
      */
     public boolean getStateCurrentMonth() {
@@ -50,6 +53,7 @@ public class CalendarDay extends Button {
 
     /**
      * Getter for the HaveEvents state
+     *
      * @return the state of the HaveEvents state
      */
     public boolean getStateHaveEvents() {
@@ -59,6 +63,7 @@ public class CalendarDay extends Button {
 
     /**
      * Setter for the CurrentDay state
+     *
      * @param isCurrentDay the state wanted for the CurrentDay state
      */
     public void setStateCurrentDay(boolean isCurrentDay) {
@@ -68,6 +73,7 @@ public class CalendarDay extends Button {
 
     /**
      * Setter for the CurrentMonth state
+     *
      * @param isCurrentMonth the state wanted for the CurrentMonth state
      */
     public void setStateCurrentMonth(boolean isCurrentMonth) {
@@ -77,6 +83,7 @@ public class CalendarDay extends Button {
 
     /**
      * Setter for the HaveEvents state
+     *
      * @param haveEvents the state wanted for the HaveEvents state
      */
     public void setStateHaveEvents(boolean haveEvents) {

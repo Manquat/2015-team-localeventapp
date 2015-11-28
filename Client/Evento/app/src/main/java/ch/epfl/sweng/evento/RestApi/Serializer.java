@@ -10,7 +10,7 @@ import ch.epfl.sweng.evento.Events.Event;
 public final class Serializer {
     private static final String TAG = "Serializer";
 
-    private Serializer(){
+    private Serializer() {
         // private constructor
     }
 
