@@ -70,13 +70,15 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
             rootView = inflater.inflate(R.layout.list_event, parent, false);
         }
 
-        // setting the title of the event as the text in the list
-        TextView titleText = (TextView) rootView.findViewById(R.id.list_event_title);
-        titleText.setText(mEvents.get(position).getTitle());
+        if (mEvents != null) {
+            // setting the title of the event as the text in the list
+            TextView titleText = (TextView) rootView.findViewById(R.id.list_event_title);
+            titleText.setText(mEvents.get(position).getTitle());
 
-        // setting a default image as the image in the list
-        ImageView imageView = (ImageView) rootView.findViewById(R.id.list_event_image);
-        imageView.setImageResource(R.drawable.basket);
+            // setting a default image as the image in the list
+            ImageView imageView = (ImageView) rootView.findViewById(R.id.list_event_image);
+            imageView.setImageResource(R.drawable.basket);
+        }
 
         return rootView;
     }

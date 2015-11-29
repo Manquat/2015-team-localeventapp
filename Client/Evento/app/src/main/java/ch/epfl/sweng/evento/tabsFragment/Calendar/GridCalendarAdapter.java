@@ -18,6 +18,7 @@ import java.util.Locale;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.InfinitePagerAdapter.GridInfinitePageAdapter;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.tabsFragment.Refreshable;
 
@@ -45,14 +46,17 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
      *                        changed in the adapter.
      */
     public GridCalendarAdapter(Context context, Refreshable updatableParent) {
+        this(context, updatableParent, new GregorianCalendar());
+    }
+
+    public GridCalendarAdapter(Context context, Refreshable updatableParent, Calendar focusedDate) {
         super();
         mContext = context;
         mUpdatableParent = updatableParent;
 
-        // Initialize the calendar grid at the current date
-        GregorianCalendar actualDate = new GregorianCalendar();
-        mCalendarGrid = new CalendarGrid(actualDate);
-        mEvents = EventDatabase.INSTANCE.filter(actualDate).toArrayList();
+        // Initialize the calendar grid at the given date
+        mCalendarGrid = new CalendarGrid(focusedDate);
+        mEvents = EventDatabase.INSTANCE.filter(focusedDate).toArrayList();
     }
 
 
@@ -173,7 +177,8 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
             // highlight the actual day by changing the textColor
             GregorianCalendar calendar = new GregorianCalendar();
             if (mCalendarGrid.getDayOfYear(position) == calendar.get(Calendar.DAY_OF_YEAR) &&
-                    mCalendarGrid.getCurrentMonth() == calendar.get(Calendar.MONTH)) {
+                    mCalendarGrid.getCurrentMonth() == calendar.get(Calendar.MONTH) &&
+                    mCalendarGrid.getCurrentYear() == calendar.get(Calendar.YEAR)) {
                 day.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
             }
 
@@ -210,6 +215,13 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         return mEvents;
     }
 
+    public void setFocusedDate(Calendar focusedDate) {
+        mCalendarGrid.setFocusedDay(focusedDate);
+        notifyDataSetChanged();
+        mUpdatableParent.refresh();
+    }
+
+
 
     @Override
     public void onClick(View v) {
@@ -217,6 +229,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
         mCalendarGrid.setFocusedDay(position);
         mEvents = Collections.EMPTY_LIST;
+        ((GridInfinitePageAdapter) mUpdatableParent).setFocusedDate(mCalendarGrid.getFocusedDate());
         notifyDataSetChanged();
         mUpdatableParent.refresh();
     }

@@ -43,12 +43,12 @@ public class EventSet {
     }
 
     /**
-     * @param ID the ID of the Event to be returned
+     * @param id the ID of the Event to be returned
      * @return the Event corresponding to the Signature or the special ERROR Event if it's not in the Map
      */
-    public Event get(int ID) {
-        if (mIDs.containsKey(ID)) {
-            Signature signature = mIDs.get(ID);
+    public Event get(int id) {
+        if (mIDs.containsKey(id)) {
+            Signature signature = mIDs.get(id);
             return mEvents.get(signature);
         } else {
             return getErrorEvent();
@@ -83,11 +83,11 @@ public class EventSet {
     /**
      * Returns the Event with the closest higher signature from the one passed in argument
      *
-     * @param ID the reference ID to define which Event is the next one
+     * @param id the reference ID to define which Event is the next one
      * @return the Event with the closest signature
      */
-    public Event getNext(int ID) {
-        Event event = mEvents.higherEntry(mIDs.get(ID)).getValue();
+    public Event getNext(int id) {
+        Event event = mEvents.higherEntry(mIDs.get(id)).getValue();
         if (event != null) {
             return event;
         } else {
@@ -274,12 +274,12 @@ public class EventSet {
                 new GregorianCalendar());
     }
 
-    public int getPosition(int ID) {
+    public int getPosition(int id) {
         int position = 0;
         Iterator<Signature> iterator = mEvents.keySet().iterator();
         boolean stop = false;
 
-        while (mEvents.get(iterator.next()).getID() != ID) {
+        while (mEvents.get(iterator.next()).getID() != id) {
             ++position;
 
             if (!iterator.hasNext()) {
