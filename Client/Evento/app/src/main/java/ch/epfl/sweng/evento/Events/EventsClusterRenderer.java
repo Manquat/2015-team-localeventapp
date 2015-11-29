@@ -22,7 +22,7 @@ import java.util.List;
 import ch.epfl.sweng.evento.R;
 
 /**
- * Created by Gautier on 25/10/2015.
+ * Control the way the event are clustered on the map
  */
 public class EventsClusterRenderer extends DefaultClusterRenderer<Event> {
     private final int MAX_NUMBER_OF_IMAGE = 4;
@@ -86,7 +86,7 @@ public class EventsClusterRenderer extends DefaultClusterRenderer<Event> {
     protected void onBeforeClusterRendered(Cluster<Event> cluster, MarkerOptions markerOptions) {
         // Draw the clustered event icon
         // at most MAX_NUMBER_OF_IMAGE image
-        List<Drawable> eventsImage = new ArrayList<Drawable>(Math.min(MAX_NUMBER_OF_IMAGE, cluster.getSize()));
+        List<Drawable> eventsImage = new ArrayList<>(Math.min(MAX_NUMBER_OF_IMAGE, cluster.getSize()));
 
         for (Event event : cluster.getItems()) {
             Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.football); // TODO replace the mock image by the real one of the event

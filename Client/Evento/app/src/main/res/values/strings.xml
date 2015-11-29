@@ -14,7 +14,6 @@
     <string name="title_activity_search">SearchActivity</string>
     <string name="ownEventLabel">Your own event(s) :</string>
     <string name="otherEventLabel">Matched Event(s) :</string>
-    <string name="hello_world">Hello world!</string>
     <string name="menu_manage_event">Manage</string>
     <string name="autocomplete_hint">Enter place name or address</string>
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
@@ -22,7 +21,7 @@
     <string name="event_creator">Creator</string>
     <string name="event_start_date">Start Date</string>
     <string name="event_end_date">End Date</string>
-    <string name="event_adress">At</string>
+    <string name="event_address">At</string>
     <string name="event_tags">Tags</string>
     <string name="event_description">Description</string>
     <string name="event_create_punch_line">Create your own event !</string>
@@ -49,10 +48,12 @@
     <string name="search_endDate">End Date</string>
     <string name="search_buttonValidate">Validate</string>
     <string name="createEvent_buttonAddEvent">Add a picture</string>
-    <string name="eventFrag_createdBy">"Created by %1$s"</string>
-    <string name="eventFrag_from">"From %1$s"</string>
-    <string name="eventFrag_to">"to %1$s"</string>
-    <string name="eventFrag_at">"at %1$s"</string>
+    <string name="eventFrag_createdBy">Created by : </string>
+    <string name="eventFrag_from">From : </string>
+    <string name="eventFrag_to">to : </string>
+    <string name="eventFrag_at">at : </string>
+    <string name="eventFrag_tags">Tags : </string>
+    <string name="eventFrag_description">Descrition : </string>
     <string name="locationLabel">Search by location</string>
     <string name="searchByPlace_hint">location</string>
     <string name="searchByDateFromText">From    </string>

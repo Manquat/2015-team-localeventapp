@@ -34,10 +34,7 @@ import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
-import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
-import ch.epfl.sweng.evento.tabsFragment.ContentFragment;
-import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 import ch.epfl.sweng.evento.tabsFragment.Refreshable;
 import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
 
@@ -59,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             Arrays.asList("Maps", "Events", "Calendar"));
     private static final int MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
+
     private static final String urlServer = Settings.getServerUrl();
     private ArrayList<Event> mEventArrayList = new ArrayList<>();
     private static User user1;
@@ -163,10 +161,10 @@ public class MainActivity extends AppCompatActivity {
                 EventDatabase.INSTANCE.clear();
                 EventDatabase.INSTANCE.addAll(eventArrayList);
                 Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + mPager.getCurrentItem());
-                if (page instanceof Refreshable){
+                if (page instanceof Refreshable) {
                     ((Refreshable) page).refresh();
                 }
-                Toast.makeText(getApplicationContext(),"Refreshed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
             }
         });
     }

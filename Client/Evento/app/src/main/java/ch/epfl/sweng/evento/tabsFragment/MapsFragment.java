@@ -8,8 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -24,28 +22,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.maps.android.clustering.ClusterManager;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
 
-import ch.epfl.sweng.evento.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.EventDatabase;
-import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventsClusterRenderer;
-import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
-import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.tabsFragment.Maps.EventClusterManager;
-import ch.epfl.sweng.evento.Settings;
 
 
 /**
- * Created by Gautier on 21/10/2015.
- * <p/>
  * Fragment that hold the Google map.
  */
 public class MapsFragment extends SupportMapFragment implements
@@ -56,9 +40,8 @@ public class MapsFragment extends SupportMapFragment implements
         Refreshable {
 
     private static final String TAG = "MapsFragment";   // LogCat tag
-    private static final int NUMBER_OF_MARKERS = 100;                       // Number of marker that will be displayed
-    private static final int NUMBER_OF_EVENT = 10;
     private static final float ZOOM_LEVEL = 15.0f;                          // Zoom level of the map at the beginning
+
 
     private GoogleMap mMap;
     private Location mLastLocation;
@@ -68,9 +51,7 @@ public class MapsFragment extends SupportMapFragment implements
     private GoogleApiClient mGoogleApiClient;
 
     private Activity mActivity;                     // not really useful but I think it's more efficient
-    private Context mContext;
-    private ViewGroup mContainer;
-    private View mView;
+
 
     /**
      * Constructor by default mandatory for fragment class
@@ -78,6 +59,7 @@ public class MapsFragment extends SupportMapFragment implements
     public MapsFragment() {
         super();
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,38 +70,43 @@ public class MapsFragment extends SupportMapFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mContainer = container;
-        mView = super.onCreateView(inflater, mContainer, savedInstanceState);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        if (mView == null) {
+        if (view == null) {
             Log.e(TAG, "The maps view cannot be created");
             throw new NullPointerException();
         }
 
         getMapAsync(this);
 
-        mContext = mView.getContext();
+        Context context = view.getContext();
 
-        if (mContext == null) {
+        if (context == null) {
             Log.e(TAG, "The actual context don't exist");
             throw new NullPointerException();
         }
 
-        mGoogleApiClient = new GoogleApiClient.Builder(mContext)
+        mGoogleApiClient = new GoogleApiClient.Builder(context)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
 
-        return mView;
+        return view;
     }
 
+    /**
+     * Call at the start of the fragment
+     */
     @Override
     public void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
     }
 
+    /**
+     * Call at the stop of the fragment
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -156,6 +143,11 @@ public class MapsFragment extends SupportMapFragment implements
         }
     }
 
+    /**
+     * Call when the GoogleApiClient is connected
+     *
+     * @param bundle
+     */
     @Override
     public void onConnected(Bundle bundle) {
         if (mMap != null) {
@@ -164,6 +156,11 @@ public class MapsFragment extends SupportMapFragment implements
         }
     }
 
+    /**
+     * Call when the connection of the GoogleApiClient is suspended
+     *
+     * @param i
+     */
     @Override
     public void onConnectionSuspended(int i) {
         mGoogleApiClient.connect();
@@ -200,6 +197,7 @@ public class MapsFragment extends SupportMapFragment implements
         return false;
     }
 
+
     /**
      * Zoom on the the position of the user and draw some markers
      */
@@ -227,12 +225,8 @@ public class MapsFragment extends SupportMapFragment implements
         mClusterManager.clearItems();
 
         // add all event to the cluster manager of map
-        List<Event> eventArrayList = EventDatabase.INSTANCE.getAllEvents();
-        for (Event e : eventArrayList) {
-            mClusterManager.addItem(e);
-            mClusterManager.cluster();
-        }
-
+        mClusterManager.addItems(EventDatabase.INSTANCE.getAllEvents());
+        mClusterManager.cluster();
     }
 
     @Override

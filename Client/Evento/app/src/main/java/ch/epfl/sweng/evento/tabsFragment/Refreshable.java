@@ -5,5 +5,5 @@ package ch.epfl.sweng.evento.tabsFragment;
  */
 public interface Refreshable {
 
-    public void refresh();
+    void refresh();
 }

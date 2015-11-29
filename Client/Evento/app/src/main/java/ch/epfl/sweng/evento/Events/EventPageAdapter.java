@@ -4,12 +4,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
 
 import ch.epfl.sweng.evento.EventDatabase;
 
 /**
- * Created by Gautier on 13/11/2015.
+ * Page adapter that control the events showed when the user swipe from the EventActivity
  */
 public class EventPageAdapter extends FragmentStatePagerAdapter {
     private static final String TAG = "EventPagerAdapter";
@@ -24,8 +23,8 @@ public class EventPageAdapter extends FragmentStatePagerAdapter {
 
         // define the current event for this fragment
         Bundle bundle = new Bundle();
-        bundle.putLong(EventFragment.KEYCURRENTEVENT,
-                EventDatabase.INSTANCE.get(position).getSignature());
+        bundle.putInt(EventFragment.KEYCURRENTEVENT,
+                EventDatabase.INSTANCE.get(position).getID());
         fragment.setArguments(bundle);
 
         return fragment;

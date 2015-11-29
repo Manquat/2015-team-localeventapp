@@ -1,6 +1,5 @@
 package ch.epfl.sweng.evento.RestApi;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;

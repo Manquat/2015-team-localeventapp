@@ -3,7 +3,6 @@ package ch.epfl.sweng.evento;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ import ch.epfl.sweng.evento.tabsFragment.ContentFragment;
 import ch.epfl.sweng.evento.tabsFragment.MapsFragment;
 
 /**
- * Created by Gautier on 21/10/2015.
+ * Fragment page adapter that holds the creation and management of the 3 main tabs
  */
 public class ViewPageAdapter extends FragmentPagerAdapter {
     private List<CharSequence> mTitles; // This will Store the Titles of the Tabs

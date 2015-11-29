@@ -4,11 +4,8 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
-
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -51,7 +48,7 @@ public enum EventDatabase {
 
 
     public void addAll(List<Event> events) {
-        if(events == null) {
+        if (events == null) {
             return;
         }
         for (Event e : events) {
@@ -61,7 +58,7 @@ public enum EventDatabase {
     }
 
     public void addOne(Event e) {
-        if(e== null){
+        if (e == null) {
             return;
         }
         mEventSet.addEvent(e);
@@ -81,11 +78,11 @@ public enum EventDatabase {
     /**
      * Returns the Event corresponding to the ID passed in argument
      *
-     * @param signature the Signature of the desired Event
+     * @param id the ID of the desired Event
      * @return the Event corresponding to the Signature.
      */
-    public Event getEvent(long signature) {
-        return mEventSet.get(signature);
+    public Event getEvent(int id) {
+        return mEventSet.get(id);
     }
 
     public Event getFirstEvent() {
@@ -115,8 +112,8 @@ public enum EventDatabase {
         return currentEvent;
     }
 
-    public int getPosition(long signature) {
-        return mEventSet.getPosition(signature);
+    public int getPosition(int id) {
+        return mEventSet.getPosition(id);
     }
 
     //public Event getNextEvent(long signature) { return mEventSet.getNext(signature);}
@@ -145,8 +142,12 @@ public enum EventDatabase {
         return mEventSet.filter(tag);
     }
 
-    public EventSet filter(Event.CustomDate startDate) {
+    public EventSet filter(Calendar startDate) {
         return mEventSet.filter(startDate);
+    }
+
+    public EventSet filterOnDay(Calendar calendar) {
+        return mEventSet.filterOnDay(calendar);
     }
 
 
@@ -160,4 +161,11 @@ public enum EventDatabase {
     }
 
 
+    public int getSize() {
+        if (mEventSet == null){
+            return 0;
+        } else {
+            return mEventSet.size();
+        }
+    }
 }

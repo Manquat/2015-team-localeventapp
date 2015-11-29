@@ -32,6 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Vector;
 
@@ -42,14 +43,16 @@ import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
+
 import ch.epfl.sweng.evento.Settings;
+
 import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
 
 /**
  * Simple Fragment used to display some meaningful content for each page in the sample's
  * {@link android.support.v4.view.ViewPager}.
  */
-public class ContentFragment extends Fragment implements Refreshable{
+public class ContentFragment extends Fragment implements Refreshable {
 
 
     final int PADDING = 5;
@@ -71,7 +74,7 @@ public class ContentFragment extends Fragment implements Refreshable{
     private Vector<MyView> mMyViews;
     private View mView;
     private Toolbar mToolbar;
-    public Event.CustomDate dateFilter;
+    public GregorianCalendar dateFilter;
 
     /**
      * Create a new instance of {@link ContentFragment}, adding the parameters into a bundle and
@@ -150,18 +153,19 @@ public class ContentFragment extends Fragment implements Refreshable{
         mGridLayout.setColumnCount(mNumberOfColumn);
         mGridLayout.removeAllViews();
 
-
         boolean[] tmpBooleanRow = new boolean[mNumberOfColumn];
         Span tmpSpanSmtgOrNot = Span.NOTHING;
+        int spanning = 0;
         for (int yPos = 0, countEvent = 0; countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; yPos++) {
 
             for (int xPos = 0; xPos < mNumberOfColumn && countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; xPos++, countEvent++) {
                 final MyView tView = new MyView(mView.getContext(), xPos, yPos);
+                final int spanningView = spanning;
                 tView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(mActivity, EventActivity.class);
-                        intent.putExtra(EventActivity.KEYCURRENTEVENT, mEvents.get(tView.getIdX() + tView.getIdY() * mNumberOfColumn).getSignature());
+                        intent.putExtra(EventActivity.KEYCURRENTEVENT, mEvents.get(tView.getIdX() + tView.getIdY() * mNumberOfColumn-spanningView).getID());
                         mActivity.startActivity(intent);
                     }
                 });
@@ -173,6 +177,7 @@ public class ContentFragment extends Fragment implements Refreshable{
                     } else if (mEvents.get(countEvent).getTags().contains("Basketball")) {
                         tmpSpanSmtgOrNot = Span.TWO_ROWS;
                         tView.setImageResource(R.drawable.basket);
+                        ++spanning;
                         mDisplayOrNot.get(yPos + 1)[xPos] = false;
                     } else {
                         tmpSpanSmtgOrNot = Span.NOTHING;
@@ -232,7 +237,6 @@ public class ContentFragment extends Fragment implements Refreshable{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
 }

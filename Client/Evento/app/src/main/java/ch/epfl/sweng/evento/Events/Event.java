@@ -3,26 +3,29 @@ package ch.epfl.sweng.evento.Events;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
+
 import java.util.HashSet;
 import java.util.Locale;
+
 import java.util.Set;
 import java.util.TimeZone;
 
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.User;
 
+
 /**
- * Created by Val on 15.10.2015.
+ * The event class that holds all the information related to the event :
+ * date of beginning, date of end, title, owner, .....
  */
 public class Event implements ClusterItem {
     private static final String TAG = "Event";
@@ -33,8 +36,8 @@ public class Event implements ClusterItem {
     private final String mAddress;
     private final String mCreator;//might be replaced by some kind of User class
     private final Set<String> mTags;
-    private CustomDate mStartDate;
-    private CustomDate mEndDate;
+    private Calendar mStartDate;
+    private Calendar mEndDate;
     private String mPicture;
     private Set<User> mParticipants;
     private final int mNumberMaxOfParticipants;
@@ -58,11 +61,13 @@ public class Event implements ClusterItem {
         mAddress = address;
         mCreator = creator;
         mTags = tags;
-        mStartDate = new CustomDate();
-        mEndDate = new CustomDate();
-        mPicture = "";
+
+        mStartDate = new GregorianCalendar();
+        mEndDate = new GregorianCalendar();
+        mPicture = samplePicture();
         mNumberMaxOfParticipants =  10;//TODO
         mParticipants = new HashSet<User>(participants);
+
     }
 
     public Event(int id,
@@ -73,27 +78,29 @@ public class Event implements ClusterItem {
                  String address,
                  String creator,
                  Set<String> tags,
-                 CustomDate startDate,
-                 CustomDate endDate) {
-        this(id, title, description, latitude, longitude, address, creator, tags, "image", new HashSet<User>());
-        mStartDate = new CustomDate(startDate);
-        mEndDate = new CustomDate(endDate);
-        mPicture = samplePicture();
-    }
-
-    public Event(int id,
-                 String title,
-                 String description,
-                 double latitude,
-                 double longitude,
-                 String address,
-                 String creator,
-                 Set<String> tags,
-                 CustomDate startDate,
-                 CustomDate endDate,
+                 Calendar startDate,
+                 Calendar endDate,
                  Bitmap picture) {
         this(id, title, description, latitude, longitude, address, creator, tags, startDate, endDate);
+        mStartDate = startDate;
+        mEndDate = endDate;
         setPicture(picture);
+    }
+
+    public Event(int id,
+                 String title,
+                 String description,
+                 double latitude,
+                 double longitude,
+                 String address,
+                 String creator,
+                 Set<String> tags,
+                 Calendar startDate,
+                 Calendar endDate) {
+        this(id, title, description, latitude, longitude, address, creator, tags, "image", new HashSet<User>());
+        mStartDate = startDate;
+        mEndDate = endDate;
+        mPicture = samplePicture();
     }
 
     /**
@@ -102,10 +109,9 @@ public class Event implements ClusterItem {
      * for the server
      */
     public String toString() {
-        String s = this.getTitle() + ", " + this.getDescription() + ", " + this.getAddress()
+        return this.getTitle() + ", " + this.getDescription() + ", " + this.getAddress()
                 + ", (" + Double.toString(this.getLatitude()) + ", " + Double.toString(this.getLongitude())
                 + "), " + this.getCreator() + ", (" + this.getProperDateString();
-        return s;
     }
 
 
@@ -162,29 +168,24 @@ public class Event implements ClusterItem {
 
     }
 
-    public GregorianCalendar getCalendarStart() {
-        GregorianCalendar cal = new GregorianCalendar(mStartDate.getYear(), mStartDate.getMonth(), mStartDate.getDay(),
-                mStartDate.getHour(), mStartDate.getMinutes());
-        cal.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
-        return cal;
-    }
-
-    public GregorianCalendar getCalendarEnd() {
-        GregorianCalendar cal = new GregorianCalendar(mEndDate.getYear(), mEndDate.getMonth(), mEndDate.getDay(),
-                mEndDate.getHour(), mEndDate.getMinutes());
-        cal.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
-        return cal;
-    }
 
     public String getProperDateString() {
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
         timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
-        String time = timeFormat.format(this.getCalendarStart().getTime());
-        return time;
+        return timeFormat.format(mStartDate.getTime());
     }
 
-    public void debugLogEvent() {
-        Log.i(TAG, "Event " + mID + " : title : " + mTitle);
+    public static String asNiceString(Calendar calendar) {
+        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+        return dateFormat.format(calendar.getTime());
+    }
+
+    public String getStartDateAsString() {
+        return asNiceString(mStartDate);
+    }
+
+    public String getEndDateAsString() {
+        return asNiceString(mEndDate);
     }
 
     public int getID() {
@@ -223,19 +224,23 @@ public class Event implements ClusterItem {
         if (mTags.contains("Foot!") ||
                 mTags.contains("Football")) {
             return "Football";
-        } else if (mTags.contains("Basketball")) return "Basketball";
-        else return "Unknown";
+        } else if (mTags.contains("Basketball")) {
+            return "Basketball";
+        }
+        else {
+            return "Unknown";
+        }
     }
 
     public Set<String> getTags() {
         return mTags;
     }
 
-    public CustomDate getStartDate() {
+    public Calendar getStartDate() {
         return mStartDate;
     }
 
-    public CustomDate getEndDate() {
+    public Calendar getEndDate() {
         return mEndDate;
     }
 
@@ -250,9 +255,9 @@ public class Event implements ClusterItem {
      * @return The Bitmap converted from mPicture
      */
     public Bitmap getPicture() {
+
         byte[] encodeByte = Base64.decode(mPicture, Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-        return bitmap;
+        return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
     }
 
     @Override
@@ -260,19 +265,8 @@ public class Event implements ClusterItem {
         return mLocation;
     }
 
-    /**
-     * The signature of an Event is its CustomDate in the long form to which its ID is appended.
-     * It allows to order Events by starting CustomDate AND by ID at the same time.
-     * The ID is written on 6 digits for now.
-     *
-     * @return the signature of the Event in the form yyyymmddhhmmID
-     */
-    public long getSignature() {
-        return (100000 * getStartDate().toLong() + (long) getID());
-    }
-
     //This is a temporary method to test if the server can handle very long strings
-    public String samplePicture() {
+    public static String samplePicture() {
         return "Qk2uFAAAAAAAAIoEAAB8AAAAxwAAAMcAAAABAAgAAQAAACQQAAASCwAAEgsAAAABAAAAAQAAAAD/ " +
                 "AAD/AAD/AAAAAAAA/0JHUnMAAAAAAAAAAFS4HvwAAAAAAAAAAGZmZvwAAAAAAAAAAMT1KP8AAAAA " +
                 "AAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAMDAwABI " +
@@ -358,90 +352,6 @@ public class Event implements ClusterItem {
                 "AQ35AwUM/AMAEPsDABL8BAQpAAAACQAD+Sb7AwAJAQMAE/wDAQ35AwUM/AMAEPsDABL8BAQpAAAA " +
                 "yAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAAAE=";
     }
-
-    public static class CustomDate {
-
-        private int mYear;
-        private int mMonth;
-        private int mDay;
-        private int mHour;
-        private int mMinutes;
-
-        public String toString() {
-            return mYear + "/" + mMonth + "/" + mDay + "  " + mHour + ":" + mMinutes;
-        }
-
-        /**
-         * This method returns a long representing the date with appended values
-         * It makes comparison between 2 Dates trivial and is also used to get an Event's signature
-         *
-         * @return the CustomDate in the form yyyymmddhhmm
-         */
-        public long toLong() {
-            return (long) (Math.pow(10, 8)
-                    * mYear + Math.pow(10, 6)
-                    * mMonth + Math.pow(10, 4)
-                    * mDay + Math.pow(10, 2)
-                    * mHour + mMinutes);
-        }
-
-        public CustomDate() {
-            mYear = 0;
-            mMonth = 0;
-            mDay = 0;
-            mHour = 0;
-            mMinutes = 0;
-        }
-
-        public void setTime(int hour, int minutes) {
-            mHour = hour;
-            mMinutes = minutes;
-        }
-
-        public int getYear() {
-            return mYear;
-        }
-
-        public int getMonth() {
-            return mMonth;
-        }
-
-        public int getDay() {
-            return mDay;
-        }
-
-        public int getMinutes() {
-            return mMinutes;
-        }
-
-        public int getHour() {
-            return mHour;
-        }
-
-
-        public void setDate(int year, int month, int day) {
-            mYear = year;
-            mMonth = month;
-            mDay = day;
-        }
-
-        public CustomDate(int year, int month, int day, int hour, int minutes) {
-            mYear = year;
-            mMonth = month;
-            mDay = day;
-            mHour = hour;
-            mMinutes = minutes;
-        }
-
-        public CustomDate(CustomDate other) {
-            mYear = other.mYear;
-            mMonth = other.mMonth;
-            mDay = other.mDay;
-            mHour = other.mHour;
-            mMinutes = other.mMinutes;
-        }
-    }
-
 }
 
 
