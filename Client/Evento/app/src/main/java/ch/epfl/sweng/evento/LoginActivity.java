@@ -20,6 +20,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 
+import ch.epfl.sweng.evento.RestApi.PostCallback;
+import ch.epfl.sweng.evento.RestApi.RestApi;
+
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
@@ -29,6 +32,8 @@ public class LoginActivity extends AppCompatActivity implements
 //---------------------------------------------------------------------------------------------
 
     private static final String TAG = "LoginActivity";
+    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
+    private static final String urlServer = Settings.getServerUrl();
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 0;
     private GoogleApiClient mGoogleApiClient;
@@ -156,6 +161,22 @@ public class LoginActivity extends AppCompatActivity implements
                 String mIdToken;
                 mIdToken = acct.getIdToken();
                 Log.d(TAG, "idToken:" + mIdToken);
+
+                String personName = acct.getDisplayName();
+                String personEmail = acct.getEmail();
+                String personId = acct.getId();
+                User u = new User(personId, personName, personEmail);
+                RestApi restApi = new RestApi(networkProvider, urlServer);
+
+                restApi.postUser(u, new PostCallback() {
+                    @Override
+                    public void onPostSuccess(String response) {
+                        // assert submission
+                        Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                Log.d(TAG, "User Information: " + personName + ", email: " + personEmail + ", User ID: " + personId);
+
                 Settings.INSTANCE.setIdToken(mIdToken);
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);

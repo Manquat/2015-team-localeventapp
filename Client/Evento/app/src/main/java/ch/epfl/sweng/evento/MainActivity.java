@@ -128,6 +128,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else if (id == R.id.action_refresh) {
             refreshFromServer();
+        } else if (id == R.id.user_profile) {
+            Intent intent = new Intent(this, UserProfileActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

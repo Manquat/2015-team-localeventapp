@@ -1,6 +1,7 @@
 package ch.epfl.sweng.evento.RestApi;
 
 import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.User;
 
 /**
  * Created by joachimmuth on 16.10.15.
@@ -30,5 +31,15 @@ public final class Serializer {
         return res;
     }
 
+    public static String user(User u){
+
+        String res = "{\n"
+                + "  \"User_Id\": \"" + u.getUserId() + "\",\n"
+                + "  \"User_name\": \"" + u.getUsername() + "\",\n"
+                + "  \"Email\": \"" + u.getEmail() + "\",\n"
+                + "}\n";
+
+        return res;
+    }
 
 }

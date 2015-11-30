@@ -15,6 +15,7 @@ import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.NetworkProvider;
+import ch.epfl.sweng.evento.User;
 
 /**
  * RestAPI
@@ -144,6 +145,16 @@ public class RestApi {
         }).execute();
     }
 
+    // Post a user
+    public void postUser(User user, final PostCallback callback) {
+        String restUrl = UrlMaker.post(mUrlServer);
+        String requestBody = Serializer.user(user);
+        new PostTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
+            public void onTaskComplete(String response) {
+                callback.onPostSuccess(response);
+            }
+        }).execute();
+    }
 
     /**
      * update an event based on its ID
