@@ -32,11 +32,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ch.epfl.sweng.evento.Events.Event;
-import ch.epfl.sweng.evento.RestApi.GetEventListCallback;
-import ch.epfl.sweng.evento.RestApi.RestApi;
-import ch.epfl.sweng.evento.tabsFragment.Refreshable;
-import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
+import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
+import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
+import ch.epfl.sweng.evento.tabs_layout.SlidingTabLayout;
 
 /**
  * A simple launcher activity containing a summary sample description, sample log and a custom

@@ -23,16 +23,16 @@ import java.util.HashSet;
 import java.util.concurrent.ExecutionException;
 
 
-import ch.epfl.sweng.evento.Events.Event;
-import ch.epfl.sweng.evento.RestApi.GetEventCallback;
-import ch.epfl.sweng.evento.RestApi.Parser;
-import ch.epfl.sweng.evento.RestApi.HttpResponseCodeCallback;
-import ch.epfl.sweng.evento.RestApi.PostTask;
-import ch.epfl.sweng.evento.RestApi.PutTask;
-import ch.epfl.sweng.evento.RestApi.RestApi;
-import ch.epfl.sweng.evento.RestApi.RestTaskCallback;
-import ch.epfl.sweng.evento.RestApi.GetTask;
-import ch.epfl.sweng.evento.RestApi.Serializer;
+import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.rest_api.callback.GetEventCallback;
+import ch.epfl.sweng.evento.rest_api.Parser;
+import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
+import ch.epfl.sweng.evento.rest_api.task.PostTask;
+import ch.epfl.sweng.evento.rest_api.task.PutTask;
+import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.callback.RestTaskCallback;
+import ch.epfl.sweng.evento.rest_api.task.GetTask;
+import ch.epfl.sweng.evento.rest_api.Serializer;
 
 import static junit.framework.Assert.assertEquals;
 

@@ -9,10 +9,10 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
-import ch.epfl.sweng.evento.Events.Event;
-import ch.epfl.sweng.evento.Events.EventSet;
-import ch.epfl.sweng.evento.RestApi.GetEventListCallback;
-import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.event.EventSet;
+import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
+import ch.epfl.sweng.evento.rest_api.RestApi;
 
 /**
  * Created by Val on 28.10.2015.

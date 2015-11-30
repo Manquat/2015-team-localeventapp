@@ -47,9 +47,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import ch.epfl.sweng.evento.Events.Event;
-import ch.epfl.sweng.evento.RestApi.HttpResponseCodeCallback;
-import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
+import ch.epfl.sweng.evento.rest_api.RestApi;
 
 public class CreatingEventActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener,

@@ -32,9 +32,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import ch.epfl.sweng.evento.Events.Event;
-import ch.epfl.sweng.evento.RestApi.GetEventListCallback;
-import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
+import ch.epfl.sweng.evento.rest_api.RestApi;
 
 public class SearchActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener, GoogleApiClient.OnConnectionFailedListener {

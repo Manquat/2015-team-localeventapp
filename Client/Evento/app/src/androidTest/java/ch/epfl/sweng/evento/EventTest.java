@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.event.Event;
 
 import static junit.framework.Assert.assertEquals;
 

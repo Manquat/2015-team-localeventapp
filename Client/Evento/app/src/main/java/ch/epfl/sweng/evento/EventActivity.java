@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import ch.epfl.sweng.evento.Events.EventPageAdapter;
+import ch.epfl.sweng.evento.event.EventPageAdapter;
 
 public class EventActivity extends AppCompatActivity {
 
