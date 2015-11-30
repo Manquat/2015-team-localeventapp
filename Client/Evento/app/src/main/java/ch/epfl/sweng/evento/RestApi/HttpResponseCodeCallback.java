@@ -8,13 +8,13 @@ package ch.epfl.sweng.evento.RestApi;
  * Class definition for a callback to be invoked when the response for the data
  * submission is available.
  */
-public abstract class PutCallback {
+public abstract class HttpResponseCodeCallback {
     /**
      * Called when a POST success response is received. <br/>
      * This method is guaranteed to execute on the UI thread.
      *
-     * @param response
+     * @param httpResponseCode
      */
-    public abstract void onPostSuccess(String response);
+    public abstract void onSuccess(String httpResponseCode);
 
 }

@@ -29,7 +29,6 @@ public class RestApi {
     private static final String TAG = "RestApi";
     private NetworkProvider mNetworkProvider;
     private String mUrlServer;
-    // TODO: as soon as the server provide a better way to get event, change it
     private int mNoEvent = 5;
 
 
@@ -43,7 +42,7 @@ public class RestApi {
      *
      * @param callback : receive an event as parameter and typically put it in a set
      */
-    public void getEvent(final GetResponseCallback callback) {
+    public void getEvent(final GetEventCallback callback) {
         //mNoEvent += 1;
         String restUrl = UrlMaker.get(mUrlServer, mNoEvent);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
@@ -59,12 +58,12 @@ public class RestApi {
                     }
 
                 }
-                callback.onDataReceived(event);
+                callback.onEventReceived(event);
             }
         }).execute();
     }
 
-    public void getAll(final GetMultipleResponseCallback callback) {
+    public void getAll(final getEventListCallback callback) {
         String restUrl = UrlMaker.getAll(mUrlServer);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
@@ -77,14 +76,14 @@ public class RestApi {
                         Log.e(TAG, "exception in JSON parser");
                     }
                 }
-                callback.onDataReceived(eventArrayList);
+                callback.onEventListReceived(eventArrayList);
             }
         }).execute();
     }
 
     public void getMultiplesEventByDate(GregorianCalendar startDate,
                                         GregorianCalendar endDate,
-                                        final GetMultipleResponseCallback callback) {
+                                        final getEventListCallback callback) {
         String restUrl = UrlMaker.getByDate(mUrlServer, startDate, endDate);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
@@ -98,7 +97,7 @@ public class RestApi {
                     }
 
                 }
-                callback.onDataReceived(eventArrayList);
+                callback.onEventListReceived(eventArrayList);
             }
         }).execute();
     }
@@ -108,7 +107,7 @@ public class RestApi {
                               double latitude,
                               double longitude,
                               double radius,
-                              final GetMultipleResponseCallback callback) {
+                              final getEventListCallback callback) {
         String restUrl = UrlMaker.getWithFilter(mUrlServer, startTime, endTime, latitude, longitude, radius);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
@@ -122,7 +121,7 @@ public class RestApi {
                     }
 
                 }
-                callback.onDataReceived(eventArrayList);
+                callback.onEventListReceived(eventArrayList);
             }
         }).execute();
     }
@@ -134,12 +133,12 @@ public class RestApi {
      * @param callback : manage null response (failure case) and success with, typically, a
      *                 message for the user
      */
-    public void postEvent(Event event, final PostCallback callback) {
+    public void postEvent(Event event, final HttpResponseCodeCallback callback) {
         String restUrl = UrlMaker.post(mUrlServer);
         String requestBody = Serializer.event(event);
         new PostTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
             public void onTaskComplete(String response) {
-                callback.onPostSuccess(response);
+                callback.onSuccess(response);
             }
         }).execute();
     }
@@ -147,31 +146,29 @@ public class RestApi {
 
     /**
      * update an event based on its ID
-     *
-     * @param event
+     *  @param event
      * @param callback : manage failure and success case
      */
-    public void updateEvent(Event event, final PutCallback callback) {
+    public void updateEvent(Event event, final HttpResponseCodeCallback callback) {
         String restUrl = UrlMaker.put(mUrlServer, event.getID());
         String requestBody = Serializer.event(event);
         new PutTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
             public void onTaskComplete(String response) {
-                callback.onPostSuccess(response);
+                callback.onSuccess(response);
             }
         }).execute();
     }
 
     /**
      * delete event base on its ID
-     *
-     * @param id
+     *  @param id
      * @param callback : manage failure and success
      */
-    public void deleteEvent(int id, final DeleteResponseCallback callback) {
+    public void deleteEvent(int id, final HttpResponseCodeCallback callback) {
         String restUrl = UrlMaker.delete(mUrlServer, id);
         new DeleteTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             public void onTaskComplete(String response) {
-                callback.onDeleteSuccess(response);
+                callback.onSuccess(response);
             }
         }).execute();
     }

@@ -48,7 +48,7 @@ import java.util.Random;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
-import ch.epfl.sweng.evento.RestApi.PostCallback;
+import ch.epfl.sweng.evento.RestApi.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 
 public class CreatingEventActivity extends AppCompatActivity
@@ -212,9 +212,9 @@ public class CreatingEventActivity extends AppCompatActivity
                         mTag, startDate, endDate, picture);
 
 
-                restApi.postEvent(e, new PostCallback() {
+                restApi.postEvent(e, new HttpResponseCodeCallback() {
                     @Override
-                    public void onPostSuccess(String response) {
+                    public void onSuccess(String response) {
                         // assert submission
                         Toast.makeText(getApplicationContext(), "Submitted", Toast.LENGTH_SHORT).show();
                     }
