@@ -1,7 +1,6 @@
 package ch.epfl.sweng.evento;
 
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -41,6 +40,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -64,8 +64,8 @@ public class CreatingEventActivity extends AppCompatActivity
 
     private TextView mStartDateView;
     private TextView mEndDateView;
-    private Event.CustomDate startDate;
-    private Event.CustomDate endDate;
+    private GregorianCalendar startDate;
+    private GregorianCalendar endDate;
     private boolean mStartOrEndDate;
     private boolean mDisplayTimeFragment;
     private DatePickerDialogFragment mDateFragment;
@@ -80,6 +80,33 @@ public class CreatingEventActivity extends AppCompatActivity
     private double longitude = 0.0;
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
             new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
+    private TimePickerDialogFragment mTimeFragment;
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                          int dayOfMonth) {
+        if (!mStartOrEndDate)
+            startDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
+        else endDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
+        mTimeFragment = new TimePickerDialogFragment();
+        mTimeFragment.show(getFragmentManager(), "timePicker");
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        if (!mStartOrEndDate) {
+            startDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            startDate.set(Calendar.MINUTE, minute);
+            String s = Event.asNiceString(startDate);
+            mStartDateView.setText(s);
+        } else {
+            endDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            endDate.set(Calendar.MINUTE, minute);
+            String s = Event.asNiceString(endDate);
+            mEndDateView.setText(s);
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,52 +154,6 @@ public class CreatingEventActivity extends AppCompatActivity
         setPictureButton(pictureButton);
     }
 
-
-    /**
-     * On date set register the chosen date and call the time picker
-     *
-     * @param view
-     * @param year
-     * @param monthOfYear
-     * @param dayOfMonth
-     */
-    @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear,
-                          int dayOfMonth) {
-        if (mStartOrEndDate == false)
-            startDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
-        else endDate = new Event.CustomDate(year, monthOfYear, dayOfMonth, 0, 0);
-        if (mDisplayTimeFragment == true) {
-            DialogFragment mTimeFragment = new TimePickerDialogFragment();
-            mTimeFragment.show(getFragmentManager(), "timePicker");
-            mDisplayTimeFragment = false;
-        }
-    }
-
-    /**
-     * On time set register the time and display the chosen date/time in the text field
-     *
-     * @param view
-     * @param hourOfDay
-     * @param minute
-     */
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        if (!mStartOrEndDate) {
-            startDate.setTime(hourOfDay, minute);
-            String s = Integer.toString(startDate.getMonth() + 1) + "/" + Integer.toString(startDate.getDay()) + "/" + Integer.toString(startDate.getYear()) +
-                    " at " + Integer.toString(startDate.getHour()) + ":" + Integer.toString(startDate.getMinutes());
-            // display text to user
-            mStartDateView.setText(s);
-        } else {
-            endDate.setTime(hourOfDay, minute);
-            String s = Integer.toString(endDate.getMonth() + 1) + "/" + Integer.toString(endDate.getDay()) + "/" + Integer.toString(endDate.getYear()) +
-                    " at " + Integer.toString(endDate.getHour()) + ":" + Integer.toString(endDate.getMinutes());
-            // display text to user
-            mEndDateView.setText(s);
-        }
-    }
-
     /**
      * prepare button parameter, put all texts present in the TextViews into variable to prepare
      * a new event.
@@ -199,10 +180,10 @@ public class CreatingEventActivity extends AppCompatActivity
 
                 // default value completion
                 if (startDate == null) {
-                    startDate = new Event.CustomDate(1990, 12, 16, 0, 0);
+                    startDate = new GregorianCalendar(1990, 12, 16, 0, 0);
                 }
                 if (endDate == null) {
-                    endDate = new Event.CustomDate(1992, 1, 16, 0, 0);
+                    endDate = new GregorianCalendar(1992, 1, 16, 0, 0);
                 }
                 if (titleString.isEmpty()) {
                     titleString = "No title";
@@ -230,7 +211,6 @@ public class CreatingEventActivity extends AppCompatActivity
                         longitude, addressString, creator,
                         mTag, startDate, endDate, picture);
 
-                Log.i(TAG, "Event to send : " + e.toString());
 
                 restApi.postEvent(e, new PostCallback() {
                     @Override
@@ -250,12 +230,12 @@ public class CreatingEventActivity extends AppCompatActivity
     private void setPictureButton(Button pictureButton) {
         pictureButton.setOnClickListener(new View.OnClickListener() {
 
-                 @Override
-                 public void onClick(View view) {
-                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                     startActivityForResult(intent, 2);
-                 }
-             }
+                                             @Override
+                                             public void onClick(View view) {
+                                                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                                 startActivityForResult(intent, 2);
+                                             }
+                                         }
         );
     }
 
@@ -354,6 +334,7 @@ public class CreatingEventActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         ImageView viewImage = (ImageView) findViewById(R.id.pictureView);
         Uri selectedImage = data.getData();
         String[] filePath = {MediaStore.Images.Media.DATA};
@@ -365,10 +346,10 @@ public class CreatingEventActivity extends AppCompatActivity
         cursor.close();
 
         Bitmap picture = (BitmapFactory.decodeFile(picturePath));
+
         int size = 300;
         Bitmap scaledPicture = Bitmap.createScaledBitmap(picture, size, (int) (size * ((double) picture.getHeight() / (double) picture.getWidth())), false);
         //75k
-        //Log.w("path of image from gallery......******************.........", picturePath "");
         viewImage.setImageBitmap(scaledPicture);
     }
 

@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
- * Created by Gautier on 28/10/2015.
+ * Container of the info relative to the calendar
  */
 public class CalendarGrid {
     private static final String TAG = "CalendarGrid";
@@ -19,39 +19,49 @@ public class CalendarGrid {
         CURRENT, NEXT, PREVIOUS
     }
 
-//---------------------------------------------------------------------------------------------
-//----Members----------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
 
     // Number of the days in the month for the actual calendar display
     private List<Integer> mDays = new ArrayList<>(NUMBER_OF_CELLS);
 
     // Is the days associate in the current month
     private List<Current> mCurrent = new ArrayList<>(NUMBER_OF_CELLS);
-    private int mIndexOfCurrentDay;
-    private int mCurrentMonth;
-    private int mCurrentYear;
+    private int mIndexOfCurrentDay; // the index of the current day in the list of mDays and mCurrent
+    private int mCurrentMonth;      // the current month (0 for january, ...)
+    private int mCurrentYear;       // the current year
 
-    CalendarGrid(Calendar focusedDay) {
+
+    /**
+     * Create a grid focused on the day given by the actual position of the calendar
+     *
+     * @param focusedDay a Calendar at the wanted date, he will not be modified
+     */
+    public CalendarGrid(Calendar focusedDay) {
         this(focusedDay.get(Calendar.DAY_OF_MONTH), focusedDay.get(Calendar.MONTH),
                 focusedDay.get(Calendar.YEAR));
     }
 
-    CalendarGrid(int day, int month, int year) {
+    /**
+     * Create a grid focused on the given day
+     *
+     * @param day   the day wanted, if it doesn't exist in the month resolve as the Calendar class do :
+     *              the 32th january is transform in 1th february
+     * @param month the month wanted
+     * @param year  the year wanted
+     */
+    public CalendarGrid(int day, int month, int year) {
         // initialize the parameters
         for (int i = 0; i < NUMBER_OF_CELLS; i++) {
             mDays.add(0);
             mCurrent.add(Current.CURRENT);
         }
 
-        setFocusedMonth(month, year);
-
         setFocusedDay(day, month, year);
     }
 
-//---------------------------------------------------------------------------------------------
-//----Get--------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
+    public Calendar getFocusedDate() {
+        return new GregorianCalendar(mCurrentYear, mCurrentMonth, mDays.get(mIndexOfCurrentDay));
+    }
 
     public int getCurrentMonth() {
         return mCurrentMonth;
@@ -155,7 +165,13 @@ public class CalendarGrid {
         return getStringDate(mIndexOfCurrentDay);
     }
 
-    private Calendar getDateFromPosition(int position) {
+    /**
+     * Give the date of the day at the position given as a Calendar
+     *
+     * @param position the position of the day in the grid
+     * @return a calendar initialize at the date of the day pointed
+     */
+    public GregorianCalendar getDateFromPosition(int position) {
         int effectiveMonth = mCurrentMonth;
 
         switch (mCurrent.get(position)) {
@@ -181,7 +197,7 @@ public class CalendarGrid {
      * If it's not found return -1
      *
      * @param day the day search in the current month
-     * @return
+     * @return the index in the actual grid
      */
     private int getIndexOfDay(int day) {
         int iFind = -1;
@@ -198,10 +214,13 @@ public class CalendarGrid {
         return iFind;
     }
 
-//---------------------------------------------------------------------------------------------
-//----Set--------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
 
+    /**
+     * Set the current month display
+     *
+     * @param month the month wanted as an int given by the Calendar class
+     * @param year  the year of the month wanted
+     */
     public void setFocusedMonth(int month, int year) {
         if (month != mCurrentMonth || year != mCurrentYear) {
             Calendar cal = new GregorianCalendar(year, month, 1);
@@ -240,11 +259,23 @@ public class CalendarGrid {
         }
     }
 
+    /**
+     * Set the day selected
+     *
+     * @param focusedDay a calendar at the wanted date
+     */
     public void setFocusedDay(Calendar focusedDay) {
         setFocusedDay(focusedDay.get(Calendar.DAY_OF_MONTH), focusedDay.get(Calendar.MONTH),
                 focusedDay.get(Calendar.YEAR));
     }
 
+    /**
+     * Set the day selected
+     *
+     * @param day   day of the month wanted
+     * @param month month of the year wanted (0 for january,...)
+     * @param year  year wanted
+     */
     public void setFocusedDay(int day, int month, int year) {
         if (month != mCurrentMonth || year != mCurrentYear) {
             setFocusedMonth(month, year);
@@ -271,26 +302,46 @@ public class CalendarGrid {
         }
     }
 
+    /**
+     * Set the day selected
+     *
+     * @param position the position in the grid of the day wanted
+     */
     public void setFocusedDay(int position) {
         setFocusedDay(getDateFromPosition(position));
     }
 
-//---------------------------------------------------------------------------------------------
-//----Methods----------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
 
+    /**
+     * Is the position pointed a day in the current month or not
+     *
+     * @param position position in the grid
+     * @return true if yes false otherwise
+     */
     public boolean isCurrentMonth(int position) {
         return mCurrent.get(position) == Current.CURRENT;
     }
 
+    /**
+     * Is the position pointed the current day (current according to the internal timer of the phone)
+     *
+     * @param position the position in the grid
+     * @return true if yes false otherwise
+     */
     public boolean isCurrentDay(int position) {
         return position == mIndexOfCurrentDay;
     }
 
+    /**
+     * Change the displayed month to the next one
+     */
     public void nextMonth() {
         setFocusedDay(mDays.get(mIndexOfCurrentDay), mCurrentMonth + 1, mCurrentYear);
     }
 
+    /**
+     * Change the displayed month to the previous one
+     */
     public void prevMonth() {
         setFocusedDay(mDays.get(mIndexOfCurrentDay), mCurrentMonth - 1, mCurrentYear);
     }

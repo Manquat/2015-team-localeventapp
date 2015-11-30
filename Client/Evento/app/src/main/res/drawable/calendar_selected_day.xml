@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/calendar_default_day" />
+
+    <item android:bottom="@dimen/calendar_grid_item_selected_padding"
+        android:left="@dimen/calendar_grid_item_selected_padding"
+        android:right="@dimen/calendar_grid_item_selected_padding"
+        android:top="@dimen/calendar_grid_item_selected_padding"
+        android:drawable="@drawable/calendar_selected_day_shape" />
+
+</layer-list>
