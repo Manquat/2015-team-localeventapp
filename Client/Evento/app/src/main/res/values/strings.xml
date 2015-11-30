@@ -57,4 +57,5 @@
     <string name="searchByDateToHint">end date</string>
     <string name="searchDistance">In area of</string>
     <string name="searchArea">radius in km</string>
+    <string name="eventFragment_conversation">Conversation</string>
 </resources>

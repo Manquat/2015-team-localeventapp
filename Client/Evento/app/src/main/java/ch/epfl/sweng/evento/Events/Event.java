@@ -18,6 +18,8 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
+import ch.epfl.sweng.evento.Conversation;
+
 /**
  * The event class that holds all the information related to the event :
  * date of beginning, date of end, title, owner, .....
@@ -34,6 +36,7 @@ public class Event implements ClusterItem {
     private Calendar mStartDate;
     private Calendar mEndDate;
     private String mPicture;
+    private Conversation mConversation;
 
     public Event(int id,
                  String title,
@@ -53,6 +56,7 @@ public class Event implements ClusterItem {
         mStartDate = new GregorianCalendar();
         mEndDate = new GregorianCalendar();
         mPicture = samplePicture();
+        mConversation = new Conversation();
     }
 
     public Event(int id,
@@ -70,6 +74,7 @@ public class Event implements ClusterItem {
         mStartDate = startDate;
         mEndDate = endDate;
         setPicture(picture);
+        mConversation = new Conversation();
     }
 
     public Event(int id,
@@ -86,6 +91,7 @@ public class Event implements ClusterItem {
         mStartDate = startDate;
         mEndDate = endDate;
         mPicture = samplePicture();
+        mConversation = new Conversation();
     }
 
     /**
@@ -210,6 +216,10 @@ public class Event implements ClusterItem {
     @Override
     public LatLng getPosition() {
         return mLocation;
+    }
+
+    public Conversation getConversation() {
+        return mConversation;
     }
 
     //This is a temporary method to test if the server can handle very long strings

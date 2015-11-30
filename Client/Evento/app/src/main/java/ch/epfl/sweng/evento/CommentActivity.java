@@ -11,7 +11,7 @@ import ch.epfl.sweng.evento.Events.Event;
  * Created by gautier on 30/11/2015.
  */
 public class CommentActivity extends AppCompatActivity {
-    private ConversationAdapter mConversationAdpater;
+    private ConversationAdapter mConversationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +24,11 @@ public class CommentActivity extends AppCompatActivity {
         eventTitle.setText(currentEvent.getTitle());
 
         ListView conversationListView = (ListView) findViewById(R.id.conversation_list_comment);
-        Conversation conversation = new Conversation();
+        Conversation conversation = currentEvent.getConversation() ;
         conversation.addComment(new Comment(new MockUser(), "plop"));
         conversation.addComment(new Comment(new MockUser(), "blop"));
-        mConversationAdpater = new ConversationAdapter(this, conversation);
+        mConversationAdapter = new ConversationAdapter(this, conversation);
 
-        conversationListView.setAdapter(mConversationAdpater);
+        conversationListView.setAdapter(mConversationAdapter);
     }
 }
