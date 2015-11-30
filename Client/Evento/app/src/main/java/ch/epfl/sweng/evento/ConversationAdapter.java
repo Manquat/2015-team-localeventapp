@@ -71,6 +71,8 @@ public class ConversationAdapter extends BaseAdapter {
                 mAddCommentButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Intent intent = new Intent(mContext, CommentActivity.class);
+                        mContext.startActivity(intent);
                     }
                 });
                 convertView = mAddCommentButton;
