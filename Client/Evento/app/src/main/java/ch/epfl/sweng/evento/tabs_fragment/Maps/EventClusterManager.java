@@ -22,9 +22,9 @@ import com.google.maps.android.clustering.ClusterManager;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ch.epfl.sweng.evento.gui.EventActivity;
-import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.gui.EventActivity;
 
 /**
  * Extension of the cluster manager class to centralize all the management of the markers of the

@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Locale;
 
 import ch.epfl.sweng.evento.EventDatabase;
+import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.infinite_pager_adapter.GridInfinitePageAdapter;
-import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 
 

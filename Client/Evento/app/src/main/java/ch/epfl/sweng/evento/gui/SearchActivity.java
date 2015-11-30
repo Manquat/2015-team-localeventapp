@@ -3,8 +3,8 @@ package ch.epfl.sweng.evento.gui;
 import android.app.DatePickerDialog;
 import android.content.res.Resources;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -32,14 +32,14 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.event.Event;
-import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
-import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
+import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 
 public class SearchActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener, GoogleApiClient.OnConnectionFailedListener {

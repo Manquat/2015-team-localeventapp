@@ -2,8 +2,8 @@ package ch.epfl.sweng.evento.rest_api.task;
 
 import java.io.IOException;
 
-import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 import ch.epfl.sweng.evento.rest_api.callback.RestTaskCallback;
+import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 
 /**
  * Created by joachimmuth on 22.10.15.

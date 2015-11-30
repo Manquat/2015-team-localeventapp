@@ -10,9 +10,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -47,13 +47,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.event.Event;
-import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
-import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
+import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 
 public class CreatingEventActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener,

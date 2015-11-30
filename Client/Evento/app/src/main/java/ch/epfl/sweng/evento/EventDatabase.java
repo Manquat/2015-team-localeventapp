@@ -11,8 +11,8 @@ import java.util.Set;
 
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.event.EventSet;
-import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
 /**

@@ -21,8 +21,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ch.epfl.sweng.evento.infinite_pager_adapter.internal.Constants;
-import static ch.epfl.sweng.evento.infinite_pager_adapter.internal.Constants.PAGE_COUNT;
 import ch.epfl.sweng.evento.infinite_pager_adapter.internal.PageModel;
+
+import static ch.epfl.sweng.evento.infinite_pager_adapter.internal.Constants.PAGE_COUNT;
 
 /**
  * Base class providing the adapter to populate inside of a {@link ch.epfl.sweng.evento.infinite_pager_adapter.InfiniteViewPager}.

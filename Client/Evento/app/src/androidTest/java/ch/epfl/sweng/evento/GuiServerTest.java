@@ -6,8 +6,6 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
-
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,14 +13,12 @@ import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.evento.gui.MainActivity;
 
-import static junit.framework.Assert.assertEquals;
-
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.is;
+import static junit.framework.Assert.assertEquals;
 
 /**
  * Created by joachimmuth on 23.11.15.
