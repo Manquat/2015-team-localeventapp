@@ -222,7 +222,6 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
     }
 
 
-
     @Override
     public void onClick(View v) {
         int position = Integer.valueOf((String) v.getTag(R.id.position_tag));

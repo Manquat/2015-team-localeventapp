@@ -32,13 +32,14 @@ import static ch.epfl.sweng.evento.infinite_pager_adapter.internal.Constants.PAG
  * implementation, where the pages are indicated by its index and accessed through
  * {@link android.support.v4.view.ViewPager#setCurrentItem(int, boolean)}.
  * <p></p>
- *
+ * <p/>
  * When you implement an adapter you must implement the following methods:
  * <ul>
- *     <li>{@link ch.epfl.sweng.evento.infinite_pager_adapter.InfinitePagerAdapter#instantiateItem(Object)}</li>
- *     <li>{@link InfinitePagerAdapter#getNextIndicator()}</li>
- *     <li>{@link InfinitePagerAdapter#getPreviousIndicator()}</li>
+ * <li>{@link ch.epfl.sweng.evento.infinite_pager_adapter.InfinitePagerAdapter#instantiateItem(Object)}</li>
+ * <li>{@link InfinitePagerAdapter#getNextIndicator()}</li>
+ * <li>{@link InfinitePagerAdapter#getPreviousIndicator()}</li>
  * </ul>
+ *
  * @param <T> an indicator datatype to distinguish the pages.
  */
 public abstract class InfinitePagerAdapter<T> extends PagerAdapter {
@@ -49,6 +50,7 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter {
 
     /**
      * Standard constructor.
+     *
      * @param initValue the initial indicator value the ViewPager should start with.
      */
     public InfinitePagerAdapter(T initValue) {
@@ -73,6 +75,7 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter {
 
     /**
      * fills the page on index {@code position}.
+     *
      * @param position the page index to fill the page.
      */
     void fillPage(final int position) {
@@ -99,6 +102,7 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter {
     /**
      * Creates the internal page model. This method calls the {@link #instantiateItem(Object)} method
      * that creates the page content.
+     *
      * @param pagePosition the position in the pageModel array between [0..2]
      * @return a new instance of a page model.
      */
@@ -131,8 +135,9 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter {
 
     /**
      * Package internal. Moves contents from page index {@code from} to page index {@code to}.
+     *
      * @param from page index to move contents from.
-     * @param to page index to move contents to.
+     * @param to   page index to move contents to.
      */
     void movePageContents(final int from, final int to) {
         final PageModel<T> fromModel = mPageModels[from];
@@ -172,6 +177,7 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter {
 
     /**
      * Sets {@code indicator} as the current visible indicator.
+     *
      * @param indicator a indicator value.
      */
     void setCurrentIndicator(final T indicator) {
@@ -180,27 +186,25 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter {
 
 
     /**
-     *
      * @return the next indicator.
      */
     public abstract T getNextIndicator();
 
 
     /**
-     *
      * @return the previous indicator.
      */
     public abstract T getPreviousIndicator();
 
     /**
      * Instantiates a page.
+     *
      * @param indicator the indicator the page should be instantiated with.
      * @return a ViewGroup containing the page layout.
      */
     public abstract ViewGroup instantiateItem(T indicator);
 
     /**
-     *
      * @param currentIndicator the current value of the indicator.
      * @return a string representation of the current indicator.
      * @see #convertToIndicator(String)
@@ -211,6 +215,7 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter {
 
     /**
      * Convert the represented string back to its indicator
+     *
      * @param representation the string representation of the current indicator.
      * @return the indicator.
      */
@@ -231,7 +236,7 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter {
 
     @Override
     public final boolean isViewFromObject(final View view, final Object o) {
-        return view == ((PageModel)o).getParentView();
+        return view == ((PageModel) o).getParentView();
     }
 
     // Debug related methods

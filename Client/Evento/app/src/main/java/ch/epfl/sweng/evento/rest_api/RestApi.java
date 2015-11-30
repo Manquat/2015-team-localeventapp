@@ -155,7 +155,7 @@ public class RestApi {
     }
 
     public void postComment(int UserId, int EventId, String commentBody,
-                            final HttpResponseCodeCallback callback){
+                            final HttpResponseCodeCallback callback) {
         String restUrl = UrlMaker.postComment(mUrlServer);
         String requestBody = Serializer.comment(UserId, EventId, commentBody);
         new PostTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
@@ -186,7 +186,8 @@ public class RestApi {
 
     /**
      * update an event based on its ID
-     *  @param event
+     *
+     * @param event
      * @param callback : manage failure and success case
      */
     public void updateEvent(Event event, final HttpResponseCodeCallback callback) {
@@ -201,7 +202,8 @@ public class RestApi {
 
     /**
      * delete event base on its ID
-     *  @param id
+     *
+     * @param id
      * @param callback : manage failure and success
      */
     public void deleteEvent(int id, final HttpResponseCodeCallback callback) {

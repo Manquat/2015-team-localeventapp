@@ -27,7 +27,7 @@ public class Signature implements Comparable<Signature> {
 
     @Override
     public int hashCode() {
-        return mID + 31*mCalendar.hashCode();
+        return mID + 31 * mCalendar.hashCode();
     }
 
     @Override

@@ -24,6 +24,7 @@ import java.util.List;
 
 /**
  * Internal model of a page
+ *
  * @param <T> the datatype of the {@link ch.epfl.sweng.evento.infinite_pager_adapter} indicator.
  */
 public final class PageModel<T> {
@@ -45,7 +46,6 @@ public final class PageModel<T> {
     }
 
     /**
-     *
      * @return {@code true} if the model has child views.
      */
     public boolean hasChildren() {

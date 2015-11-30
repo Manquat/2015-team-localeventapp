@@ -194,7 +194,7 @@ public class RestApiTest {
 
         Thread.sleep(2000);
 
-        assertEquals("We get one event after requesting once", 1,  eventArrayList.size());
+        assertEquals("We get one event after requesting once", 1, eventArrayList.size());
 
         restApi.getEvent(new GetEventCallback() {
             @Override

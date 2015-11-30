@@ -32,13 +32,12 @@ public class CalendarTabs extends Fragment implements
         DatePickerDialog.OnDateSetListener {
 
 
-
     private GridInfinitePageAdapter mGridCalendarAdapter;
-    private TextView                mCurrentDate;
-    private View                    mBaseView;
-    private EventListViewAdapter    mEventListAdapter;
-    private DatePickerDialog        mDatePicker;
-    private InfiniteViewPager       mPager;
+    private TextView mCurrentDate;
+    private View mBaseView;
+    private EventListViewAdapter mEventListAdapter;
+    private DatePickerDialog mDatePicker;
+    private InfiniteViewPager mPager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -108,8 +107,6 @@ public class CalendarTabs extends Fragment implements
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         mGridCalendarAdapter.setFocusedDate(new GregorianCalendar(year, monthOfYear, dayOfMonth));
     }
-
-
 
 
     public void refresh() {

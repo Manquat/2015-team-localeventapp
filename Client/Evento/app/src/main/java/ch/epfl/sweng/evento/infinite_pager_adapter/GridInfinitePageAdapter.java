@@ -82,7 +82,7 @@ public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> imple
         mParent.refresh();
     }
 
-    public  void nextMonth() {
+    public void nextMonth() {
         setCurrentIndicator(getNextIndicator());
         fillPage(Constants.PAGE_POSITION_CENTER);
         refresh();

@@ -24,7 +24,9 @@ import static junit.framework.Assert.assertEquals;
  * Created by joachimmuth on 23.11.15.
  */
 
-/** Tests the GUI against the real server */
+/**
+ * Tests the GUI against the real server
+ */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class GuiServerTest {
@@ -38,6 +40,7 @@ public class GuiServerTest {
     /**
      * Test if event are correctly posted and getted from the GUI.
      * Check the number of events, create a new one, refresh, check if there is a new event
+     *
      * @throws InterruptedException
      */
     @Ignore("Waiting for jenkins solution regarding google play")
@@ -69,12 +72,10 @@ public class GuiServerTest {
         Thread.sleep(1000); // wait for the app to be refreshed
 
         assertEquals("After creating one event, we get one more event refreshing the app",
-                numOfEvent+1, EventDatabase.INSTANCE.getSize());
+                numOfEvent + 1, EventDatabase.INSTANCE.getSize());
 
 
     }
-
-
 
 
 }

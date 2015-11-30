@@ -60,7 +60,7 @@ public class Parser {
         List<Comment> commentList = new ArrayList<>();
         String[] responseLines = splitJson(result);
 
-        for(String line : responseLines){
+        for (String line : responseLines) {
             JSONObject jsonObject = new JSONObject(line);
             commentList.add(parseJsonToComment(jsonObject));
         }
@@ -68,11 +68,10 @@ public class Parser {
     }
 
 
-
-    private static String[] splitJson(String response){
+    private static String[] splitJson(String response) {
         response = response.replace("},{", "}\n{");
         response = response.substring(1);
-        String[]  responseLines = response.split("\n");
+        String[] responseLines = response.split("\n");
         return responseLines;
     }
 }

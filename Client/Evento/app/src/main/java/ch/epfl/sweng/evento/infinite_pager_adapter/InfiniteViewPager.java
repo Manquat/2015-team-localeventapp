@@ -148,6 +148,7 @@ public class InfiniteViewPager extends ViewPager {
 
     /**
      * Set the current {@code indicator}.
+     *
      * @param indicator the new indicator to set.
      */
     public final void setCurrentIndicator(final Object indicator) {
@@ -198,14 +199,15 @@ public class InfiniteViewPager extends ViewPager {
          * This method will be invoked when the current page is scrolled, either as part
          * of a programmatically initiated smooth scroll or a user initiated touch scroll.
          *
-         * @param indicator Indicator of the first page currently being displayed.
-         * @param positionOffset Value from [0, 1) indicating the offset from the page at position.
+         * @param indicator            Indicator of the first page currently being displayed.
+         * @param positionOffset       Value from [0, 1) indicating the offset from the page at position.
          * @param positionOffsetPixels Value in pixels indicating the offset from position.
          */
         void onPageScrolled(Object indicator, float positionOffset, int positionOffsetPixels);
 
         /**
          * This method will be invoked when a new page has been selected.
+         *
          * @param indicator the indicator of this page.
          */
         void onPageSelected(Object indicator);

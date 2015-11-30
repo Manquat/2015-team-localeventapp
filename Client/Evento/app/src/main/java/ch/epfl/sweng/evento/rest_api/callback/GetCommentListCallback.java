@@ -9,5 +9,5 @@ import ch.epfl.sweng.evento.Comment;
  */
 public abstract class GetCommentListCallback {
 
-        public abstract void onCommentListReceived(List<Comment> commentList);
+    public abstract void onCommentListReceived(List<Comment> commentList);
 }

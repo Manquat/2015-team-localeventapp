@@ -5,15 +5,15 @@ package ch.epfl.sweng.evento;
  */
 public class Comment {
 
-    public String getContent(){
+    public String getContent() {
         return "mockContent";
     }
 
-    public int getIdUser(){
+    public int getIdUser() {
         return 0;
     }
 
-    public int getIdEvent(){
+    public int getIdEvent() {
         return 0;
     }
 

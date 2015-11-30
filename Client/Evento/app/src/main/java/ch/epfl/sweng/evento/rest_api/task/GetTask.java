@@ -21,14 +21,13 @@ public class GetTask extends RestTask {
 
     @Override
     protected void setResponse() throws IOException {
-            response =  fetchContent(conn);
+        response = fetchContent(conn);
     }
 
     @Override
     protected void communicateWithServer() throws IOException {
         requestWithoutBody("GET");
     }
-
 
 
 }

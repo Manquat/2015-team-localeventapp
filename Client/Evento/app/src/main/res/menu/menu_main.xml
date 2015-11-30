@@ -30,7 +30,7 @@
         android:orderInCategory="300"
         android:title="@string/menu_user"
         android:icon="@drawable/ic_action_user"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 
 
 </menu>

@@ -39,7 +39,7 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
         this.mRequestBody = requestBody;
     }
 
-    public RestTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback){
+    public RestTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback) {
         this(restUrl, networkProvider, callback, null);
     }
 
@@ -91,16 +91,18 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
     /**
      * By default, the task return to the user the HttpResponseCode that it got from the server
      * this method can by override in case we want to return other strings (such as even in JSON, ...)
+     *
      * @return
      * @throws IOException
      */
-    protected void setResponse() throws IOException{
-        response =  Integer.toString(responseCode);
+    protected void setResponse() throws IOException {
+        response = Integer.toString(responseCode);
     }
 
 
     /**
      * Must be set by the type of task we are invoking: Get, Post, Put or Delete
+     *
      * @throws IOException
      */
     @TargetApi(Build.VERSION_CODES.KITKAT)
