@@ -6,16 +6,19 @@
 
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
-        android:id="@+id/list_comment_owner" />
+        android:id="@+id/list_comment_owner"
+        android:background="@drawable/comment_owner"
+        android:layout_gravity="center_horizontal" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/list_comment_message" />
+        android:id="@+id/list_comment_message"
+        android:background="@drawable/comment_message"/>
 </LinearLayout>
