@@ -11,10 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ch.epfl.sweng.evento.Comment;
-import ch.epfl.sweng.evento.CommentActivity;
-import ch.epfl.sweng.evento.Conversation;
-import ch.epfl.sweng.evento.EventActivity;
+import ch.epfl.sweng.evento.ConversationActivity;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 
@@ -74,8 +71,8 @@ public class EventFragment extends Fragment {
         conversation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CommentActivity.class);
-                intent.putExtra(CommentActivity.KEY_CURRENT_CONVERSATION, mEvent.getID());
+                Intent intent = new Intent(getActivity(), ConversationActivity.class);
+                intent.putExtra(ConversationActivity.KEY_CURRENT_CONVERSATION, mEvent.getID());
                 startActivity(intent);
             }
         });

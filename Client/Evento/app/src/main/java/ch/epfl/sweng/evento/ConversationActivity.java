@@ -10,7 +10,7 @@ import ch.epfl.sweng.evento.Events.Event;
 /**
  * Created by gautier on 30/11/2015.
  */
-public class CommentActivity extends AppCompatActivity {
+public class ConversationActivity extends AppCompatActivity {
     public static final String KEY_CURRENT_CONVERSATION = "current_event_conversation";
 
     private ConversationAdapter mConversationAdapter;
