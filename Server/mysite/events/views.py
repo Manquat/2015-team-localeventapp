@@ -9,6 +9,7 @@ from User.models import participant
 from events.serializers import EventSerializer
 from User.serializers import ParticipantSerializer
 from oauth2client import client, crypt
+
 import datetime
 @api_view(['GET', 'POST'])
 def event_list(request, format=None):
@@ -67,6 +68,27 @@ def event_detail(request, pk, format=None):
     elif request.method == 'DELETE':
         event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def event_detailParticipant(request, pk, format=None):
+    """
+    Retrieve, update or delete an event.
+    """
+    
+   # if validate_user(token) is False:
+    #    return  Response(status=status.HTTP_403_FORBIDDEN)
+
+    try:
+        part = Event.objects.get(pk=pk).participants.all()
+    except Event.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    print part[0].name
+
+    if request.method == 'GET':
+        serializerUser = ParticipantSerializer(part, many=True)
+        return Response(serializerUser.data)
+
 
 @api_view(['GET', 'DELETE'])
 def event_detailuser(request, username, format=None):

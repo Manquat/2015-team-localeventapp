@@ -9,6 +9,7 @@ from . import views
 urlpatterns = [
     url(r'^events/$', views.event_list),
     url(r'^events/(?P<pk>[0-9]+)$', views.event_detail),
+    url(r'^events/user/(?P<pk>[0-9]+)$', views.event_detailParticipant),
     url(r'^events/(?P<pk>[0-9]+)/(?P<pk2>[0-9]+)$', views.event_addparticipant),
     url(r'^events/(?P<fromdate>\d*)/(?P<todate>\d*)$', views.event_requestdate),
     url(r'^events/(?P<fromdate>\d*)/(?P<todate>\d*)/(?P<mLongitude>[-+]?([0-9]*\.[0-9]+|[0-9]+))/(?P<mLatitude>[-+]?([0-9]*\.[0-9]+|[0-9]+))/(?P<mDistance>([0-9]*\.[0-9]+|[0-9]+))$', views.event_request),

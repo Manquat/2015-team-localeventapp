@@ -11,19 +11,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import ch.epfl.sweng.evento.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.MainActivity;
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
 import ch.epfl.sweng.evento.RestApi.PutCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.User;
 
 /**
  * Created by Tago on 13/11/2015.
  */
 public class EventFragment extends Fragment {
 
+    private static final String TAG = "EventFragment";
     public static final String KEYCURRENTEVENT = "CurrentEvent";
     private RestApi mRestAPI;
     private Event mEvent;
@@ -38,7 +43,18 @@ public class EventFragment extends Fragment {
 
         mEvent = EventDatabase.INSTANCE.getEvent(currentEventSignature);
 
-        updateFields(rootView);
+        RestApi restAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+        restAPI.getUser(new GetMultipleResponseCallback(){
+            public void onDataReceived(List<Event> eventArrayList){
+
+            }
+            public void onDataReceived(List<User> userArrayList, int i){
+               // Log.d(TAG, userArrayList.get(0).getmUsername());
+            }
+
+        }, mEvent.getID());
+
+        //updateFields(rootView);
 
         return rootView;
     }

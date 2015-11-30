@@ -20,6 +20,7 @@ public class User {
 
     private static final String TAG = "User";
 
+    private int mID;
     private String mUsername;
     private String mEmail;
     //private Event.CustomDate mDateOfBirth;
@@ -37,6 +38,14 @@ public class User {
         mHostedEvent = new HashSet<>();
     }
 
+    public User(int id, String username, String email){
+        mID = id;
+        mUsername = username;
+        mEmail = email;
+        Log.d(TAG, username);
+        mMatchedEvent = new HashSet<>();
+        mHostedEvent = new HashSet<>();
+    }
     public User(String username,Set<Event> matchedEvent, Set<Event> hostedEvent){
         mUsername = username;
         mMatchedEvent = new HashSet<>(matchedEvent);
