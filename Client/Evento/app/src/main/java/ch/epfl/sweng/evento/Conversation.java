@@ -24,4 +24,8 @@ public class Conversation {
     public Comment getComment(int position) {
         return mComments.get(position);
     }
+
+    public int size() {
+        return mComments.size();
+    }
 }
