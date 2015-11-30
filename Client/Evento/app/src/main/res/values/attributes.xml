@@ -3,6 +3,6 @@
     <declare-styleable name="Calendar_Day">
         <attr name="state_current_day" format="boolean" />
         <attr name="state_current_month" format="boolean" />
-        <attr name="state_have_events" format="boolean" />
+        <attr name="number_of_events" format="integer" />
     </declare-styleable>
 </resources>

@@ -13,13 +13,13 @@ import ch.epfl.sweng.evento.R;
 public class CalendarDay extends Button {
     public static final int[] STATE_CURRENT_DAY = {R.attr.state_current_day};
     public static final int[] STATE_CURRENT_MONTH = {R.attr.state_current_month};
-    public static final int[] STATE_HAVE_EVENTS = {R.attr.state_have_events};
+    public static final int[] NUMBER_OF_EVENTS = {R.attr.number_of_events};
 
     private static final int NUMBER_OF_STATES = 3;
 
     private boolean mIsCurrentDay = false;      // is it the current day
     private boolean mIsCurrentMonth = false;    // is it a day of the current month
-    private boolean mHaveEvents = false;        // have this day some events
+    private int mNumberOfEvents = 0;        // have this day some events
 
 
     /**
@@ -56,8 +56,8 @@ public class CalendarDay extends Button {
      *
      * @return the state of the HaveEvents state
      */
-    public boolean getStateHaveEvents() {
-        return mHaveEvents;
+    public int getNumberOfEvents() {
+        return mNumberOfEvents;
     }
 
 
@@ -82,12 +82,12 @@ public class CalendarDay extends Button {
     }
 
     /**
-     * Setter for the HaveEvents state
+     * Setter for the number of Events state
      *
-     * @param haveEvents the state wanted for the HaveEvents state
+     * @param numberOfEvents the state wanted for the numberOfEvents state
      */
-    public void setStateHaveEvents(boolean haveEvents) {
-        mHaveEvents = haveEvents;
+    public void setNumberOfEvents(int numberOfEvents) {
+        mNumberOfEvents = numberOfEvents;
         refreshDrawableState();
     }
 
@@ -102,8 +102,8 @@ public class CalendarDay extends Button {
         if (mIsCurrentMonth) {
             mergeDrawableStates(drawableState, STATE_CURRENT_MONTH);
         }
-        if (mHaveEvents) {
-            mergeDrawableStates(drawableState, STATE_HAVE_EVENTS);
+        if (mNumberOfEvents != 0) {
+            mergeDrawableStates(drawableState, NUMBER_OF_EVENTS);
         }
 
         return drawableState;

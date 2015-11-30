@@ -163,7 +163,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
             day.setTextColor(ContextCompat.getColor(mContext, R.color.colorDisableMonth));
             day.setStateCurrentDay(false);
             day.setStateCurrentMonth(false);
-            day.setStateHaveEvents(false);
+            day.setNumberOfEvents(0);
 
             if (mCalendarGrid.isCurrentMonth(position)) {
                 day.setStateCurrentMonth(true);
@@ -185,7 +185,15 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
             List<Event> events = EventDatabase.INSTANCE.filterOnDay(mCalendarGrid.getDateFromPosition(position)).toArrayList();
 
             if (events.size() != 0) {
-                day.setStateHaveEvents(true);
+                if (events.size() == 1) {
+                    day.setNumberOfEvents(1);
+                }
+                else if (events.size() == 2){
+                    day.setNumberOfEvents(2);
+                }
+                else {
+                    day.setNumberOfEvents(3);
+                }
 
                 if (day.getStateCurrentDay()) {
                     mEvents = events;

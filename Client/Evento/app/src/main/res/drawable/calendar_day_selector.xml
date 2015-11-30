@@ -4,15 +4,15 @@
 
     <item
         app:state_current_day="true"
-        app:state_have_events="true"
-        android:drawable="@drawable/calendar_event_selected_day" />
+        app:number_of_events="1"
+        android:drawable="@drawable/calendar_one_event_selected_day" />
 
     <item
         app:state_current_day="true"
         android:drawable="@drawable/calendar_selected_day"/>
 
     <item
-        app:state_have_events="true"
+        app:number_of_events="1"
         android:drawable="@drawable/calendar_event_default_day" />
 
     <item
