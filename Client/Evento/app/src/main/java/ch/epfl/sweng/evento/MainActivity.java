@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                         (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
                 notificationManager.notify(event.getID(), n);
-               // Toast.makeText(getApplicationContext(), "Notified event : " + event.getTitle(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Notified event : " + event.getTitle(), Toast.LENGTH_SHORT).show();
             }
         }
     }
