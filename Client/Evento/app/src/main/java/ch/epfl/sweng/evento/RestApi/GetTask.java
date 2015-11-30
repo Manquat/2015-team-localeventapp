@@ -21,8 +21,6 @@ import ch.epfl.sweng.evento.NetworkProvider;
  */
 public class GetTask extends RestTask {
     private static final String TAG = "GetTask";
-    private static final int HTTP_SUCCESS_START = 200;
-    private static final int HTTP_SUCCESS_END = 299;
 
     public GetTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback) {
         super(restUrl, networkProvider, callback);
@@ -35,36 +33,9 @@ public class GetTask extends RestTask {
 
     @Override
     protected void communicateWithServer() throws IOException {
-            conn.setRequestMethod("GET");
-            conn.setDoInput(true);
-            conn.connect();
+        requestWithoutBody("GET");
     }
 
 
-    /**
-     * fetch the HTTP response and parse it into readable JSON String
-     *
-     * @param conn
-     * @return
-     * @throws IOException
-     */
-    private String fetchContent(HttpURLConnection conn) throws IOException {
-        StringBuilder out = new StringBuilder();
-        BufferedReader reader = null;
 
-        try {
-            reader = new BufferedReader(new InputStreamReader(
-                    conn.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                out.append(line).append("\n");
-            }
-
-            return out.toString();
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
-        }
-    }
 }
