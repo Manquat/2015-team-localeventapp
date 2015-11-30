@@ -11,6 +11,6 @@ import ch.epfl.sweng.evento.User;
  */
 public abstract class GetMultipleResponseCallback {
 
-    public abstract void onDataReceived(List<Event> eventArrayList);
+    public void onDataReceived(List<Event> eventArrayList){}
     public void onDataReceived(List<User> userArrayList, int i){}
 }

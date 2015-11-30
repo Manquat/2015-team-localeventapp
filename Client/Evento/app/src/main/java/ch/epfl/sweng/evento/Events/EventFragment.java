@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.evento.DefaultNetworkProvider;
@@ -32,7 +33,8 @@ public class EventFragment extends Fragment {
     public static final String KEYCURRENTEVENT = "CurrentEvent";
     private RestApi mRestAPI;
     private Event mEvent;
-
+    private List<User> mParticipants;
+    private List<Event> hostedEvent;
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -41,22 +43,46 @@ public class EventFragment extends Fragment {
         Bundle bundle = getArguments();
         long currentEventSignature = bundle.getLong(KEYCURRENTEVENT);
 
-        mEvent = EventDatabase.INSTANCE.getEvent(currentEventSignature);
+        getParticipant(currentEventSignature);
+        updateFields(rootView);
+
+        return rootView;
+    }
+
+    private void getParticipant(long signature){
+        mParticipants = new ArrayList<User>();
+        mEvent = EventDatabase.INSTANCE.getEvent(signature);
 
         RestApi restAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-        restAPI.getUser(new GetMultipleResponseCallback(){
-            public void onDataReceived(List<Event> eventArrayList){
-
-            }
-            public void onDataReceived(List<User> userArrayList, int i){
-               // Log.d(TAG, userArrayList.get(0).getmUsername());
+        restAPI.getUser(new GetMultipleResponseCallback() {
+            public void onDataReceived(List<User> userArrayList, int i) {
+                mParticipants = userArrayList;
             }
 
         }, mEvent.getID());
 
-        //updateFields(rootView);
+        //Hosted event
+        /*hostedEvent = new ArrayList<Event>();;
+        restAPI.getHostedEvent(new GetMultipleResponseCallback() {
+            public void onDataReceived(List<Event> eventArrayList) {
+                hostedEvent = eventArrayList;
+                Log.d(TAG, hostedEvent.get(0).getTitle());
+                Log.d(TAG, hostedEvent.get(1).getTitle());
+            }
 
-        return rootView;
+        }, 8);*/
+
+        //Matched event
+        hostedEvent = new ArrayList<Event>();;
+        restAPI.getMatchedEvent(new GetMultipleResponseCallback() {
+            public void onDataReceived(List<Event> eventArrayList) {
+                hostedEvent = eventArrayList;
+                Log.d(TAG, hostedEvent.get(0).getTitle());
+                Log.d(TAG, hostedEvent.get(1).getTitle());
+            }
+
+        }, 8);
+
     }
 
     private void updateFields(View rootView) {

@@ -42,7 +42,6 @@ public class User {
         mID = id;
         mUsername = username;
         mEmail = email;
-        Log.d(TAG, username);
         mMatchedEvent = new HashSet<>();
         mHostedEvent = new HashSet<>();
     }
@@ -72,6 +71,9 @@ public class User {
         return mDateOfBirth;
     }*/
 
+    public int getID(){
+        return mID;
+    }
     public String getmUserId() {
         return mUserId;
     }

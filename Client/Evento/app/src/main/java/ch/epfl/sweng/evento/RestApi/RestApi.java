@@ -67,9 +67,9 @@ public class RestApi {
         }).execute();
     }
 
-    public void getUser(final GetMultipleResponseCallback callback, int id) {
+    public void getUser(final GetMultipleResponseCallback callback, int idEvent) {
         UrlMakerUser url = new UrlMakerUser();
-        String restUrl = url.get(mUrlServer, id);
+        String restUrl = url.get(mUrlServer, idEvent);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String response) {
@@ -83,6 +83,48 @@ public class RestApi {
 
                 }
                 callback.onDataReceived(user,0);
+            }
+        }).execute();
+    }
+
+    public void getHostedEvent(final GetMultipleResponseCallback callback, int idUser) {
+        final String accessToHostedEvent = "user/creator/";
+        UrlMakerUser url = new UrlMakerUser(accessToHostedEvent);
+        String restUrl = url.get(mUrlServer, idUser);
+        new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
+            @Override
+            public void onTaskComplete(String response) {
+                List<Event> event = null;
+                if (response != null) {
+                    try {
+                        event = ParserEvent.parseFromJSONMultiple(response);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "exception in JSON parser");
+                    }
+
+                }
+                callback.onDataReceived(event);
+            }
+        }).execute();
+    }
+
+    public void getMatchedEvent(final GetMultipleResponseCallback callback, int idUser) {
+        final String accessToMatchedEvent = "user/participant/";
+        UrlMakerUser url = new UrlMakerUser(accessToMatchedEvent);
+        String restUrl = url.get(mUrlServer, idUser);
+        new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
+            @Override
+            public void onTaskComplete(String response) {
+                List<Event> event = null;
+                if (response != null) {
+                    try {
+                        event = ParserEvent.parseFromJSONMultiple(response);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "exception in JSON parser");
+                    }
+
+                }
+                callback.onDataReceived(event);
             }
         }).execute();
     }

@@ -7,8 +7,15 @@ import java.util.GregorianCalendar;
  */
 public class UrlMakerUser extends UrlMaker{
 
+    public UrlMakerUser(){
+        access = "events/user/";
+    }
+
+    public UrlMakerUser(String access){
+        this.access = access;
+    }
     public String getAccess(){
-        return "events/user/";
+        return access;
     }
 
     public static String get(String urlServer, int noUser) {

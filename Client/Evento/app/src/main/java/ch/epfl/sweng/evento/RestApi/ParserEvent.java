@@ -1,5 +1,7 @@
 package ch.epfl.sweng.evento.RestApi;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +16,7 @@ import ch.epfl.sweng.evento.User;
  * Created by thomas on 28/11/15.
  */
 public class ParserEvent {
+    private static final String TAG = "ParserEvent";
     public static ArrayList<Event> events(String s) {
         return null;
     }
@@ -54,6 +57,7 @@ public class ParserEvent {
     //new HashSet<String>(){{ add(json.getString("tags"));}});
 
     public static List<Event> parseFromJSONMultiple(String response) throws JSONException {
+        Log.d(TAG, response);
         ArrayList<Event> eventArrayList = new ArrayList<>();
 
         // split received string into multiple JSONable string

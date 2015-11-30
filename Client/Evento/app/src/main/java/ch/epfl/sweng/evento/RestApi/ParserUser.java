@@ -26,7 +26,9 @@ public class ParserUser extends Parser {
         final JSONObject json = jsonObject;
 
         try {
-            return new User(jsonObject.getString("name"), jsonObject.getString("email")
+            return new User(jsonObject.getInt("id"),
+                            jsonObject.getString("name"),
+                            jsonObject.getString("email")
             );
 
         } catch (IllegalArgumentException e) {
