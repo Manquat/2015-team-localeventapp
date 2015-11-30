@@ -17,10 +17,12 @@ public class ConversationAdapter extends BaseAdapter {
     private Conversation mConversation;
     private Context mContext;
     private Button mAddCommentButton;
+    private int mCurrentEventId;
 
-    public ConversationAdapter(Context context, Conversation conversation) {
+    public ConversationAdapter(Context context, Conversation conversation, int currentEventId) {
         mContext = context;
         mConversation = conversation;
+        mCurrentEventId = currentEventId;
     }
 
     @Override
@@ -72,6 +74,7 @@ public class ConversationAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(mContext, CommentActivity.class);
+                        intent.putExtra(CommentActivity.KEY_CURRENT_COMMENT, mCurrentEventId);
                         mContext.startActivity(intent);
                     }
                 });

@@ -36,7 +36,7 @@ public class ConversationActivity extends AppCompatActivity {
             conversation.addComment(new Comment(new MockUser(), "plop"));
             conversation.addComment(new Comment(new MockUser(), "blop"));
         }
-        mConversationAdapter = new ConversationAdapter(this, conversation);
+        mConversationAdapter = new ConversationAdapter(this, conversation, currentId);
 
         conversationListView.setAdapter(mConversationAdapter);
     }
