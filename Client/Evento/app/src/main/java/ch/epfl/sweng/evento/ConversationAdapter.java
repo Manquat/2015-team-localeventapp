@@ -1,10 +1,13 @@
 package ch.epfl.sweng.evento;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -13,6 +16,7 @@ import android.widget.TextView;
 public class ConversationAdapter extends BaseAdapter {
     private Conversation mConversation;
     private Context mContext;
+    private Button mAddCommentButton;
 
     public ConversationAdapter(Context context, Conversation conversation) {
         mContext = context;
@@ -21,33 +25,57 @@ public class ConversationAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mConversation.size();
+        return mConversation.size() + 1;
     }
 
     @Override
     public Object getItem(int position) {
-        return mConversation.getComment(position);
+        if (position < mConversation.size()) {
+            return mConversation.getComment(position);
+        }
+        else {
+            return mAddCommentButton;
+        }
     }
 
     @Override
     public long getItemId(int position) {
-        return mConversation.getComment(position).getID();
+        if (position < mConversation.size()) {
+            return mConversation.getComment(position).getID();
+        }
+        else {
+            return 0;
+        }
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater.from(mContext));
-            convertView = inflater.inflate(R.layout.list_comment, parent, false);
+        if (position < mConversation.size()) {
+            if (convertView == null) {
+                LayoutInflater inflater = (LayoutInflater.from(mContext));
+                convertView = inflater.inflate(R.layout.list_comment, parent, false);
+            }
+
+            Comment comment = mConversation.getComment(position);
+
+            TextView owner = (TextView) convertView.findViewById(R.id.list_comment_owner);
+            owner.setText(comment.getOwner().getName());
+
+            TextView message = (TextView) convertView.findViewById(R.id.list_comment_message);
+            message.setText(comment.getMessage());
         }
-
-        Comment comment = mConversation.getComment(position);
-
-        TextView owner = (TextView) convertView.findViewById(R.id.list_comment_owner);
-        owner.setText(comment.getOwner().getName());
-
-        TextView message = (TextView) convertView.findViewById(R.id.list_comment_message);
-        message.setText(comment.getMessage());
+        else {
+            if (convertView == null) {
+                mAddCommentButton = new Button(mContext);
+                mAddCommentButton.setText(R.string.conversation_add_comment);
+                mAddCommentButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
+                convertView = mAddCommentButton;
+            }
+        }
 
         return convertView;
     }
