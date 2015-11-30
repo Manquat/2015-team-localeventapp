@@ -58,4 +58,5 @@
     <string name="searchDistance">In area of</string>
     <string name="searchArea">radius in km</string>
     <string name="eventFragment_conversation">Conversation</string>
+    <string name="title_activity_conversation">Conversation</string>
 </resources>

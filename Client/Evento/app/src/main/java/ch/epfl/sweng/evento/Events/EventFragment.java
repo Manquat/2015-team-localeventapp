@@ -1,5 +1,6 @@
 package ch.epfl.sweng.evento.Events;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ch.epfl.sweng.evento.CommentActivity;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 
@@ -62,6 +64,15 @@ public class EventFragment extends Fragment {
             public void onClick(View view) {
                 Toast.makeText(getActivity().getApplicationContext(), "Submitted", Toast.LENGTH_SHORT).show();
                 getActivity().finish();
+            }
+        });
+
+        Button conversation = (Button) rootView.findViewById(R.id.event_conversation);
+        conversation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CommentActivity.class);
+                startActivity(intent);
             }
         });
     }
