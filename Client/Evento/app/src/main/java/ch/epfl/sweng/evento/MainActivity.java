@@ -17,12 +17,17 @@
 
 package ch.epfl.sweng.evento;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +35,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
@@ -134,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     public void refreshFromServer() {
         RestApi mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
 
@@ -147,8 +155,33 @@ public class MainActivity extends AppCompatActivity {
                     ((Refreshable) page).refresh();
                 }
                 Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
+                makeNotifications(eventArrayList);
             }
         });
+    }
+
+    public void makeNotifications(List<Event> eventArrayList) {
+        Calendar currentDate = new GregorianCalendar().getInstance();
+
+        for (Event event: eventArrayList) {
+            double diffTime = (event.getStartDate().getTimeInMillis() - currentDate.getTimeInMillis())
+                    / (1000 * 3600 * 24);
+
+            if (diffTime < 1.0) {
+                Notification n  = new Notification.Builder(this)
+                        .setContentTitle("You've got an Event soon !")
+                        .setContentText("The Event " + event.getDescription() + " is starting tomorrow. " +
+                                "\n Don't forget to attend !")
+                        .setSmallIcon(R.drawable.notification)
+                        .setAutoCancel(true).build();
+
+                NotificationManager notificationManager =
+                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+                notificationManager.notify(event.getID(), n);
+               // Toast.makeText(getApplicationContext(), "Notified event : " + event.getTitle(), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 
