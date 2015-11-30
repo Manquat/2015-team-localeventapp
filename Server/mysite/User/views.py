@@ -3,8 +3,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from User.models import participant
-from events.models import Event
-from events.serializers import EventSerializer
+from events.models import Event, Comment
+from events.serializers import EventSerializer, CommentSerializer
 from User.serializers import ParticipantSerializer
 from oauth2client import client, crypt
 
@@ -66,6 +66,22 @@ def created_events(request, pk, format=None):
     if request.method == 'GET':
         events = Event.objects.filter(creator=pk)
         serializer = EventSerializer(events, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def commented_events(request, pk, format=None):
+    """
+    Create an User
+    """
+
+    try:
+        user = participant.objects.get(pk=pk)
+    except Event.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        comments = Comment.objects.filter(creator=user)
+        serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
 @api_view(['GET'])
