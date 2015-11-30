@@ -5,10 +5,11 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from events.models import Event
+from User.models import participant
 from events.serializers import EventSerializer
+from User.serializers import ParticipantSerializer
 from oauth2client import client, crypt
 import datetime
-from base64 import b64decode,b64encode
 @api_view(['GET', 'POST'])
 def event_list(request, format=None):
     """
@@ -62,6 +63,31 @@ def event_detail(request, pk, format=None):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        event.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET', 'DELETE'])
+def event_detailuser(request, username, format=None):
+    """
+    Retrieve, update or delete an event.
+    """
+    if 'HTTP_TOKEN' not in request.META:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    token = request.META['HTTP_TOKEN']
+
+    if validate_user(token) is False:
+        return  Response(status=status.HTTP_403_FORBIDDEN)
+
+    try:
+        event = Event.objects.get(creator=username)
+    except Event.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = EventSerializer(event)
+        return Response(serializer.data)
 
     elif request.method == 'DELETE':
         event.delete()
@@ -121,6 +147,40 @@ def event_request(request, fromdate, todate, mLongitude, mLatitude, mDistance, m
         serializer = EventSerializer(event[:mNE], many=True)
         return Response(serializer.data)
 
+
+@api_view(['PUT', 'DELETE'])
+def event_addparticipant(request, pk, pk2, format=None):
+    """
+    Retrieve, update or delete an event.
+    """
+    """
+    if 'HTTP_TOKEN' not in request.META:
+
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    token = request.META['HTTP_TOKEN']
+
+    if validate_user(token) is False:
+        return  Response(status=status.HTTP_403_FORBIDDEN)
+    """
+    try:
+        event = Event.objects.get(pk=pk)
+    except Event.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        p = participant.objects.get(pk=pk2)
+    except participant.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        event.participants.add(p)
+        return Response(status=status.HTTP_201_CREATED)
+
+    elif request.method == 'DELETE':
+        #What happend if p is not in the participant list? to check
+        event.participants.remove(p)
+        p.event_set.remove(event)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 def validate_user(token):
     """
