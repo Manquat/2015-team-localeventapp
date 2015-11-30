@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.gui;
 
 import android.content.Context;
 import android.graphics.Typeface;

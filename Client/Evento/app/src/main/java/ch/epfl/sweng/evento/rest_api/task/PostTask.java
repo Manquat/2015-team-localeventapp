@@ -9,7 +9,7 @@ import android.os.Build;
 
 import java.io.IOException;
 
-import ch.epfl.sweng.evento.NetworkProvider;
+import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 import ch.epfl.sweng.evento.rest_api.callback.RestTaskCallback;
 
 /**

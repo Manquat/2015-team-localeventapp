@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import ch.epfl.sweng.evento.EventActivity;
+import ch.epfl.sweng.evento.gui.EventActivity;
 import ch.epfl.sweng.evento.R;
 
 /**

@@ -15,12 +15,12 @@ import java.util.List;
 
 import ch.epfl.sweng.evento.Comment;
 import ch.epfl.sweng.evento.event.Event;
-import ch.epfl.sweng.evento.NetworkProvider;
 import ch.epfl.sweng.evento.rest_api.callback.GetCommentListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventCallback;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.callback.RestTaskCallback;
+import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 import ch.epfl.sweng.evento.rest_api.task.DeleteTask;
 import ch.epfl.sweng.evento.rest_api.task.GetTask;
 import ch.epfl.sweng.evento.rest_api.task.PostTask;

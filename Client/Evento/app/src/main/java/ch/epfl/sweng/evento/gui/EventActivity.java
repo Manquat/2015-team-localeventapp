@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.gui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import ch.epfl.sweng.evento.EventDatabase;
+import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.event.EventPageAdapter;
 
 public class EventActivity extends AppCompatActivity {

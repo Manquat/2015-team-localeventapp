@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.gui;
 
 import android.app.Dialog;
 import android.app.DialogFragment;

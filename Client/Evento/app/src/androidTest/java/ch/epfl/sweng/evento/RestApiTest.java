@@ -24,9 +24,11 @@ import java.util.concurrent.ExecutionException;
 
 
 import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventCallback;
 import ch.epfl.sweng.evento.rest_api.Parser;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.rest_api.task.PostTask;
 import ch.epfl.sweng.evento.rest_api.task.PutTask;
 import ch.epfl.sweng.evento.rest_api.RestApi;

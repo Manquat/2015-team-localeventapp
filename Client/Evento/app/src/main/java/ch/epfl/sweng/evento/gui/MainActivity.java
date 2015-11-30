@@ -15,7 +15,7 @@
 */
 
 
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.gui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,7 +32,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
+import ch.epfl.sweng.evento.EventDatabase;
+import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.tabs_fragment.Refreshable;

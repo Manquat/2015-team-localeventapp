@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.gui;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

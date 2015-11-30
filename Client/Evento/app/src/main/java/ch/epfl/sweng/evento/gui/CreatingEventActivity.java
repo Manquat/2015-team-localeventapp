@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.gui;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -47,7 +47,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
+import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 

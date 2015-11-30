@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.gui;
 
 
 import android.content.Intent;
@@ -15,6 +15,8 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
+
+import ch.epfl.sweng.evento.R;
 
 
 public class LoginActivity extends AppCompatActivity implements

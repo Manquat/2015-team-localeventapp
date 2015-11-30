@@ -13,6 +13,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import ch.epfl.sweng.evento.gui.MainActivity;
+
 import static junit.framework.Assert.assertEquals;
 
 import static android.support.test.espresso.Espresso.onView;

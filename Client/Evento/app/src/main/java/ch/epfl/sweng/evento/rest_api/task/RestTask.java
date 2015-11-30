@@ -12,7 +12,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import ch.epfl.sweng.evento.NetworkProvider;
+import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 import ch.epfl.sweng.evento.rest_api.RestException;
 import ch.epfl.sweng.evento.rest_api.callback.RestTaskCallback;
 

@@ -34,8 +34,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Vector;
 
-import ch.epfl.sweng.evento.DefaultNetworkProvider;
-import ch.epfl.sweng.evento.EventActivity;
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
+import ch.epfl.sweng.evento.gui.EventActivity;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.R;

@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.gui;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.List;
+
+import ch.epfl.sweng.evento.R;
 
 /**
  * Created by thomas on 09/11/15.

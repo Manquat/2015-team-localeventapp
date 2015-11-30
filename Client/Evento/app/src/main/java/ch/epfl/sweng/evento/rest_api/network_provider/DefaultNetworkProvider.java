@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.rest_api.network_provider;
 
 /**
  * Created by joachimmuth on 23.10.15.

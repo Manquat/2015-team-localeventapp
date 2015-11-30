@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.rest_api.network_provider;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

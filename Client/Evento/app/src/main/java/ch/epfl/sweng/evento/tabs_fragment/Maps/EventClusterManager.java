@@ -22,7 +22,7 @@ import com.google.maps.android.clustering.ClusterManager;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ch.epfl.sweng.evento.EventActivity;
+import ch.epfl.sweng.evento.gui.EventActivity;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.R;
 
