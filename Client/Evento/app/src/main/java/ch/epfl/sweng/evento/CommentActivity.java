@@ -11,6 +11,8 @@ import ch.epfl.sweng.evento.Events.Event;
  * Created by gautier on 30/11/2015.
  */
 public class CommentActivity extends AppCompatActivity {
+    public static final String KEY_CURRENT_CONVERSATION = "current_event_conversation";
+
     private ConversationAdapter mConversationAdapter;
 
     @Override
@@ -18,15 +20,22 @@ public class CommentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
 
-        Event currentEvent = EventDatabase.INSTANCE.getFirstEvent();
+        int currentId = EventDatabase.INSTANCE.getFirstEvent().getID();
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            currentId = bundle.getInt(KEY_CURRENT_CONVERSATION);
+        }
+        Event currentEvent = EventDatabase.INSTANCE.getEvent(currentId);
 
         TextView eventTitle = (TextView) findViewById(R.id.conversation_title);
         eventTitle.setText(currentEvent.getTitle());
 
         ListView conversationListView = (ListView) findViewById(R.id.conversation_list_comment);
         Conversation conversation = currentEvent.getConversation() ;
-        conversation.addComment(new Comment(new MockUser(), "plop"));
-        conversation.addComment(new Comment(new MockUser(), "blop"));
+        if (conversation.size() == 0) { //TODO remove mock conversation
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "blop"));
+        }
         mConversationAdapter = new ConversationAdapter(this, conversation);
 
         conversationListView.setAdapter(mConversationAdapter);
