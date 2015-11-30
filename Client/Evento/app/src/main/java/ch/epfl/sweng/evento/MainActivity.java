@@ -33,7 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
-import ch.epfl.sweng.evento.RestApi.getEventListCallback;
+import ch.epfl.sweng.evento.RestApi.GetEventListCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.tabsFragment.Refreshable;
 import ch.epfl.sweng.evento.tabsLayout.SlidingTabLayout;
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
     public void refreshFromServer() {
         RestApi mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
 
-        mRestApi.getAll(new getEventListCallback() {
+        mRestApi.getAll(new GetEventListCallback() {
             @Override
             public void onEventListReceived(List<Event> eventArrayList) {
                 EventDatabase.INSTANCE.clear();

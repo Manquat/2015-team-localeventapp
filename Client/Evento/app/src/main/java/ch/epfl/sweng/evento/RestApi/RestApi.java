@@ -63,7 +63,7 @@ public class RestApi {
         }).execute();
     }
 
-    public void getAll(final getEventListCallback callback) {
+    public void getAll(final GetEventListCallback callback) {
         String restUrl = UrlMaker.getAll(mUrlServer);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
@@ -83,7 +83,7 @@ public class RestApi {
 
     public void getMultiplesEventByDate(GregorianCalendar startDate,
                                         GregorianCalendar endDate,
-                                        final getEventListCallback callback) {
+                                        final GetEventListCallback callback) {
         String restUrl = UrlMaker.getByDate(mUrlServer, startDate, endDate);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
@@ -107,7 +107,7 @@ public class RestApi {
                               double latitude,
                               double longitude,
                               double radius,
-                              final getEventListCallback callback) {
+                              final GetEventListCallback callback) {
         String restUrl = UrlMaker.getWithFilter(mUrlServer, startTime, endTime, latitude, longitude, radius);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override

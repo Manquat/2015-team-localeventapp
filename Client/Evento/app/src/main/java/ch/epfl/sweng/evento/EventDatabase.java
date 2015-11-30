@@ -11,7 +11,7 @@ import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventSet;
-import ch.epfl.sweng.evento.RestApi.getEventListCallback;
+import ch.epfl.sweng.evento.RestApi.GetEventListCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 
 /**
@@ -38,7 +38,7 @@ public enum EventDatabase {
 
 
     public void loadNewEvents() {
-        mRestAPI.getAll(new getEventListCallback() {
+        mRestAPI.getAll(new GetEventListCallback() {
             @Override
             public void onEventListReceived(List<Event> events) {
                 addAll(events);
@@ -66,7 +66,7 @@ public enum EventDatabase {
 
 
     public void loadByDate(GregorianCalendar start, GregorianCalendar end) {
-        mRestAPI.getMultiplesEventByDate(start, end, new getEventListCallback() {
+        mRestAPI.getMultiplesEventByDate(start, end, new GetEventListCallback() {
             @Override
             public void onEventListReceived(List<Event> eventArrayList) {
                 mEventSet.clear();

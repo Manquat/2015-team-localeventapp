@@ -39,7 +39,7 @@ import ch.epfl.sweng.evento.EventActivity;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.RestApi.getEventListCallback;
+import ch.epfl.sweng.evento.RestApi.GetEventListCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 
 import ch.epfl.sweng.evento.Settings;
@@ -124,7 +124,7 @@ public class ContentFragment extends Fragment implements Refreshable {
     public void refreshFromServer() {
         RestApi mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
 
-        mRestAPI.getAll(new getEventListCallback() {
+        mRestAPI.getAll(new GetEventListCallback() {
             @Override
             public void onEventListReceived(List<Event> eventArrayList) {
                 EventDatabase.INSTANCE.clear();

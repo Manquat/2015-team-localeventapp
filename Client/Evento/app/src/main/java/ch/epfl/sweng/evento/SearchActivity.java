@@ -33,7 +33,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import ch.epfl.sweng.evento.Events.Event;
-import ch.epfl.sweng.evento.RestApi.getEventListCallback;
+import ch.epfl.sweng.evento.RestApi.GetEventListCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 
 public class SearchActivity extends AppCompatActivity
@@ -117,7 +117,7 @@ public class SearchActivity extends AppCompatActivity
                 GregorianCalendar endTime = new GregorianCalendar(endDate.get(Calendar.YEAR),
                         endDate.get(Calendar.MONTH), endDate.get(Calendar.DAY_OF_MONTH));
 
-                mRestApi.getWithFilter(startTime, endTime, latitude, longitude, radius, new getEventListCallback() {
+                mRestApi.getWithFilter(startTime, endTime, latitude, longitude, radius, new GetEventListCallback() {
                     @Override
                     public void onEventListReceived(List<Event> eventArrayList) {
                         EventDatabase.INSTANCE.clear();
