@@ -75,7 +75,9 @@ public class RestApiTest {
             46.519428, 6.580847,
             "Terrain de football de Dorigny",
             "Micheal Jackson",
-            new HashSet<String>());
+            new HashSet<String>(),
+            "image",
+            new HashSet<User>());
 
 
     @Before
@@ -281,7 +283,7 @@ public class RestApiTest {
 
     @Test
     public void testUpdateEvent() throws InterruptedException {
-        Event event = new Event(14, "this is a test of UpdateEvent", "test1", 0, 0, "address", "creator", new HashSet<String>());
+        Event event = new Event(14, "this is a test of UpdateEvent", "test1", 0, 0, "address", "creator", new HashSet<String>(), "image", new HashSet<User>());
         RestApi restApi = new RestApi(networkProvider, urlServer);
         restApi.updateEvent(event, new PutCallback() {
             @Override
