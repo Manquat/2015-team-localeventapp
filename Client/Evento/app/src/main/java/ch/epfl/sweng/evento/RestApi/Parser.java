@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import ch.epfl.sweng.evento.Comment;
 import ch.epfl.sweng.evento.Events.Event;
 
 /**
@@ -20,17 +21,6 @@ public class Parser {
     }
 
     public static Event parseFromJSON(JSONObject jsonObject) throws JSONException {
-
-
-        // when the tag to Event will be added ;)
-//        JSONArray jsonTags = jsonObject.getJSONArray("tags");
-//        List<String> tags = new ArrayList<String>();
-//        for (int i = 0; i < jsonTags.length(); ++i) {
-//            if (!(jsonTags.get(i) instanceof String)) {
-//                throw new JSONException("Invalid question structure");
-//            }
-//            tags.add(jsonTags.getString(i));
-//        }
 
         final JSONObject json = jsonObject;
 
@@ -49,20 +39,40 @@ public class Parser {
         }
     }
 
-    //new HashSet<String>(){{ add(json.getString("tags"));}});
+    private static Comment parseJsonToComment(JSONObject jsonObject) {
+        final JSONObject json = jsonObject;
+
+        return new Comment();
+    }
 
     public static List<Event> parseFromJSONMultiple(String response) throws JSONException {
         ArrayList<Event> eventArrayList = new ArrayList<>();
+        String[] responseLines = splitJson(response);
 
-        // split received string into multiple JSONable string
-        response = response.replace("},{", "}\n{");
-        response = response.substring(1);
-        String[] responseLines = response.split("\n");
-        int i;
         for (String line : responseLines) {
             JSONObject jsonObject = new JSONObject(line);
             eventArrayList.add(parseFromJSON(jsonObject));
         }
         return eventArrayList;
+    }
+
+    public static List<Comment> parseFromJsonListOfComment(String result) throws JSONException {
+        List<Comment> commentList = new ArrayList<>();
+        String[] responseLines = splitJson(result);
+
+        for(String line : responseLines){
+            JSONObject jsonObject = new JSONObject(line);
+            commentList.add(parseJsonToComment(jsonObject));
+        }
+        return commentList;
+    }
+
+
+
+    private static String[] splitJson(String response){
+        response = response.replace("},{", "}\n{");
+        response = response.substring(1);
+        String[]  responseLines = response.split("\n");
+        return responseLines;
     }
 }

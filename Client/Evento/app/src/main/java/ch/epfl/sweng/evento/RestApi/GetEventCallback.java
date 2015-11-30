@@ -18,6 +18,7 @@ public abstract class GetEventCallback {
      */
     public abstract void onEventReceived(Event event);
 
+
     /*
      * Additional methods like onPreGet() or onFailure() can be added with default implementations.
      * This is why this has been made and abstract class rather than Interface.

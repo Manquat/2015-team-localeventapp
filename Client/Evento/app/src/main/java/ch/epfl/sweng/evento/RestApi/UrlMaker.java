@@ -10,6 +10,7 @@ public final class UrlMaker {
 
     private static final String TAG = "UrlMaker";
     private final static String event = "events/";
+    private final static String comment = "comments/";
     private final static String accessMaster = "Gandalf/";
 
     private UrlMaker() {
@@ -51,5 +52,13 @@ public final class UrlMaker {
                 + "/" + Long.toString(endTimeInSec) + "/" + Double.toString(latitude) + "/"
                 + Double.toString(longitude) + "/" + Double.toString(radius);
         return url;
+    }
+
+    public static String postComment(String urlServer) {
+        return urlServer + event + accessMaster;
+    }
+
+    public static String getComment(String urlServer, int eventId) {
+        return urlServer + event + accessMaster + "/" + comment + eventId;
     }
 }

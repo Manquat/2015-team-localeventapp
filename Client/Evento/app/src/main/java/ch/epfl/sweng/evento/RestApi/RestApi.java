@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import ch.epfl.sweng.evento.Comment;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.NetworkProvider;
 
@@ -122,6 +123,36 @@ public class RestApi {
 
                 }
                 callback.onEventListReceived(eventArrayList);
+            }
+        }).execute();
+    }
+
+    public void getComment(int EventId, final GetCommentListCallback callback) {
+        final String restUrl = UrlMaker.getComment(mUrlServer, EventId);
+        new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
+            @Override
+            public void onTaskComplete(String result) {
+                List<Comment> commentList = null;
+                if (result != null) {
+                    try {
+                        commentList = Parser.parseFromJsonListOfComment(result);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "exception in JSON parser");
+                    }
+                }
+                callback.onCommentListReceived(commentList);
+            }
+        }).execute();
+    }
+
+    public void postComment(int UserId, int EventId, String commentBody,
+                            final HttpResponseCodeCallback callback){
+        String restUrl = UrlMaker.postComment(mUrlServer);
+        String requestBody = Serializer.comment(UserId, EventId, commentBody);
+        new PostTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
+            @Override
+            public void onTaskComplete(String result) {
+                callback.onSuccess(result);
             }
         }).execute();
     }

@@ -31,4 +31,12 @@ public final class Serializer {
     }
 
 
+    public static String comment(int userId, int eventId, String commentBody) {
+        String res = "{\n"
+                + "\"comment\": \"" + commentBody + "\",\n"
+                + "\"user\": \"" + userId + "\",\n"
+                + "\"event\": \"" + eventId + "\",\n"
+                + "}\n";
+        return res;
+    }
 }
