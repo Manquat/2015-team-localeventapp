@@ -8,6 +8,7 @@ package ch.epfl.sweng.evento;
 public enum Settings {
     INSTANCE;
     private String mIdToken = "No Token";
+    private String mUserId = "No ID";
 
     private Settings() {
         // private constructor
@@ -17,10 +18,16 @@ public enum Settings {
         return "http://128.179.182.154:8000/";
     }
 
+
     public String getIdToken() {
         return mIdToken;
     }
     public void setIdToken(String IdToken) {
         this.mIdToken = IdToken;
+    }
+
+    public String getUserId() {return mUserId;}
+    public void setmUserId(String UserId) {
+        this.mUserId = UserId;
     }
 }

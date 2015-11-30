@@ -165,6 +165,7 @@ public class LoginActivity extends AppCompatActivity implements
                 String personName = acct.getDisplayName();
                 String personEmail = acct.getEmail();
                 String personId = acct.getId();
+                Settings.INSTANCE.setmUserId(personId);
                 User u = new User(personId, personName, personEmail);
                 RestApi restApi = new RestApi(networkProvider, urlServer);
 
