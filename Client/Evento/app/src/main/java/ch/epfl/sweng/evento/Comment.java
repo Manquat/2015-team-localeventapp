@@ -1,20 +1,33 @@
 package ch.epfl.sweng.evento;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 /**
- * Created by joachimmuth on 30.11.15.
+ * A comment about an Event made by one user
  */
 public class Comment {
+    private String mMessage;
+    private MockUser mOwner;
+    private final Calendar mDateOfCreation;
 
-    public String getContent(){
-        return "mockContent";
+    public Comment(MockUser owner, String message) {
+        mOwner = owner;
+        mMessage = message;
+        mDateOfCreation = new GregorianCalendar();
     }
 
-    public int getIdUser(){
-        return 0;
+    public String getMessage(){
+        return mMessage;
     }
 
-    public int getIdEvent(){
-        return 0;
+    public MockUser getOwner() {
+        return mOwner;
     }
 
+    public Calendar getTimeOfCreation() {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(mDateOfCreation.getTime());
+        return calendar;
+    }
 }
