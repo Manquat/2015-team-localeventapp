@@ -13,4 +13,8 @@ public class Comment {
         return 0;
     }
 
+    public int getIdEvent(){
+        return 0;
+    }
+
 }
