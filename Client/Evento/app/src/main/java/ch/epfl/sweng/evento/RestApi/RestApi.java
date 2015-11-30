@@ -64,7 +64,7 @@ public class RestApi {
         }).execute();
     }
 
-    public void getAll(final GetMultipleResponseCallback callback){
+    public void getAll(final GetMultipleResponseCallback callback) {
         String restUrl = UrlMaker.getAll(mUrlServer);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
@@ -114,10 +114,9 @@ public class RestApi {
             @Override
             public void onTaskComplete(String result) {
                 List<Event> eventArrayList = null;
-                if (result != null)
-                {
+                if (result != null) {
                     try {
-                        eventArrayList= Parser.parseFromJSONMultiple(result);
+                        eventArrayList = Parser.parseFromJSONMultiple(result);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -176,7 +175,6 @@ public class RestApi {
             }
         }).execute();
     }
-
 
 
 }

@@ -40,14 +40,10 @@ public class EventClusterManager extends ClusterManager<Event> implements
     final static String TAG = "EventClusterManager";
 
 
-
-
     private Context mContext;
     private Collection<Event> mEventsClick;
     private Activity mActivity;
     private GoogleMap mMap;
-
-
 
 
     public EventClusterManager(Context context, GoogleMap map, Activity parentActivity) {
@@ -126,7 +122,7 @@ public class EventClusterManager extends ClusterManager<Event> implements
     @Override
     public boolean onClusterItemClick(Event event) {
         if (mEventsClick == null) {
-            mEventsClick = new ArrayList<Event>();
+            mEventsClick = new ArrayList<>();
         }
 
         mEventsClick.clear();
@@ -145,7 +141,7 @@ public class EventClusterManager extends ClusterManager<Event> implements
         // TODO Does nothing, but you could go into the event's page, for example.
 
         Intent intent = new Intent(mContext, EventActivity.class);
-        intent.putExtra(EventActivity.KEYCURRENTEVENT, event.getSignature());
+        intent.putExtra(EventActivity.KEYCURRENTEVENT, event.getID());
         mActivity.startActivity(intent);
     }
 
@@ -156,7 +152,7 @@ public class EventClusterManager extends ClusterManager<Event> implements
      */
     public Collection<Event> getEventsClick() {
         // defensive copy
-        return new ArrayList<Event>(mEventsClick);
+        return new ArrayList<>(mEventsClick);
     }
 
     /**

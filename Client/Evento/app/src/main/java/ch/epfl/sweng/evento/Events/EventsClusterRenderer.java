@@ -22,7 +22,7 @@ import java.util.List;
 import ch.epfl.sweng.evento.R;
 
 /**
- * Created by Gautier on 25/10/2015.
+ * Control the way the event are clustered on the map
  */
 public class EventsClusterRenderer extends DefaultClusterRenderer<Event> {
     private final int MAX_NUMBER_OF_IMAGE = 4;

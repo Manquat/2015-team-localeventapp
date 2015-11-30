@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
-import java.util.Locale;
-import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 
 
@@ -82,9 +80,6 @@ public class RestApiTest {
             new HashSet<String>());
 
 
-
-
-
     @Before
     public void setUp() throws Exception {
         connection = Mockito.mock(HttpURLConnection.class);
@@ -111,7 +106,6 @@ public class RestApiTest {
     }
 
     /**
-     *
      * @throws JSONException
      */
     @Test
@@ -135,12 +129,13 @@ public class RestApiTest {
     public void testSerializer() throws JSONException {
         String event_string = Serializer.event(PROPER_EVENT);
         JSONObject event_json = new JSONObject(event_string);
-        assertEquals("Event title correctly serialized to string",event_json.getString("Event_name"), PROPER_EVENT.getTitle());
-        assertEquals("Event latitude correctly serialized to string",event_json.getDouble("latitude"), PROPER_EVENT.getLatitude());
+        assertEquals("Event title correctly serialized to string", event_json.getString("Event_name"), PROPER_EVENT.getTitle());
+        assertEquals("Event latitude correctly serialized to string", event_json.getDouble("latitude"), PROPER_EVENT.getLatitude());
     }
 
     /**
      * Test if GetTask works with a simple mockito string response
+     *
      * @throws IOException
      */
     @Test
@@ -149,15 +144,16 @@ public class RestApiTest {
         configureResponse(HttpURLConnection.HTTP_OK, testString, JSON_CONTENT_TYPE);
 
         getTask = new GetTask(wrongUrl, networkProviderMockito,
-                new RestTaskCallback(){
-                    public void onTaskComplete(String response){
+                new RestTaskCallback() {
+                    public void onTaskComplete(String response) {
                         assertEquals(testString + "\n", response);
-                    }});
+                    }
+                });
 
         getTask.execute().get();
 
     }
-    
+
 
     @Test
     public void testGetEventLocal() throws IOException, InterruptedException {
@@ -218,7 +214,7 @@ public class RestApiTest {
 
     }
 
-    private static final String EVENT_TO_CREATE ="{\n"
+    private static final String EVENT_TO_CREATE = "{\n"
             + "  \"Event_name\": \"Ping-Pong at Sat 2\",\n"
             + "  \"description\": \n"
             + "    \"Beer, ping-pong... let's beerpong\" ,\n"
@@ -231,24 +227,24 @@ public class RestApiTest {
 
 
     private static final Calendar date = new GregorianCalendar(1990, 12, 16, 0, 0);
-    private static final  Event e = new Event(10, "Ping-Pong at Sat 2", "Beer, ping-pong... let's beerpong",
+    private static final Event e = new Event(10, "Ping-Pong at Sat 2", "Beer, ping-pong... let's beerpong",
             46.519428, 6.580847, "Satellite", "Guillaume Meyrat", new HashSet<String>(), date, date);
     private static final String EVENT_TO_CREATE_seri = Serializer.event(e);
-
 
 
     @Test
     public void testPostTaskServer() throws ExecutionException, InterruptedException {
         String url = urlServer + "events/";
-        PostTask postTask = new PostTask(url, networkProvider, EVENT_TO_CREATE, new RestTaskCallback(){
-            public void onTaskComplete(String response){
-            }});
+        PostTask postTask = new PostTask(url, networkProvider, EVENT_TO_CREATE, new RestTaskCallback() {
+            public void onTaskComplete(String response) {
+            }
+        });
 
         postTask.execute().get();
     }
 
     @Test
-    public void testPostEvent(){
+    public void testPostEvent() {
         RestApi restApi = new RestApi(networkProvider, urlServer);
 
         restApi.postEvent(e, new PostCallback() {
@@ -279,7 +275,7 @@ public class RestApiTest {
         PutTask putTask = new PutTask(url, networkProvider, EVENT_TO_PUT, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String result) {
-            // nothing
+                // nothing
             }
         });
 
@@ -288,7 +284,7 @@ public class RestApiTest {
 
     @Test
     public void testUpdateEvent() throws InterruptedException {
-        Event event = new Event(14, "this is a test of UpdateEvent", "test1", 0, 0,"address", "creator", new HashSet<String>());
+        Event event = new Event(14, "this is a test of UpdateEvent", "test1", 0, 0, "address", "creator", new HashSet<String>());
         RestApi restApi = new RestApi(networkProvider, urlServer);
         restApi.updateEvent(event, new PutCallback() {
             @Override
@@ -312,18 +308,6 @@ public class RestApiTest {
         });
 
         Thread.sleep(500);
-
-    }
-
-
-    private  final Calendar eventDate = new GregorianCalendar(TimeZone.getTimeZone("Europe/Zurich"), Locale.FRANCE);
-    private static final String stringDate = "2012-11-02T05:05:00Z";
-
-    @Test
-    public void testDateToProperString() {
-        eventDate.set(2012, 10, 2, 5, 5, 0);
-        Event e = new Event(0, "foo", "foo", 0, 0, "foo", "foo", new HashSet<String>(), eventDate, eventDate);
-        assertEquals(stringDate, e.getProperDateString());
 
     }
 }

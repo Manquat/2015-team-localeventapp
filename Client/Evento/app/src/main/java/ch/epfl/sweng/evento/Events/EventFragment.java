@@ -14,7 +14,8 @@ import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 
 /**
- * Created by Gautier on 13/11/2015.
+ * Fragment that display an Event with an ID passed as an Extra with the key KEYCURRENTEVENT.
+ * After that allow to swipe left or right to explore the events actually loaded.
  */
 public class EventFragment extends Fragment {
 
@@ -28,9 +29,9 @@ public class EventFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_event, container, false);
 
         Bundle bundle = getArguments();
-        long currentEventSignature = bundle.getLong(KEYCURRENTEVENT);
+        int currentEventID = bundle.getInt(KEYCURRENTEVENT);
 
-        mEvent = EventDatabase.INSTANCE.getEvent(currentEventSignature);
+        mEvent = EventDatabase.INSTANCE.getEvent(currentEventID);
 
         updateFields(rootView);
 

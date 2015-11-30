@@ -22,7 +22,7 @@ public final class UrlMaker {
     }
 
     public static final String getAll(String urlServer) {
-        String url = urlServer + event + accessMaster ;
+        String url = urlServer + event + accessMaster;
         return url;
     }
 
@@ -45,10 +45,10 @@ public final class UrlMaker {
 
     public static String getWithFilter(String urlServer, GregorianCalendar startTime, GregorianCalendar endTime,
                                        double latitude, double longitude, double radius) {
-        long startTimeInSec = startTime.getTimeInMillis()/1000;
-        long endTimeInSec = endTime.getTimeInMillis()/1000;
+        long startTimeInSec = startTime.getTimeInMillis() / 1000;
+        long endTimeInSec = endTime.getTimeInMillis() / 1000;
         String url = urlServer + event + accessMaster + Long.toString(startTimeInSec)
-                + "/" + Long.toString(endTimeInSec) +"/"+ Double.toString(latitude)+ "/"
+                + "/" + Long.toString(endTimeInSec) + "/" + Double.toString(latitude) + "/"
                 + Double.toString(longitude) + "/" + Double.toString(radius);
         return url;
     }

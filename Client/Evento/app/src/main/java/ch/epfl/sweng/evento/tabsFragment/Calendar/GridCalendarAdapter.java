@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -30,15 +31,11 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
     private static final int NUMBER_OF_CELLS = 7 * 7; // the line for the day of the week, and 6 lines for all the day of the month
 
 
-
-
-    private Context      mContext;          // the context where the adapter is used
+    private Context mContext;               // the context where the adapter is used
     private CalendarGrid mCalendarGrid;     // the container of all the information
-    private List<Event>  mEvents = null;    // the events at the current day
-    private Refreshable mUpdatableParent;  // the parent that holds the grid and will be update when something
-                                            // changed in the adapter.
-
-
+    private List<Event> mEvents;            // the events at the current day
+    private Refreshable mUpdatableParent;   // the parent that holds the grid and will be update when something
+    // changed in the adapter.
 
 
     /**
@@ -63,8 +60,6 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
     }
 
 
-
-
     /**
      * Getting the number of cells in the grid view
      *
@@ -77,7 +72,22 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
     @Override
     public Object getItem(int position) {
-        return null;
+        if (position < 7) {
+            GregorianCalendar calendar = new GregorianCalendar();
+
+            // backtrack to the beginning of the current week
+            calendar.add(Calendar.DAY_OF_YEAR, calendar.getFirstDayOfWeek()
+                    - calendar.get(Calendar.DAY_OF_WEEK));
+
+            // go to the corresponding day of the week for this column
+            calendar.add(Calendar.DAY_OF_YEAR, position);
+
+            return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT,
+                    Locale.getDefault());
+        } else {
+            position = position - 7;
+            return String.valueOf(mCalendarGrid.getDay(position));
+        }
     }
 
     /**
@@ -213,21 +223,16 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
 
 
-
-
     @Override
     public void onClick(View v) {
         int position = Integer.valueOf((String) v.getTag(R.id.position_tag));
 
         mCalendarGrid.setFocusedDay(position);
+        mEvents = Collections.EMPTY_LIST;
         ((GridInfinitePageAdapter) mUpdatableParent).setFocusedDate(mCalendarGrid.getFocusedDate());
-
-        mEvents = null;
         notifyDataSetChanged();
         mUpdatableParent.refresh();
     }
-
-
 
 
     public void nextMonth() {

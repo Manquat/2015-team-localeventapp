@@ -22,18 +22,16 @@ import ch.epfl.sweng.evento.R;
 public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
 
 
-
-    Context     mContext;
+    Context mContext;
     List<Event> mEvents;
-    Activity    mActivity;
-
-
+    Activity mActivity;
 
 
     /**
      * Constructor of the class
-     * @param context the context where the list adapter is used
-     * @param events the events that compose the list
+     *
+     * @param context        the context where the list adapter is used
+     * @param events         the events that compose the list
      * @param parentActivity the activity where the list adapter is used
      */
     public EventListViewAdapter(Context context, List<Event> events, Activity parentActivity) {
@@ -43,8 +41,6 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
         mEvents = events;
         mActivity = parentActivity;
     }
-
-
 
 
     @Override
@@ -62,7 +58,7 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
 
     @Override
     public long getItemId(int position) {
-        return mEvents.get(position).getSignature();
+        return mEvents.get(position).getID();
     }
 
     @Override
@@ -88,19 +84,15 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
     }
 
 
-
-
     /**
      * Setter for the events
+     *
      * @param events the events display in the list adapter
      */
-    public void setEvents(List<Event> events)
-    {
+    public void setEvents(List<Event> events) {
         mEvents = events;
         notifyDataSetChanged();
     }
-
-
 
 
     @Override
