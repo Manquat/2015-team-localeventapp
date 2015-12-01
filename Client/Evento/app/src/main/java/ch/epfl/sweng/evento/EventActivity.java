@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.Events.EventPageAdapter;
 import ch.epfl.sweng.evento.InfinitePagerAdapter.EventInfinitePageAdapter;
 import ch.epfl.sweng.evento.InfinitePagerAdapter.InfiniteViewPager;
@@ -32,10 +31,10 @@ public class EventActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // get the signature of the current event
-        long currentEventSignature = EventDatabase.INSTANCE.getFirstEvent().getSignature();
+        int currentEventSignature = EventDatabase.INSTANCE.getFirstEvent().getID();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            currentEventSignature = bundle.getLong(KEYCURRENTEVENT);
+            currentEventSignature = bundle.getInt(KEYCURRENTEVENT);
         }
 
         // Creating the EventInfinitePageAdapter at the current position

@@ -42,7 +42,6 @@ import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
 import ch.epfl.sweng.evento.RestApi.RestApi;
 
-import ch.epfl.sweng.evento.SearchActivity;
 import ch.epfl.sweng.evento.Settings;
 
 import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
@@ -51,7 +50,7 @@ import ch.epfl.sweng.evento.tabsFragment.MyView.MyView;
  * Simple Fragment used to display some meaningful content for each page in the sample's
  * {@link android.support.v4.view.ViewPager}.
  */
-public class ContentFragment extends Fragment implements Refreshable{
+public class ContentFragment extends Fragment implements Refreshable {
 
 
     final int PADDING = 5;
@@ -163,7 +162,7 @@ public class ContentFragment extends Fragment implements Refreshable{
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(mActivity, EventActivity.class);
-                        intent.putExtra(EventActivity.KEYCURRENTEVENT, mEvents.get(tView.getIdX() + tView.getIdY() * mNumberOfColumn).getSignature());
+                        intent.putExtra(EventActivity.KEYCURRENTEVENT, mEvents.get(tView.getIdX() + tView.getIdY() * mNumberOfColumn).getID());
                         mActivity.startActivity(intent);
                     }
                 });
@@ -226,7 +225,6 @@ public class ContentFragment extends Fragment implements Refreshable{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
 }

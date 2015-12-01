@@ -8,6 +8,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -15,14 +16,15 @@ import java.util.Set;
 import java.util.TreeMap;
 
 /**
- * Created by Val on 24.10.2015.
+ * Container of multiple events
  */
 public class EventSet {
 
     private static final String TAG = "EventSet";
 
     //The container of Events. For now, it's a Map with the ID as key values
-    private TreeMap<Long, Event> mEvents;
+    private TreeMap<Signature, Event> mEvents;
+    private HashMap<Integer, Signature> mIDs;
 
     /**
      * Default constructor
@@ -31,19 +33,22 @@ public class EventSet {
         //we use a TreeMap so it's sorted and we can use navigableKeySet in the methods
         // GetNext and GetPrevious
         mEvents = new TreeMap<>();
+        mIDs = new HashMap<>();
     }
 
 
     public void clear() {
         mEvents.clear();
+        mIDs.clear();
     }
 
     /**
-     * @param signature the Signature of the Event to be returned
+     * @param id the ID of the Event to be returned
      * @return the Event corresponding to the Signature or the special ERROR Event if it's not in the Map
      */
-    public Event get(long signature) {
-        if (mEvents.containsKey(signature)) {
+    public Event get(int id) {
+        if (mIDs.containsKey(id)) {
+            Signature signature = mIDs.get(id);
             return mEvents.get(signature);
         } else {
             return getErrorEvent();
@@ -59,7 +64,7 @@ public class EventSet {
      */
     public Event getFirst() {
         if (mEvents.size() > 0) {
-            Iterator<Long> iterator = mEvents.keySet().iterator();
+            Iterator<Signature> iterator = mEvents.keySet().iterator();
             return mEvents.get(iterator.next());
         } else {
             return getErrorEvent();
@@ -68,7 +73,7 @@ public class EventSet {
 
     public Event getNext(Event current) {
         if (mEvents.size() > 1) {
-            return getNext(current.getSignature());
+            return getNext(current.getID());
         } else {
             return current;
         }
@@ -78,25 +83,13 @@ public class EventSet {
     /**
      * Returns the Event with the closest higher signature from the one passed in argument
      *
-     * @param signature the reference signature to define which Event is the next one
+     * @param id the reference ID to define which Event is the next one
      * @return the Event with the closest signature
      */
-    public Event getNext(long signature) {
-        Iterator<Long> iterator = mEvents.navigableKeySet().iterator();
-        long currentID = -1;//To be sure it's not in the Map
-
-        do {
-            currentID = iterator.next();
-        } while (iterator.hasNext() && currentID != signature);
-
-        //If we reached the end of the iterator, it means that 'ID' was the ID of the last Event.
-        //In that case, we return the last Event
-        if (iterator.hasNext()) {
-            currentID = iterator.next();
-        }
-        if (mEvents.containsKey(currentID)) {
-            return mEvents.get(currentID);
-
+    public Event getNext(int id) {
+        Event event = mEvents.higherEntry(mIDs.get(id)).getValue();
+        if (event != null) {
+            return event;
         } else {
             return getErrorEvent();
         }
@@ -104,7 +97,7 @@ public class EventSet {
 
     public Event getPrevious(Event current) {
         if (mEvents.size() > 1) {
-            return getPrevious(current.getSignature());
+            return getPrevious(current.getID());
         } else {
             return current;
         }
@@ -114,28 +107,13 @@ public class EventSet {
     /**
      * Returns the Event with the closest lower signature from the one passed in argument
      *
-     * @param signature the reference signature
+     * @param ID the reference ID
      * @return the Event with the closest lower signature
      */
-    public Event getPrevious(long signature) {
-        Iterator<Long> iterator = mEvents.navigableKeySet().iterator();
-        long previousID = -2;
-        long currentID = -1;//To be sure it's not in the Map
-
-        do {
-            previousID = currentID;
-            currentID = iterator.next();
-        } while (iterator.hasNext() && currentID != signature);
-
-        //if previousID is less than zero, it means the loop has been done only once and that 'ID'
-        //is the first Event's ID. In that case, we don't want to go further and we return the
-        //first Event
-        if (previousID < 1) {
-            previousID = currentID;
-        }
-        if (mEvents.containsKey(previousID)) {
-            return mEvents.get(previousID);
-
+    public Event getPrevious(int ID) {
+        Event event = mEvents.lowerEntry(mIDs.get(ID)).getValue();
+        if (event != null) {
+            return event;
         } else {
             return getErrorEvent();
         }
@@ -148,9 +126,11 @@ public class EventSet {
      * @param event the Event to be added
      */
     public void addEvent(Event event) {
-        if (event != null && !mEvents.containsKey(event.getSignature())) {
+        if (event != null && !mIDs.containsKey(event.getID())) {
             //mEvents.put(event.getID(), event);
-            mEvents.put(event.getSignature(), event);
+            Signature signature = new Signature(event.getID(), event.getStartDate());
+            mIDs.put(event.getID(), signature);
+            mEvents.put(signature, event);
         }
     }
 
@@ -210,8 +190,9 @@ public class EventSet {
 
     /**
      * Returns a set of all the Events that start after the date passed in argument
-     * @param startDate
-     * @return
+     *
+     * @param startDate Calendar at the date wanted for the filter
+     * @return An EventSet containing the event corresponding to the filter
      */
     public EventSet filter(Calendar startDate) {
         EventSet newEventSet = new EventSet();
@@ -227,15 +208,16 @@ public class EventSet {
 
     /**
      * Returns a set of all the Events that start on the same day as the date passed in argument
-     * @param calendar
-     * @return
+     *
+     * @param day Calendar at the date wanted (ignoring the time)
+     * @return An EventSet containing the event corresponding to the filter
      */
-    public EventSet filterOnDay(Calendar calendar){
+    public EventSet filterOnDay(Calendar day) {
         EventSet newEventSet = new EventSet();
         for (Event event : mEvents.values()) {
-            if (event.getStartDate().get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH) &&
-                    event.getStartDate().get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
-                    event.getStartDate().get(Calendar.YEAR) == calendar.get(Calendar.YEAR)) {
+            if (event.getStartDate().get(Calendar.DAY_OF_MONTH) == day.get(Calendar.DAY_OF_MONTH) &&
+                    event.getStartDate().get(Calendar.MONTH) == day.get(Calendar.MONTH) &&
+                    event.getStartDate().get(Calendar.YEAR) == day.get(Calendar.YEAR)) {
                 newEventSet.addEvent(event);
             }
         }
@@ -259,9 +241,9 @@ public class EventSet {
     public int eventsLeftAfter(Event event) {
         int numberOfEvents = 0;
 
-        if (event != null && mEvents.containsKey(event.getSignature())) {
-            Iterator<Long> iterator = mEvents.navigableKeySet().iterator();
-            while (iterator.hasNext() && iterator.next() != event.getSignature()) {
+        if (event != null && mIDs.containsKey(event.getID())) {
+            Iterator<Signature> iterator = mEvents.navigableKeySet().iterator();
+            while (iterator.hasNext() && mEvents.get(iterator.next()).getID() != event.getID()) {
             }
             while (iterator.hasNext()) {
                 numberOfEvents++;
@@ -292,12 +274,12 @@ public class EventSet {
                 new GregorianCalendar());
     }
 
-    public int getPosition(long signature) {
+    public int getPosition(int id) {
         int position = 0;
-        Iterator<Long> iterator = mEvents.keySet().iterator();
+        Iterator<Signature> iterator = mEvents.keySet().iterator();
         boolean stop = false;
 
-        while (iterator.next() != signature) {
+        while (mEvents.get(iterator.next()).getID() != id) {
             ++position;
 
             if (!iterator.hasNext()) {
@@ -313,6 +295,6 @@ public class EventSet {
     }
 
     public List<Event> toArrayList() {
-        return new ArrayList<Event>(mEvents.values());
+        return new ArrayList<>(mEvents.values());
     }
 }

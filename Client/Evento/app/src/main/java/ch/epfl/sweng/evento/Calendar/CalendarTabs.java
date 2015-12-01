@@ -41,7 +41,6 @@ public class CalendarTabs extends Fragment implements
     private DatePickerDialog        mDatePicker;
     private InfiniteViewPager       mPager;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -110,7 +109,6 @@ public class CalendarTabs extends Fragment implements
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         mGridCalendarAdapter.setFocusedDate(new GregorianCalendar(year, monthOfYear, dayOfMonth));
     }
-
 
 
 

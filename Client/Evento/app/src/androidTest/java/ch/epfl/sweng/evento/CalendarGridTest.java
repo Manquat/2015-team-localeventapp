@@ -15,6 +15,7 @@ import ch.epfl.sweng.evento.Calendar.CalendarGrid;
 
 import static java.util.Locale.setDefault;
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
@@ -57,12 +58,12 @@ public class CalendarGridTest {
         assertEquals(1, mGrid.getDay(7));
         assertEquals(5, mGrid.getDay(41));
 
-        assertEquals(false, mGrid.isCurrentMonth(0));
-        assertEquals(true, mGrid.isCurrentMonth(10));
-        assertEquals(false, mGrid.isCurrentMonth(41));
+        assertFalse(mGrid.isCurrentMonth(0));
+        assertTrue(mGrid.isCurrentMonth(10));
+        assertFalse(mGrid.isCurrentMonth(41));
 
-        assertEquals(true, mGrid.isCurrentDay(16));
-        assertEquals(false, mGrid.isCurrentDay(20));
+        assertTrue(mGrid.isCurrentDay(16));
+        assertFalse(mGrid.isCurrentDay(20));
     }
 
     @Test
@@ -70,16 +71,14 @@ public class CalendarGridTest {
         try {
             mGrid.getDay(42);
             fail();
-        }
-        catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             //pass the test;
         }
 
         try {
             mGrid.getDay(-1);
             fail();
-        }
-        catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             //pass the test
         }
     }
@@ -89,16 +88,14 @@ public class CalendarGridTest {
         try {
             mGrid.isCurrentMonth(-1);
             fail();
-        }
-        catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             //pass the test
         }
 
         try {
             mGrid.isCurrentMonth(42);
             fail();
-        }
-        catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             //pass the test
         }
     }
@@ -108,16 +105,14 @@ public class CalendarGridTest {
         try {
             mGrid.setFocusedDay(-1);
             fail();
-        }
-        catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             //pass the test
         }
 
         try {
             mGrid.setFocusedDay(42);
             fail();
-        }
-        catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             //pass the test
         }
     }
