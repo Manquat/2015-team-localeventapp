@@ -8,4 +8,4 @@ from django.utils import timezone
 class ParticipantSerializer(serializers.ModelSerializer):
     class Meta:
         model = participant
-        fields = ('id', 'name', 'email', 'comments')
+        fields = ('id',  'name', 'email','google_id', 'comments')

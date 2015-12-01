@@ -23,8 +23,14 @@ def create_user(request, format=None):
     elif request.method == 'POST':
         serializer = ParticipantSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            try:
+                user = participant.objects.get(google_id=request.data['google_id'])
+                serializer2 = ParticipantSerializer(user)
+            except participant.DoesNotExist:
+                serializer.save()
+                user = participant.objects.get(google_id=request.data['google_id'])
+                serializer2 = ParticipantSerializer(user)
+            return Response(serializer2.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
