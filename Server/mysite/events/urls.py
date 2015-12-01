@@ -14,6 +14,8 @@ urlpatterns = [
     url(r'^events/(?P<fromdate>\d*)/(?P<todate>\d*)/(?P<mLongitude>[-+]?([0-9]*\.[0-9]+|[0-9]+))/(?P<mLatitude>[-+]?([0-9]*\.[0-9]+|[0-9]+))/(?P<mDistance>([0-9]*\.[0-9]+|[0-9]+))$', views.event_request),
     url(r'^events/(?P<fromdate>\d*)/(?P<todate>\d*)/(?P<mLongitude>[-+]?([0-9]*\.[0-9]+|[0-9]+))/(?P<mLatitude>[-+]?([0-9]*\.[0-9]+|[0-9]+))/(?P<mDistance>([0-9]*\.[0-9]+|[0-9]+))/(?P<mNE>\d*)$', views.event_request),
     url(r'^events/(?P<fromdate>\d*)/(?P<todate>\d*)/(?P<mLongitude>[-+]?([0-9]*\.[0-9]+|[0-9]+))/(?P<mLatitude>[-+]?([0-9]*\.[0-9]+|[0-9]+))/(?P<mDistance>([0-9]*\.[0-9]+|[0-9]+))/(?P<mNE>\d*)/(?P<mId>\d*)$', views.event_request),
+    url(r'^events/comments/$', views.event_addcomment),
+    url(r'^events/comments/(?P<pk>[0-9]+)$', views.commented_events),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

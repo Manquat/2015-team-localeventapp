@@ -16,9 +16,20 @@ class Event(models.Model):
     duration = models.DurationField("duration", default=timedelta())
     tags = models.CharField(max_length=200, default='Foot!')
     image = models.TextField(default='No Image')
-    participants = models.ManyToManyField(participant)
+    participants = models.ManyToManyField(participant, blank=True)
     def __unicode__(self):
         return self.Event_name
 
     class Meta:
         ordering = ('Event_name',)
+
+
+class Comment(models.Model):
+    body = models.TextField(default='No Comment')
+    creator = models.ForeignKey(participant, related_name='comments',blank=True)
+    event = models.ForeignKey(Event, related_name='comments',blank=True)
+    def __unicode__(self):
+        return self.body
+
+
+
