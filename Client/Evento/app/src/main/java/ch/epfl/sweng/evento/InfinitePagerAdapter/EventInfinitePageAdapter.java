@@ -21,29 +21,31 @@ import ch.epfl.sweng.evento.R;
 /**
  * An infinite page adapter for the event activity
  */
-public class EventInfinitePageAdapter extends InfinitePagerAdapter<Long> {
+public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
     Activity mActivity;
 
-    public EventInfinitePageAdapter(Long initialEventSignature, Activity activity) {
+    public EventInfinitePageAdapter(Integer initialEventSignature, Activity activity) {
         super(initialEventSignature);
 
         mActivity = activity;
     }
 
     @Override
-    public Long getNextIndicator() {
-        return EventDatabase.INSTANCE.getNextSignature(getCurrentIndicator());
+    public Integer getNextIndicator() {
+        Event currentEvent = EventDatabase.INSTANCE.getEvent(getCurrentIndicator());
+        return EventDatabase.INSTANCE.getNextEvent(currentEvent).getID();
     }
 
     @Override
-    public Long getPreviousIndicator() {
-        return EventDatabase.INSTANCE.getPreviousSignature(getCurrentIndicator());
+    public Integer getPreviousIndicator() {
+        Event currentEvent = EventDatabase.INSTANCE.getEvent(getCurrentIndicator());
+        return EventDatabase.INSTANCE.getPreviousEvent(currentEvent).getID();
     }
 
     @Override
-    public ViewGroup instantiateItem(Long signature) {
+    public ViewGroup instantiateItem(Integer currentEventId) {
         // getting the event
-        Event event = EventDatabase.INSTANCE.getEvent(signature);
+        Event event = EventDatabase.INSTANCE.getEvent(currentEventId);
 
         // inflating  the layout
         LayoutInflater inflater = LayoutInflater.from(mActivity);
@@ -55,7 +57,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Long> {
         return layout;
     }
 
-    private void updateFields(ViewGroup rootView, Event event) {
+    private void updateFields(ViewGroup rootView, Event currentEvent) {
         TextView titleView = (TextView) rootView.findViewById(R.id.event_title_view);
         TextView creatorView = (TextView) rootView.findViewById(R.id.event_creator_view);
         TextView startDateView = (TextView) rootView.findViewById(R.id.event_start_date_view);
@@ -63,15 +65,15 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Long> {
         TextView addressView = (TextView) rootView.findViewById(R.id.event_address_view);
         TextView descriptionView = (TextView) rootView.findViewById(R.id.event_description_view);
 
-        titleView.setText(event.getTitle());
-        creatorView.setText(event.getCreator());
-        startDateView.setText(event.getStartDateAsString());
-        endDateView.setText(event.getEndDateAsString());
-        addressView.setText(event.getAddress());
-        descriptionView.setText(event.getDescription());
+        titleView.setText(currentEvent.getTitle());
+        creatorView.setText(currentEvent.getCreator());
+        startDateView.setText(currentEvent.getStartDateAsString());
+        endDateView.setText(currentEvent.getEndDateAsString());
+        addressView.setText(currentEvent.getAddress());
+        descriptionView.setText(currentEvent.getDescription());
 
         ImageView pictureView = (ImageView) rootView.findViewById(R.id.eventPictureView);
-        pictureView.setImageBitmap(event.getPicture());
+        pictureView.setImageBitmap(currentEvent.getPicture());
         Button joinEvent = (Button) rootView.findViewById(R.id.joinEvent);
         joinEvent.setOnClickListener(new View.OnClickListener() {
 

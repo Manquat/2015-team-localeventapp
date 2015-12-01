@@ -123,18 +123,6 @@ public enum EventDatabase {
         return currentEvent;
     }
 
-    public int getPosition(int id) {
-        return mEventSet.getPosition(id);
-    }
-
-    public long getNextSignature(long signature) {
-        return mEventSet.getNext(signature).getSignature();
-    }
-
-    public long getPreviousSignature(long signature) {
-        return mEventSet.getPrevious(signature).getSignature();
-    }
-
     public EventSet filter(LatLng latLng, double distance) {
         return mEventSet.filter(latLng, distance);
     }
@@ -167,7 +155,7 @@ public enum EventDatabase {
 
 
     public int getSize() {
-        if (mEventSet == null){
+        if (mEventSet == null) {
             return 0;
         } else {
             return mEventSet.size();
