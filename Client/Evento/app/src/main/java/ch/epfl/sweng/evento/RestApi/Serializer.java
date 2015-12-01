@@ -34,9 +34,9 @@ public final class Serializer {
     public static String user(User u){
 
         String res = "{\n"
-                + "  \"User_Id\": \"" + u.getUserId() + "\",\n"
-                + "  \"User_name\": \"" + u.getUsername() + "\",\n"
-                + "  \"Email\": \"" + u.getEmail() + "\",\n"
+                + "  \"id\": \"" + u.getUserId() + "\",\n"
+                + "  \"name\": \"" + u.getUsername() + "\",\n"
+                + "  \"email\": \"" + u.getEmail() + "\",\n"
                 + "}\n";
 
         return res;

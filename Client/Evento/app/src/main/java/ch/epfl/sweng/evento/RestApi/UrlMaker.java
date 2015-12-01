@@ -31,6 +31,10 @@ public final class UrlMaker {
         return urlServer + event ;
     }
 
+    public static String post(String urlServer, String access) {
+        return urlServer + access ;
+    }
+
     public static String put(String urlServer, int id) {
         return urlServer + event  + id;
     }

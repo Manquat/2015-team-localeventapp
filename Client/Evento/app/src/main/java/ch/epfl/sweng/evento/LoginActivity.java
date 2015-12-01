@@ -161,13 +161,14 @@ public class LoginActivity extends AppCompatActivity implements
                 String mIdToken;
                 mIdToken = acct.getIdToken();
                 Log.d(TAG, "idToken:" + mIdToken);
+                Settings.INSTANCE.setIdToken(mIdToken);
 
                 String personName = acct.getDisplayName();
                 String personEmail = acct.getEmail();
                 String personId = acct.getId();
-                Settings.INSTANCE.setmUserId(personId);
                 User u = new User(personId, personName, personEmail);
-                RestApi restApi = new RestApi(networkProvider, urlServer);
+                Settings.INSTANCE.setUser(u);
+                RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
 
                 restApi.postUser(u, new PostCallback() {
                     @Override
@@ -178,7 +179,6 @@ public class LoginActivity extends AppCompatActivity implements
                 });
                 Log.d(TAG, "User Information: " + personName + ", email: " + personEmail + ", User ID: " + personId);
 
-                Settings.INSTANCE.setIdToken(mIdToken);
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             } else {

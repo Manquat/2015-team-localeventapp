@@ -147,7 +147,8 @@ public class RestApi {
 
     // Post a user
     public void postUser(User user, final PostCallback callback) {
-        String restUrl = UrlMaker.post(mUrlServer);
+        String restUrl = UrlMaker.post(mUrlServer, "user/");
+        Log.d(TAG, "restURL: " + restUrl);
         String requestBody = Serializer.user(user);
         new PostTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
             public void onTaskComplete(String response) {
