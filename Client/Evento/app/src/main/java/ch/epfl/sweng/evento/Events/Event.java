@@ -162,7 +162,8 @@ public class Event implements ClusterItem {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
             byte[] b = outputStream.toByteArray();
-            mPicture = Base64.encodeToString(b, Base64.DEFAULT);
+            mPicture = Base64.encodeToString(b, Base64.DEFAULT).replace(System.getProperty("line.separator"), "");
+            //.replaceAll("\\s+","")
         } else {
             mPicture = "";
         }
@@ -256,7 +257,6 @@ public class Event implements ClusterItem {
      * @return The Bitmap converted from mPicture
      */
     public Bitmap getPicture() {
-        Log.v("getting image : ", mPicture);
         try {
             byte[] encodeByte = Base64.decode(mPicture, Base64.DEFAULT);
             return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);

@@ -46,7 +46,6 @@ public class PostTask extends AsyncTask<String, String, String> {
             // prepare URL and parameter
             String urlParameters = mRequestBody;
             String postData = urlParameters;
-            Log.v("POST DATA :",postData);
             int postDataLength = postData.length();
             URL url = new URL(mRestUrl);
             HttpURLConnection conn = mNetworkProvider.getConnection(url);

@@ -1,5 +1,7 @@
 package ch.epfl.sweng.evento.RestApi;
 
+import android.util.Log;
+
 import ch.epfl.sweng.evento.Events.Event;
 
 /**
@@ -15,13 +17,12 @@ public final class Serializer {
     }
 
     public static String event(Event e) {
-
         String res = "{\n"
                 + "  \"Event_name\": \"" + e.getTitle() + "\",\n"
                 + "  \"tags\": \"" + e.getTagsString() + "\",\n"
                 + "  \"participants\": \"" + "Alfred" + "\",\n"
                 + "  \"image\": \n"
-                + "    \"" + e.samplePicture() + "\" ,\n"
+                + "    \"" + e.getPictureAsString() + "\" ,\n"
                 + "  \"description\": \n"
                 + "    \"" + e.getDescription() + "\" ,\n"
                 + "  \"latitude\": " + e.getLatitude() + ",\n"

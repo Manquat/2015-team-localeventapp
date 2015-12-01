@@ -347,9 +347,8 @@ public class CreatingEventActivity extends AppCompatActivity
 
         Bitmap picture = (BitmapFactory.decodeFile(picturePath));
 
-        int size = 300;
+        int size = 200;
         Bitmap scaledPicture = Bitmap.createScaledBitmap(picture, size, (int) (size * ((double) picture.getHeight() / (double) picture.getWidth())), false);
-        //75k
         viewImage.setImageBitmap(scaledPicture);
     }
 
