@@ -115,5 +115,5 @@ STATIC_ROOT = "/Users/Pujima/OneDrive/Physique 5eme Annee/Software Engineering/t
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    "C:/Users/Pujima/OneDrive/Physique 5eme Annee/Software Engineering/team-localeventapp/Server/mysite/mysite/static",
+   # "C:/Users/Pujima/OneDrive/Physique 5eme Annee/Software Engineering/team-localeventapp/Server/mysite/mysite/static",
 )

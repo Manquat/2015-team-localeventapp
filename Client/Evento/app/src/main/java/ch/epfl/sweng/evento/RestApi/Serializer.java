@@ -21,7 +21,7 @@ public final class Serializer {
                 + "  \"tags\": \"" + e.getTagsString() + "\",\n"
                 + "  \"participants\": \"" + "Alfred" + "\",\n"
                 + "  \"image\": \n"
-                + "    \"" + e.getDescription() + "\" ,\n"
+                + "    \"" + e.samplePicture() + "\" ,\n"
                 + "  \"description\": \n"
                 + "    \"" + e.getDescription() + "\" ,\n"
                 + "  \"latitude\": " + e.getLatitude() + ",\n"
