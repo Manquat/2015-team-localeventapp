@@ -175,12 +175,15 @@ public class LoginActivity extends AppCompatActivity implements
                     public void onPostSuccess(String response) {
                         // assert submission
                         Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "User Information sent to Server");
+
                     }
                 });
                 Log.d(TAG, "User Information: " + personName + ", email: " + personEmail + ", User ID: " + personId);
 
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
+
             } else {
                 Toast.makeText(this, "Could not connect, please try again", Toast.LENGTH_SHORT).show();
             }

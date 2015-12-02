@@ -52,6 +52,7 @@ public class PostTask extends AsyncTask<String, String, String> {
             HttpURLConnection conn = mNetworkProvider.getConnection(url);
             // set connexion
             conn.setDoOutput(true);
+            conn.setDoInput(true);
             conn.setInstanceFollowRedirects(false);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
@@ -60,9 +61,11 @@ public class PostTask extends AsyncTask<String, String, String> {
             conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));
             conn.setUseCaches(false);
             // send data
+
             try (OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream())) {
                 wr.write(postData);
             }
+
             // get back response code and put it in response string (in case of success)
             int responseCode = 0;
             responseCode = conn.getResponseCode();
