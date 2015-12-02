@@ -91,6 +91,7 @@ public class Parser {
 
 
     private static String[] splitJson(String response) {
+        Log.d(TAG, response);
         response = response.replace("},{", "}\n{");
         response = response.substring(1);
         String[] responseLines = response.split("\n");

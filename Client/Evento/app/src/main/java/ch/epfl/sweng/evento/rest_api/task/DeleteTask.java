@@ -13,12 +13,12 @@ public class DeleteTask extends RestTask {
     private static final String TAG = "DeleteTask";
 
     public DeleteTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback) {
-        super(restUrl, networkProvider, callback);
+        super("DELETE", restUrl, networkProvider, callback);
     }
 
     @Override
-    protected void communicateWithServer(HttpURLConnection connection) throws IOException {
-        requestWithoutBody(connection, "DELETE");
+    protected void communicateWithServer(HttpURLConnection connection, String methodType) throws IOException {
+        requestWithoutBody(connection, methodType);
     }
 
 }

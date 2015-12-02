@@ -27,22 +27,24 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
     private RestTaskCallback mCallback;
     private NetworkProvider mNetworkProvider;
     private String mRequestBody;
+    private final String mMethodType;
 
     //protected HttpURLConnection conn;
     //protected String response = null;
     //private int responseCode = 0;
 
 
-    public RestTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback,
+    public RestTask(String methodType, String restUrl, NetworkProvider networkProvider, RestTaskCallback callback,
                     String requestBody) {
         this.mRestUrl = restUrl;
         this.mCallback = callback;
         this.mNetworkProvider = networkProvider;
         this.mRequestBody = requestBody;
+        this.mMethodType = methodType;
     }
 
-    public RestTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback) {
-        this(restUrl, networkProvider, callback, null);
+    public RestTask(String methodType, String restUrl, NetworkProvider networkProvider, RestTaskCallback callback) {
+        this(methodType, restUrl, networkProvider, callback, null);
     }
 
 
@@ -53,7 +55,7 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
             // prepare URL and parameter
             HttpURLConnection conn = setHttpUrlConnection();
             // set server connection
-            communicateWithServer(conn);
+            communicateWithServer(conn, mMethodType);
             // get HTTP response code and get the event ONLY in case of success
             int responseCode = getResponseCode(conn);
             // get the event
@@ -112,7 +114,7 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
      *
      * @throws IOException
      */
-    protected abstract void communicateWithServer(HttpURLConnection conn) throws IOException;
+    protected abstract void communicateWithServer(HttpURLConnection conn, String methodType) throws IOException;
 
 
     /**

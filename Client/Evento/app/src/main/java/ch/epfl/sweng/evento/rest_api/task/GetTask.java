@@ -17,7 +17,7 @@ public class GetTask extends RestTask {
     private static final String TAG = "GetTask";
 
     public GetTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback) {
-        super(restUrl, networkProvider, callback);
+        super("GET", restUrl, networkProvider, callback);
     }
 
     @Override
@@ -27,8 +27,8 @@ public class GetTask extends RestTask {
     }
 
     @Override
-    protected void communicateWithServer(HttpURLConnection connection) throws IOException {
-        requestWithoutBody(connection, "GET");
+    protected void communicateWithServer(HttpURLConnection connection, String methodType) throws IOException {
+        requestWithoutBody(connection, methodType);
     }
 
 

@@ -19,11 +19,11 @@ public class PutTask extends RestTask {
     private static final String TAG = "PutTask";
 
     public PutTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback) {
-        super(restUrl, networkProvider, callback, requestBody);
+        super("PUT", restUrl, networkProvider, callback, requestBody);
     }
 
     @Override
-    protected void communicateWithServer(HttpURLConnection connection) throws IOException {
-        requestWithBody(connection, "PUT");
+    protected void communicateWithServer(HttpURLConnection connection, String methodType) throws IOException {
+        requestWithBody(connection, methodType);
     }
 }
