@@ -23,7 +23,7 @@ public class PutTask extends RestTask {
     }
 
     @Override
-    protected void communicateWithServer(HttpURLConnection connection, String methodType) throws IOException {
-        requestWithBody(connection, methodType);
+    protected void communicateWithServer(HttpURLConnection connection) throws IOException {
+        requestWithBody(connection);
     }
 }

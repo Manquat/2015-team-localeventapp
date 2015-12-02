@@ -27,8 +27,8 @@ public class GetTask extends RestTask {
     }
 
     @Override
-    protected void communicateWithServer(HttpURLConnection connection, String methodType) throws IOException {
-        requestWithoutBody(connection, methodType);
+    protected void communicateWithServer(HttpURLConnection connection) throws IOException {
+        requestWithoutBody(connection);
     }
 
 

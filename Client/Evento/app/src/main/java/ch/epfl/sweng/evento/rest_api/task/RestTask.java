@@ -52,7 +52,7 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
             // prepare URL and parameter
             HttpURLConnection conn = setHttpUrlConnection();
             // set server connection
-            communicateWithServer(conn, mMethodType);
+            communicateWithServer(conn);
             // get HTTP response code and get the event ONLY in case of success
             int responseCode = getResponseCode(conn);
             // get the event
@@ -112,7 +112,7 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
      *
      * @throws IOException
      */
-    protected abstract void communicateWithServer(HttpURLConnection conn, String methodType) throws IOException;
+    protected abstract void communicateWithServer(HttpURLConnection conn) throws IOException;
 
 
     /**
@@ -143,12 +143,12 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    protected void requestWithBody(HttpURLConnection conn, String method) throws IOException {
+    protected void requestWithBody(HttpURLConnection conn) throws IOException {
         // set connexion
         int postDataLength = mRequestBody.length();
         conn.setDoOutput(true);
         conn.setInstanceFollowRedirects(false);
-        conn.setRequestMethod(method);
+        conn.setRequestMethod(mMethodType);
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setRequestProperty("charset", "utf-8");
         conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));
@@ -160,8 +160,8 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
         }
     }
 
-    protected void requestWithoutBody(HttpURLConnection conn, String method) throws IOException {
-        conn.setRequestMethod(method);
+    protected void requestWithoutBody(HttpURLConnection conn) throws IOException {
+        conn.setRequestMethod(mMethodType);
         conn.setDoInput(true);
         conn.connect();
     }
