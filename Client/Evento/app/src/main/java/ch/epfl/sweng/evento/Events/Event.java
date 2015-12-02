@@ -122,26 +122,30 @@ public class Event implements ClusterItem {
         if (mParticipants.size() < mNumberMaxOfParticipants) {
             if(Build.VERSION.SDK_INT >= 19) {
                 mParticipants.add(Objects.requireNonNull(participant, "Cannot add a null participant"));
+
             } else {
                 if (participant != null){
                     mParticipants.add(participant);
-                    
+
                 } else {
                     throw new NullPointerException("Cannot add a null participant");
+
                 }
             }
+
             return true;
         } else {
+
             return false;
         }
     }
 
 
-    public Set<User> getAllParticipant() {
+    public Set<User> getAllParticipant()  {
         return mParticipants;
     }
 
-    public int getMaxNumberOfParticipant() {
+    public int getMaxNumberOfParticipant()  {
         return mNumberMaxOfParticipants;
     }
 
