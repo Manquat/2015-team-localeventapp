@@ -16,10 +16,6 @@ import ch.epfl.sweng.evento.Events.Event;
  */
 public class User {
 
-//---------------------------------------------------------------------------------------------
-//----Attributes-------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
-
     private static final String TAG = "User";
 
     private int mID;//needed for getting the user's information from server
@@ -40,10 +36,6 @@ public class User {
         mMatchedEvent = new HashSet<>();
         mHostedEvent = new HashSet<>();
     }
-//---------------------------------------------------------------------------------------------
-//----Methods----------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
-
 
     public String getmUsername() {
         return mUsername;
@@ -125,10 +117,6 @@ public class User {
     public String getHostedEventString() {
         return getHostedEventString("\n");
     }*/
-
-    public void setmUsername(String mUsername) {
-        this.mUsername = mUsername;
-    }
 
     public void setmEmail(String mEmail) {
         this.mEmail = mEmail;

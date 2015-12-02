@@ -16,27 +16,14 @@ import ch.epfl.sweng.evento.Events.EventPageAdapter;
  */
 public class UserProfilActivity extends AppCompatActivity {
 
-//---------------------------------------------------------------------------------------------
-//----Attributes-------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
-
     private static final String TAG = "UserProfilIndormation";
 
-    private String mUsername;
-    private String mEmail;
-    //private Event.CustomDate mDateOfBirth;
-    private LatLng mHomeAddress;
-    //private Event.CustomDate mStartOfMembership;
+    private User mUser;
 
     private TextView mUsernameView;
     private TextView mEmailView;
     private TextView mDateOfBirthView;
 
-
-
-//---------------------------------------------------------------------------------------------
-//----Methods----------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
 
 
     protected void onCreate(Bundle savedInstanceState) {
