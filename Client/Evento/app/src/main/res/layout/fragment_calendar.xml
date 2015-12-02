@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -20,7 +21,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/dayTitle"
             android:layout_weight="5"
-            android:gravity="center"/>
+            android:gravity="center" />
 
         <Button
             android:layout_width="@dimen/calendar_button_width"
@@ -30,7 +31,7 @@
 
     </LinearLayout>
 
-    <ch.epfl.sweng.evento.InfinitePagerAdapter.InfiniteViewPager
+    <ch.epfl.sweng.evento.infinite_pager_adapter.InfiniteViewPager
         android:layout_width="match_parent"
         android:layout_height="@dimen/calendar_grid_view_height"
         android:id="@+id/calendar_infinite_pager" />

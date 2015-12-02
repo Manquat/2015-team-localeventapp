@@ -9,10 +9,11 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
-import ch.epfl.sweng.evento.Events.Event;
-import ch.epfl.sweng.evento.Events.EventSet;
-import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
-import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.event.EventSet;
+import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
 /**
  * Created by Val on 28.10.2015.
@@ -38,9 +39,9 @@ public enum EventDatabase {
 
 
     public void loadNewEvents() {
-        mRestAPI.getAll(new GetMultipleResponseCallback() {
+        mRestAPI.getAll(new GetEventListCallback() {
             @Override
-            public void onDataReceived(List<Event> events) {
+            public void onEventListReceived(List<Event> events) {
                 addAll(events);
             }
         });
@@ -67,9 +68,9 @@ public enum EventDatabase {
 
 
     public void loadByDate(GregorianCalendar start, GregorianCalendar end) {
-        mRestAPI.getMultiplesEventByDate(start, end, new GetMultipleResponseCallback() {
+        mRestAPI.getMultiplesEventByDate(start, end, new GetEventListCallback() {
             @Override
-            public void onDataReceived(List<Event> eventArrayList) {
+            public void onEventListReceived(List<Event> eventArrayList) {
                 mEventSet.clear();
                 addAll(eventArrayList);
             }
