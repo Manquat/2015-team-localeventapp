@@ -142,7 +142,6 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     protected void requestWithBody(HttpURLConnection conn) throws IOException {
         // set connexion
         int postDataLength = mRequestBody.length();
@@ -154,9 +153,15 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
         conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));
         conn.setUseCaches(false);
 
+        OutputStreamWriter wr = null;
         // send data
-        try (OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream())) {
+        try {
+            wr = new OutputStreamWriter(conn.getOutputStream());
             wr.write(mRequestBody);
+        } finally {
+            if (wr != null) {
+                wr.close();
+            }
         }
     }
 
