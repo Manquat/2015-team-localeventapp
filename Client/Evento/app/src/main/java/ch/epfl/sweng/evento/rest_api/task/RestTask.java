@@ -12,6 +12,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.rest_api.RestException;
 import ch.epfl.sweng.evento.rest_api.callback.RestTaskCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
@@ -86,6 +87,7 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
     protected HttpURLConnection setHttpUrlConnection() throws IOException {
         URL url = new URL(mRestUrl);
         HttpURLConnection conn = mNetworkProvider.getConnection(url);
+        conn.setRequestProperty("token", Settings.INSTANCE.getIdToken());
         return conn;
     }
 
