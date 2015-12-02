@@ -25,6 +25,7 @@ import ch.epfl.sweng.evento.rest_api.task.DeleteTask;
 import ch.epfl.sweng.evento.rest_api.task.GetTask;
 import ch.epfl.sweng.evento.rest_api.task.PostTask;
 import ch.epfl.sweng.evento.rest_api.task.PutTask;
+import ch.epfl.sweng.evento.rest_api.task.RestTask;
 
 /**
  * RestAPI
@@ -193,6 +194,7 @@ public class RestApi {
     public void updateEvent(Event event, final HttpResponseCodeCallback callback) {
         String restUrl = UrlMaker.put(mUrlServer, event.getID());
         String requestBody = Serializer.event(event);
+
         new PutTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
             public void onTaskComplete(String response) {
                 callback.onSuccess(response);
