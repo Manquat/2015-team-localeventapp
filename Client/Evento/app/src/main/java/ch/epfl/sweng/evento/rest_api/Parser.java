@@ -6,7 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -73,7 +72,7 @@ public class Parser {
         ArrayList<Event> eventArrayList = new ArrayList<>();
         JSONArray jsonArray = new JSONArray(response);
 
-        for (int i=0; i < jsonArray.length(); i++) {
+        for (int i = 0; i < jsonArray.length(); i++) {
             eventArrayList.add(parseFromJSON(jsonArray.getJSONObject(i)));
         }
         return eventArrayList;
@@ -83,7 +82,7 @@ public class Parser {
         JSONArray jsonArray = new JSONArray(result);
         List<Comment> commentList = new ArrayList<>();
 
-        for (int i=0; i < jsonArray.length(); i++) {
+        for (int i = 0; i < jsonArray.length(); i++) {
             commentList.add(parseJsonToComment(jsonArray.getJSONObject(i)));
         }
         return commentList;
