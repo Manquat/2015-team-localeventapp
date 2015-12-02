@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento.tabsFragment.Calendar;
+package ch.epfl.sweng.evento.Calendar;
 
 import android.util.Log;
 

@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento.tabsFragment;
+package ch.epfl.sweng.evento.Calendar;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -21,6 +21,7 @@ import ch.epfl.sweng.evento.Events.EventListViewAdapter;
 import ch.epfl.sweng.evento.InfinitePagerAdapter.GridInfinitePageAdapter;
 import ch.epfl.sweng.evento.InfinitePagerAdapter.InfiniteViewPager;
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.tabsFragment.Refreshable;
 
 /**
  * The fragment that holds the calendar and the listView that display the events at the current
