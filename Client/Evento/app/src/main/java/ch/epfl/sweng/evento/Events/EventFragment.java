@@ -114,24 +114,7 @@ public class EventFragment extends Fragment {
 
         // setting list adapter
         mExpListView.setAdapter(mListAdapter);
-
-        // ListView on child click listener
-        mExpListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                final int groupPosTmp = groupPosition;
-                final int childPosTmp = childPosition;
-                /* new HashSet<String>() {{
-                    add(mListDataChild.get(
-                            mListDataHeader.get(groupPosTmp)).get(
-                            childPosTmp));
-                }};*/
-
-                return false;
-            }
-        });
+        
     }
 
     private void prepareListData() {
