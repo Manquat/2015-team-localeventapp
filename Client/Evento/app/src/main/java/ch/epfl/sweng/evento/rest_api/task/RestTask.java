@@ -65,7 +65,7 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
         } catch (IOException e) {
             Log.e(TAG, "Server connection failed", e);
         } catch (RestException e) {
-            Log.e(TAG, e.toString());
+            Log.e(TAG, e.toString(), e);
         }
         return response;
     }
