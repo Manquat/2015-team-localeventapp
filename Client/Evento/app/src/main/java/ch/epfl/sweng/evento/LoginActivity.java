@@ -116,11 +116,10 @@ public class LoginActivity extends AppCompatActivity implements
             Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
             if (result.isSuccess()) {
-                String mIdToken;
                 GoogleSignInAccount acct = result.getSignInAccount();
-                mIdToken = acct.getIdToken();
-                Log.d(TAG, "idToken:" + mIdToken);
-                Settings.INSTANCE.setIdToken(mIdToken);
+                String idToken = acct.getIdToken();
+                Log.d(TAG, "idToken:" + idToken);
+                Settings.INSTANCE.setIdToken(idToken);
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             } else {
@@ -153,10 +152,9 @@ public class LoginActivity extends AppCompatActivity implements
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount acct = result.getSignInAccount();
-                String mIdToken;
-                mIdToken = acct.getIdToken();
-                Log.d(TAG, "idToken:" + mIdToken);
-                Settings.INSTANCE.setIdToken(mIdToken);
+                String idToken = acct.getIdToken();
+                Log.d(TAG, "idToken:" + idToken);
+                Settings.INSTANCE.setIdToken(idToken);
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             } else {
