@@ -9,7 +9,7 @@
         android:id="@+id/tool_bar"
         layout="@layout/tool_bar"></include>
 
-    <ch.epfl.sweng.evento.InfinitePagerAdapter.InfiniteViewPager
+    <ch.epfl.sweng.evento.infinite_pager_adapter.InfiniteViewPager
         android:id="@+id/event_infinite_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

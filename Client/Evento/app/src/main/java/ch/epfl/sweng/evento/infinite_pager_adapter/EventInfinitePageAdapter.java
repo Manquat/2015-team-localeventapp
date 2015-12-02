@@ -17,7 +17,6 @@ import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.event.Event;
 
 import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.infinite_pager_adapter.InfinitePagerAdapter;
 
 /**
  * An infinite page adapter for the event activity
