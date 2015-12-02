@@ -2,9 +2,11 @@ package ch.epfl.sweng.evento.rest_api;
 
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,34 +71,24 @@ public class Parser {
 
     public static List<Event> parseFromJSONMultiple(String response) throws JSONException {
         ArrayList<Event> eventArrayList = new ArrayList<>();
-        String[] responseLines = splitJson(response);
+        JSONArray jsonArray = new JSONArray(response);
 
-        for (String line : responseLines) {
-            JSONObject jsonObject = new JSONObject(line);
-            eventArrayList.add(parseFromJSON(jsonObject));
+        for (int i=0; i < jsonArray.length(); i++) {
+            eventArrayList.add(parseFromJSON(jsonArray.getJSONObject(i)));
         }
         return eventArrayList;
     }
 
     public static List<Comment> parseFromJsonListOfComment(String result) throws JSONException {
+        JSONArray jsonArray = new JSONArray(result);
         List<Comment> commentList = new ArrayList<>();
-        String[] responseLines = splitJson(result);
 
-        for (String line : responseLines) {
-            JSONObject jsonObject = new JSONObject(line);
-            commentList.add(parseJsonToComment(jsonObject));
+        for (int i=0; i < jsonArray.length(); i++) {
+            commentList.add(parseJsonToComment(jsonArray.getJSONObject(i)));
         }
         return commentList;
     }
 
-
-    private static String[] splitJson(String response) {
-        Log.d(TAG, response);
-        response = response.replace("},{", "}\n{");
-        response = response.substring(1);
-        String[] responseLines = response.split("\n");
-        return responseLines;
-    }
 
     private static Calendar fromStringToCalendar(String s) throws ParseException {
         Calendar cal = new GregorianCalendar();
