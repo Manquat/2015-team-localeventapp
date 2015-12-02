@@ -36,6 +36,7 @@ public class EventActivity extends AppCompatActivity {
         mPager.setAdapter(mAdapter);
 
         // get the signature of the current event
+
         int currentEventSignature = EventDatabase.INSTANCE.getFirstEvent().getID();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {

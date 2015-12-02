@@ -30,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Vector;
@@ -72,7 +73,8 @@ public class ContentFragment extends Fragment implements Refreshable {
     private Vector<MyView> mMyViews;
     private View mView;
     private Toolbar mToolbar;
-    public GregorianCalendar dateFilter;
+    public Calendar dateFilter;
+
 
     /**
      * Create a new instance of {@link ContentFragment}, adding the parameters into a bundle and

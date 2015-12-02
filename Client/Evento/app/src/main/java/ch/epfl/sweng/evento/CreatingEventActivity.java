@@ -64,8 +64,8 @@ public class CreatingEventActivity extends AppCompatActivity
 
     private TextView mStartDateView;
     private TextView mEndDateView;
-    private GregorianCalendar startDate;
-    private GregorianCalendar endDate;
+    private Calendar startDate;
+    private Calendar endDate;
     private boolean mStartOrEndDate;
     private boolean mDisplayTimeFragment;
     private DatePickerDialogFragment mDateFragment;
