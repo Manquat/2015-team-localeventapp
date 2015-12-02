@@ -192,13 +192,8 @@ public class EventSet {
     /**
      * Returns a set of all the Events that start after the date passed in argument
      *
-<<<<<<< HEAD
-     * @param startDate
-     * @return
-=======
      * @param startDate Calendar at the date wanted for the filter
      * @return An EventSet containing the event corresponding to the filter
->>>>>>> origin/master
      */
     public EventSet filter(Calendar startDate) {
         EventSet newEventSet = new EventSet();
