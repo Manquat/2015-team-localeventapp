@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class Parser {
                     jsonObject.getDouble("longitude"),
                     jsonObject.getString("address"),
                     jsonObject.getString("creator"),
-                    new HashSet<String>(){{ add(json.getString("tags"));}},
+                    new HashSet<String>(Arrays.asList(json.getString("tags").split(";"))),
                     jsonObject.getString("image"),
                     new HashSet<User>()
             );

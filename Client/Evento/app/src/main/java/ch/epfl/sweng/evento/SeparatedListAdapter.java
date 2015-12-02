@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  * Created by thomas on 28/11/15.
- * 
+ *
  */
 public  class SeparatedListAdapter extends BaseAdapter {
     public final Map<String,Adapter> sections = new LinkedHashMap<String,Adapter>();
