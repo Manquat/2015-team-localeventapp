@@ -114,7 +114,7 @@ public class EventFragment extends Fragment {
 
         // setting list adapter
         mExpListView.setAdapter(mListAdapter);
-        
+
     }
 
     private void prepareListData() {

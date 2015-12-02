@@ -117,6 +117,7 @@ public class Event implements ClusterItem {
                 + "), " + this.getCreator() + ", (" + this.getProperDateString();
     }
 
+
     public boolean addParticipant(User participant){
         if (mParticipants.size() < mNumberMaxOfParticipants) {
             if(Build.VERSION.SDK_INT >= 19) {
@@ -134,9 +135,7 @@ public class Event implements ClusterItem {
         }
     }
 
-
-
-
+    
     public Set<User> getAllParticipant() {
         return mParticipants;
     }
