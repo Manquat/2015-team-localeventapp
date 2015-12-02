@@ -1,5 +1,6 @@
 package ch.epfl.sweng.evento.Events;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -38,30 +39,34 @@ public class EventFragment extends Fragment {
     private Event mEvent;
     private ArrayList<String> mListDataHeader;
     private HashMap<String, List<String>> mListDataChild;
-    View mRootView;
+    private View mRootView;
+    private Activity mActivity;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        Bundle bundle = getArguments();
+        int currentEventID = bundle.getInt(KEYCURRENTEVENT);
+
+        mActivity = getActivity();
+        mEvent = EventDatabase.INSTANCE.getEvent(currentEventID);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_event, container, false);
 
-        Bundle bundle = getArguments();
-        int currentEventID = bundle.getInt(KEYCURRENTEVENT);
-
-        mEvent = EventDatabase.INSTANCE.getEvent(currentEventID);
-
-        updateFields(mRootView);
+        updateFields();
 
         return mRootView;
     }
 
-    private void updateFields(View rootView) {
-        TextView titleView = (TextView) rootView.findViewById(R.id.event_title_view);
-        TextView creatorView = (TextView) rootView.findViewById(R.id.event_creator_view);
-        TextView startDateView = (TextView) rootView.findViewById(R.id.event_start_date_view);
-        TextView endDateView = (TextView) rootView.findViewById(R.id.event_end_date_view);
-        TextView addressView = (TextView) rootView.findViewById(R.id.event_address_view);
-        TextView descriptionView = (TextView) rootView.findViewById(R.id.event_description_view);
+    private void updateFields() {
+        TextView titleView = (TextView) mRootView.findViewById(R.id.event_title_view);
+        TextView creatorView = (TextView) mRootView.findViewById(R.id.event_creator_view);
+        TextView startDateView = (TextView) mRootView.findViewById(R.id.event_start_date_view);
+        TextView endDateView = (TextView) mRootView.findViewById(R.id.event_end_date_view);
+        TextView addressView = (TextView) mRootView.findViewById(R.id.event_address_view);
+        TextView descriptionView = (TextView) mRootView.findViewById(R.id.event_description_view);
 
         titleView.setText(mEvent.getTitle());
         creatorView.setText(mEvent.getCreator());
@@ -71,18 +76,19 @@ public class EventFragment extends Fragment {
         descriptionView.setText(mEvent.getDescription());
         setTagExpandableList();
 
-        ImageView pictureView = (ImageView) rootView.findViewById(R.id.eventPictureView);
+        ImageView pictureView = (ImageView) mRootView.findViewById(R.id.eventPictureView);
         pictureView.setImageBitmap(mEvent.getPicture());
-        Button joinEvent = (Button) rootView.findViewById(R.id.joinEvent);
+        final Button joinEvent = (Button) mRootView.findViewById(R.id.joinEvent);
         joinEvent.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity().getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
                 MainActivity.getUser(1).addMatchedEvent(mEvent);
-                if(!mEvent.addParticipant(MainActivity.getUser(1))) {
-                    Log.d("EventFragment.upd.", "addParticipant just returned false");
-                } else {
+                if(mEvent.addParticipant(MainActivity.getUser(1))) {
+                    if(mEvent.isFull()) {
+                        joinEvent.setClickable(false);
+                    }
                     mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
                     mRestAPI.updateEvent(mEvent,new PutCallback() {
                         @Override
@@ -90,6 +96,8 @@ public class EventFragment extends Fragment {
                             Log.d("EventFrag.upd.", "Response" + response);
                         }
                     });
+                } else {
+                    Toast.makeText(mActivity.getApplicationContext(), "Sorry but this event just got completed by another guy.", Toast.LENGTH_SHORT).show();
                 }
                 getActivity().finish();
             }

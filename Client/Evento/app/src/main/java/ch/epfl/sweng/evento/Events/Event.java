@@ -1,7 +1,9 @@
 package ch.epfl.sweng.evento.Events;
 
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.util.Base64;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -16,6 +18,7 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Locale;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -114,20 +117,25 @@ public class Event implements ClusterItem {
                 + "), " + this.getCreator() + ", (" + this.getProperDateString();
     }
 
-
     public boolean addParticipant(User participant){
-
-        if(participant != null) {
-            if (mParticipants.size() < mNumberMaxOfParticipants) {
-                mParticipants.add(participant);
-                return true;
+        if (mParticipants.size() < mNumberMaxOfParticipants) {
+            if(Build.VERSION.SDK_INT >= 19) {
+                mParticipants.add(Objects.requireNonNull(participant, "Cannot add a null participant"));
             } else {
-                throw new IllegalArgumentException("Cannot add another participant to this Event");
+                if (participant != null){
+                    mParticipants.add(participant);
+                } else {
+                    throw new NullPointerException("Cannot add a null participant");
+                }
             }
+            return true;
         } else {
-            throw new IllegalArgumentException("Cannot add a null participant to an Event");
+            return false;
         }
     }
+
+
+
 
     public Set<User> getAllParticipant() {
         return mParticipants;
@@ -138,18 +146,19 @@ public class Event implements ClusterItem {
     }
 
     public void removeParticipant(User participant){
-        if(participant != null) {
-            if (checkIfParticipantIsIn(participant)) {
+        if(Build.VERSION.SDK_INT >= 19){
+            if (checkIfParticipantIsIn(Objects.requireNonNull(participant, "Cannot remove a null participant"))) {
                 mParticipants.remove(participant);
             }
         } else {
-            throw new IllegalArgumentException("Cannot remove a null participant of an Event");
+            if (checkIfParticipantIsIn(participant)) {
+                mParticipants.remove(participant);
+            }
         }
     }
 
-    public boolean checkIfParticipantIsIn(User participant){
-        if(participant != null) return mParticipants.contains(participant);
-        else throw new IllegalArgumentException("Cannot check if a null participant is participating or not.");
+    private boolean checkIfParticipantIsIn(User participant){
+        return mParticipants.contains(participant);//Throw a nullPointerExc. if participant is null
     }
 
     public void setPicture(String picture) {
@@ -166,6 +175,11 @@ public class Event implements ClusterItem {
             mPicture = "";
         }
 
+    }
+
+    public boolean isFull(){
+        if(mParticipants.size() >= mNumberMaxOfParticipants) return true;
+        else return false;
     }
 
 
