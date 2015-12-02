@@ -5,9 +5,11 @@ package ch.epfl.sweng.evento.rest_api.task;
  */
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 import ch.epfl.sweng.evento.rest_api.callback.RestTaskCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
+
 
 /**
  * An AsyncTask implementation for performing PUTs.
@@ -20,7 +22,7 @@ public class PutTask extends RestTask {
     }
 
     @Override
-    protected void communicateWithServer() throws IOException {
-        requestWithBody("PUT");
+    protected void communicateWithServer(HttpURLConnection connection) throws IOException {
+        requestWithBody(connection, "PUT");
     }
 }

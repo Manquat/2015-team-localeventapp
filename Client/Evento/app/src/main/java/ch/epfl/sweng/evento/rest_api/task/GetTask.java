@@ -5,6 +5,7 @@ package ch.epfl.sweng.evento.rest_api.task;
  */
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 import ch.epfl.sweng.evento.rest_api.callback.RestTaskCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
@@ -20,13 +21,14 @@ public class GetTask extends RestTask {
     }
 
     @Override
-    protected void setResponse() throws IOException {
-        response = fetchContent(conn);
+    protected String setResponse(int responseCode, HttpURLConnection conn) throws IOException {
+        String response = fetchContent(conn);
+        return response;
     }
 
     @Override
-    protected void communicateWithServer() throws IOException {
-        requestWithoutBody("GET");
+    protected void communicateWithServer(HttpURLConnection connection) throws IOException {
+        requestWithoutBody(connection, "GET");
     }
 
 

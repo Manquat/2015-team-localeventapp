@@ -8,6 +8,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 import ch.epfl.sweng.evento.rest_api.callback.RestTaskCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
@@ -26,9 +27,8 @@ public class PostTask extends RestTask {
     }
 
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
-    protected void communicateWithServer() throws IOException {
-        requestWithBody("POST");
+    protected void communicateWithServer(HttpURLConnection connection) throws IOException {
+        requestWithBody(connection, "POST");
     }
 }

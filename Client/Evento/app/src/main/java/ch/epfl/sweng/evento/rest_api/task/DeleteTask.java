@@ -1,6 +1,7 @@
 package ch.epfl.sweng.evento.rest_api.task;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 import ch.epfl.sweng.evento.rest_api.callback.RestTaskCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
@@ -16,8 +17,8 @@ public class DeleteTask extends RestTask {
     }
 
     @Override
-    protected void communicateWithServer() throws IOException {
-        requestWithoutBody("DELETE");
+    protected void communicateWithServer(HttpURLConnection connection) throws IOException {
+        requestWithoutBody(connection, "DELETE");
     }
 
 }

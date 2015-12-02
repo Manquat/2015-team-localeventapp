@@ -21,15 +21,17 @@ import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
  */
 public abstract class RestTask extends AsyncTask<String, Void, String> {
     private static final String TAG = "RestTask";
-    protected static final int HTTP_SUCCESS_START = 200;
-    protected static final int HTTP_SUCCESS_END = 299;
-    protected String mRestUrl;
-    protected RestTaskCallback mCallback;
-    protected NetworkProvider mNetworkProvider;
-    protected HttpURLConnection conn;
-    protected String response = null;
-    protected int responseCode = 0;
-    protected String mRequestBody;
+    private static final int HTTP_SUCCESS_START = 200;
+    private static final int HTTP_SUCCESS_END = 299;
+    private String mRestUrl;
+    private RestTaskCallback mCallback;
+    private NetworkProvider mNetworkProvider;
+    private String mRequestBody;
+
+    //protected HttpURLConnection conn;
+    //protected String response = null;
+    //private int responseCode = 0;
+
 
     public RestTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback,
                     String requestBody) {
@@ -46,16 +48,16 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-
+        String response = null;
         try {
             // prepare URL and parameter
-            setHttpUrlConnection();
+            HttpURLConnection conn = setHttpUrlConnection();
             // set server connection
-            communicateWithServer();
+            communicateWithServer(conn);
             // get HTTP response code and get the event ONLY in case of success
-            getResponseCode();
+            int responseCode = getResponseCode(conn);
             // get the event
-            setResponse();
+            response = setResponse(responseCode, conn);
 
         } catch (IOException e) {
             Log.e(TAG, "Exception thrown in doInBackground", e);
@@ -73,18 +75,20 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
     }
 
 
-    protected void getResponseCode() throws IOException, RestException {
-        responseCode = conn.getResponseCode();
+    protected int getResponseCode(HttpURLConnection conn) throws IOException, RestException {
+        int responseCode = conn.getResponseCode();
         Log.v(TAG, "responseCode " + Integer.toString(responseCode));
         if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END) {
             throw new RestException("Invalid HTTP response code");
         }
+        return responseCode;
     }
 
 
-    protected void setHttpUrlConnection() throws IOException {
+    protected HttpURLConnection setHttpUrlConnection() throws IOException {
         URL url = new URL(mRestUrl);
-        conn = mNetworkProvider.getConnection(url);
+        HttpURLConnection conn = mNetworkProvider.getConnection(url);
+        return conn;
     }
 
 
@@ -94,9 +98,12 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
      *
      * @return
      * @throws IOException
+     * @param responseCode
+     * @param conn
      */
-    protected void setResponse() throws IOException {
-        response = Integer.toString(responseCode);
+    protected String setResponse(int responseCode, HttpURLConnection conn) throws IOException {
+        String response = Integer.toString(responseCode);
+        return response;
     }
 
 
@@ -105,8 +112,7 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
      *
      * @throws IOException
      */
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    protected abstract void communicateWithServer() throws IOException;
+    protected abstract void communicateWithServer(HttpURLConnection conn) throws IOException;
 
 
     /**
@@ -137,7 +143,7 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    protected void requestWithBody(String method) throws IOException {
+    protected void requestWithBody(HttpURLConnection conn, String method) throws IOException {
         // set connexion
         int postDataLength = mRequestBody.length();
         conn.setDoOutput(true);
@@ -154,10 +160,13 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
         }
     }
 
-    protected void requestWithoutBody(String method) throws IOException {
+    protected void requestWithoutBody(HttpURLConnection conn, String method) throws IOException {
         conn.setRequestMethod(method);
         conn.setDoInput(true);
         conn.connect();
     }
 
 }
+
+
+
