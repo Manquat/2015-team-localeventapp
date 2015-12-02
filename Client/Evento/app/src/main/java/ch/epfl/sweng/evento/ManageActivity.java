@@ -24,7 +24,7 @@ public class ManageActivity extends AppCompatActivity {
     public final static String ITEM_TITLE = "title";
     public final static String ITEM_CAPTION = "caption";
 
-    public Map<String,?> createItem(String title, String caption) {
+    public Map<String,String> createItem(String title, String caption) {
         Map<String,String> item = new HashMap<String,String>();
         item.put(ITEM_TITLE, title);
         item.put(ITEM_CAPTION, caption);
@@ -35,12 +35,12 @@ public class ManageActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        List<Map<String,?>> hostedEvent = new LinkedList<Map<String,?>>();
+        List<Map<String,String>> hostedEvent = new LinkedList<Map<String,String>>();
         for(Event event: MainActivity.getUser(1).getHostedEvent()){
             hostedEvent.add(createItem(event.getTitle(), event.getDescription()));
         }
 
-        List<Map<String,?>> matchedEvent = new LinkedList<Map<String,?>>();
+        List<Map<String,String>> matchedEvent = new LinkedList<Map<String,String>>();
         for(Event event: MainActivity.getUser(1).getMatchedEvent()){
             matchedEvent.add(createItem(event.getTitle(), event.getDescription()));
         }

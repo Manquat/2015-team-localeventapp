@@ -11,7 +11,7 @@ public final class Settings {
     }
 
     public static String getServerUrl() {
-        return "https://protected-hamlet-4797.herokuapp.com/";
-        //return "http://128.179.190.98:8000/";
+        //return "https://protected-hamlet-4797.herokuapp.com/";
+        return "http://128.179.190.98:8000/";
     }
 }

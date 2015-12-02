@@ -159,7 +159,6 @@ public class ContentFragment extends Fragment implements Refreshable {
         Span tmpSpanSmtgOrNot = Span.NOTHING;
         int spanning = 0;
         for (int yPos = 0, countEvent = 0; countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; yPos++) {
-
             for (int xPos = 0; xPos < mNumberOfColumn && countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; xPos++, countEvent++) {
                 final MyView tView = new MyView(mView.getContext(), xPos, yPos);
                 final int spanningView = spanning;
@@ -167,8 +166,8 @@ public class ContentFragment extends Fragment implements Refreshable {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(mActivity, EventActivity.class);
-                        intent.putExtra(EventActivity.KEYCURRENTEVENT, mEvents.get(tView.getIdX() + tView.getIdY() * mNumberOfColumn-spanningView).getID());
-                        mActivity.startActivity(intent);
+                        //intent.putExtra(EventActivity.KEYCURRENTEVENT, mEvents.get(tView.getIdX() + tView.getIdY() * mNumberOfColumn-spanningView).getID());
+                        //mActivity.startActivity(intent);
                     }
                 });
                 if (mDisplayOrNot.get(yPos)[xPos]) {
