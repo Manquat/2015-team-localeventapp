@@ -16,8 +16,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import ch.epfl.sweng.evento.EventDatabase;
-
 /**
  * Container of multiple events
  */

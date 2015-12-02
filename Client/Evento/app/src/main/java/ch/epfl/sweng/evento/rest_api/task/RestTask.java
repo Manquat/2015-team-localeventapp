@@ -29,10 +29,6 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
     private String mRequestBody;
     private final String mMethodType;
 
-    //protected HttpURLConnection conn;
-    //protected String response = null;
-    //private int responseCode = 0;
-
 
     public RestTask(String methodType, String restUrl, NetworkProvider networkProvider, RestTaskCallback callback,
                     String requestBody) {
@@ -98,10 +94,10 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
      * By default, the task return to the user the HttpResponseCode that it got from the server
      * this method can by override in case we want to return other strings (such as even in JSON, ...)
      *
-     * @return
-     * @throws IOException
      * @param responseCode
      * @param conn
+     * @return
+     * @throws IOException
      */
     protected String setResponse(int responseCode, HttpURLConnection conn) throws IOException {
         String response = Integer.toString(responseCode);

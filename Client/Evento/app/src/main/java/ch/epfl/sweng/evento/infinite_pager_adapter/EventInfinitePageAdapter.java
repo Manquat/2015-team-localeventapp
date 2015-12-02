@@ -1,22 +1,18 @@
 package ch.epfl.sweng.evento.infinite_pager_adapter;
 
 import android.app.Activity;
-import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import ch.epfl.sweng.evento.EventDatabase;
-import ch.epfl.sweng.evento.event.Event;
-
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.event.Event;
 
 /**
  * An infinite page adapter for the event activity

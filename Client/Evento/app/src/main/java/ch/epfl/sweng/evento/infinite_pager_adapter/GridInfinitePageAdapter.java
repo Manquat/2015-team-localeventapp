@@ -14,9 +14,9 @@ import java.util.List;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.calendar.GridCalendarAdapter;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.infinite_pager_adapter.internal.Constants;
-import ch.epfl.sweng.evento.Calendar.GridCalendarAdapter;
 import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 
 /**

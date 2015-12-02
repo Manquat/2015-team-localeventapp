@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ch.epfl.sweng.evento.Calendar.CalendarDay
+    <ch.epfl.sweng.evento.calendar.CalendarDay
         android:id="@+id/cell_button_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

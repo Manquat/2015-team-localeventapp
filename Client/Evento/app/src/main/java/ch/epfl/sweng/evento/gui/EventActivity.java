@@ -17,7 +17,7 @@ public class EventActivity extends AppCompatActivity {
     public static final String KEYCURRENTEVENT = "CurrentEventKey";
 
 
-    private InfiniteViewPager        mPager;
+    private InfiniteViewPager mPager;
     private EventInfinitePageAdapter mAdapter;
 
     @Override
