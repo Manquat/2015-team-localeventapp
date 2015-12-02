@@ -19,7 +19,7 @@ public enum Settings {
         return "http://128.179.182.154:8000/";
     }*/
     public static String getServerUrl() {
-        return "http://128.179.134.67:8000/";
+        return "http://128.179.133.221:8000/";
     }
 
 

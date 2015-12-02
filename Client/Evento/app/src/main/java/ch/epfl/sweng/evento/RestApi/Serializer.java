@@ -1,5 +1,7 @@
 package ch.epfl.sweng.evento.RestApi;
 
+import android.util.Log;
+
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.User;
 
@@ -34,11 +36,12 @@ public final class Serializer {
     public static String user(User u){
 
         String res = "{\n"
-                + "  \"id\": " + u.getUserId() + ",\n"
+                + "  \"id\": " + 1000 + ",\n"
                 + "  \"name\": \"" + u.getUsername() + "\",\n"
                 + "  \"email\": \"" + u.getEmail() + "\",\n"
+                + "  \"google_id\": \"" + "1004" + "\",\n"
                 + "}\n";
-
+        Log.d(TAG, "Information sent to Server: " + res);
         return res;
     }
 
