@@ -5,3 +5,4 @@
 /Server/mysite/User/migrations
 /Server/mysite/events/fixtures/Event.json
 /Server/mysite/User/migrations/0001_initial.py
+/Server/mysite/SHELL.py

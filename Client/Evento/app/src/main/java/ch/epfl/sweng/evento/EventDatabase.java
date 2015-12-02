@@ -57,6 +57,7 @@ public enum EventDatabase {
         }
     }
 
+
     public void addOne(Event e) {
         if (e == null) {
             return;

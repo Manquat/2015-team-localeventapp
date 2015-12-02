@@ -2,23 +2,25 @@ package ch.epfl.sweng.evento;
 
 
 import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.plus.Plus;
-
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 
 public class LoginActivity extends AppCompatActivity implements
-        GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
 
@@ -26,14 +28,10 @@ public class LoginActivity extends AppCompatActivity implements
 //----Attributes-------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
+    private static final String TAG = "LoginActivity";
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 0;
-
     private GoogleApiClient mGoogleApiClient;
-    // Is there a ConnectionResult resolution in progress?
-    private boolean mIsResolving = false;
-    // Should we automatically resolve ConnectionResults when possible?
-    private boolean mShouldResolve = false;
 
 //---------------------------------------------------------------------------------------------
 //----Methods----------------------------------------------------------------------------------
@@ -43,21 +41,29 @@ public class LoginActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        // make sure there is a valid server client ID.
+        validateServerClientID();
+        // [START configure_signin]
+        // Request only the user's ID token, which can be used to identify the
+        // user securely to your backend. This will contain the user's basic
+        // profile (name, profile picture URL, etc)
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.server_client_id))
+                .build();
+        // [END configure_signin]
 
-
-        // Build GoogleApiClient with access to basic profile
+        // Build GoogleAPIClient with the Google Sign-In API and the above options.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .addOnConnectionFailedListener(this)
-                .addApiIfAvailable(Plus.API)
-                .addScope(new Scope(Scopes.PROFILE))
-                .addScope(new Scope(Scopes.EMAIL))
                 .build();
 
-        // Sign in if clicked
+
+        // The Color Scheme of the sign in button and setup of the OnClickListener to Sign in if clicked.
+        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        signInButton.setColorScheme(SignInButton.COLOR_DARK);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-
-
     }
 
     @Override
@@ -67,17 +73,6 @@ public class LoginActivity extends AppCompatActivity implements
         return true;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mGoogleApiClient.disconnect();
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -95,109 +90,87 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
+    public void onConnectionFailed(ConnectionResult result) {
+        Log.d(TAG, "onConnectionFailed:" + result);
+    }
+
+    //@Override
+    public void onClick(View v) {
+
+        if (v.getId() == R.id.sign_in_button) {
+            //Call sign in function
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+        }
 
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        // Could not connect to Google Play Services.  The user needs to select an account,
-        // grant permissions or resolve an error in order to sign in. Refer to the javadoc for
-        // ConnectionResult to see possible error codes.
+    protected void onStart() {
+        super.onStart();
 
-        final String TAG = "Connection failed.";
-
-        Log.i(TAG, "onConnectionFailed:" + connectionResult);
-
-        if (!mIsResolving && mShouldResolve) {
-            if (connectionResult.hasResolution()) {
-                try {
-                    connectionResult.startResolutionForResult(this, RC_SIGN_IN);
-                    mIsResolving = true;
-                } catch (IntentSender.SendIntentException e) {
-                    Log.e(TAG, "Could not resolve ConnectionResult.", e);
-                    mIsResolving = false;
-                    mGoogleApiClient.connect();
-                }
+        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        if (opr.isDone()) {
+            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+            // and the GoogleSignInResult will be available instantly.
+            Log.d(TAG, "Got cached sign-in");
+            GoogleSignInResult result = opr.get();
+            if (result.isSuccess()) {
+                GoogleSignInAccount acct = result.getSignInAccount();
+                String idToken = acct.getIdToken();
+                Log.d(TAG, "idToken:" + idToken);
+                Settings.INSTANCE.setIdToken(idToken);
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
             } else {
-                // Could not resolve the connection result, show the user an
-                // error dialog.
-                showErrorDialog(connectionResult);
+                Toast.makeText(this, "Could not connect, please try again", Toast.LENGTH_SHORT).show();
             }
         } else {
-            // Show the signed-out UI
-            showSignedOutUI();
+            // If the user has not previously signed in on this device or the sign-in has expired,
+            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
+            // single sign-on will occur in this branch.
+            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                @Override
+                public void onResult(GoogleSignInResult googleSignInResult) {
+
+                }
+            });
         }
     }
 
-    private void showErrorDialog(ConnectionResult connectionResult) {
-        //TODO
-    }
-
-    private void showSignedOutUI() {
-        //TODO
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
     }
 
     @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.sign_in_button) {
-            onSignInClicked();
-        }
-    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-
-    private void onSignInClicked() {
-        // User clicked the sign-in button, so begin the sign-in process and automatically
-        // attempt to resolve any errors that occur.
-        mShouldResolve = true;
-        mGoogleApiClient.connect();
-
-        // Show a message to the user that we are signing in.
-        //TODO define mStatus.
-        //TextView mStatus = (TextView) ;
-        //mStatus.setText(R.string.signing_in);
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        final String TAG = "Result of connection.";
-
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.i(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
-
-        //TODO How does requestCode change?
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            // If the error resolution was not successful we should not resolve further.
-            if (resultCode != RESULT_OK) {
-                mShouldResolve = false;
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                GoogleSignInAccount acct = result.getSignInAccount();
+                String idToken = acct.getIdToken();
+                Log.d(TAG, "idToken:" + idToken);
+                Settings.INSTANCE.setIdToken(idToken);
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Could not connect, please try again", Toast.LENGTH_SHORT).show();
             }
-
-            mIsResolving = false;
-            mGoogleApiClient.connect();
         }
     }
 
-    @Override
-    public void onConnected(Bundle bundle) {
-        final String TAG = "Connection successful: ";
-        // onConnected indicates that an account was selected on the device, that the selected
-        // account has granted any requested permissions to our app and that we were able to
-        // establish a service connection to Google Play services.
-        Log.i(TAG, "onConnected:" + bundle);
-        mShouldResolve = false;
+    private void validateServerClientID() {
+        String serverClientId = getString(R.string.server_client_id);
+        String suffix = ".apps.googleusercontent.com";
+        if (!serverClientId.trim().endsWith(suffix)) {
+            String message = "Invalid server client ID in strings.xml, must end with " + suffix;
 
-        // Show the signed-in UI
-        //showSignedInUI();
-        //TODO something with token and backend server?
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+            Log.w(TAG, message);
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
     }
-
-    private void showSignedInUI() {
-        //TODO
-    }
-
-
 }

@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import ch.epfl.sweng.evento.NetworkProvider;
+import ch.epfl.sweng.evento.Settings;
 
 /**
  * An AsyncTask implementation for performing GETs.
@@ -42,6 +43,8 @@ public class GetTask extends AsyncTask<String, Void, String> {
             HttpURLConnection conn = mNetworkProvider.getConnection(url);
             // set server connection
             conn.setRequestMethod("GET");
+            Log.v(TAG, Settings.INSTANCE.getIdToken());
+            conn.setRequestProperty("token", Settings.INSTANCE.getIdToken());
             conn.setDoInput(true);
             conn.connect();
             // get HTTP response code and get the event ONLY in case of success
