@@ -13,8 +13,9 @@ import java.util.Map;
 
 /**
  * Created by thomas on 28/11/15.
+ * 
  */
-public class SeparatedListAdapter extends BaseAdapter {
+public  class SeparatedListAdapter extends BaseAdapter {
     public final Map<String,Adapter> sections = new LinkedHashMap<String,Adapter>();
     public final ArrayAdapter<String> headers;
     public final static int TYPE_SECTION_HEADER = 0;
