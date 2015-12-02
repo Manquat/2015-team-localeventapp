@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import ch.epfl.sweng.evento.tabs_fragment.Calendar.CalendarGrid;
+import ch.epfl.sweng.evento.Calendar.CalendarGrid;
 
 import static java.util.Locale.setDefault;
 import static junit.framework.Assert.assertEquals;

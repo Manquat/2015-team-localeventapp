@@ -2,7 +2,6 @@ package ch.epfl.sweng.evento.gui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -10,15 +9,16 @@ import android.view.MenuItem;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.event.EventPageAdapter;
+import ch.epfl.sweng.evento.infinite_pager_adapter.EventInfinitePageAdapter;
+import ch.epfl.sweng.evento.infinite_pager_adapter.InfiniteViewPager;
 
 public class EventActivity extends AppCompatActivity {
 
     public static final String KEYCURRENTEVENT = "CurrentEventKey";
 
 
-    private ViewPager mPager;
-    private EventPageAdapter mAdapter;
+    private InfiniteViewPager        mPager;
+    private EventInfinitePageAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,23 +30,20 @@ public class EventActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
-        // Creating the EventPageAdapter
-        mAdapter = new EventPageAdapter(getSupportFragmentManager());
-
-        // Assigning ViewPager View and setting the adapter
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPager.setAdapter(mAdapter);
-
         // get the signature of the current event
+
         int currentEventSignature = EventDatabase.INSTANCE.getFirstEvent().getID();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             currentEventSignature = bundle.getInt(KEYCURRENTEVENT);
         }
 
+        // Creating the EventInfinitePageAdapter at the current position
+        mAdapter = new EventInfinitePageAdapter(currentEventSignature, this);
 
-        // Set the position of the page viewer at the correct event
-        mPager.setCurrentItem(EventDatabase.INSTANCE.getPosition(currentEventSignature));
+        // Assigning ViewPager View and setting the adapter
+        mPager = (InfiniteViewPager) findViewById(R.id.event_infinite_pager);
+        mPager.setAdapter(mAdapter);
     }
 
     @Override

@@ -47,8 +47,9 @@ public class SearchActivity extends AppCompatActivity
     private static final String TAG = "SearchActivity";
     private TextView mStartDateView;
     private TextView mEndDateView;
-    private GregorianCalendar startDate;
-    private GregorianCalendar endDate;
+
+    private Calendar startDate;
+    private Calendar endDate;
     private boolean mStartOrEndDate;
     private DatePickerDialogFragment mDateFragment;
 
@@ -119,7 +120,9 @@ public class SearchActivity extends AppCompatActivity
 
                 GregorianCalendar startTime = new GregorianCalendar(startDate.get(Calendar.YEAR),
                         startDate.get(Calendar.MONTH), startDate.get(Calendar.DAY_OF_MONTH));
+
                 GregorianCalendar endTime = new GregorianCalendar(endDate.get(Calendar.YEAR),
+
                         endDate.get(Calendar.MONTH), endDate.get(Calendar.DAY_OF_MONTH));
 
                 mRestApi.getWithFilter(startTime, endTime, latitude, longitude, radius, new GetEventListCallback() {

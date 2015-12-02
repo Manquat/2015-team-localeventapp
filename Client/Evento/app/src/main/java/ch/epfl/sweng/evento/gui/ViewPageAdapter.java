@@ -6,9 +6,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.List;
 
-import ch.epfl.sweng.evento.tabs_fragment.CalendarTabs;
 import ch.epfl.sweng.evento.tabs_fragment.ContentFragment;
 import ch.epfl.sweng.evento.tabs_fragment.MapsFragment;
+import ch.epfl.sweng.evento.Calendar.CalendarTabs;
 
 /**
  * Fragment page adapter that holds the creation and management of the 3 main tabs

@@ -105,20 +105,6 @@ public enum EventDatabase {
         return mEventSet.getNext(current);
     }
 
-    public Event get(int position) {
-        Event currentEvent = getFirstEvent();
-        for (int i = 0; i <= position; i++) {
-            currentEvent = getNextEvent(currentEvent);
-        }
-        return currentEvent;
-    }
-
-    public int getPosition(int id) {
-        return mEventSet.getPosition(id);
-    }
-
-    //public Event getNextEvent(long signature) { return mEventSet.getNext(signature);}
-
     /**
      * This method returns the previous Event before the one passed in argument, in the order of starting
      * CustomDate and ID. If 'current' is the first one, it will return it instead.
@@ -126,9 +112,16 @@ public enum EventDatabase {
      * @param current the current Event which is the reference to get the previous Event
      * @return the Event that is right before the 'current' Event in the starting CustomDate order
      */
-
     public Event getPreviousEvent(Event current) {
         return mEventSet.getPrevious(current);
+    }
+
+    public Event get(int position) {
+        Event currentEvent = getFirstEvent();
+        for (int i = 0; i <= position; i++) {
+            currentEvent = getNextEvent(currentEvent);
+        }
+        return currentEvent;
     }
 
     public EventSet filter(LatLng latLng, double distance) {

@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -64,6 +65,7 @@ public class RestApiTest {
             + "    \"Okay guys, let's play a little game this evening at dorigny. Remember: no doping allowed!\" ,\n"
             + "  \"latitude\": 46.519428,\n"
             + "  \"longitude\": 6.580847,\n"
+            + "  \"date\": \"26/02/1992 at 13:30\",\n"
             + "  \"address\": \"Terrain de football de Dorigny\", \n "
             + "  \"creator\": \"Micheal Jackson\"\n"
             + "}\n";
@@ -221,6 +223,7 @@ public class RestApiTest {
             + "  \"date\" : \"1991-01-15T23:00:00Z\",\n "
             + "   \"creator\": \"Guillaume Meyrat\"\n"
             + "}\n";
+
 
     private static final Calendar date = new GregorianCalendar(1990, 12, 16, 0, 0);
     private static final Event e = new Event(10, "Ping-Pong at Sat 2", "Beer, ping-pong... let's beerpong",

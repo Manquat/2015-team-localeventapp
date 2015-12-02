@@ -1,11 +1,19 @@
 package ch.epfl.sweng.evento.rest_api;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import ch.epfl.sweng.evento.Comment;
 import ch.epfl.sweng.evento.event.Event;
@@ -24,6 +32,18 @@ public class Parser {
 
         final JSONObject json = jsonObject;
 
+        GregorianCalendar startDate = new GregorianCalendar(0, 0, 0);
+        GregorianCalendar endDate = new GregorianCalendar(0, 0, 0);
+
+        try {
+            Calendar cal = fromStringToCalendar(jsonObject.getString("date"));
+            startDate.setTime(cal.getTime());
+            endDate = startDate;
+            Log.d(TAG, startDate.toString());
+        } catch (ParseException e) {
+            Log.e(TAG, "Date not correctly parsed", e);
+        }
+
         try {
             return new Event(jsonObject.getInt("id"),
                     jsonObject.getString("Event_name"),
@@ -32,7 +52,9 @@ public class Parser {
                     jsonObject.getDouble("longitude"),
                     jsonObject.getString("address"),
                     jsonObject.getString("creator"),
-                    new HashSet<String>());
+                    new HashSet<String>(),
+                    startDate,
+                    endDate);
 
         } catch (IllegalArgumentException e) {
             throw new JSONException("Invalid question structure");
@@ -73,5 +95,13 @@ public class Parser {
         response = response.substring(1);
         String[] responseLines = response.split("\n");
         return responseLines;
+    }
+
+    private static Calendar fromStringToCalendar(String s) throws ParseException {
+        Calendar cal = new GregorianCalendar();
+        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
+        timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+        cal.setTime(timeFormat.parse(s));
+        return cal;
     }
 }
