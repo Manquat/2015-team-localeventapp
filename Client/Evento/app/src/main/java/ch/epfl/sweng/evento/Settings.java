@@ -20,6 +20,7 @@ public enum Settings {
     public String getIdToken() {
         return mIdToken;
     }
+
     public void setIdToken(String IdToken) {
         this.mIdToken = IdToken;
     }
