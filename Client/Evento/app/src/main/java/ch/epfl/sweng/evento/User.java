@@ -66,27 +66,19 @@ public class User {
 
     public void addHostedEvent(Event event) {
         final String message = "Cannot add a null event as a hosted event";
-        if(Build.VERSION.SDK_INT >= 19) {
-            mHostedEvent.add(Objects.requireNonNull(event, message));
+        if (event != null){
+            mHostedEvent.add(event);
         } else {
-            if (event != null){
-                mHostedEvent.add(event);
-            } else {
-                throw new NullPointerException(message);
-            }
+            throw new NullPointerException(message);
         }
     }
 
     public void addMatchedEvent(Event event) {
         final String message = "Cannot add a null event as a matched event";
-        if(Build.VERSION.SDK_INT >= 19) {
-            mMatchedEvent.add(Objects.requireNonNull(event, message));
+        if (event != null){
+            mMatchedEvent.add(event);
         } else {
-            if (event != null){
-                mMatchedEvent.add(event);
-            } else {
-                throw new NullPointerException(message);
-            }
+            throw new NullPointerException(message);
         }
     }
 

@@ -78,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        user1 = new User();
-        user2 = new User();
+        user1 = new User(1, "Tom", "thomas@epfl.ch");
+        user2 = new User(2, "Ben", "ben@epfl.ch");
 
 
         // Creating the Toolbar and setting it as the Toolbar for the activity

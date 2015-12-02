@@ -119,17 +119,11 @@ public class Event implements ClusterItem {
 
 
     public boolean addParticipant(User participant){
+        if (participant == null) {
+            throw new NullPointerException("participant cannot be null");
+        }
         if (mParticipants.size() < mNumberMaxOfParticipants) {
-            if(Build.VERSION.SDK_INT >= 19) {
-                mParticipants.add(Objects.requireNonNull(participant, "Cannot add a null participant"));
-            } else {
-                if (participant != null){
-                    mParticipants.add(participant);
-                } else {
-                    throw new NullPointerException("Cannot add a null participant");
-                }
-            }
-
+            mParticipants.add(participant);
             return true;
         } else {
             return false;
@@ -146,14 +140,8 @@ public class Event implements ClusterItem {
     }
 
     public void removeParticipant(User participant){
-        if(Build.VERSION.SDK_INT >= 19){
-            if (checkIfParticipantIsIn(Objects.requireNonNull(participant, "Cannot remove a null participant"))) {
-                mParticipants.remove(participant);
-            }
-        } else {
-            if (checkIfParticipantIsIn(participant)) {
-                mParticipants.remove(participant);
-            }
+        if (checkIfParticipantIsIn(participant)) {
+            mParticipants.remove(participant);
         }
     }
 
