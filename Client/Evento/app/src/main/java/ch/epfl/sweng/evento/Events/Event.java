@@ -125,6 +125,7 @@ public class Event implements ClusterItem {
             } else {
                 if (participant != null){
                     mParticipants.add(participant);
+                    
                 } else {
                     throw new NullPointerException("Cannot add a null participant");
                 }
@@ -135,7 +136,7 @@ public class Event implements ClusterItem {
         }
     }
 
-    
+
     public Set<User> getAllParticipant() {
         return mParticipants;
     }
