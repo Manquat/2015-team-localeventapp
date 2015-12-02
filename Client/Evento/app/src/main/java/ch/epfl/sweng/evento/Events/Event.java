@@ -182,6 +182,7 @@ public class Event implements ClusterItem {
         return dateFormat.format(calendar.getTime());
     }
 
+
     public String getStartDateAsString() {
         return asNiceString(mStartDate);
     }

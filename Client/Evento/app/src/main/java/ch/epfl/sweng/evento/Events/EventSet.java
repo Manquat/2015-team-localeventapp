@@ -12,8 +12,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
+import ch.epfl.sweng.evento.EventDatabase;
 
 /**
  * Container of multiple events
@@ -71,6 +74,10 @@ public class EventSet {
         }
     }
 
+    public Event getLast() {
+        return mEvents.lastEntry().getValue();
+    }
+
     public Event getNext(Event current) {
         if (mEvents.size() > 1) {
             return getNext(current.getID());
@@ -87,11 +94,16 @@ public class EventSet {
      * @return the Event with the closest signature
      */
     public Event getNext(int id) {
-        Event event = mEvents.higherEntry(mIDs.get(id)).getValue();
-        if (event != null) {
-            return event;
+        Map.Entry<Signature, Event> entry = mEvents.higherEntry(mIDs.get(id));
+        if (entry != null) {
+            Event event = entry.getValue();
+            if (event != null) {
+                return event;
+            } else {
+                return getErrorEvent();
+            }
         } else {
-            return getErrorEvent();
+            return getFirst();
         }
     }
 
@@ -107,15 +119,20 @@ public class EventSet {
     /**
      * Returns the Event with the closest lower signature from the one passed in argument
      *
-     * @param ID the reference ID
+     * @param id the reference ID
      * @return the Event with the closest lower signature
      */
-    public Event getPrevious(int ID) {
-        Event event = mEvents.lowerEntry(mIDs.get(ID)).getValue();
-        if (event != null) {
-            return event;
+    public Event getPrevious(int id) {
+        Map.Entry<Signature, Event> entry = mEvents.lowerEntry(mIDs.get(id));
+        if (entry != null) {
+            Event event = entry.getValue();
+            if (event != null) {
+                return event;
+            } else {
+                return getErrorEvent();
+            }
         } else {
-            return getErrorEvent();
+            return getLast();
         }
     }
 
@@ -188,6 +205,7 @@ public class EventSet {
         return newEventSet;
     }
 
+
     /**
      * Returns a set of all the Events that start after the date passed in argument
      *
@@ -197,14 +215,13 @@ public class EventSet {
     public EventSet filter(Calendar startDate) {
         EventSet newEventSet = new EventSet();
         for (Event event : mEvents.values()) {
-            if (event.getStartDate().get(Calendar.YEAR) >= startDate.get(Calendar.YEAR) &&
-                    event.getStartDate().get(Calendar.MONTH) >= startDate.get(Calendar.MONTH) &&
-                    event.getStartDate().get(Calendar.DAY_OF_MONTH) >= startDate.get(Calendar.DAY_OF_MONTH)) {
+            if (event.getStartDate().getTimeInMillis() >= startDate.getTimeInMillis()) {
                 newEventSet.addEvent(event);
             }
         }
         return newEventSet;
     }
+
 
     /**
      * Returns a set of all the Events that start on the same day as the date passed in argument

@@ -16,7 +16,7 @@ import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.InfinitePagerAdapter.internal.Constants;
 import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.tabsFragment.Calendar.GridCalendarAdapter;
+import ch.epfl.sweng.evento.Calendar.GridCalendarAdapter;
 import ch.epfl.sweng.evento.tabsFragment.Refreshable;
 
 /**
@@ -82,7 +82,7 @@ public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> imple
         mParent.refresh();
     }
 
-    public  void nextMonth() {
+    public void nextMonth() {
         setCurrentIndicator(getNextIndicator());
         fillPage(Constants.PAGE_POSITION_CENTER);
         refresh();
