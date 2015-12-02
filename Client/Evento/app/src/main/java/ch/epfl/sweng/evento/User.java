@@ -1,10 +1,12 @@
 package ch.epfl.sweng.evento;
 
+import android.os.Build;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.Events.Event;
@@ -20,27 +22,23 @@ public class User {
 
     private static final String TAG = "User";
 
+    private int mID;//needed for getting the user's information from server
     private String mUsername;
     private String mEmail;
     //private Event.CustomDate mDateOfBirth;
     //A unique Id for each Google Account
-    private String mUserId;
+
     private Set<Event> mMatchedEvent;
     private Set<Event> mHostedEvent;
     //private LatLng mHomeAddress;
     //private Event.CustomDate mStartOfMembership;
 
-
-    public User(){
-        mUsername = "Alfred";
+    public User(int id, String username, String email){
+        mID = id;
+        mUsername = username;
+        mEmail = email;
         mMatchedEvent = new HashSet<>();
         mHostedEvent = new HashSet<>();
-    }
-
-    public User(String username,Set<Event> matchedEvent, Set<Event> hostedEvent){
-        mUsername = username;
-        mMatchedEvent = new HashSet<>(matchedEvent);
-        mHostedEvent = new HashSet<>(hostedEvent);
     }
 //---------------------------------------------------------------------------------------------
 //----Methods----------------------------------------------------------------------------------
@@ -63,9 +61,6 @@ public class User {
         return mDateOfBirth;
     }*/
 
-    public String getmUserId() {
-        return mUserId;
-    }
 
     /*
     public LatLng getmHomeAddress() {
@@ -77,21 +72,29 @@ public class User {
     }
     */
 
-    public boolean addHostedEvent(Event event) {
-        if (event != null) {
-            mHostedEvent.add(event);
-            return true;
+    public void addHostedEvent(Event event) {
+        final String message = "Cannot add a null event as a hosted event";
+        if(Build.VERSION.SDK_INT >= 19) {
+            mHostedEvent.add(Objects.requireNonNull(event, message));
         } else {
-            throw new IllegalArgumentException("Cannot add a null event as a Hosted Event");
+            if (event != null){
+                mHostedEvent.add(event);
+            } else {
+                throw new NullPointerException(message);
+            }
         }
     }
 
-    public boolean addMatchedEvent(Event event) {
-        if (event != null) {
-            mMatchedEvent.add(event);
-            return true;
+    public void addMatchedEvent(Event event) {
+        final String message = "Cannot add a null event as a matched event";
+        if(Build.VERSION.SDK_INT >= 19) {
+            mMatchedEvent.add(Objects.requireNonNull(event, message));
         } else {
-            throw new IllegalArgumentException("Cannot add a null event as a Matched Event");
+            if (event != null){
+                mMatchedEvent.add(event);
+            } else {
+                throw new NullPointerException(message);
+            }
         }
     }
 
@@ -134,10 +137,6 @@ public class User {
     /*public void setmDateOfBirth(Event.CustomDate mDateOfBirth) {
         this.mDateOfBirth = mDateOfBirth;
     }*/
-
-    public void setmUserId(String mUserId) {
-        this.mUserId = mUserId;
-    }
 
     /*
     public void setmHomeAddress(LatLng mHomeAddress) {
