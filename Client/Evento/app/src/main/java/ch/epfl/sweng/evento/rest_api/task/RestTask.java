@@ -55,13 +55,17 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
             communicateWithServer(conn);
             // get HTTP response code and get the event ONLY in case of success
             int responseCode = getResponseCode(conn);
+            // test if response code is indicate success
+            if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END) {
+                throw new RestException("Http Response Code: " + Integer.toString(responseCode));
+            }
             // get the event
             response = setResponse(responseCode, conn);
 
         } catch (IOException e) {
-            Log.e(TAG, "Exception thrown in doInBackground", e);
+            Log.e(TAG, "Server connection failed", e);
         } catch (RestException e) {
-            Log.e(TAG, "Exception thrown in doInBackground", e);
+            Log.e(TAG, e.toString());
         }
         return response;
     }
@@ -74,12 +78,8 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
     }
 
 
-    protected int getResponseCode(HttpURLConnection conn) throws IOException, RestException {
+    protected int getResponseCode(HttpURLConnection conn) throws IOException {
         int responseCode = conn.getResponseCode();
-        Log.v(TAG, "responseCode " + Integer.toString(responseCode));
-        if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END) {
-            throw new RestException("Invalid HTTP response code");
-        }
         return responseCode;
     }
 
