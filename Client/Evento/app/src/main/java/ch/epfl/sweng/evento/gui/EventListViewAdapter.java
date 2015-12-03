@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento.event;
+package ch.epfl.sweng.evento.gui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.gui.EventActivity;
 
 /**

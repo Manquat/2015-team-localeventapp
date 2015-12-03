@@ -1,10 +1,15 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.gui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import ch.epfl.sweng.evento.Comment;
+import ch.epfl.sweng.evento.Conversation;
+import ch.epfl.sweng.evento.EventDatabase;
+import ch.epfl.sweng.evento.MockUser;
+import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.gui.ConversationAdapter;
 

@@ -31,7 +31,7 @@
 
     </LinearLayout>
 
-    <ch.epfl.sweng.evento.infinite_pager_adapter.InfiniteViewPager
+    <ch.epfl.sweng.evento.gui.infinite_pager_adapter.InfiniteViewPager
         android:layout_width="match_parent"
         android:layout_height="@dimen/calendar_grid_view_height"
         android:id="@+id/calendar_infinite_pager" />

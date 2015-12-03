@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ch.epfl.sweng.evento.infinite_pager_adapter;
+package ch.epfl.sweng.evento.gui.infinite_pager_adapter;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -24,14 +24,14 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
 
-import ch.epfl.sweng.evento.infinite_pager_adapter.internal.Constants;
+import ch.epfl.sweng.evento.gui.infinite_pager_adapter.internal.Constants;
 
-import static ch.epfl.sweng.evento.infinite_pager_adapter.internal.Constants.ADAPTER_STATE;
-import static ch.epfl.sweng.evento.infinite_pager_adapter.internal.Constants.LOG_TAG;
-import static ch.epfl.sweng.evento.infinite_pager_adapter.internal.Constants.PAGE_POSITION_CENTER;
-import static ch.epfl.sweng.evento.infinite_pager_adapter.internal.Constants.PAGE_POSITION_LEFT;
-import static ch.epfl.sweng.evento.infinite_pager_adapter.internal.Constants.PAGE_POSITION_RIGHT;
-import static ch.epfl.sweng.evento.infinite_pager_adapter.internal.Constants.SUPER_STATE;
+import static ch.epfl.sweng.evento.gui.infinite_pager_adapter.internal.Constants.ADAPTER_STATE;
+import static ch.epfl.sweng.evento.gui.infinite_pager_adapter.internal.Constants.LOG_TAG;
+import static ch.epfl.sweng.evento.gui.infinite_pager_adapter.internal.Constants.PAGE_POSITION_CENTER;
+import static ch.epfl.sweng.evento.gui.infinite_pager_adapter.internal.Constants.PAGE_POSITION_LEFT;
+import static ch.epfl.sweng.evento.gui.infinite_pager_adapter.internal.Constants.PAGE_POSITION_RIGHT;
+import static ch.epfl.sweng.evento.gui.infinite_pager_adapter.internal.Constants.SUPER_STATE;
 
 /**
  * ViewPager that allows infinite scrolling.

@@ -10,7 +10,6 @@ import android.widget.EditText;
 
 import ch.epfl.sweng.evento.Comment;
 import ch.epfl.sweng.evento.Conversation;
-import ch.epfl.sweng.evento.ConversationActivity;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.MockUser;
 import ch.epfl.sweng.evento.R;

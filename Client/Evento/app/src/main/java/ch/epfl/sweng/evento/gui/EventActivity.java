@@ -9,8 +9,8 @@ import android.view.MenuItem;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.infinite_pager_adapter.EventInfinitePageAdapter;
-import ch.epfl.sweng.evento.infinite_pager_adapter.InfiniteViewPager;
+import ch.epfl.sweng.evento.gui.infinite_pager_adapter.EventInfinitePageAdapter;
+import ch.epfl.sweng.evento.gui.infinite_pager_adapter.InfiniteViewPager;
 
 public class EventActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento.infinite_pager_adapter;
+package ch.epfl.sweng.evento.gui.infinite_pager_adapter;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ch.epfl.sweng.evento.ConversationActivity;
+import ch.epfl.sweng.evento.gui.ConversationActivity;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.event.Event;

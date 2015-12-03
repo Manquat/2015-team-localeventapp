@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento.infinite_pager_adapter;
+package ch.epfl.sweng.evento.gui.infinite_pager_adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,7 +16,7 @@ import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.calendar.GridCalendarAdapter;
 import ch.epfl.sweng.evento.event.Event;
-import ch.epfl.sweng.evento.infinite_pager_adapter.internal.Constants;
+import ch.epfl.sweng.evento.gui.infinite_pager_adapter.internal.Constants;
 import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 
 /**
