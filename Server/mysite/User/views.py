@@ -61,7 +61,7 @@ def update_user(request, pk, format=None):
 @api_view(['GET'])
 def created_events(request, pk, format=None):
     """
-    Create an User
+    returns events created by user
     """
 
     try:
@@ -77,7 +77,7 @@ def created_events(request, pk, format=None):
 @api_view(['GET'])
 def commented_events(request, pk, format=None):
     """
-    Create an User
+    returns events commented by user
     """
 
     try:
@@ -93,7 +93,7 @@ def commented_events(request, pk, format=None):
 @api_view(['GET'])
 def joined_events(request, pk, format=None):
     """
-    Create an User
+    returns events joined by an user
     """
 
     try:
