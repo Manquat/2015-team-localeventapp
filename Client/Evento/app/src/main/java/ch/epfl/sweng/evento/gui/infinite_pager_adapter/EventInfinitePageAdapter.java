@@ -8,13 +8,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ch.epfl.sweng.evento.Comment;
+import ch.epfl.sweng.evento.Conversation;
+import ch.epfl.sweng.evento.MockUser;
 import ch.epfl.sweng.evento.gui.ConversationActivity;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.gui.ConversationAdapter;
 
 /**
  * An infinite page adapter for the event activity
@@ -47,7 +53,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
 
         // inflating  the layout
         LayoutInflater inflater = LayoutInflater.from(mActivity);
-        GridLayout layout = (GridLayout) inflater.inflate(R.layout.fragment_event,
+        ScrollView layout = (ScrollView) inflater.inflate(R.layout.fragment_event,
                 (ViewGroup) mActivity.getWindow().getDecorView().getRootView(), false);
 
         updateFields(layout, event);
@@ -82,14 +88,26 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
             }
         });
 
-        Button conversation = (Button) rootView.findViewById(R.id.event_conversation);
-        conversation.setOnClickListener(new View.OnClickListener() {
+        Conversation conversation = currentEvent.getConversation();
+        if (conversation.size() == 0) { //TODO remove mock conversation
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "blop"));
+        }
+
+        ConversationAdapter conversationAdapter = new ConversationAdapter(mActivity, conversation,
+                getCurrentIndicator());
+        ListView listView = (ListView) rootView.findViewById(R.id.event_list_comment);
+        listView.setAdapter(conversationAdapter);
+
+/*
+        Button loadMoreComment = (Button) rootView.findViewById(R.id.event_conversation);
+        loadMoreComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mActivity, ConversationActivity.class);
                 intent.putExtra(ConversationActivity.KEY_CURRENT_CONVERSATION, getCurrentIndicator());
                 mActivity.startActivity(intent);
             }
-        });
+        });*/
     }
 }
