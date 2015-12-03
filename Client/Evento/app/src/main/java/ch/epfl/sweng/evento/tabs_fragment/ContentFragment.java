@@ -39,6 +39,7 @@ import java.util.Vector;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.gui.EventActivity;
 import ch.epfl.sweng.evento.rest_api.RestApi;
@@ -132,6 +133,10 @@ public class ContentFragment extends Fragment implements Refreshable {
                 EventDatabase.INSTANCE.addAll(eventArrayList);
                 refresh();
                 Toast.makeText(mActivity.getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
+            }
+
+            public void onUserListReceived(List<User> userArrayList){
+
             }
         });
     }

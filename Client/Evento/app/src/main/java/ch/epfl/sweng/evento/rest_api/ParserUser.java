@@ -4,13 +4,11 @@ import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-
-import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.User;
+
+
 
 /**
  * Created by thomas on 28/11/15.
@@ -21,7 +19,7 @@ public class ParserUser extends Parser {
         return null;
     }
 
-    public static User parseFromJSON(JSONObject jsonObject) throws JSONException {
+    public static User parseUserFromJSON(JSONObject jsonObject) throws JSONException {
 
         final JSONObject json = jsonObject;
 
@@ -36,7 +34,7 @@ public class ParserUser extends Parser {
         }
     }
 
-    public static List<User> parseFromJSONMultiple(String response) throws JSONException {
+    public static List<User> parseUserFromJSONMultiple(String response) throws JSONException {
         Log.d(TAG, response);
         ArrayList<User> userArrayList = new ArrayList<>();
 
@@ -47,7 +45,7 @@ public class ParserUser extends Parser {
         int i;
         for (String line : responseLines) {
             JSONObject jsonObject = new JSONObject(line);
-            userArrayList.add(parseFromJSON(jsonObject));
+            userArrayList.add(parseUserFromJSON(jsonObject));
         }
         return userArrayList;
     }

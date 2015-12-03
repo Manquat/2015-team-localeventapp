@@ -103,13 +103,13 @@ public class RestApi {
                 List<User> user = null;
                 if (response != null) {
                     try {
-                        user = ParserUser.parseFromJSONMultiple(response);
+                        user = ParserUser.parseUserFromJSONMultiple(response);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
 
                 }
-                callback.onDataReceived(user,0);
+                callback.onUserListReceived(user);
             }
         }).execute();
     }

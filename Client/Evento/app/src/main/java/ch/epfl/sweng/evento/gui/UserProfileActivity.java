@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.gui;
 
 
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+
+import ch.epfl.sweng.evento.R;
 
 
 /**

@@ -25,6 +25,7 @@ import ch.epfl.sweng.evento.rest_api.RestApi;
 
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 
@@ -165,9 +166,9 @@ public class LoginActivity extends AppCompatActivity implements
                 Settings.INSTANCE.setUser(u);
                 RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
 
-                restApi.postUser(u, new PostCallback() {
+                restApi.postUser(u, new HttpResponseCodeCallback() {
                     @Override
-                    public void onPostSuccess(String response) {
+                    public void onSuccess(String response) {
                         // assert submission
                         Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "User information sent to server");

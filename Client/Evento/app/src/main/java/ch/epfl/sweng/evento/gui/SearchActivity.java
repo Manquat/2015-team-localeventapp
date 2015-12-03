@@ -35,6 +35,7 @@ import java.util.List;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
@@ -131,6 +132,10 @@ public class SearchActivity extends AppCompatActivity
                         EventDatabase.INSTANCE.clear();
                         EventDatabase.INSTANCE.addAll(eventArrayList);
                         finish();
+                    }
+
+                    public void onUserListReceived(List<User> userArrayList){
+
                     }
                 });
 

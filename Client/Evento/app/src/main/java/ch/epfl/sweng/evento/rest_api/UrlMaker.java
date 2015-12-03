@@ -12,8 +12,10 @@ public abstract class UrlMaker {
     private final static String event = "events/";
     private final static String comment = "comments/";
     private final static String accessMaster = "Gandalf/";
+    protected static String access;
 
     abstract protected String getAccess();
+
     public UrlMaker() {
         access = getAccess();
     }

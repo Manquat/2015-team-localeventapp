@@ -23,7 +23,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +35,7 @@ import java.util.List;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
@@ -175,6 +175,9 @@ public class MainActivity extends AppCompatActivity {
                     ((Refreshable) page).refresh();
                 }
                 Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
+            }
+            public void onUserListReceived(List<User> userArrayList){
+
             }
         });
     }

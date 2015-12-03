@@ -37,7 +37,6 @@ public final class Serializer {
     }
 
     public static String user(User u){
-
         String res = "{\n"
                 //+ "  \"id\": "  + ",\n"
                 + "  \"name\": \"" + u.getUsername() + "\", \n"
@@ -54,7 +53,7 @@ public final class Serializer {
         String res = "{\n"
                 + "\"comment\": \"" + commentBody + "\",\n"
                 + "\"user\": \"" + userId + "\",\n"
-                + "\"event\": \"" + eventId + "\",\n"
+                + "\"event\": \"" + eventId + "\" \n"
                 + "}\n";
         return res;
     }

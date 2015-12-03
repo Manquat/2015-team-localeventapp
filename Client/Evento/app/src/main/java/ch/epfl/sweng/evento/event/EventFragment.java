@@ -14,15 +14,18 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.epfl.sweng.evento.DefaultNetworkProvider;
+
 import ch.epfl.sweng.evento.EventDatabase;
-import ch.epfl.sweng.evento.MainActivity;
+
 import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
-import ch.epfl.sweng.evento.RestApi.PutCallback;
-import ch.epfl.sweng.evento.RestApi.RestApi;
+
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;
+import ch.epfl.sweng.evento.gui.MainActivity;
+import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
+import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
 /**
  * Fragment that display an Event with an ID passed as an Extra with the key KEYCURRENTEVENT.
@@ -46,20 +49,23 @@ public class EventFragment extends Fragment {
 
         mEvent = EventDatabase.INSTANCE.getEvent(currentEventID);
 
-        getParticipant(currentEventSignature);
+        getParticipant(currentEventID);
         updateFields(rootView);
 
         return rootView;
     }
 
-    private void getParticipant(long signature){
+    private void getParticipant(int signature){
         mParticipants = new ArrayList<User>();
         mEvent = EventDatabase.INSTANCE.getEvent(signature);
 
         RestApi restAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-        restAPI.getUser(new GetMultipleResponseCallback() {
-            public void onDataReceived(List<User> userArrayList, int i) {
+        restAPI.getUser(new GetEventListCallback() {
+            public void onUserListReceived(List<User> userArrayList) {
                 mParticipants = userArrayList;
+            }
+            public void onEventListReceived(List<Event> eventArrayList){
+
             }
 
         }, mEvent.getID());
@@ -77,11 +83,14 @@ public class EventFragment extends Fragment {
 
         //Matched event
         hostedEvent = new ArrayList<Event>();;
-        restAPI.getMatchedEvent(new GetMultipleResponseCallback() {
-            public void onDataReceived(List<Event> eventArrayList) {
+        restAPI.getMatchedEvent(new GetEventListCallback() {
+            public void onEventListReceived(List<Event> eventArrayList) {
                 hostedEvent = eventArrayList;
                 Log.d(TAG, hostedEvent.get(0).getTitle());
                 Log.d(TAG, hostedEvent.get(1).getTitle());
+            }
+            public void onUserListReceived(List<User> userArrayList){
+
             }
 
         }, 8);
@@ -119,9 +128,9 @@ public class EventFragment extends Fragment {
                     Log.d("EventFragment.upd.", "addParticipant just returned false");
                 } else {
                     mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-                    mRestAPI.updateEvent(mEvent,new PutCallback() {
+                    mRestAPI.updateEvent(mEvent,new HttpResponseCodeCallback() {
                         @Override
-                        public void onPostSuccess(String response) {
+                        public void onSuccess(String response) {
                             Log.d("EventFrag.upd.", "Response" + response);
                         }
                     });

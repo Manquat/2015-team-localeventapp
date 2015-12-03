@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.gui;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -8,8 +8,8 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import ch.epfl.sweng.evento.Events.Event;
-import ch.epfl.sweng.evento.Events.EventPageAdapter;
+import ch.epfl.sweng.evento.R;
+
 
 /**
  * Created by Gaffinet on 23/11/2015.
