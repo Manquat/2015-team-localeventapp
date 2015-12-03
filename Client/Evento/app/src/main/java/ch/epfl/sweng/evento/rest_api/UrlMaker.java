@@ -46,6 +46,10 @@ public abstract class UrlMaker {
         return urlServer + access  + idEvent + "/" + idParticipant;
     }
 
+    public static String deleteParticipant(String urlServer, int idEvent, int idParticipant) {
+        return urlServer + access  + idEvent + "/" + idParticipant;
+    }
+
     public static String delete(String urlServer, int id) {
         return urlServer + access  + id;
     }

@@ -86,7 +86,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, Settings.INSTANCE.getUser().getEmail());
-                if(!mEvent.addParticipant(Settings.INSTANCE.getUser())) {
+                if (!mEvent.addParticipant(Settings.INSTANCE.getUser())) {
                     Log.d("TAG", "addParticipant just returned false");
                     mActivity.finish();
                 } else {
@@ -100,6 +100,27 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
                         }
                     });
                 }
+            }
+        });
+
+        Button removeUserFromEvent = (Button) rootView.findViewById(R.id.remove_user_from_event);
+        if(mEvent.checkIfParticipantIsIn(Settings.INSTANCE.getUser())){
+            removeUserFromEvent.setVisibility(View.VISIBLE);
+        } else {
+            removeUserFromEvent.setVisibility(View.INVISIBLE);
+        }
+        removeUserFromEvent.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(mActivity.getApplicationContext(), "Removed from the event", Toast.LENGTH_SHORT).show();
+                mRestAPI.removeParticipant(mEvent.getID(), Settings.INSTANCE.getUser().getUserId(), new HttpResponseCodeCallback() {
+                    @Override
+                    public void onSuccess(String response) {
+                        Log.d(TAG, "Response" + response);
+                        mActivity.finish();
+                    }
+                });
             }
         });
     }

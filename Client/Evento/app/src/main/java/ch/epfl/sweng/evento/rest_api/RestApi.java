@@ -311,6 +311,17 @@ public class RestApi {
         }).execute();
     }
 
+    public void removeParticipant(int idEvent, int idUser, final HttpResponseCodeCallback callback) {
+        UrlMakerEvent url = new UrlMakerEvent();
+        String restUrl = UrlMakerEvent.deleteParticipant(mUrlServer, idEvent, idUser);
+
+        new DeleteTask(restUrl, mNetworkProvider, new RestTaskCallback() {
+            public void onTaskComplete(String response) {
+                callback.onSuccess(response);
+            }
+        }).execute();
+    }
+
     /**
      * delete event base on its ID
      *

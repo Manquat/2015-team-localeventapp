@@ -116,13 +116,14 @@ public class EventFragment extends Fragment {
 
         ImageView pictureView = (ImageView) rootView.findViewById(R.id.eventPictureView);
         pictureView.setImageBitmap(mEvent.getPicture());
+
         Button joinEvent = (Button) rootView.findViewById(R.id.joinEvent);
         joinEvent.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 if(!mEvent.addParticipant(Settings.INSTANCE.getUser())) {
-                    Log.d("EventFragment.upd.", "addParticipant just returned false");
+                    Log.d(TAG, "addParticipant just returned false");
                 } else {
                     Toast.makeText(getActivity().getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
                     Settings.INSTANCE.getUser().addMatchedEvent(mEvent);
@@ -133,6 +134,27 @@ public class EventFragment extends Fragment {
                         }
                     });
                 }
+                getActivity().finish();
+            }
+        });
+
+        Button removeUserFromEvent = (Button) rootView.findViewById(R.id.remove_user_from_event);
+        if(mEvent.checkIfParticipantIsIn(Settings.INSTANCE.getUser())){
+            removeUserFromEvent.setVisibility(View.VISIBLE);
+        } else {
+            removeUserFromEvent.setVisibility(View.INVISIBLE);
+        }
+        removeUserFromEvent.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity().getApplicationContext(), "Removed from the event", Toast.LENGTH_SHORT).show();
+                mRestAPI.removeParticipant(mEvent.getID(), Settings.INSTANCE.getUser().getUserId(), new HttpResponseCodeCallback() {
+                    @Override
+                    public void onSuccess(String response) {
+                        Log.d(TAG, "Response" + response);
+                    }
+                });
                 getActivity().finish();
             }
         });
