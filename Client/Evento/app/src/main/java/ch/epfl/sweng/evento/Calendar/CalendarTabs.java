@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento.Calendar;
+package ch.epfl.sweng.evento.calendar;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -16,12 +16,12 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import ch.epfl.sweng.evento.Events.Event;
-import ch.epfl.sweng.evento.Events.EventListViewAdapter;
-import ch.epfl.sweng.evento.InfinitePagerAdapter.GridInfinitePageAdapter;
-import ch.epfl.sweng.evento.InfinitePagerAdapter.InfiniteViewPager;
 import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.tabsFragment.Refreshable;
+import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.event.EventListViewAdapter;
+import ch.epfl.sweng.evento.infinite_pager_adapter.GridInfinitePageAdapter;
+import ch.epfl.sweng.evento.infinite_pager_adapter.InfiniteViewPager;
+import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 
 /**
  * The fragment that holds the calendar and the listView that display the events at the current
@@ -33,13 +33,12 @@ public class CalendarTabs extends Fragment implements
         DatePickerDialog.OnDateSetListener {
 
 
-
     private GridInfinitePageAdapter mGridCalendarAdapter;
-    private TextView                mCurrentDate;
-    private View                    mBaseView;
-    private EventListViewAdapter    mEventListAdapter;
-    private DatePickerDialog        mDatePicker;
-    private InfiniteViewPager       mPager;
+    private TextView mCurrentDate;
+    private View mBaseView;
+    private EventListViewAdapter mEventListAdapter;
+    private DatePickerDialog mDatePicker;
+    private InfiniteViewPager mPager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -109,8 +108,6 @@ public class CalendarTabs extends Fragment implements
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         mGridCalendarAdapter.setFocusedDate(new GregorianCalendar(year, monthOfYear, dayOfMonth));
     }
-
-
 
 
     public void refresh() {

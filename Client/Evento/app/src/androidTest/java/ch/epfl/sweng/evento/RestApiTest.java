@@ -7,6 +7,7 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -23,19 +24,18 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.concurrent.ExecutionException;
 
-
-import ch.epfl.sweng.evento.Events.Event;
-import ch.epfl.sweng.evento.RestApi.DeleteResponseCallback;
-import ch.epfl.sweng.evento.RestApi.GetResponseCallback;
-import ch.epfl.sweng.evento.RestApi.Parser;
-import ch.epfl.sweng.evento.RestApi.PostCallback;
-import ch.epfl.sweng.evento.RestApi.PostTask;
-import ch.epfl.sweng.evento.RestApi.PutCallback;
-import ch.epfl.sweng.evento.RestApi.PutTask;
-import ch.epfl.sweng.evento.RestApi.RestApi;
-import ch.epfl.sweng.evento.RestApi.RestTaskCallback;
-import ch.epfl.sweng.evento.RestApi.GetTask;
-import ch.epfl.sweng.evento.RestApi.Serializer;
+import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.rest_api.Parser;
+import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.Serializer;
+import ch.epfl.sweng.evento.rest_api.callback.GetEventCallback;
+import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
+import ch.epfl.sweng.evento.rest_api.callback.RestTaskCallback;
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
+import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
+import ch.epfl.sweng.evento.rest_api.task.GetTask;
+import ch.epfl.sweng.evento.rest_api.task.PostTask;
+import ch.epfl.sweng.evento.rest_api.task.PutTask;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -165,9 +165,9 @@ public class RestApiTest {
         configureResponse(HttpURLConnection.HTTP_OK, PROPER_JSON_STRING, JSON_CONTENT_TYPE);
         RestApi restApi = new RestApi(networkProviderMockito, wrongUrl);
         final ArrayList<Event> eventArrayList = new ArrayList<Event>();
-        restApi.getEvent(new GetResponseCallback() {
+        restApi.getEvent(new GetEventCallback() {
             @Override
-            public void onDataReceived(Event event) {
+            public void onEventReceived(Event event) {
                 eventArrayList.add(event);
             }
         });
@@ -182,16 +182,16 @@ public class RestApiTest {
         assertEquals("description", eventArrayList.get(0).getDescription(), PROPER_EVENT.getDescription());
 
     }
-
+    @Ignore("If server modification have been done the test fails")
     @Test
     public void testGetEventServer() throws InterruptedException {
         RestApi restApi = new RestApi(networkProvider, urlServer);
         final ArrayList<Event> eventArrayList = new ArrayList<>();
         assertEquals("Before requesting, eventArrayList is empty", eventArrayList.size(), 0);
 
-        restApi.getEvent(new GetResponseCallback() {
+        restApi.getEvent(new GetEventCallback() {
             @Override
-            public void onDataReceived(Event event) {
+            public void onEventReceived(Event event) {
                 if (event != null) {
                     Log.d(TAG, event.getTitle());
                     Log.d(TAG, Integer.toString((event.getID())));
@@ -202,11 +202,11 @@ public class RestApiTest {
 
         Thread.sleep(2000);
 
-        assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
+        assertEquals("We get one event after requesting once", 1, eventArrayList.size());
 
-        restApi.getEvent(new GetResponseCallback() {
+        restApi.getEvent(new GetEventCallback() {
             @Override
-            public void onDataReceived(Event event) {
+            public void onEventReceived(Event event) {
                 eventArrayList.add(event);
             }
         });
@@ -252,9 +252,9 @@ public class RestApiTest {
     public void testPostEvent() {
         RestApi restApi = new RestApi(networkProvider, urlServer);
 
-        restApi.postEvent(e, new PostCallback() {
+        restApi.postEvent(e, new HttpResponseCodeCallback() {
             @Override
-            public void onPostSuccess(String response) {
+            public void onSuccess(String response) {
                 // nothing
             }
         });
@@ -291,9 +291,9 @@ public class RestApiTest {
     public void testUpdateEvent() throws InterruptedException {
         Event event = new Event(14, "this is a test of UpdateEvent", "test1", 0, 0, "address", "creator", new HashSet<String>(), "image", new HashSet<User>());
         RestApi restApi = new RestApi(networkProvider, urlServer);
-        restApi.updateEvent(event, new PutCallback() {
+        restApi.updateEvent(event, new HttpResponseCodeCallback() {
             @Override
-            public void onPostSuccess(String response) {
+            public void onSuccess(String response) {
 
             }
         });
@@ -305,9 +305,9 @@ public class RestApiTest {
     @Test
     public void testDeleteEvent() throws InterruptedException {
         RestApi restApi = new RestApi(networkProvider, urlServer);
-        restApi.deleteEvent(15, new DeleteResponseCallback() {
+        restApi.deleteEvent(15, new HttpResponseCodeCallback() {
             @Override
-            public void onDeleteSuccess(String response) {
+            public void onSuccess(String response) {
 
             }
         });

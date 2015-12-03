@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento.Calendar;
+package ch.epfl.sweng.evento.calendar;
 
 import android.content.Context;
 import android.util.AttributeSet;
