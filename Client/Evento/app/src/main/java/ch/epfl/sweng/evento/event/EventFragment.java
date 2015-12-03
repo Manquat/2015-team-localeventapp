@@ -46,10 +46,10 @@ public class EventFragment extends Fragment {
 
         Bundle bundle = getArguments();
         int currentEventID = bundle.getInt(KEYCURRENTEVENT);
-
+        mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
         mEvent = EventDatabase.INSTANCE.getEvent(currentEventID);
 
-        getParticipant(currentEventID);
+        //getParticipant(currentEventID);
         updateFields(rootView);
 
         return rootView;
@@ -121,17 +121,15 @@ public class EventFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity().getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
-                String listOfParticipant = mEvent.getListParticipantString();
-                MainActivity.getUser(1).addMatchedEvent(mEvent);
-                if(!mEvent.addParticipant(MainActivity.getUser(1))) {
+                if(!mEvent.addParticipant(Settings.INSTANCE.getUser())) {
                     Log.d("EventFragment.upd.", "addParticipant just returned false");
                 } else {
-                    mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-                    mRestAPI.updateEvent(mEvent,new HttpResponseCodeCallback() {
+                    Toast.makeText(getActivity().getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
+                    Settings.INSTANCE.getUser().addMatchedEvent(mEvent);
+                    mRestAPI.addParticipant(mEvent.getID(), Settings.INSTANCE.getUser().getUserId(), new HttpResponseCodeCallback() {
                         @Override
                         public void onSuccess(String response) {
-                            Log.d("EventFrag.upd.", "Response" + response);
+                            Log.d(TAG, "Response" + response);
                         }
                     });
                 }

@@ -170,9 +170,7 @@ public class LoginActivity extends AppCompatActivity implements
                 restApi.postUser(user, new GetUserCallback() {
                     @Override
                     public void onDataReceived(User user) {
-                        Log.d(TAG, user.getUsername());
-                        Log.d(TAG, user.getEmail());
-                        Log.d(TAG, Integer.toString(user.getUserId()));
+                        Settings.INSTANCE.setUser(user);
                         // assert submission
                         Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "User information sent to server");

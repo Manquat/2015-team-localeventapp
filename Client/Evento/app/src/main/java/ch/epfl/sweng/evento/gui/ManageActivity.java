@@ -19,10 +19,7 @@ public class ManageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage);
 
-        mMatchedEvent = (TextView) findViewById(R.id.matchedEvent);
-        mHostedEvent = (TextView) findViewById(R.id.hostedEvent);
-        mMatchedEvent.setText(MainActivity.getUser(1).getMatchedEventString());
-        mHostedEvent.setText(MainActivity.getUser(1).getHostedEventString());
+
     }
 
 }

@@ -2,6 +2,7 @@ package ch.epfl.sweng.evento.rest_api;
 
 import android.util.Log;
 
+import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 
@@ -22,7 +23,6 @@ public final class Serializer {
         String res = "{\n"
                 + "  \"Event_name\": \"" + e.getTitle() + "\",\n"
                 + "  \"tags\": \"" + e.getTagsString() + "\",\n"
-                + "  \"participants\": \"" + "Alfred" + "\",\n"
                 + "  \"image\": \n"
                 + "    \"" + e.getDescription() + "\" ,\n"
                 + "  \"description\": \n"
@@ -31,7 +31,7 @@ public final class Serializer {
                 + "  \"longitude\": " + e.getLongitude() + ",\n"
                 + "  \"address\": \"" + e.getAddress() + "\", \n "
                 + " \"date\" : \"" + e.getProperDateString() + "\", \n "
-                + "  \"creator\": \"" + e.getCreator() + "\" \n"
+                + "  \"creator\": \"" + Settings.INSTANCE.getUser().getUserId() + "\" \n"
                 + "}\n";
         return res;
     }

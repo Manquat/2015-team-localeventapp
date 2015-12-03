@@ -41,11 +41,7 @@ public class User {
 	    mMatchedEvent = new HashSet<>(matchedEvent);
 	    mHostedEvent = new HashSet<>(hostedEvent);
     }
-    public User(){
-        mUsername = "Alfred";
-        mMatchedEvent = new HashSet<>();
-        mHostedEvent = new HashSet<>();
-    }
+
 
 //---------------------------------------------------------------------------------------------
 //----Methods----------------------------------------------------------------------------------

@@ -1,6 +1,7 @@
 package ch.epfl.sweng.evento.infinite_pager_adapter;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +13,26 @@ import android.widget.Toast;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
 /**
  * An infinite page adapter for the event activity
  */
 public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
-    Activity mActivity;
+    private static final String TAG = "EventInfPageAdap";
+    private Activity mActivity;
+    private Event mEvent;
+    private RestApi mRestAPI;
+
 
     public EventInfinitePageAdapter(Integer initialEventSignature, Activity activity) {
         super(initialEventSignature);
 
+        mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
         mActivity = activity;
     }
 
@@ -60,7 +70,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         TextView endDateView = (TextView) rootView.findViewById(R.id.event_end_date_view);
         TextView addressView = (TextView) rootView.findViewById(R.id.event_address_view);
         TextView descriptionView = (TextView) rootView.findViewById(R.id.event_description_view);
-
+        mEvent = currentEvent;
         titleView.setText(currentEvent.getTitle());
         creatorView.setText(currentEvent.getCreator());
         startDateView.setText(currentEvent.getStartDateAsString());
@@ -75,7 +85,21 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(mActivity, "Submitted", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, Settings.INSTANCE.getUser().getEmail());
+                if(!mEvent.addParticipant(Settings.INSTANCE.getUser())) {
+                    Log.d("TAG", "addParticipant just returned false");
+                    mActivity.finish();
+                } else {
+                    Toast.makeText(mActivity.getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
+                    Settings.INSTANCE.getUser().addMatchedEvent(mEvent);
+                    mRestAPI.addParticipant(mEvent.getID(), Settings.INSTANCE.getUser().getUserId(), new HttpResponseCodeCallback() {
+                        @Override
+                        public void onSuccess(String response) {
+                            Log.d(TAG, "Response" + response);
+                            mActivity.finish();
+                        }
+                    });
+                }
             }
         });
     }

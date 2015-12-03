@@ -65,29 +65,12 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String urlServer = Settings.getServerUrl();
     private ArrayList<Event> mEventArrayList = new ArrayList<>();
-    private static User user1;
-    private static User user2;
 
-    public static User getUser(int user){
-        switch(user){
-            case 1:
-                return user1;
-            case 2:
-                return user2;
-            default:
-                return user1;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        user1 = new User();
-        user2 = new User();
-
 
         // Creating the Toolbar and setting it as the Toolbar for the activity
         mToolbar = (Toolbar) findViewById(R.id.tool_bar);

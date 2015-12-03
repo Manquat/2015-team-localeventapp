@@ -299,6 +299,18 @@ public class RestApi {
         }).execute();
     }
 
+    public void addParticipant(int idEvent, int idUser, final HttpResponseCodeCallback callback) {
+        UrlMakerEvent url = new UrlMakerEvent();
+        String restUrl = UrlMakerEvent.putParticipant(mUrlServer, idEvent, idUser);
+        String requestBody = "empty";
+
+        new PutTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
+            public void onTaskComplete(String response) {
+                callback.onSuccess(response);
+            }
+        }).execute();
+    }
+
     /**
      * delete event base on its ID
      *
