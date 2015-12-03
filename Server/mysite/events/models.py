@@ -26,8 +26,8 @@ class Event(models.Model):
 
 class Comment(models.Model):
     body = models.TextField(default='No Comment')
-    creator = models.ForeignKey(participant, related_name='comments',blank=True)
-    event = models.ForeignKey(Event, related_name='comments',blank=True)
+    creator = models.ForeignKey(participant, related_name='comments')
+    event = models.ForeignKey(Event, related_name='comments')
     def __unicode__(self):
         return self.body
 
