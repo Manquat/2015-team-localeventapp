@@ -27,6 +27,7 @@ import static junit.framework.Assert.assertEquals;
 /**
  * Tests the GUI against the real server
  */
+//@Ignore("Waiting for jenkins solution regarding google play")
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class GuiServerTest {
@@ -43,7 +44,7 @@ public class GuiServerTest {
      *
      * @throws InterruptedException
      */
-    @Ignore("Waiting for jenkins solution regarding google play")
+
     @Test
     public void testRefreshPostRefresh() throws InterruptedException {
         int numOfEvent;

@@ -26,7 +26,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 /**
  * Test the calendar tab at the UI level (black box approach)
  */
-@Ignore("Jenkins Build fails here")
+//@Ignore("Jenkins Build fails here")
 @RunWith(AndroidJUnit4.class)
 public class CalendarGUITest {
     private GregorianCalendar mActualDate;
