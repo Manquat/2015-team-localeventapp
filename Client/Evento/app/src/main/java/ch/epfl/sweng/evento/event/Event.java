@@ -142,13 +142,16 @@ public class Event implements ClusterItem {
     }
 
     public void removeParticipant(User participant){
+        if (participant == null) {
+            throw new NullPointerException("participant cannot be null");
+        }
         if (checkIfParticipantIsIn(participant)) {
             mParticipants.remove(participant);
         }
     }
 
     private boolean checkIfParticipantIsIn(User participant){
-        return mParticipants.contains(participant);//Throw a nullPointerExc. if participant is null
+        return mParticipants.contains(participant);
     }
 
     public void setPicture(String picture) {
@@ -168,8 +171,7 @@ public class Event implements ClusterItem {
     }
 
     public boolean isFull(){
-        if(mParticipants.size() >= mNumberMaxOfParticipants) return true;
-        else return false;
+        return mParticipants.size() >= mNumberMaxOfParticipants;
     }
 
 

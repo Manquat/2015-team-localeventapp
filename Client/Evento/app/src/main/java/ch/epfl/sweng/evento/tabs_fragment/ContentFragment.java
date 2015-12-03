@@ -163,8 +163,8 @@ public class ContentFragment extends Fragment implements Refreshable {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(mActivity, EventActivity.class);
-                        //intent.putExtra(EventActivity.KEYCURRENTEVENT, mEvents.get(tView.getIdX() + tView.getIdY() * mNumberOfColumn-spanningView).getID());
-                        //mActivity.startActivity(intent);
+                        intent.putExtra(EventActivity.KEYCURRENTEVENT, mEvents.get(tView.getIdX() + tView.getIdY() * mNumberOfColumn-spanningView).getID());
+                        mActivity.startActivity(intent);
                     }
                 });
                 if (mDisplayOrNot.get(yPos)[xPos]) {

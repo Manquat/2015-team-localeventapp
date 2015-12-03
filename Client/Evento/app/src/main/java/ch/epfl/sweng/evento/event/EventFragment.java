@@ -41,21 +41,19 @@ public class EventFragment extends Fragment {
     private ArrayList<String> mListDataHeader;
     private HashMap<String, List<String>> mListDataChild;
     private View mRootView;
-    private Activity mActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         Bundle bundle = getArguments();
         int currentEventID = bundle.getInt(KEYCURRENTEVENT);
+        mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
 
-        mActivity = getActivity();
         mEvent = EventDatabase.INSTANCE.getEvent(currentEventID);
     }
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_event, container, false);
-
         updateFields();
 
         return mRootView;
@@ -90,7 +88,6 @@ public class EventFragment extends Fragment {
                     if(mEvent.isFull()) {
                         joinEvent.setClickable(false);
                     }
-                    mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
                     mRestAPI.updateEvent(mEvent,new HttpResponseCodeCallback() {
                         @Override
                         public void onSuccess(String response) {
@@ -98,7 +95,7 @@ public class EventFragment extends Fragment {
                         }
                     });
                 } else {
-                    Toast.makeText(mActivity.getApplicationContext(), "Sorry but this event just got completed by another guy.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "Sorry but this event just got completed by another guy.", Toast.LENGTH_SHORT).show();
                 }
                 getActivity().finish();
             }
@@ -106,7 +103,7 @@ public class EventFragment extends Fragment {
     }
 
     private void setTagExpandableList() {
-        // get the ListView
+        // get the list_view
         ExpandableListView mExpListView = (ExpandableListView) mRootView.findViewById(R.id.listParticipantExp);
 
         // preparing list data

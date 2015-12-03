@@ -245,7 +245,7 @@ public class CreatingEventActivity extends AppCompatActivity
 
 
     private void setTagExpandableList() {
-        // get the ListView
+        // get the list_view
         ExpandableListView mExpListView = (ExpandableListView) findViewById(R.id.lvExp);
 
         // preparing list data
@@ -255,7 +255,7 @@ public class CreatingEventActivity extends AppCompatActivity
         // setting list adapter
         mExpListView.setAdapter(mListAdapter);
 
-        // ListView Group click listener
+        // list_view Group click listener
         mExpListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 
             @Override
@@ -268,7 +268,7 @@ public class CreatingEventActivity extends AppCompatActivity
             }
         });
 
-        // ListView Group expanded listener
+        // list_view Group expanded listener
         mExpListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
@@ -279,7 +279,7 @@ public class CreatingEventActivity extends AppCompatActivity
             }
         });
 
-        // ListView on child click listener
+        // list_view on child click listener
         mExpListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
             @Override
