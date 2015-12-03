@@ -63,35 +63,11 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         if (conversation.size() == 0) { //TODO remove mock conversation
             conversation.addComment(new Comment(new MockUser(), "plop"));
             conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "blop"));
         }
 
-        ConversationAdapter conversationAdapter = new ConversationAdapter(mActivity, conversation,
-                getCurrentIndicator());
+        ConversationAdapter conversationAdapter = new ConversationAdapter(mActivity, conversation);
         ListView listView = (ListView) rootLayout.findViewById(R.id.event_list_comment);
         listView.setAdapter(conversationAdapter);
-        listView.setFocusable(false);
-        Display display = mActivity.getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-
-
 
         GridLayout layout = (GridLayout) inflater.inflate(R.layout.fragment_event,
                 listView, false);
@@ -99,6 +75,17 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         updateFields(layout, event);
 
         listView.addHeaderView(layout);
+
+        Button addCommentButton = new Button(mActivity);
+        addCommentButton.setText(mActivity.getResources().getString(R.string.conversation_add_comment));
+        addCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mActivity, "test add comment", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        listView.addFooterView(addCommentButton);
 
         return rootLayout;
     }

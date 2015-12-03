@@ -60,6 +60,6 @@
     <string name="searchArea">radius in km</string>
     <string name="eventFragment_conversation">Conversation</string>
     <string name="title_activity_conversation">Conversation</string>
-    <string name="conversation_add_comment">Add comment</string>
+    <string name="conversation_add_comment">Add a comment</string>
     <string name="comment_message_hint">Your comment</string>
 </resources>
