@@ -35,7 +35,7 @@ public final class Serializer {
         String res = "{\n"
                 + "\"comment\": \"" + commentBody + "\",\n"
                 + "\"user\": \"" + userId + "\",\n"
-                + "\"event\": \"" + eventId + "\",\n"
+                + "\"event\": \"" + eventId + "\"\n"
                 + "}\n";
         return res;
     }

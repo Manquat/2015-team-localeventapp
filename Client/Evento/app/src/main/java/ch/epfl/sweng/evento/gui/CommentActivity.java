@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.gui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,7 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.Comment;
+import ch.epfl.sweng.evento.Conversation;
+import ch.epfl.sweng.evento.ConversationActivity;
+import ch.epfl.sweng.evento.EventDatabase;
+import ch.epfl.sweng.evento.MockUser;
+import ch.epfl.sweng.evento.R;
 
 public class CommentActivity extends AppCompatActivity {
     public static final String KEY_CURRENT_COMMENT = "current_event_id_for_comment";

@@ -5,7 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.gui.ConversationAdapter;
 
 /**
  * Created by gautier on 30/11/2015.

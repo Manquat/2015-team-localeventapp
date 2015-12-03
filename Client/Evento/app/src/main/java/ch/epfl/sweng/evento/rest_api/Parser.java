@@ -17,6 +17,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import ch.epfl.sweng.evento.Comment;
+import ch.epfl.sweng.evento.MockUser;
 import ch.epfl.sweng.evento.event.Event;
 
 /**
@@ -65,7 +66,7 @@ public class Parser {
     private static Comment parseJsonToComment(JSONObject jsonObject) {
         final JSONObject json = jsonObject;
 
-        return new Comment();
+        return new Comment(new MockUser(), "mock message parsing");
     }
 
     public static List<Event> parseFromJSONMultiple(String response) throws JSONException {
