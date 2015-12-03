@@ -145,9 +145,7 @@ public class Event implements ClusterItem {
         if (participant == null) {
             throw new NullPointerException("participant cannot be null");
         }
-        if (checkIfParticipantIsIn(participant)) {
-            mParticipants.remove(participant);
-        }
+        mParticipants.remove(participant);
     }
 
     private boolean checkIfParticipantIsIn(User participant){
