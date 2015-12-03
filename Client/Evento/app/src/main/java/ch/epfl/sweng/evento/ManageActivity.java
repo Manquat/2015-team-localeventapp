@@ -11,10 +11,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.epfl.sweng.evento.list_view.Entry;
-import ch.epfl.sweng.evento.list_view.Item;
 import ch.epfl.sweng.evento.list_view.ListEntryAdapter;
-import ch.epfl.sweng.evento.list_view.Section;
+
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
@@ -22,12 +20,11 @@ import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 public class ManageActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private static final String TAG = "ManageActivity";
-    private ArrayList<Item> mItems = new ArrayList<Item>();
+    private ArrayList<ListEntryAdapter.Item> mItems = new ArrayList<ListEntryAdapter.Item>();
     private ListView mListView;
     private RestApi mRestAPI;
     private List<Event> mHostedEvent;
     private List<Event> mMatchedEvent;
-    private SeparatedListAdapter mAdapter;
     private Activity mActivity;
 
     @Override
@@ -38,14 +35,14 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
         mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
         mListView=(ListView)findViewById(R.id.listViewManage);
 
-        mItems.add(new Section("Hosted Event"));
+        mItems.add(new ListEntryAdapter.Section("Hosted Event"));
         for (Event event : mHostedEvent) {
-            mItems.add(new Entry(event.getTitle(), event.getDescription()));
+            mItems.add(new ListEntryAdapter.Entry(event.getTitle(), event.getDescription()));
         }
 
-        mItems.add(new Section("Matched Event"));
+        mItems.add(new ListEntryAdapter.Section("Matched Event"));
         for (Event event : mMatchedEvent) {
-            mItems.add(new Entry(event.getTitle(), event.getDescription()));
+            mItems.add(new ListEntryAdapter.Entry(event.getTitle(), event.getDescription()));
         }
 
         ListEntryAdapter adapter = new ListEntryAdapter(this, mItems);
@@ -57,7 +54,7 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onItemClick(AdapterView arg0, View arg1, int position, long arg3) {
 
-        Entry item = (Entry)mItems.get(position);
+        ListEntryAdapter.Entry item = (ListEntryAdapter.Entry)mItems.get(position);
         Toast.makeText(this, "You clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
     }
 

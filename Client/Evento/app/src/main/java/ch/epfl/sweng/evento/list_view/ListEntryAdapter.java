@@ -54,7 +54,7 @@ public class ListEntryAdapter extends ArrayAdapter<ListEntryAdapter.Item> {
         return mView;
     }
 
-    private static class Entry implements Item {
+    public static class Entry implements Item {
         private final String mTitle;
         private final String mEntry;
 
@@ -78,7 +78,7 @@ public class ListEntryAdapter extends ArrayAdapter<ListEntryAdapter.Item> {
 
     }
 
-    private static class Section implements Item {
+    public static class Section implements Item {
         private final String mTitle;
 
         public Section(String title){
