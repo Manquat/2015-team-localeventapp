@@ -83,9 +83,9 @@ public class EventFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity().getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
                 MainActivity.getUser(1).addMatchedEvent(mEvent);
                 if(mEvent.addParticipant(MainActivity.getUser(1))) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
                     if(mEvent.isFull()) {
                         joinEvent.setClickable(false);
                     }
