@@ -1,8 +1,6 @@
 package ch.epfl.sweng.evento.rest_api.task;
 
-import android.annotation.TargetApi;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.util.Log;
 
 import java.io.BufferedReader;

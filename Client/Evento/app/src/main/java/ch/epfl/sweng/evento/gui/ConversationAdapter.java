@@ -1,18 +1,15 @@
 package ch.epfl.sweng.evento.gui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import ch.epfl.sweng.evento.Comment;
 import ch.epfl.sweng.evento.Conversation;
 import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.gui.CommentActivity;
 
 /**
  * List view adapter for a conversation
