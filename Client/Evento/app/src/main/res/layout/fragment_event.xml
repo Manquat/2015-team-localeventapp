@@ -117,7 +117,8 @@
         android:layout_row="6" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/descriptionView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/eventFrag_description"
@@ -131,11 +132,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="23dp"
+        android:layout_weight="0.15"
         android:text="@string/createEvent_description"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_row="7"
         android:layout_columnSpan="1"
         android:layout_column="1" />
+
+    <TextView
+        android:id="@+id/participantView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/participantView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="23dp"
+        android:text="@string/createEvent_participant"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listParticipantView"
+        android:layout_gravity="center_horizontal" />
 
     <Button
         android:layout_width="wrap_content"

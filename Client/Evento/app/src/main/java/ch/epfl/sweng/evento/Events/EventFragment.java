@@ -2,6 +2,7 @@ package ch.epfl.sweng.evento.Events;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ch.epfl.sweng.evento.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.EventDatabase;
+import ch.epfl.sweng.evento.MainActivity;
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
+import ch.epfl.sweng.evento.RestApi.PutCallback;
+import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.User;
 
 /**
  * Fragment that display an Event with an ID passed as an Extra with the key KEYCURRENTEVENT.
@@ -19,10 +30,12 @@ import ch.epfl.sweng.evento.R;
  */
 public class EventFragment extends Fragment {
 
+    private static final String TAG = "EventFragment";
     public static final String KEYCURRENTEVENT = "CurrentEvent";
-
+    private RestApi mRestAPI;
     private Event mEvent;
-
+    private List<User> mParticipants;
+    private List<Event> hostedEvent;
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -33,9 +46,46 @@ public class EventFragment extends Fragment {
 
         mEvent = EventDatabase.INSTANCE.getEvent(currentEventID);
 
+        getParticipant(currentEventSignature);
         updateFields(rootView);
 
         return rootView;
+    }
+
+    private void getParticipant(long signature){
+        mParticipants = new ArrayList<User>();
+        mEvent = EventDatabase.INSTANCE.getEvent(signature);
+
+        RestApi restAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+        restAPI.getUser(new GetMultipleResponseCallback() {
+            public void onDataReceived(List<User> userArrayList, int i) {
+                mParticipants = userArrayList;
+            }
+
+        }, mEvent.getID());
+
+        //Hosted event
+        /*hostedEvent = new ArrayList<Event>();;
+        restAPI.getHostedEvent(new GetMultipleResponseCallback() {
+            public void onDataReceived(List<Event> eventArrayList) {
+                hostedEvent = eventArrayList;
+                Log.d(TAG, hostedEvent.get(0).getTitle());
+                Log.d(TAG, hostedEvent.get(1).getTitle());
+            }
+
+        }, 8);*/
+
+        //Matched event
+        hostedEvent = new ArrayList<Event>();;
+        restAPI.getMatchedEvent(new GetMultipleResponseCallback() {
+            public void onDataReceived(List<Event> eventArrayList) {
+                hostedEvent = eventArrayList;
+                Log.d(TAG, hostedEvent.get(0).getTitle());
+                Log.d(TAG, hostedEvent.get(1).getTitle());
+            }
+
+        }, 8);
+
     }
 
     private void updateFields(View rootView) {
@@ -45,6 +95,7 @@ public class EventFragment extends Fragment {
         TextView endDateView = (TextView) rootView.findViewById(R.id.event_end_date_view);
         TextView addressView = (TextView) rootView.findViewById(R.id.event_address_view);
         TextView descriptionView = (TextView) rootView.findViewById(R.id.event_description_view);
+        TextView participantView = (TextView) rootView.findViewById(R.id.listParticipantView);
 
         titleView.setText(mEvent.getTitle());
         creatorView.setText(mEvent.getCreator());
@@ -52,6 +103,7 @@ public class EventFragment extends Fragment {
         endDateView.setText(mEvent.getEndDateAsString());
         addressView.setText(mEvent.getAddress());
         descriptionView.setText(mEvent.getDescription());
+        participantView.setText(mEvent.getListParticipantString(", "));
 
         ImageView pictureView = (ImageView) rootView.findViewById(R.id.eventPictureView);
         pictureView.setImageBitmap(mEvent.getPicture());
@@ -60,7 +112,20 @@ public class EventFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity().getApplicationContext(), "Submitted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
+                String listOfParticipant = mEvent.getListParticipantString();
+                MainActivity.getUser(1).addMatchedEvent(mEvent);
+                if(!mEvent.addParticipant(MainActivity.getUser(1))) {
+                    Log.d("EventFragment.upd.", "addParticipant just returned false");
+                } else {
+                    mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+                    mRestAPI.updateEvent(mEvent,new PutCallback() {
+                        @Override
+                        public void onPostSuccess(String response) {
+                            Log.d("EventFrag.upd.", "Response" + response);
+                        }
+                    });
+                }
                 getActivity().finish();
             }
         });

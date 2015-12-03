@@ -28,7 +28,6 @@ public class GetTask extends AsyncTask<String, Void, String> {
     private NetworkProvider mNetworkProvider;
 
     public GetTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback) {
-
         this.mRestUrl = restUrl;
         this.mCallback = callback;
         this.mNetworkProvider = networkProvider;

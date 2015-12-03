@@ -21,6 +21,10 @@ public final class Serializer {
 
         String res = "{\n"
                 + "  \"Event_name\": \"" + e.getTitle() + "\",\n"
+                + "  \"tags\": \"" + e.getTagsString() + "\",\n"
+                + "  \"participants\": \"" + "Alfred" + "\",\n"
+                + "  \"image\": \n"
+                + "    \"" + e.getDescription() + "\" ,\n"
                 + "  \"description\": \n"
                 + "    \"" + e.getDescription() + "\" ,\n"
                 + "  \"latitude\": " + e.getLatitude() + ",\n"
@@ -28,7 +32,6 @@ public final class Serializer {
                 + "  \"address\": \"" + e.getAddress() + "\", \n "
                 + " \"date\" : \"" + e.getProperDateString() + "\", \n "
                 + "  \"creator\": \"" + e.getCreator() + "\" \n"
-                // + "  \"tags\":" + "Basketball" + "\n"
                 + "}\n";
         return res;
     }
