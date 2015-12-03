@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -55,12 +56,51 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
 
         // inflating  the layout
         LayoutInflater inflater = LayoutInflater.from(mActivity);
-        ScrollView layout = (ScrollView) inflater.inflate(R.layout.fragment_event,
+        LinearLayout rootLayout = (LinearLayout) inflater.inflate(R.layout.event_adapter,
                 (ViewGroup) mActivity.getWindow().getDecorView().getRootView(), false);
+
+        Conversation conversation = event.getConversation();
+        if (conversation.size() == 0) { //TODO remove mock conversation
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(new MockUser(), "blop"));
+        }
+
+        ConversationAdapter conversationAdapter = new ConversationAdapter(mActivity, conversation,
+                getCurrentIndicator());
+        ListView listView = (ListView) rootLayout.findViewById(R.id.event_list_comment);
+        listView.setAdapter(conversationAdapter);
+        listView.setFocusable(false);
+        Display display = mActivity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+
+
+        GridLayout layout = (GridLayout) inflater.inflate(R.layout.fragment_event,
+                listView, false);
 
         updateFields(layout, event);
 
-        return layout;
+        listView.addHeaderView(layout);
+
+        return rootLayout;
     }
 
     private void updateFields(ViewGroup rootView, Event currentEvent) {
@@ -89,22 +129,5 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
                 mActivity.finish();
             }
         });
-
-        Conversation conversation = currentEvent.getConversation();
-        if (conversation.size() == 0) { //TODO remove mock conversation
-            conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "blop"));
-        }
-
-        ConversationAdapter conversationAdapter = new ConversationAdapter(mActivity, conversation,
-                getCurrentIndicator());
-        ListView listView = (ListView) rootView.findViewById(R.id.event_list_comment);
-        listView.setAdapter(conversationAdapter);
-        listView.setFocusable(false);
-        Display display = mActivity.getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-
-        listView.getLayoutParams().height = size.y - mActivity.getResources().getDimensionPixelSize(R.dimen.toolbar_height);
     }
 }
