@@ -9,7 +9,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import ch.epfl.sweng.evento.Events.Event;
+import ch.epfl.sweng.evento.event.Event;
+
 
 /**
  * Created by Gaffinet on 23/11/2015.

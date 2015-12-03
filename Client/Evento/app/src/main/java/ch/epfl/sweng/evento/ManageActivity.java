@@ -15,13 +15,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.ListView.Adapter;
 import ch.epfl.sweng.evento.ListView.Entry;
 import ch.epfl.sweng.evento.ListView.Item;
 import ch.epfl.sweng.evento.ListView.Section;
-import ch.epfl.sweng.evento.RestApi.GetMultipleResponseCallback;
-import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
 public class ManageActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 

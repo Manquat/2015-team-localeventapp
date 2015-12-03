@@ -8,8 +8,6 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import ch.epfl.sweng.evento.Events.Event;
-import ch.epfl.sweng.evento.Events.EventPageAdapter;
 
 /**
  * Created by Gaffinet on 23/11/2015.

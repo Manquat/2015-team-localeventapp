@@ -18,15 +18,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import ch.epfl.sweng.evento.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.EventDatabase;
-import ch.epfl.sweng.evento.ExpendableList;
-import ch.epfl.sweng.evento.MainActivity;
 import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.RestApi.PutCallback;
-import ch.epfl.sweng.evento.RestApi.RestApi;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;
+import ch.epfl.sweng.evento.gui.ExpendableList;
+import ch.epfl.sweng.evento.gui.MainActivity;
+import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
+import ch.epfl.sweng.evento.rest_api.task.PutTask;
 
 /**
  * Fragment that display an Event with an ID passed as an Extra with the key KEYCURRENTEVENT.
@@ -90,9 +91,9 @@ public class EventFragment extends Fragment {
                         joinEvent.setClickable(false);
                     }
                     mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-                    mRestAPI.updateEvent(mEvent,new PutCallback() {
+                    mRestAPI.updateEvent(mEvent,new HttpResponseCodeCallback() {
                         @Override
-                        public void onPostSuccess(String response) {
+                        public void onSuccess(String response) {
                             Log.d("EventFrag.upd.", "Response" + response);
                         }
                     });
