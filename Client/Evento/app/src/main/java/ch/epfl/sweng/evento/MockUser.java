@@ -5,11 +5,11 @@ package ch.epfl.sweng.evento;
  */
 public class MockUser {
 
-    public int getId(){
+    public int getId() {
         return 0;
     }
 
-    public String getName(){
+    public String getName() {
         return "MockJo";
     }
 
