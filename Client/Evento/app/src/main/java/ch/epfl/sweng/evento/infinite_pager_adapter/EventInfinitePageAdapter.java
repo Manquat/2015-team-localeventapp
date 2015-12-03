@@ -1,6 +1,7 @@
 package ch.epfl.sweng.evento.infinite_pager_adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ch.epfl.sweng.evento.ConversationActivity;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.event.Event;
@@ -76,6 +78,17 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
             @Override
             public void onClick(View view) {
                 Toast.makeText(mActivity, "Submitted", Toast.LENGTH_SHORT).show();
+                mActivity.finish();
+            }
+        });
+
+        Button conversation = (Button) rootView.findViewById(R.id.event_conversation);
+        conversation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mActivity, ConversationActivity.class);
+                intent.putExtra(ConversationActivity.KEY_CURRENT_CONVERSATION, getCurrentIndicator());
+                mActivity.startActivity(intent);
             }
         });
     }

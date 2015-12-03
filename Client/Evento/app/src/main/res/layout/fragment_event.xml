@@ -158,17 +158,17 @@
         android:layout_height="wrap_content"
         android:text="@string/eventFragment_join"
         android:id="@+id/joinEvent"
-        android:layout_gravity="center_horizontal"
         android:layout_column="0"
         android:layout_columnSpan="1"
-        android:layout_row="8" />
+        android:layout_row="8"
+        android:layout_gravity="left" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/eventFragment_conversation"
         android:id="@+id/event_conversation"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="right"
         android:layout_column="1"
         android:layout_columnSpan="1"
         android:layout_row="8" />
