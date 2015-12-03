@@ -18,11 +18,13 @@ import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.rest_api.callback.GetCommentListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventCallback;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
+import ch.epfl.sweng.evento.rest_api.callback.GetUserCallback;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.callback.RestTaskCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 import ch.epfl.sweng.evento.rest_api.task.DeleteTask;
 import ch.epfl.sweng.evento.rest_api.task.GetTask;
+import ch.epfl.sweng.evento.rest_api.task.PostAndGetUserWithIDTask;
 import ch.epfl.sweng.evento.rest_api.task.PostTask;
 import ch.epfl.sweng.evento.rest_api.task.PutTask;
 import ch.epfl.sweng.evento.User;
@@ -251,13 +253,31 @@ public class RestApi {
     }
 
     // Post a user
-    public void postUser(User user, final HttpResponseCodeCallback callback) {
-        String restUrl = UrlMaker.post(mUrlServer, "user/");
+    public void postUser(User user, final GetUserCallback callback) {
+        UrlMakerUser url = new UrlMakerUser("user/");
+        String restUrl = url.post(mUrlServer);
         Log.d(TAG, "restURL: " + restUrl);
         String requestBody = Serializer.user(user);
-        new PostTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
+        /*new PostUserTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
             public void onTaskComplete(String response) {
                 callback.onSuccess(response);
+            }
+        }).execute();*/
+        new PostAndGetUserWithIDTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
+            @Override
+            public void onTaskComplete(String response) {
+                Log.d(TAG, response);
+                User user = null;
+                if (response != null) {
+                    try {
+                        JSONObject JsonResponse = new JSONObject(response);
+                        user = ParserUser.parseUserFromJSON(JsonResponse);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "Exception thrown in getEvent", e);
+                    }
+
+                }
+                callback.onDataReceived(user);
             }
         }).execute();
     }
