@@ -10,6 +10,7 @@ public enum Settings {
     INSTANCE;
     private String mIdToken = "No Token";
     private User mUser = null;
+    private int mUserId = 0;
 
     private Settings() {
         // private constructor
@@ -33,4 +34,5 @@ public enum Settings {
     public void setUser(User user) {
         this.mUser = user;
     }
+    public void setUserId(int id) {mUserId =id;}
 }

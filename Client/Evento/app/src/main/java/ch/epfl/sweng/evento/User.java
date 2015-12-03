@@ -16,19 +16,20 @@ public class User {
 //----Attributes-------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 
-    private static final String TAG = "UserProfilIndormation";
+    private static final String TAG = "User";
 
 
     //A unique Id for each Google Account
-    private String mUserId;
+    private int mUserId;
+    private String mGoogleId;
     private String mUsername;
     private String mEmail;
  	private Set<Event> mMatchedEvent;
     private Set<Event> mHostedEvent;
- 	private int mID;
+
 
 	public User(int id, String username, String email){
-	    mID = id;
+	    mUserId = id;
 	    mUsername = username;
 	    mEmail = email;
 	    mMatchedEvent = new HashSet<>();
@@ -51,8 +52,8 @@ public class User {
 //---------------------------------------------------------------------------------------------
 
 
-    public User(String mUserId, String mUsername, String mEmail) {
-        this.mUserId = mUserId;
+    public User(String mGoogleId, String mUsername, String mEmail) {
+        this.mGoogleId = mGoogleId;
         this.mUsername = mUsername;
         this.mEmail = mEmail;
     }
@@ -61,8 +62,8 @@ public class User {
 
     public Set<Event> getHostedEvent() { return mHostedEvent; }
 
-    public int getID(){
-        return mID;
+    public int getUserId(){
+        return mUserId;
     }
 
     public String getUsername() {
@@ -73,8 +74,8 @@ public class User {
         return mEmail;
     }
 
-    public String getUserId() {
-        return mUserId;
+    public String getGoogleId() {
+        return mGoogleId;
     }
 
     public void setUsername(String mUsername) {
@@ -85,8 +86,12 @@ public class User {
         this.mEmail = mEmail;
     }
 
-    public void setUserId(String mUserId) {
-        this.mUserId = mUserId;
+    public void setUserId(int id){
+        this.mUserId = id;
+    }
+
+    public void setGoogleId(String mUserId) {
+        this.mGoogleId = mUserId;
     }
 
     public boolean addHostedEvent(Event event) {

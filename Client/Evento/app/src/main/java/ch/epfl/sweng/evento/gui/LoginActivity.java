@@ -175,6 +175,9 @@ public class LoginActivity extends AppCompatActivity implements
                     }
                 });
 
+                //TODO Get UserId from Server and set it in settings
+                /*int id = Ask SERVER
+                Settings.INSTANCE.setUserId(id);*/
 
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);

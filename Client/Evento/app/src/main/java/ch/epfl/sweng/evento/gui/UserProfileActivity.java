@@ -7,7 +7,15 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.util.List;
+
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.User;
+import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
 
 /**
@@ -15,19 +23,10 @@ import ch.epfl.sweng.evento.R;
  */
 public class UserProfileActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
-    //---------------------------------------------------------------------------------------------
-//----Attributes-------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
+
 
     private static final String TAG = "UserProfileActivity";
 
-    private String mUsername = "Elon Musk";
-    private String mEmail = "abc@alphabetlovers.com";
-
-
-//---------------------------------------------------------------------------------------------
-//----Methods----------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +35,28 @@ public class UserProfileActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_userprofile);
 
 
-        TextView mUsernameView = (TextView) (findViewById(R.id.Username));
-        mUsernameView.setText("Username : " + mUsername);
-        TextView mEmailView = (TextView) (findViewById(R.id.Email));
-        mEmailView.setText("Email Adress : " + mEmail);
+        //TODO Get users hosted events and events he participates in, save in settings and show down below
+        int UserId = Settings.INSTANCE.getUser().getUserId();
+        List<Event> hostedEvents;
+        List<Event> matchedEvents;
+        RestApi restApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+
+       /* restApi.getHostedEvent(new GetEventListCallback(), UserId ){
+            public void onEventListReceived(List<Event> hostedEvents){
+                        hostedEvents = null;
+            }
+            public void onUserListReceived(List<User> userArrayList){
+
+            }
+        }*/
+
+        Settings.INSTANCE.getUser().getHostedEvent();
+        Settings.INSTANCE.getUser().getMatchedEvent();
+
+        TextView UsernameView = (TextView) (findViewById(R.id.Username));
+        UsernameView.setText("Username : " + Settings.INSTANCE.getUser().getUsername() );
+        TextView EmailView = (TextView) (findViewById(R.id.Email));
+        EmailView.setText("Email Adress : " + Settings.INSTANCE.getUser().getEmail() );
 
 
     }
