@@ -2,6 +2,8 @@ package ch.epfl.sweng.evento.gui.infinite_pager_adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Point;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,16 +100,11 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
                 getCurrentIndicator());
         ListView listView = (ListView) rootView.findViewById(R.id.event_list_comment);
         listView.setAdapter(conversationAdapter);
+        listView.setFocusable(false);
+        Display display = mActivity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
 
-/*
-        Button loadMoreComment = (Button) rootView.findViewById(R.id.event_conversation);
-        loadMoreComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mActivity, ConversationActivity.class);
-                intent.putExtra(ConversationActivity.KEY_CURRENT_CONVERSATION, getCurrentIndicator());
-                mActivity.startActivity(intent);
-            }
-        });*/
+        listView.getLayoutParams().height = size.y - mActivity.getResources().getDimensionPixelSize(R.dimen.toolbar_height);
     }
 }
