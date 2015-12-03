@@ -20,12 +20,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 
-import ch.epfl.sweng.evento.RestApi.PostCallback;
-import ch.epfl.sweng.evento.RestApi.RestApi;
+import ch.epfl.sweng.evento.User;
+import ch.epfl.sweng.evento.rest_api.RestApi;
 
-public class LoginActivity extends AppCompatActivity implements
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
+import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,

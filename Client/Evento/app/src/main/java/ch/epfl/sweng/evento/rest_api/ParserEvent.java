@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento.RestApi;
+package ch.epfl.sweng.evento.rest_api;
 
 import android.util.Log;
 
@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.User;
+import ch.epfl.sweng.evento.event.Event;
 
 /**
  * Created by thomas on 28/11/15.

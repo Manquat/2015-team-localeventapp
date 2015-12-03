@@ -94,7 +94,7 @@ public class RestApi {
         }).execute();
     }
 
- public void getUser(final GetMultipleResponseCallback callback, int idEvent) {
+ public void getUser(final GetEventListCallback callback, int idEvent) {
         UrlMakerUser url = new UrlMakerUser();
         String restUrl = url.get(mUrlServer, idEvent);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
@@ -114,7 +114,7 @@ public class RestApi {
         }).execute();
     }
 
-    public void getHostedEvent(final GetMultipleResponseCallback callback, int idUser) {
+    public void getHostedEvent(final GetEventListCallback callback, int idUser) {
         final String accessToHostedEvent = "user/creator/";
         UrlMakerUser url = new UrlMakerUser(accessToHostedEvent);
         String restUrl = url.get(mUrlServer, idUser);
@@ -130,12 +130,12 @@ public class RestApi {
                     }
 
                 }
-                callback.onDataReceived(event);
+                callback.onEventListReceived(event);
             }
         }).execute();
     }
 
-    public void getMatchedEvent(final GetMultipleResponseCallback callback, int idUser) {
+    public void getMatchedEvent(final GetEventListCallback callback, int idUser) {
         final String accessToMatchedEvent = "user/participant/";
         UrlMakerUser url = new UrlMakerUser(accessToMatchedEvent);
         String restUrl = url.get(mUrlServer, idUser);
@@ -151,7 +151,7 @@ public class RestApi {
                     }
 
                 }
-                callback.onDataReceived(event);
+                callback.onEventListReceived(event);
             }
         }).execute();
     }
@@ -251,13 +251,13 @@ public class RestApi {
     }
 
     // Post a user
-    public void postUser(User user, final PostCallback callback) {
+    public void postUser(User user, final HttpResponseCodeCallback callback) {
         String restUrl = UrlMaker.post(mUrlServer, "user/");
         Log.d(TAG, "restURL: " + restUrl);
         String requestBody = Serializer.user(user);
         new PostTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
             public void onTaskComplete(String response) {
-                callback.onPostSuccess(response);
+                callback.onSuccess(response);
             }
         }).execute();
     }

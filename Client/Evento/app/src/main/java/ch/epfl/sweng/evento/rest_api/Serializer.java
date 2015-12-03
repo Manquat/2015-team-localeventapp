@@ -2,8 +2,8 @@ package ch.epfl.sweng.evento.rest_api;
 
 import android.util.Log;
 
-import ch.epfl.sweng.evento.Events.Event;
 import ch.epfl.sweng.evento.User;
+import ch.epfl.sweng.evento.event.Event;
 
 /**
  * Created by joachimmuth on 16.10.15.

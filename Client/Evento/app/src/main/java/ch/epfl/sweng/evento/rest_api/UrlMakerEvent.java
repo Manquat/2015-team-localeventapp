@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento.RestApi;
+package ch.epfl.sweng.evento.rest_api;
 
 import java.util.GregorianCalendar;
 
