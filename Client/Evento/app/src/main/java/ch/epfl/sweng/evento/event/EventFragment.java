@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -125,8 +126,7 @@ public class EventFragment extends Fragment {
 
 
         // Adding child data
-        List<String> host = new ArrayList<String>();
-        host.add(mEvent.getCreator());
+        String host = mEvent.getCreator();
 
         List<String> participant = new ArrayList<String>();
         for (User user: mEvent.getAllParticipant()) {
@@ -134,7 +134,7 @@ public class EventFragment extends Fragment {
         }
 
 
-        mListDataChild.put(mListDataHeader.get(0), host);
+        mListDataChild.put(mListDataHeader.get(0), new ArrayList<String>(Arrays.asList(host)));
         mListDataChild.put(mListDataHeader.get(1), participant);
     }
 }
