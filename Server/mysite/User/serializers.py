@@ -7,6 +7,7 @@ from django.utils import timezone
 
 class ParticipantSerializer(serializers.ModelSerializer):
     comments = serializers.StringRelatedField(required=False)
+    events = serializers.StringRelatedField(required=False)
     class Meta:
         model = participant
-        fields = ('id',  'name', 'email','googleid', 'comments')
+        fields = ('id',  'name', 'email','googleid','events', 'comments')

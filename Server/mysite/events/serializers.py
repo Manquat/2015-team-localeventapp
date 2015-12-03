@@ -9,7 +9,7 @@ class EventSerializer(serializers.ModelSerializer):
     comments = serializers.StringRelatedField(required=False)
     class Meta:
         model = Event
-        fields = ('id', 'Event_name', 'creator', 'description', 'latitude', 'longitude', 'address', 'date', 'duration', 'tags', 'image', 'participants', 'comments')
+        fields = ('id', 'Event_name', 'owner', 'description', 'latitude', 'longitude', 'address', 'date', 'duration', 'tags', 'image', 'participants', 'comments')
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
