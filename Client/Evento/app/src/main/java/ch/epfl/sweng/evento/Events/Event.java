@@ -3,6 +3,7 @@ package ch.epfl.sweng.evento.Events;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
@@ -74,25 +75,9 @@ public class Event implements ClusterItem {
                  String address,
                  String creator,
                  Set<String> tags,
-                 CustomDate startDate,
-                 CustomDate endDate) {
-        this(id, title, description, latitude, longitude, address, creator, tags, "image", new HashSet<User>());
-        mStartDate = new CustomDate(startDate);
-        mEndDate = new CustomDate(endDate);
-        mPicture = samplePicture();
-    }
-
-    public Event(int id,
-                 String title,
-                 String description,
-                 double latitude,
-                 double longitude,
-                 String address,
-                 String creator,
-                 Set<String> tags,
                  Calendar startDate,
                  Calendar endDate) {
-        this(id, title, description, latitude, longitude, address, creator, tags);
+        this(id, title, description, latitude, longitude, address, creator, tags, "image", new HashSet<User>());
         mStartDate = startDate;
         mEndDate = endDate;
         mPicture = samplePicture();
@@ -232,7 +217,7 @@ public class Event implements ClusterItem {
         String res = "";
         if(!mParticipants.isEmpty()){
             for(User participantName: mParticipants){
-                res += participantName.getmUsername() + separator;
+                res += participantName.getUsername() + separator;
             }
             Log.d("Event", "Result of ListOfParticipant to String " + res);
         }

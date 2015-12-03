@@ -1,5 +1,10 @@
 package ch.epfl.sweng.evento;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import ch.epfl.sweng.evento.Events.Event;
+
 /**
  * Created by Gaffinet on 30/11/2015.
  */
