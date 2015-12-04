@@ -41,7 +41,7 @@ public final class Serializer {
                 //+ "  \"id\": "  + ",\n"
                 + "  \"name\": \"" + u.getUsername() + "\", \n"
                 + "  \"email\": \"" + u.getEmail() + "\", \n"
-                + "  \"googleid\": \"" + u.getUserId() + "\" \n"
+                + "  \"googleid\": \"" + u.getGoogleId() + "\" \n"
                 + "}\n";
 
         Log.d(TAG, "Information sent to Server: " + res);

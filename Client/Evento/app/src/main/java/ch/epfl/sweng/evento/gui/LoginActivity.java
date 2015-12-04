@@ -171,15 +171,13 @@ public class LoginActivity extends AppCompatActivity implements
                     @Override
                     public void onDataReceived(User user) {
                         Settings.INSTANCE.setUser(user);
+                        Log.d(TAG, "Attributed UserId: " + Settings.INSTANCE.getUser().getUserId());
                         // assert submission
                         Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "User information sent to server");
                     }
                 });
 
-                //TODO Get UserId from Server and set it in settings
-                /*int id = Ask SERVER
-                Settings.INSTANCE.setUserId(id);*/
 
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);

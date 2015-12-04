@@ -1,6 +1,7 @@
 package ch.epfl.sweng.evento;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.event.Event;
@@ -130,6 +131,14 @@ public class User {
 
     public String getHostedEventString() {
         return getHostedEventString("\n");
+    }
+
+    public void setHostedEvent(Set<Event> mHostedEvent) {
+        this.mHostedEvent = mHostedEvent;
+    }
+
+    public void setMatchedEvent(Set<Event> mMatchedEvent) {
+        this.mMatchedEvent = mMatchedEvent;
     }
 
 
