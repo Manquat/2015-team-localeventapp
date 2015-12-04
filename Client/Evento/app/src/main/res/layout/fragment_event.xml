@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">!-->
+
+
 
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/contentLayout"
@@ -156,6 +155,21 @@
             android:layout_row="7"
             android:text="@string/createEvent_description"
             android:textAppearance="?android:attr/textAppearanceSmall" />
+    <TextView
+        android:id="@+id/participantView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/participantView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="23dp"
+        android:text="@string/createEvent_participant"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listParticipantView"
+        android:layout_gravity="center_horizontal" />
 
         <Button
             android:id="@+id/joinEvent"
@@ -167,5 +181,14 @@
             android:layout_row="8"
             android:text="@string/eventFragment_join" />
 
-    </GridLayout>
-<!--</ScrollView>!-->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/event_fragment_remove"
+        android:id="@+id/remove_user_from_event"
+        android:layout_gravity="center_horizontal"
+        android:layout_column="0"
+        android:layout_columnSpan="2"
+        android:layout_row="8" />
+
+</GridLayout>

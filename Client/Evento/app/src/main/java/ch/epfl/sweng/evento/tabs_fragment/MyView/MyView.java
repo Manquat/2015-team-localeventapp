@@ -5,7 +5,16 @@ package ch.epfl.sweng.evento.tabs_fragment.MyView;
  */
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.opengl.Matrix;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class MyView extends ImageView {
 
@@ -18,6 +27,9 @@ public class MyView extends ImageView {
         midX = x;
         midY = y;
     }
+
+
+
 
     public MyView(Context context) {
         super(context);

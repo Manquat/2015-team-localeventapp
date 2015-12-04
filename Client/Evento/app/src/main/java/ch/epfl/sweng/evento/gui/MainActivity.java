@@ -35,6 +35,7 @@ import java.util.List;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
@@ -70,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         // Creating the Toolbar and setting it as the Toolbar for the activity
         mToolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -133,6 +133,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else if (id == R.id.action_refresh) {
             refreshFromServer();
+        } else if (id == R.id.user_profile) {
+            Intent intent = new Intent(this, UserProfileActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.action_manageYourEvent) {
+            Intent intent = new Intent(this, ManageActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -152,6 +158,9 @@ public class MainActivity extends AppCompatActivity {
                     ((Refreshable) page).refresh();
                 }
                 Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
+            }
+            public void onUserListReceived(List<User> userArrayList){
+
             }
         });
     }

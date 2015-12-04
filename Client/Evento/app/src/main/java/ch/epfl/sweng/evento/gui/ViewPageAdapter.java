@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.List;
 
-import ch.epfl.sweng.evento.calendar.CalendarTabs;
+import ch.epfl.sweng.evento.tabs_fragment.CalendarTabs;
 import ch.epfl.sweng.evento.tabs_fragment.ContentFragment;
 import ch.epfl.sweng.evento.tabs_fragment.MapsFragment;
 

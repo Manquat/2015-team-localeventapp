@@ -18,6 +18,7 @@ package ch.epfl.sweng.evento.tabs_fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ import java.util.Vector;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.gui.EventActivity;
 import ch.epfl.sweng.evento.rest_api.RestApi;
@@ -131,6 +134,10 @@ public class ContentFragment extends Fragment implements Refreshable {
                 refresh();
                 Toast.makeText(mActivity.getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
             }
+
+            public void onUserListReceived(List<User> userArrayList){
+
+            }
         });
     }
 
@@ -178,6 +185,7 @@ public class ContentFragment extends Fragment implements Refreshable {
                         tmpSpanSmtgOrNot = Span.NOTHING;
                         tView.setImageResource(R.drawable.unknown);
                     }
+                    tView.setAdjustViewBounds(true);
                     mMyViews.add(tView);
 
                     switch (tmpSpanSmtgOrNot) {
@@ -212,8 +220,15 @@ public class ContentFragment extends Fragment implements Refreshable {
         mWidthColumn = 0;
         mHeightRow = 0;
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-        params.width = mWidthColumn - 2 * PADDING;
-        params.height = mHeightRow - 2 * PADDING;
+        Point size = new Point();
+        mActivity.getWindowManager().getDefaultDisplay().getSize(size);
+        int screenWidth = size.x;
+        int screenHeight = size.y;
+        int halfScreenWidth = (int)(screenWidth *0.5);
+        int quarterScreenWidth = (int)(halfScreenWidth * 0.5);
+        params.width = screenWidth/3-2*PADDING;
+        //params.width = mWidthColumn - 2 * PADDING;
+        //params.height = mHeightRow - 2 * PADDING;
         params.setMargins(PADDING, PADDING, PADDING, PADDING);
         params.columnSpec = GridLayout.spec(column, columnSpan);
         params.rowSpec = GridLayout.spec(row, rowSpan);

@@ -1,11 +1,11 @@
 __author__ = 'cerschae'
 
 from rest_framework import serializers
-from models import User
+from models import participant
 from django.utils import timezone
 
 
-class UserSerializer(serializers.ModelSerializer):
+class ParticipantSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ('id', 'name', 'email')
+        model = participant
+        fields = ('id',  'name', 'email','google_id', 'comments')

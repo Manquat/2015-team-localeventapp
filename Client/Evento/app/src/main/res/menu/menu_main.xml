@@ -9,6 +9,11 @@
         android:title="@string/menu_create_event"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_manageYourEvent"
+        android:orderInCategory="100"
+        android:title="@string/menu_manage_event"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_logout"
         android:orderInCategory="100"
         android:title="@string/menu_logout"
@@ -31,6 +36,13 @@
         android:title="@string/menu_user"
         android:icon="@drawable/ic_action_user"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/user_profile"
+        android:orderInCategory="300"
+        android:title="@string/menu_profile"
+        android:icon="@drawable/ic_action_user"
+        app:showAsAction="ifRoom"/>
 
 
 </menu>

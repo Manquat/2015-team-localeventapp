@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Your Profile:"
+        android:id="@+id/ProfilActivityTitle"
+        android:textSize="36dp"
+        android:gravity="center"
+        android:layout_weight="0.7" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.3">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Not properly affected"
+            android:id="@+id/Username"
+            android:layout_gravity="center_horizontal"
+            android:textSize="18dp"
+            android:layout_weight="0.5"
+            android:lines="2"
+            android:lineSpacingExtra="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Not properly affected"
+            android:id="@+id/Email"
+            android:layout_gravity="center_horizontal"
+            android:textSize="18dp"
+            android:lines="2"
+            android:lineSpacingExtra="2dp"
+            android:layout_weight="0.5" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
