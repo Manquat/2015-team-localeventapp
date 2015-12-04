@@ -3,7 +3,8 @@
 
     <item android:drawable="@drawable/calendar_default_day" />
 
-    <item android:bottom="@dimen/calendar_grid_item_selected_padding"
+    <item
+        android:bottom="@dimen/calendar_grid_item_selected_padding"
         android:left="@dimen/calendar_grid_item_selected_padding"
         android:right="@dimen/calendar_grid_item_selected_padding"
         android:top="@dimen/calendar_grid_item_selected_padding"

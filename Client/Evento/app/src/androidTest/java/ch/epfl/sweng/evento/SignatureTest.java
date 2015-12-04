@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import ch.epfl.sweng.evento.Events.Signature;
+import ch.epfl.sweng.evento.event.Signature;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
