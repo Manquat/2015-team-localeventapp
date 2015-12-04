@@ -32,7 +32,7 @@ public class Event implements ClusterItem {
     private final String mDescription;
     private final LatLng mLocation;
     private final String mAddress;
-    private final String mCreator;//might be replaced by some kind of User class
+    private final int mCreator;//might be replaced by some kind of User class
     private final Set<String> mTags;
     private Calendar mStartDate;
     private Calendar mEndDate;
@@ -48,7 +48,7 @@ public class Event implements ClusterItem {
                   double latitude,
                   double longitude,
                   String address,
-                  String creator,
+                  int creator,
                   Set<String> tags,
                   String image,
                   Set<User> participants) {
@@ -72,7 +72,7 @@ public class Event implements ClusterItem {
                  double latitude,
                  double longitude,
                  String address,
-                 String creator,
+                 int creator,
                  Set<String> tags,
                  Calendar startDate,
                  Calendar endDate) {
@@ -198,7 +198,7 @@ public class Event implements ClusterItem {
         return mAddress;
     }
 
-    public String getCreator() {
+    public int getCreator() {
         return mCreator;
     }
 

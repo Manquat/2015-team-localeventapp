@@ -19,6 +19,7 @@ import ch.epfl.sweng.evento.rest_api.callback.GetCommentListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventCallback;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.GetUserCallback;
+import ch.epfl.sweng.evento.rest_api.callback.GetUserListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.callback.RestTaskCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
@@ -96,12 +97,13 @@ public class RestApi {
         }).execute();
     }
 
- public void getUser(final GetEventListCallback callback, int idEvent) {
+    public void getParticipant(final GetUserListCallback callback, int idEvent) {
         UrlMakerUser url = new UrlMakerUser();
         String restUrl = url.get(mUrlServer, idEvent);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String response) {
+                Log.d(TAG, response);
                 List<User> user = null;
                 if (response != null) {
                     try {
@@ -115,6 +117,29 @@ public class RestApi {
             }
         }).execute();
     }
+
+    public void getUser(final GetUserCallback callback, int idUser) {
+        UrlMakerUser url = new UrlMakerUser("user/");
+        String restUrl = url.get(mUrlServer, idUser);
+        new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
+            @Override
+            public void onTaskComplete(String response) {
+                Log.d(TAG, response);
+                User user = null;
+                if (response != null) {
+                    try {
+                        JSONObject JsonResponse = new JSONObject(response);
+                        user = ParserUser.parseUserFromJSON(JsonResponse);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "exception in JSON parser");
+                    }
+
+                }
+                callback.onDataReceived(user);
+            }
+        }).execute();
+    }
+
 
     public void getHostedEvent(final GetEventListCallback callback, int idUser) {
         final String accessToHostedEvent = "user/creator/";

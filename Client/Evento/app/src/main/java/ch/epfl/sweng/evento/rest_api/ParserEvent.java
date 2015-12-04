@@ -43,7 +43,7 @@ public class ParserEvent {
                     jsonObject.getDouble("latitude"),
                     jsonObject.getDouble("longitude"),
                     jsonObject.getString("address"),
-                    jsonObject.getString("creator"),
+                    jsonObject.getInt("creator"),
                     new HashSet<String>(){{ add(json.getString("tags"));}},
                     jsonObject.getString("image"),
                     new HashSet<User>()
