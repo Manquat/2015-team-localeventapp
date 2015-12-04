@@ -39,16 +39,17 @@ public class UserProfileActivity extends AppCompatActivity implements
         int UserId = Settings.INSTANCE.getUser().getUserId();
         List<Event> hostedEvents;
         List<Event> matchedEvents;
-        RestApi restApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+        List<User> userArrayList;
 
-       /* restApi.getHostedEvent(new GetEventListCallback(), UserId ){
-            public void onEventListReceived(List<Event> hostedEvents){
-                        hostedEvents = null;
+/*        RestApi restApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+        restApi.getHostedEvent(new GetEventListCallback() {
+            @Override
+            public void onEventListReceived(List<Event> eventArrayList) {
             }
-            public void onUserListReceived(List<User> userArrayList){
-
+            @Override
+            public void onUserListReceived(List<User> userArrayList) {
             }
-        }*/
+        }, UserId );*/
 
         Settings.INSTANCE.getUser().getHostedEvent();
         Settings.INSTANCE.getUser().getMatchedEvent();
