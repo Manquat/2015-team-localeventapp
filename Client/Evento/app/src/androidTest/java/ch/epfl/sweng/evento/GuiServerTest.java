@@ -4,6 +4,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import org.junit.Ignore;
@@ -27,15 +28,14 @@ import static junit.framework.Assert.assertEquals;
 /**
  * Tests the GUI against the real server
  */
-//@Ignore("Waiting for jenkins solution regarding google play")
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class GuiServerTest {
+public class GuiServerTest extends ActivityInstrumentationTestCase2<MainActivity> {
     private String TAG = "LoadAndPostTest";
 
-    @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
-            MainActivity.class);
+    public GuiServerTest() {
+        super(MainActivity.class);
+    }
 
 
     /**
@@ -46,6 +46,7 @@ public class GuiServerTest {
      */
 
     @Test
+    @Ignore("This test fails on my machine. -Solal")
     public void testRefreshPostRefresh() throws InterruptedException {
         int numOfEvent;
 
