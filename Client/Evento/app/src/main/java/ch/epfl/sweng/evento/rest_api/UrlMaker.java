@@ -11,7 +11,6 @@ public final class UrlMaker {
     private static final String TAG = "UrlMaker";
     private final static String event = "events/";
     private final static String comment = "comments/";
-    private final static String accessMaster = "Gandalf/";
 
     private UrlMaker() {
         // private constructor
@@ -48,17 +47,17 @@ public final class UrlMaker {
                                        double latitude, double longitude, double radius) {
         long startTimeInSec = startTime.getTimeInMillis() / 1000;
         long endTimeInSec = endTime.getTimeInMillis() / 1000;
-        String url = urlServer + event + accessMaster + Long.toString(startTimeInSec)
+        String url = urlServer + event + Long.toString(startTimeInSec)
                 + "/" + Long.toString(endTimeInSec) + "/" + Double.toString(latitude) + "/"
                 + Double.toString(longitude) + "/" + Double.toString(radius);
         return url;
     }
 
     public static String postComment(String urlServer) {
-        return urlServer + event + accessMaster;
+        return urlServer + event;
     }
 
     public static String getComment(String urlServer, int eventId) {
-        return urlServer + event + accessMaster + "/" + comment + eventId;
+        return urlServer + event + "/" + comment + eventId;
     }
 }

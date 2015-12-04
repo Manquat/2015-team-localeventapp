@@ -94,8 +94,14 @@ public class Parser {
         Calendar cal = new GregorianCalendar();
 
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.FRANCE);
-        timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
-        cal.setTime(timeFormat.parse(s));
+        SimpleDateFormat timeFormatWithMillis = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.FRANCE);
+        if (s.contains(".")){
+            timeFormatWithMillis.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+            cal.setTime(timeFormatWithMillis.parse(s));
+        } else {
+            timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+            cal.setTime(timeFormat.parse(s));
+        }
         return cal;
     }
 }

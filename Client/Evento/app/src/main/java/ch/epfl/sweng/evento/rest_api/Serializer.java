@@ -24,7 +24,8 @@ public final class Serializer {
                 + "  \"longitude\": " + e.getLongitude() + ",\n"
                 + "  \"address\": \"" + e.getAddress() + "\", \n "
                 + " \"date\" : \"" + e.getProperDateString() + "\", \n "
-                + "  \"creator\": " + 14 + " \n"
+                + "  \"creator\": " + 1 + " \n"
+                // + "  \"creator\": \"" + e.getCreator() + "\" \n"
                 // + "  \"tags\":" + "Basketball" + "\n"
                 + "}\n";
         return res;
@@ -34,8 +35,8 @@ public final class Serializer {
     public static String comment(int userId, int eventId, String commentBody) {
         String res = "{\n"
                 + "\"comment\": \"" + commentBody + "\",\n"
-                + "\"user\": \"" + userId + "\",\n"
-                + "\"event\": \"" + eventId + "\"\n"
+                + "\"user\": " + userId + ",\n"
+                + "\"event\": " + eventId + "\n"
                 + "}\n";
         return res;
     }
