@@ -12,10 +12,11 @@ public class Comment {
     private User mOwner;
     private final Calendar mDateOfCreation;
 
-    public Comment(User owner, String message) {
+    public Comment(User owner, String message, int id) {
         mOwner = owner;
         mMessage = message;
         mDateOfCreation = new GregorianCalendar();
+        mID = id;
     }
 
     public String getMessage(){

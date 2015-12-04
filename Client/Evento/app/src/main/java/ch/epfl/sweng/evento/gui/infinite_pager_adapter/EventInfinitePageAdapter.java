@@ -86,8 +86,8 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
 
         Conversation conversation = event.getConversation();
         if (conversation.size() == 0) { //TODO remove mock conversation
-            conversation.addComment(new Comment(Settings.INSTANCE.getUser(), "plop"));
-            conversation.addComment(new Comment(Settings.INSTANCE.getUser(), "plop"));
+            conversation.addComment(new Comment(Settings.INSTANCE.getUser(), "plop", -1));
+            conversation.addComment(new Comment(Settings.INSTANCE.getUser(), "plop", -1));
         }
 
         ConversationAdapter conversationAdapter = new ConversationAdapter(mActivity, conversation);
@@ -105,30 +105,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
         addCommentButton.setText(mActivity.getResources().getString(R.string.conversation_add_comment));
         mCurrentlyAddingAComment.put(currentEventId, false);
         addCommentButton.setTag(currentEventId);
-        addCommentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int currentEventId = (int) view.getTag();
-                Event currentEvent = EventDatabase.INSTANCE.getEvent(currentEventId);
-
-                ListView listView = mListViews.get(currentEventId);
-                listView.removeFooterView(view);
-
-                if (mCurrentlyAddingAComment.get(currentEventId)) {
-                    EditText messageBox = mMessagesBox.get(currentEventId);
-                    String message = messageBox.getText().toString();
-
-                    // creating the new Comment
-                    //TODO use the restApi
-                    currentEvent.getConversation().addComment(
-                            new Comment(Settings.INSTANCE.getUser(), message));
-
-                    listView.removeFooterView(messageBox);
-                }
-
-                addingFooterOfTheListView(currentEventId);
-            }
-        });
+        addCommentButton.setOnClickListener(this);
 
         listOfComment.addFooterView(addCommentButton);
 
@@ -217,7 +194,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
 
     @Override
     public void onClick(View v) {
-        int currentEventId = getCurrentIndicator();
+        int currentEventId = (int) v.getTag();
 
         ListView listView = mListViews.get(currentEventId);
         listView.removeFooterView(v);
@@ -229,7 +206,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
             // creating the new Comment
             //TODO use the restApi
             EventDatabase.INSTANCE.getEvent(currentEventId).getConversation()
-                    .addComment(new Comment(Settings.INSTANCE.getUser(), message));
+                    .addComment(new Comment(Settings.INSTANCE.getUser(), message, -1));
 
             listView.removeFooterView(messageBox);
         }

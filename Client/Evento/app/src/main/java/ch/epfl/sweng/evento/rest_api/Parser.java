@@ -67,7 +67,7 @@ public class Parser {
         final JSONObject json = jsonObject;
 
         //TODO use the right user
-        return new Comment(Settings.INSTANCE.getUser(), "mock message parsing");
+        return new Comment(Settings.INSTANCE.getUser(), "mock message parsing", -1);
     }
 
     public static List<Event> parseFromJSONMultiple(String response) throws JSONException {
