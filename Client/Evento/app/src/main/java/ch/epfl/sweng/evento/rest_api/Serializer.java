@@ -24,7 +24,8 @@ public final class Serializer {
                 + "  \"longitude\": " + e.getLongitude() + ",\n"
                 + "  \"address\": \"" + e.getAddress() + "\", \n "
                 + " \"date\" : \"" + e.getProperDateString() + "\", \n "
-                + "  \"creator\": \"" + e.getCreator() + "\" \n"
+                + "  \"creator\": " + 1 + " \n"
+                // + "  \"creator\": \"" + e.getCreator() + "\" \n"
                 // + "  \"tags\":" + "Basketball" + "\n"
                 + "}\n";
         return res;
