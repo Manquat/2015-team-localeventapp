@@ -1,5 +1,6 @@
 package ch.epfl.sweng.evento;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,22 +26,22 @@ public class User {
     private String mGoogleId;
     private String mUsername;
     private String mEmail;
- 	private Set<Event> mMatchedEvent;
-    private Set<Event> mHostedEvent;
+ 	private List<Event> mMatchedEvent;
+    private List<Event> mHostedEvent;
 
 
 	public User(int id, String username, String email){
 	    mUserId = id;
 	    mUsername = username;
 	    mEmail = email;
-	    mMatchedEvent = new HashSet<>();
-	    mHostedEvent = new HashSet<>();
+	    mMatchedEvent = new ArrayList<>();
+	    mHostedEvent = new ArrayList<>();
 	}
 	
-	public User(String username,Set<Event> matchedEvent, Set<Event> hostedEvent){
+	public User(String username,List<Event> matchedEvent, List<Event> hostedEvent){
 	    mUsername = username;
-	    mMatchedEvent = new HashSet<>(matchedEvent);
-	    mHostedEvent = new HashSet<>(hostedEvent);
+	    mMatchedEvent = (matchedEvent);
+	    mHostedEvent = (hostedEvent);
     }
 
 
@@ -55,9 +56,9 @@ public class User {
         this.mEmail = mEmail;
     }
 
-    public Set<Event> getMatchedEvent() { return mMatchedEvent;}
+    public List<Event> getMatchedEvent() { return mMatchedEvent;}
 
-    public Set<Event> getHostedEvent() { return mHostedEvent; }
+    public List<Event> getHostedEvent() { return mHostedEvent; }
 
     public int getUserId(){
         return mUserId;
@@ -133,11 +134,11 @@ public class User {
         return getHostedEventString("\n");
     }
 
-    public void setHostedEvent(Set<Event> mHostedEvent) {
+    public void setHostedEvent(List<Event> mHostedEvent) {
         this.mHostedEvent = mHostedEvent;
     }
 
-    public void setMatchedEvent(Set<Event> mMatchedEvent) {
+    public void setMatchedEvent(List<Event> mMatchedEvent) {
         this.mMatchedEvent = mMatchedEvent;
     }
 

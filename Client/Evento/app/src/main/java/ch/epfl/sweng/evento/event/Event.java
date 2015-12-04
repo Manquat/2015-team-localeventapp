@@ -28,7 +28,7 @@ import ch.epfl.sweng.evento.User;
 public class Event implements ClusterItem {
     private static final String TAG = "Event";
     private final int mID;
-    private String mTitle;
+    private final String mTitle;
     private final String mDescription;
     private final LatLng mLocation;
     private final String mAddress;
@@ -354,9 +354,6 @@ public class Event implements ClusterItem {
     }
 
 
-    public void setTitle(String mTitle) {
-        this.mTitle = mTitle;
-    }
 }
 
 

@@ -43,13 +43,13 @@
             <ListView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/listView2"
+                android:id="@+id/hostedListView"
                 android:layout_weight="0.5" />
 
             <ListView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/listView"
+                android:id="@+id/matchedListView"
                 android:layout_gravity="right"
                 android:layout_weight="0.5" />
 
