@@ -17,7 +17,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import ch.epfl.sweng.evento.Comment;
-import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 
 /**
@@ -30,7 +30,7 @@ public class Parser {
         return null;
     }
 
-    public static Event parseFromJSON(JSONObject jsonObject) throws JSONException {
+    public static Event toEvent(JSONObject jsonObject) throws JSONException {
 
         final JSONObject json = jsonObject;
 
@@ -54,44 +54,76 @@ public class Parser {
                     jsonObject.getDouble("longitude"),
                     jsonObject.getString("address"),
                     jsonObject.getInt("creator"),
-                    new HashSet<String>(),
+                    new HashSet<String>(){{ add(json.getString("tags"));}},
                     startDate,
-                    endDate);
+                    endDate,
+                    jsonObject.getString("image"),
+                    new HashSet<User>());
 
         } catch (IllegalArgumentException e) {
             throw new JSONException("Invalid question structure");
         }
     }
 
-    private static Comment parseJsonToComment(JSONObject jsonObject) {
-        final JSONObject json = jsonObject;
+    private static Comment toComment(JSONObject jsonObject) throws JSONException {
+        Comment c = new Comment(new User(
+                jsonObject.getInt("user"),
+                "name",
+                "email"),
+                jsonObject.getString("body"),
+                jsonObject.getInt("event"));
 
-        //TODO use the right user
-        return new Comment(Settings.INSTANCE.getUser(), "mock message parsing", -1);
+        return c;
     }
 
-    public static List<Event> parseFromJSONMultiple(String response) throws JSONException {
+    public static List<Event> toEventList(String response) throws JSONException {
         ArrayList<Event> eventArrayList = new ArrayList<>();
         JSONArray jsonArray = new JSONArray(response);
 
         for (int i = 0; i < jsonArray.length(); i++) {
-            eventArrayList.add(parseFromJSON(jsonArray.getJSONObject(i)));
+            eventArrayList.add(toEvent(jsonArray.getJSONObject(i)));
         }
         return eventArrayList;
     }
 
-    public static List<Comment> parseFromJsonListOfComment(String result) throws JSONException {
+    public static User toUser(JSONObject jsonObject) throws JSONException {
+        final JSONObject json = jsonObject;
+
+        try {
+            return new User(jsonObject.getInt("id"),
+                    jsonObject.getString("name"),
+                    jsonObject.getString("email")
+            );
+
+        } catch (IllegalArgumentException e) {
+            throw new JSONException("Invalid question structure");
+        }
+    }
+
+    public static List<Comment> toCommentList(String result) throws JSONException {
         JSONArray jsonArray = new JSONArray(result);
         List<Comment> commentList = new ArrayList<>();
 
         for (int i = 0; i < jsonArray.length(); i++) {
-            commentList.add(parseJsonToComment(jsonArray.getJSONObject(i)));
+            commentList.add(toComment(jsonArray.getJSONObject(i)));
         }
         return commentList;
     }
 
+    public static List<User> toUserList(String response) throws JSONException {
+        JSONArray jsonArray = new JSONArray(response);
+        List<User> userList = new ArrayList<>();
 
-    public static Calendar fromStringToCalendar(String s) throws ParseException {
+        for(int i = 0; i < jsonArray.length(); i++){
+            userList.add(toUser(jsonArray.getJSONObject(i)));
+        }
+
+        return userList;
+    }
+
+
+    // inner method to correctly form Calendar value
+    private static Calendar fromStringToCalendar(String s) throws ParseException {
         Calendar cal = new GregorianCalendar();
 
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.FRANCE);

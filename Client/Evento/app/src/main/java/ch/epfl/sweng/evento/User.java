@@ -38,14 +38,12 @@ public class User {
 	    mHostedEvent = new HashSet<>(hostedEvent);
     }
 
-
-
-
     public User(String mGoogleId, String mUsername, String mEmail) {
         this.mGoogleId = mGoogleId;
         this.mUsername = mUsername;
         this.mEmail = mEmail;
     }
+
 
     public Set<Event> getMatchedEvent() { return mMatchedEvent;}
 

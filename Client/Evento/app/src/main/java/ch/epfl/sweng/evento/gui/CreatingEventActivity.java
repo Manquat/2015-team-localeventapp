@@ -79,7 +79,7 @@ public class CreatingEventActivity extends AppCompatActivity
     private TextView mPlaceDetailsText;
     private TextView mPlaceDetailsAttribution;
     private PlaceAutocompleteAdapter mAdapter;
-    private Set<String> mTag;
+    private Set<String> mTag = new HashSet<>();
     private double latitude = 0.0;
     private double longitude = 0.0;
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(

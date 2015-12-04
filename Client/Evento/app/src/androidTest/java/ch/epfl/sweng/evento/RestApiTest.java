@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -113,7 +112,7 @@ public class RestApiTest {
     @Test
     public void testParsingJsonToEvent() throws JSONException {
         JSONObject jsonObject = new JSONObject(PROPER_JSON_STRING);
-        Event eventFromJson = Parser.parseFromJSON(jsonObject);
+        Event eventFromJson = Parser.toEvent(jsonObject);
 
         //assertEquals("Event correctly parsed", eventFromJson, PROPER_EVENT);
 

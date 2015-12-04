@@ -28,7 +28,7 @@ public class CommentTest {
         mUser = new User(1,"MockJo","mockjo@plop.ch");
         mMessage = "Testing the comment message";
 
-        mComment = new Comment(mUser, mMessage);
+        mComment = new Comment(mUser, mMessage, 4);
         mTimeStamp = new GregorianCalendar();
     }
 

@@ -68,7 +68,7 @@ public class RestApi {
                 if (response != null) {
                     try {
                         JSONObject JsonResponse = new JSONObject(response);
-                        event = ParserEvent.parseFromJSON(JsonResponse);
+                        event = Parser.toEvent(JsonResponse);
                     } catch (JSONException e) {
                         Log.e(TAG, "Exception thrown in getEvent", e);
                     }
@@ -88,7 +88,7 @@ public class RestApi {
                 List<Event> eventArrayList = null;
                 if (response != null) {
                     try {
-                        eventArrayList = ParserEvent.parseFromJSONMultiple(response);
+                        eventArrayList = Parser.toEventList(response);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -108,7 +108,7 @@ public class RestApi {
                 List<User> user = null;
                 if (response != null) {
                     try {
-                        user = ParserUser.parseUserFromJSONMultiple(response);
+                        user = Parser.toUserList(response);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -130,7 +130,7 @@ public class RestApi {
                 if (response != null) {
                     try {
                         JSONObject JsonResponse = new JSONObject(response);
-                        user = ParserUser.parseUserFromJSON(JsonResponse);
+                        user = Parser.toUser(JsonResponse);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -152,7 +152,7 @@ public class RestApi {
                 List<Event> event = null;
                 if (response != null) {
                     try {
-                        event = ParserEvent.parseFromJSONMultiple(response);
+                        event = Parser.toEventList(response);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -173,7 +173,7 @@ public class RestApi {
                 List<Event> event = null;
                 if (response != null) {
                     try {
-                        event = ParserEvent.parseFromJSONMultiple(response);
+                        event = Parser.toEventList(response);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -195,7 +195,7 @@ public class RestApi {
                 List<Event> eventArrayList = null;
                 if (result != null) {
                     try {
-                        eventArrayList = ParserEvent.parseFromJSONMultiple(result);
+                        eventArrayList = Parser.toEventList(result);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -220,7 +220,7 @@ public class RestApi {
                 List<Event> eventArrayList = null;
                 if (result != null) {
                     try {
-                        eventArrayList= ParserEvent.parseFromJSONMultiple(result);
+                        eventArrayList= Parser.toEventList(result);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -239,7 +239,7 @@ public class RestApi {
                 List<Comment> commentList = null;
                 if (result != null) {
                     try {
-                        commentList = Parser.parseFromJsonListOfComment(result);
+                        commentList = Parser.toCommentList(result);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -298,7 +298,7 @@ public class RestApi {
                 if (response != null) {
                     try {
                         JSONObject JsonResponse = new JSONObject(response);
-                        user = ParserUser.parseUserFromJSON(JsonResponse);
+                        user = Parser.toUser(JsonResponse);
                     } catch (JSONException e) {
                         Log.e(TAG, "Exception thrown in getEvent", e);
                     }
