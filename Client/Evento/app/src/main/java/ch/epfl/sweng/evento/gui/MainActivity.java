@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void makeNotifications(List<Event> eventArrayList) {
-        Calendar currentDate = new GregorianCalendar().getInstance();
+        Calendar currentDate = Calendar.getInstance();
 
         boolean notif_needed = false;
         String notif_description="";
