@@ -63,6 +63,8 @@ public class LoginActivity extends AppCompatActivity implements
                 .addOnConnectionFailedListener(this)
                 .build();
 
+        mGoogleApiClient.disconnect();
+
 
         // The Color Scheme of the sign in button and setup of the OnClickListener to Sign in if clicked.
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);

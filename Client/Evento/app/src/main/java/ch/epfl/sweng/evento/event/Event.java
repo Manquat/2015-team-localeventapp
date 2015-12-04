@@ -20,7 +20,6 @@ import java.util.TimeZone;
 
 import ch.epfl.sweng.evento.Conversation;
 
-import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.User;
 
 /**
@@ -34,7 +33,7 @@ public class Event implements ClusterItem {
     private final String mDescription;
     private final LatLng mLocation;
     private final String mAddress;
-    private final int mCreator;//might be replaced by some kind of User class
+    private final int mCreatorId;//might be replaced by some kind of User class
     private final Set<String> mTags;
     private Calendar mStartDate;
     private Calendar mEndDate;
@@ -44,30 +43,31 @@ public class Event implements ClusterItem {
     private final int mNumberMaxOfParticipants;
 
 
-
-    public Event( int id,
-                  String title,
-                  String description,
-                  double latitude,
-                  double longitude,
-                  String address,
-                  int creator,
-                  Set<String> tags,
-                  String image,
-                  Set<User> participants) {
+    public Event(int id,
+                 String title,
+                 String description,
+                 double latitude,
+                 double longitude,
+                 String address,
+                 int creatorId,
+                 Set<String> tags,
+                 Calendar startDate,
+                 Calendar endDate,
+                 String image,
+                 Set<User> participants) {
         mID = id;
         mTitle = title;
         mDescription = description;
         mLocation = new LatLng(latitude, longitude);
         mAddress = address;
-        mCreator = creator;
+        mCreatorId = creatorId;
         mTags = tags;
-        mStartDate = new GregorianCalendar();
-        mEndDate = new GregorianCalendar();
-        mPicture = samplePicture();
+        mStartDate = startDate;
+        mEndDate = endDate;
+        mPicture = image;
         mConversation = new Conversation();
-        mNumberMaxOfParticipants =  10;//TODO
-        mParticipants = new HashSet<User>(participants);
+        mNumberMaxOfParticipants = 10;//TODO
+        mParticipants = participants;
     }
 
     public Event(int id,
@@ -81,11 +81,8 @@ public class Event implements ClusterItem {
                  Calendar startDate,
                  Calendar endDate,
                  Bitmap picture) {
-        this(id, title, description, latitude, longitude, address, creator, tags, startDate, endDate);
-        mStartDate = startDate;
-        mEndDate = endDate;
-        setPicture(picture);
-        mConversation = new Conversation();
+        this(id, title, description, latitude, longitude, address, creator, tags,
+                startDate, endDate, bitmapToString(picture), new HashSet<User>());
     }
 
     public Event(int id,
@@ -94,15 +91,27 @@ public class Event implements ClusterItem {
                  double latitude,
                  double longitude,
                  String address,
-                 String creator,
+                 int creator,
                  Set<String> tags,
                  Calendar startDate,
                  Calendar endDate) {
-        this(id, title, description, latitude, longitude, address, creator, tags, "image", new HashSet<User>());
-        mStartDate = startDate;
-        mEndDate = endDate;
-        mPicture = samplePicture();
-        mConversation = new Conversation();
+        this(id, title, description, latitude, longitude, address, creator, tags,
+                startDate, endDate, samplePicture(), new HashSet<User>());
+    }
+
+    public Event(int id,
+                 String title,
+                 String description,
+                 double latitude,
+                 double longitude,
+                 String address,
+                 int creator,
+                 Set<String> tags,
+                 String image,
+                 Set<User> users) {
+        this(id, title, description, latitude, longitude, address, creator, tags,
+                new GregorianCalendar(), new GregorianCalendar(), image, users);
+
     }
 
     /**
@@ -116,8 +125,8 @@ public class Event implements ClusterItem {
                 + "), " + this.getCreator() + ", (" + this.getProperDateString();
     }
 
-    public boolean addParticipant(User participant){
-        if(participant != null) {
+    public boolean addParticipant(User participant) {
+        if (participant != null) {
             if (mParticipants.size() < mNumberMaxOfParticipants) {
                 mParticipants.add(participant);
                 return true;
@@ -137,8 +146,8 @@ public class Event implements ClusterItem {
         return mNumberMaxOfParticipants;
     }
 
-    public boolean removeParticipant(User participant){
-        if(participant != null) {
+    public boolean removeParticipant(User participant) {
+        if (participant != null) {
             if (checkIfParticipantIsIn(participant)) {
                 mParticipants.remove(participant);
                 return true;
@@ -150,10 +159,27 @@ public class Event implements ClusterItem {
         return false;
     }
 
-    public boolean checkIfParticipantIsIn(User participant){
-        if(participant != null) return mParticipants.contains(participant);
+    public boolean checkIfParticipantIsIn(User participant) {
+        if (participant != null) return mParticipants.contains(participant);
         Log.d("Event.checkIfPart.", "Can't check if null is a participant");
         return false;
+    }
+
+    public static String bitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        return Base64.encodeToString(b, Base64.DEFAULT);
+    }
+
+    public static Bitmap stringToBitMap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
+        }
     }
 
     public void setPicture(String picture) {
@@ -162,10 +188,7 @@ public class Event implements ClusterItem {
 
     public void setPicture(Bitmap bitmap) {
         if (bitmap != null) {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-            byte[] b = outputStream.toByteArray();
-            mPicture = Base64.encodeToString(b, Base64.DEFAULT);
+            mPicture = bitmapToString(bitmap);
         } else {
             mPicture = "";
         }
@@ -222,7 +245,7 @@ public class Event implements ClusterItem {
     }
 
     public int getCreator() {
-        return mCreator;
+        return mCreatorId;
     }
 
     public String getTagsString() {
@@ -238,8 +261,8 @@ public class Event implements ClusterItem {
 
     public String getListParticipantString(String separator) {
         String res = "";
-        if(!mParticipants.isEmpty()){
-            for(User participantName: mParticipants){
+        if (!mParticipants.isEmpty()) {
+            for (User participantName : mParticipants) {
                 res += participantName.getUsername() + separator;
             }
             Log.d("Event", "Result of ListOfParticipant to String " + res);
@@ -251,7 +274,7 @@ public class Event implements ClusterItem {
         return getListParticipantString("\n");
     }
 
-    public void setListOfParticipant(Set<User> str){
+    public void setListOfParticipant(Set<User> str) {
         mParticipants = str;
     }
 
@@ -279,8 +302,7 @@ public class Event implements ClusterItem {
      */
     public Bitmap getPicture() {
 
-        byte[] encodeByte = Base64.decode(mPicture, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        return stringToBitMap(mPicture);
     }
 
     @Override

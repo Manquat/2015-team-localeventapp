@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +29,9 @@ import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.gui.ConversationAdapter;
+import ch.epfl.sweng.evento.gui.ExpendableList;
 import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.callback.GetUserListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
@@ -36,14 +40,16 @@ import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
  */
 public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> implements View.OnClickListener {
     Activity mActivity;
-    public static final String TAG = "EventInfinitePageAdapter";
+    public static final String TAG = "EventInfPageAdapter";
 
     private Map<Integer, ListView> mListViews;
     private Map<Integer, Boolean> mCurrentlyAddingAComment;
     private Map<Integer, EditText> mMessagesBox;
-    private List<User> mParticipants;
-    private List<Event> hostedEvent;
     private RestApi mRestApi;
+    private ExpandableListView mExpListView;
+    private ArrayList<String> mListDataHeader;
+    private HashMap<String, List<String>> mListDataChild;
+    private List<User> mParticipants;
 
     public EventInfinitePageAdapter(Integer initialEventId, Activity activity) {
         super(initialEventId);
@@ -54,7 +60,6 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
         mMessagesBox = new HashMap<>();
 
         mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-        //restApi.getParticipant(initialEventId);
     }
 
     @Override
@@ -99,7 +104,30 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
         Button addCommentButton = new Button(mActivity);
         addCommentButton.setText(mActivity.getResources().getString(R.string.conversation_add_comment));
         mCurrentlyAddingAComment.put(currentEventId, false);
-        addCommentButton.setOnClickListener(this);
+        addCommentButton.setTag(currentEventId);
+        addCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int currentEventId = (int) view.getTag();
+                Event currentEvent = EventDatabase.INSTANCE.getEvent(currentEventId);
+
+                ListView listView = mListViews.get(currentEventId);
+                listView.removeFooterView(view);
+
+                if (mCurrentlyAddingAComment.get(currentEventId)) {
+                    EditText messageBox = mMessagesBox.get(currentEventId);
+                    String message = messageBox.getText().toString();
+
+                    // creating the new Comment
+                    //TODO use the restApi
+                    currentEvent.getConversation().addComment(new Comment(new MockUser(), message));
+
+                    listView.removeFooterView(messageBox);
+                }
+
+                addingFooterOfTheListView(currentEventId);
+            }
+        });
 
         listOfComment.addFooterView(addCommentButton);
 
@@ -108,7 +136,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
         return rootLayout;
     }
 
-    private void updateFields(ViewGroup rootView, Event currentEvent) {
+    private void updateFields(ViewGroup rootView, final Event currentEvent) {
         TextView titleView = (TextView) rootView.findViewById(R.id.event_title_view);
         TextView creatorView = (TextView) rootView.findViewById(R.id.event_creator_view);
         TextView startDateView = (TextView) rootView.findViewById(R.id.event_start_date_view);
@@ -116,8 +144,15 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
         TextView addressView = (TextView) rootView.findViewById(R.id.event_address_view);
         TextView descriptionView = (TextView) rootView.findViewById(R.id.event_description_view);
 
+        mExpListView = (ExpandableListView) rootView.findViewById(R.id.list_participant_exp);
+
+        mListDataHeader = new ArrayList<String>();
+        mListDataChild = new HashMap<String, List<String>>();
+
+        getParticipant(currentEvent);
+
         titleView.setText(currentEvent.getTitle());
-        creatorView.setText(currentEvent.getCreator());
+        creatorView.setText(Integer.toString(currentEvent.getCreator()));
         startDateView.setText(currentEvent.getStartDateAsString());
         endDateView.setText(currentEvent.getEndDateAsString());
         addressView.setText(currentEvent.getAddress());
@@ -125,13 +160,31 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
 
         ImageView pictureView = (ImageView) rootView.findViewById(R.id.eventPictureView);
         pictureView.setImageBitmap(currentEvent.getPicture());
+
         Button joinEvent = (Button) rootView.findViewById(R.id.joinEvent);
+        joinEvent.setTag(currentEvent.getID());
+
         joinEvent.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(mActivity, "Submitted", Toast.LENGTH_SHORT).show();
-                mActivity.finish();
+                int currentEventId = (int) view.getTag();
+                Event currentEvent = EventDatabase.INSTANCE.getEvent(currentEventId);
+                Log.d(TAG, Settings.INSTANCE.getUser().getEmail());
+                if (!currentEvent.addParticipant(Settings.INSTANCE.getUser())) {
+                    Log.d("TAG", "addParticipant just returned false");
+                    mActivity.finish();
+                } else {
+                    Toast.makeText(mActivity.getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
+                    Settings.INSTANCE.getUser().addMatchedEvent(currentEvent);
+                    mRestApi.addParticipant(currentEvent.getID(), Settings.INSTANCE.getUser().getUserId(), new HttpResponseCodeCallback() {
+                        @Override
+                        public void onSuccess(String response) {
+                            Log.d(TAG, "Response" + response);
+                            mActivity.finish();
+                        }
+                    });
+                }
             }
         });
 
@@ -141,18 +194,22 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
         } else {
             removeUserFromEvent.setVisibility(View.INVISIBLE);
         }
+
+        removeUserFromEvent.setTag(currentEvent.getID());
         removeUserFromEvent.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
+                int currentEventId = (int) view.getTag();
+                Event currentEvent = EventDatabase.INSTANCE.getEvent(currentEventId);
                 Toast.makeText(mActivity.getApplicationContext(), "Removed from the event", Toast.LENGTH_SHORT).show();
                 mRestApi.removeParticipant(currentEvent.getID(), Settings.INSTANCE.getUser().getUserId(), new HttpResponseCodeCallback() {
                     @Override
                     public void onSuccess(String response) {
                         Log.d(TAG, "Response" + response);
+                        mActivity.finish();
                     }
                 });
-                mActivity.finish();
             }
         });
     }
@@ -199,5 +256,43 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
         addCommentButton.setOnClickListener(this);
 
         mListViews.get(currentEventID).addFooterView(addCommentButton);
+    }
+
+    private void getParticipant(Event currentEvent){
+        mParticipants = new ArrayList<>();
+
+        mRestApi.getParticipant(new GetUserListCallback() {
+            public void onUserListReceived(List<User> userArrayList) {
+                if (userArrayList != null) {
+                    mParticipants = userArrayList;
+                    List<String> participant = new ArrayList<>();
+                    for (User user : mParticipants) {
+                        participant.add(user.getUsername());
+                    }
+                    if (mListDataHeader.size() < 2) {
+                        mListDataHeader.add("Participant of the event (" + mParticipants.size() + ")");
+                    }
+                    mListDataChild.put(mListDataHeader.get(0), participant);
+                    ExpendableList listAdapter = new ExpendableList(mActivity, mListDataHeader, mListDataChild);
+
+                    // setting list adapter
+                    mExpListView.setAdapter(listAdapter);
+
+                    // ListView on child click listener
+                    mExpListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+                        @Override
+                        public boolean onChildClick(ExpandableListView parent, View v,
+                                                    int groupPosition, int childPosition, long id) {
+                            final int groupPosTmp = groupPosition;
+                            final int childPosTmp = childPosition;
+                            return false;
+                        }
+                    });
+                }
+            }
+
+        }, currentEvent.getID());
+
     }
 }

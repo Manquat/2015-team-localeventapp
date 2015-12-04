@@ -76,9 +76,9 @@ public class RestApiTest {
             "Okay guys, let's play a little game this evening at dorigny. Remember: no doping allowed!",
             46.519428, 6.580847,
             "Terrain de football de Dorigny",
-            "Micheal Jackson",
+            1,
             new HashSet<String>(),
-            "image",
+            Event.samplePicture(),
             new HashSet<User>());
 
 
@@ -230,7 +230,7 @@ public class RestApiTest {
 
     private static final Calendar date = new GregorianCalendar(1990, 12, 16, 0, 0);
     private static final Event e = new Event(10, "Ping-Pong at Sat 2", "Beer, ping-pong... let's beerpong",
-            46.519428, 6.580847, "Satellite", "Guillaume Meyrat", new HashSet<String>(), date, date);
+            46.519428, 6.580847, "Satellite", 1, new HashSet<String>(), date, date);
     private static final String EVENT_TO_CREATE_seri = Serializer.event(e);
 
 
@@ -286,7 +286,7 @@ public class RestApiTest {
 
     @Test
     public void testUpdateEvent() throws InterruptedException {
-        Event event = new Event(14, "this is a test of UpdateEvent", "test1", 0, 0, "address", "creator", new HashSet<String>(),"image", new HashSet<User>());
+        Event event = new Event(14, "this is a test of UpdateEvent", "test1", 0, 0, "address", 1, new HashSet<String>(),"image", new HashSet<User>());
         RestApi restApi = new RestApi(networkProvider, urlServer);
         restApi.updateEvent(event, new HttpResponseCodeCallback() {
             @Override
