@@ -167,24 +167,31 @@ public class MainActivity extends AppCompatActivity {
     public void makeNotifications(List<Event> eventArrayList) {
         Calendar currentDate = new GregorianCalendar().getInstance();
 
+        boolean notif_needed = false;
+        String notif_description="";
         for (Event event: eventArrayList) {
             double diffTime = (event.getStartDate().getTimeInMillis() - currentDate.getTimeInMillis())
                     / (1000 * 3600 * 24);
 
             if (diffTime < 1.0) {
-                Notification n  = new Notification.Builder(this)
-                        .setContentTitle("You've got an Event soon !")
-                        .setContentText("The Event " + event.getDescription() + " is starting tomorrow. " +
-                                "\n Don't forget to attend !")
-                        .setSmallIcon(R.drawable.notification)
-                        .setAutoCancel(true).build();
+                notif_needed = true;
+                notif_description += "The event " + event.getTitle() + " is starting tomorrow. \n";
 
-                NotificationManager notificationManager =
-                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-                notificationManager.notify(event.getID(), n);
                 //Toast.makeText(getApplicationContext(), "Notified event : " + event.getTitle(), Toast.LENGTH_SHORT).show();
             }
+        }
+        if(notif_needed){
+            notif_description+="Don't forget to attend !";
+            Notification n  = new Notification.Builder(this)
+                    .setContentTitle("You've got events soon !")
+                    .setContentText(notif_description)
+                    .setSmallIcon(R.drawable.notification)
+                    .setAutoCancel(true).build();
+
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            notificationManager.notify(1234567890, n);
         }
     }
 
