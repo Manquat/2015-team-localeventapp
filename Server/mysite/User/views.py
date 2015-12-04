@@ -2,8 +2,10 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from User.models import User
-from User.serializers import UserSerializer
+from User.models import participant
+from events.models import Event, Comment
+from events.serializers import EventSerializer, CommentSerializer
+from User.serializers import ParticipantSerializer
 from oauth2client import client, crypt
 
 # Create your views here.
@@ -14,15 +16,21 @@ def create_user(request, format=None):
     Create an User
     """
     if request.method == 'GET':
-        events = User.objects.all()
-        serializer = UserSerializer(events, many=True)
+        user = participant.objects.all()
+        serializer = ParticipantSerializer(user, many=True)
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        serializer = UserSerializer(data=request.data)
+        serializer = ParticipantSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            try:
+                user = participant.objects.get(googleid=request.data['googleid'])
+                serializer2 = ParticipantSerializer(user)
+            except participant.DoesNotExist:
+                serializer.save()
+                user = participant.objects.get(googleid=request.data['googleid'])
+                serializer2 = ParticipantSerializer(user)
+            return Response(serializer2.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -31,48 +39,70 @@ def update_user(request, pk, format=None):
     Retrieve, update or delete an User.
     """
     try:
-        event = User.objects.get(pk=pk)
-    except User.DoesNotExist:
+        user = participant.objects.get(pk=pk)
+    except participant.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = UserSerializer(event)
+        serializer = ParticipantSerializer(user)
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = UserSerializer(event, data= request.data)
+        serializer = ParticipantSerializer(user, data= request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        event.delete()
+        user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
-def validate_user(request,token, format=None):
+def created_events(request, pk, format=None):
     """
-    Validate User.
+    returns events created by user
     """
 
-    CLIENT_ID = "1038367220496-ceugpt9chaqucpjhhglmced2d2tat2lm.apps.googleusercontent.com"
-    WEB_CLIENT_ID = "60350226207-ph9a1g0iuakvfe8bd7bbku01ktr40aur.apps.googleusercontent.com"
-# (Receive token by HTTPS POST)
-
     try:
-        idinfo = client.verify_id_token(token, CLIENT_ID)
-        # If multiple clients access the backend server:
-        if idinfo['aud'] not in [WEB_CLIENT_ID]:
-            raise crypt.AppIdentityError("Unrecognized client.")
-        if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
-            raise crypt.AppIdentityError("Wrong issuer.")
-    except crypt.AppIdentityError:
-        return Response(status=status.HTTP_412_PRECONDITION_FAILED)
-    Userid = idinfo['sub']
-    try:
-        user = User.objects.filter(userid__equal = Userid)
-        return Response(status=status.HTTP_202_ACCEPTED)
-    except User.DoesNotExist:
+        p = participant.objects.get(pk=pk)
+    except participant.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        events = Event.objects.filter(creator=pk)
+        serializer = EventSerializer(events, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def commented_events(request, pk, format=None):
+    """
+    returns events commented by user
+    """
+
+    try:
+        user = participant.objects.get(pk=pk)
+    except Event.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        comments = Comment.objects.filter(creator=user)
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def joined_events(request, pk, format=None):
+    """
+    returns events joined by an user
+    """
+
+    try:
+        p = participant.objects.get(pk=pk)
+    except participant.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        events = p.event_set.all()
+        serializer = EventSerializer(events, many=True)
+        return Response(serializer.data)
 

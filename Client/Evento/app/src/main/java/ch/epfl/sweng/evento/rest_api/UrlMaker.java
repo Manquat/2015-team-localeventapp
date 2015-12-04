@@ -55,10 +55,10 @@ public final class UrlMaker {
     }
 
     public static String postComment(String urlServer) {
-        return urlServer + event + accessMaster;
+        return urlServer + event;
     }
 
     public static String getComment(String urlServer, int eventId) {
-        return urlServer + event + accessMaster + "/" + comment + eventId;
+        return urlServer + event + "/" + comment + eventId;
     }
 }
