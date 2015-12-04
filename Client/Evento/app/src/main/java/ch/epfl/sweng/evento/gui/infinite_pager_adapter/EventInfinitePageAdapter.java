@@ -46,7 +46,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
     private Map<Integer, Boolean> mCurrentlyAddingAComment;
     private Map<Integer, EditText> mMessagesBox;
     private RestApi mRestApi;
-    private ExpandableListView mExpListView;
+    private Map<Integer, ExpandableListView> mExpandableListViews;
     private ArrayList<String> mListDataHeader;
     private HashMap<String, List<String>> mListDataChild;
     private List<User> mParticipants;
@@ -58,6 +58,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
         mListViews = new HashMap<>();
         mCurrentlyAddingAComment = new HashMap<>();
         mMessagesBox = new HashMap<>();
+        mExpandableListViews = new HashMap<>();
 
         mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
     }
@@ -144,7 +145,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
         TextView addressView = (TextView) rootView.findViewById(R.id.event_address_view);
         TextView descriptionView = (TextView) rootView.findViewById(R.id.event_description_view);
 
-        mExpListView = (ExpandableListView) rootView.findViewById(R.id.list_participant_exp);
+        mExpandableListViews.put(currentEvent.getID(), (ExpandableListView) rootView.findViewById(R.id.list_participant_exp));
 
         mListDataHeader = new ArrayList<String>();
         mListDataChild = new HashMap<String, List<String>>();
@@ -258,7 +259,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
         mListViews.get(currentEventID).addFooterView(addCommentButton);
     }
 
-    private void getParticipant(Event currentEvent){
+    private void getParticipant(final Event currentEvent){
         mParticipants = new ArrayList<>();
 
         mRestApi.getParticipant(new GetUserListCallback() {
@@ -276,10 +277,11 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
                     ExpendableList listAdapter = new ExpendableList(mActivity, mListDataHeader, mListDataChild);
 
                     // setting list adapter
-                    mExpListView.setAdapter(listAdapter);
+                    mExpandableListViews.get(currentEvent.getID()).setAdapter(listAdapter);
 
                     // ListView on child click listener
-                    mExpListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                    mExpandableListViews.get(currentEvent.getID())
+                            .setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
                         @Override
                         public boolean onChildClick(ExpandableListView parent, View v,
