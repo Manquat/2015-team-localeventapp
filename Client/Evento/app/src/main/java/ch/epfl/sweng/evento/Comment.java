@@ -9,10 +9,10 @@ import java.util.GregorianCalendar;
 public class Comment {
     private int mID;
     private String mMessage;
-    private MockUser mOwner;
+    private User mOwner;
     private final Calendar mDateOfCreation;
 
-    public Comment(MockUser owner, String message) {
+    public Comment(User owner, String message) {
         mOwner = owner;
         mMessage = message;
         mDateOfCreation = new GregorianCalendar();
@@ -22,7 +22,7 @@ public class Comment {
         return mMessage;
     }
 
-    public MockUser getOwner() {
+    public User getOwner() {
         return mOwner;
     }
 

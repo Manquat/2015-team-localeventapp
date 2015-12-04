@@ -87,8 +87,8 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
 
         Conversation conversation = event.getConversation();
         if (conversation.size() == 0) { //TODO remove mock conversation
-            conversation.addComment(new Comment(new MockUser(), "plop"));
-            conversation.addComment(new Comment(new MockUser(), "plop"));
+            conversation.addComment(new Comment(Settings.INSTANCE.getUser(), "plop"));
+            conversation.addComment(new Comment(Settings.INSTANCE.getUser(), "plop"));
         }
 
         ConversationAdapter conversationAdapter = new ConversationAdapter(mActivity, conversation);
@@ -121,7 +121,8 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
 
                     // creating the new Comment
                     //TODO use the restApi
-                    currentEvent.getConversation().addComment(new Comment(new MockUser(), message));
+                    currentEvent.getConversation().addComment(
+                            new Comment(Settings.INSTANCE.getUser(), message));
 
                     listView.removeFooterView(messageBox);
                 }
@@ -229,7 +230,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
             // creating the new Comment
             //TODO use the restApi
             EventDatabase.INSTANCE.getEvent(currentEventId).getConversation()
-                    .addComment(new Comment(new MockUser(), message));
+                    .addComment(new Comment(Settings.INSTANCE.getUser(), message));
 
             listView.removeFooterView(messageBox);
         }
@@ -283,14 +284,14 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
                     mExpandableListViews.get(currentEvent.getID())
                             .setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
-                        @Override
-                        public boolean onChildClick(ExpandableListView parent, View v,
-                                                    int groupPosition, int childPosition, long id) {
-                            final int groupPosTmp = groupPosition;
-                            final int childPosTmp = childPosition;
-                            return false;
-                        }
-                    });
+                                @Override
+                                public boolean onChildClick(ExpandableListView parent, View v,
+                                                            int groupPosition, int childPosition, long id) {
+                                    final int groupPosTmp = groupPosition;
+                                    final int childPosTmp = childPosition;
+                                    return false;
+                                }
+                            });
                 }
             }
 
