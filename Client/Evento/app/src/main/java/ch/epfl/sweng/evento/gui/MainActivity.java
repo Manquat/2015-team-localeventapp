@@ -58,6 +58,7 @@ import ch.epfl.sweng.evento.tabs_layout.SlidingTabLayout;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static final int notificationID = 1234567890;
     private static final String TAG = "MainActivity";
     private Toolbar mToolbar;
     private ViewPager mPager;
@@ -191,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
             NotificationManager notificationManager =
                     (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-            notificationManager.notify(1234567890, n);
+            notificationManager.notify(notificationID, n);
         }
     }
 
