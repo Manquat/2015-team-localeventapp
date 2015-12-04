@@ -23,7 +23,6 @@ import java.util.Map;
 import ch.epfl.sweng.evento.Comment;
 import ch.epfl.sweng.evento.Conversation;
 import ch.epfl.sweng.evento.EventDatabase;
-import ch.epfl.sweng.evento.MockUser;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;

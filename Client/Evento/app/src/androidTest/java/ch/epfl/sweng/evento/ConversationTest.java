@@ -20,11 +20,13 @@ import static junit.framework.Assert.fail;
 public class ConversationTest {
     private Conversation mConversation;
     private Comment mComment;
+    private User mUser;
 
     @Before
     public void init() {
         mConversation = new Conversation();
-        mComment = new Comment(new MockUser(), "plop");
+        mUser = new User(1,"MockJo","mockjo@plop.ch");
+        mComment = new Comment(mUser, "plop");
     }
 
     @Test

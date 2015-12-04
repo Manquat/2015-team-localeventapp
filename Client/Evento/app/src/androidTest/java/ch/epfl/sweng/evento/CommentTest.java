@@ -19,13 +19,13 @@ import static junit.framework.Assert.assertEquals;
 @LargeTest
 public class CommentTest {
     private Comment mComment;
-    private MockUser mUser;
+    private User mUser;
     private String mMessage;
     private Calendar mTimeStamp;
 
     @Before
     public void init() {
-        mUser = new MockUser();
+        mUser = new User(1,"MockJo","mockjo@plop.ch");
         mMessage = "Testing the comment message";
 
         mComment = new Comment(mUser, mMessage);

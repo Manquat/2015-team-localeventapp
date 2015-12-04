@@ -17,7 +17,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import ch.epfl.sweng.evento.Comment;
-import ch.epfl.sweng.evento.MockUser;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.event.Event;
 
