@@ -59,41 +59,7 @@ public class EventFragment extends Fragment {
         mParticipants = new ArrayList<User>();
         mEvent = EventDatabase.INSTANCE.getEvent(signature);
 
-        RestApi restAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-        restAPI.getUser(new GetEventListCallback() {
-            public void onUserListReceived(List<User> userArrayList) {
-                mParticipants = userArrayList;
-            }
-            public void onEventListReceived(List<Event> eventArrayList){
 
-            }
-
-        }, mEvent.getID());
-
-        //Hosted event
-        /*hostedEvent = new ArrayList<Event>();;
-        restAPI.getHostedEvent(new GetMultipleResponseCallback() {
-            public void onDataReceived(List<Event> eventArrayList) {
-                hostedEvent = eventArrayList;
-                Log.d(TAG, hostedEvent.get(0).getTitle());
-                Log.d(TAG, hostedEvent.get(1).getTitle());
-            }
-
-        }, 8);*/
-
-        //Matched event
-        hostedEvent = new ArrayList<Event>();;
-        restAPI.getMatchedEvent(new GetEventListCallback() {
-            public void onEventListReceived(List<Event> eventArrayList) {
-                hostedEvent = eventArrayList;
-                Log.d(TAG, hostedEvent.get(0).getTitle());
-                Log.d(TAG, hostedEvent.get(1).getTitle());
-            }
-            public void onUserListReceived(List<User> userArrayList){
-
-            }
-
-        }, 8);
 
     }
 
@@ -104,7 +70,6 @@ public class EventFragment extends Fragment {
         TextView endDateView = (TextView) rootView.findViewById(R.id.event_end_date_view);
         TextView addressView = (TextView) rootView.findViewById(R.id.event_address_view);
         TextView descriptionView = (TextView) rootView.findViewById(R.id.event_description_view);
-        TextView participantView = (TextView) rootView.findViewById(R.id.listParticipantView);
 
         titleView.setText(mEvent.getTitle());
         creatorView.setText(mEvent.getCreator());
@@ -112,7 +77,6 @@ public class EventFragment extends Fragment {
         endDateView.setText(mEvent.getEndDateAsString());
         addressView.setText(mEvent.getAddress());
         descriptionView.setText(mEvent.getDescription());
-        participantView.setText(mEvent.getListParticipantString(", "));
 
         ImageView pictureView = (ImageView) rootView.findViewById(R.id.eventPictureView);
         pictureView.setImageBitmap(mEvent.getPicture());

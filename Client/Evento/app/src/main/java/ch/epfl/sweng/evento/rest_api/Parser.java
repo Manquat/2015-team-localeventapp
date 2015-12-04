@@ -53,7 +53,7 @@ public class Parser {
                     jsonObject.getDouble("latitude"),
                     jsonObject.getDouble("longitude"),
                     jsonObject.getString("address"),
-                    jsonObject.getString("creator"),
+                    jsonObject.getInt("creator"),
                     new HashSet<String>(),
                     startDate,
                     endDate);

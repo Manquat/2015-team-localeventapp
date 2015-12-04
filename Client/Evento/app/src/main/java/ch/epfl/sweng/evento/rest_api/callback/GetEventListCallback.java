@@ -11,5 +11,4 @@ import ch.epfl.sweng.evento.event.Event;
 public abstract class GetEventListCallback {
 
     public abstract void onEventListReceived(List<Event> eventArrayList);
-    public abstract void onUserListReceived(List<User> userArrayList);
 }
