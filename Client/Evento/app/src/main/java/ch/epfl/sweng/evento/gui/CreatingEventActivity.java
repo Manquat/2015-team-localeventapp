@@ -216,7 +216,7 @@ public class CreatingEventActivity extends AppCompatActivity
 //TODO Concerning the Event abovd: Either change contructor or change the event that is created here!
                 Event e = new Event(id, titleString, descriptionString, latitude,
                         longitude, addressString, Settings.INSTANCE.getUser().getUserId(),
-                        mTag, startDate, endDate);
+                        mTag, startDate, endDate, picture);
 
 
                 restApi.postEvent(e, new HttpResponseCodeCallback() {

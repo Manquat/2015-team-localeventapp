@@ -29,6 +29,7 @@ import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.gui.ConversationAdapter;
 import ch.epfl.sweng.evento.gui.ExpendableList;
+import ch.epfl.sweng.evento.gui.callback.AddingComment;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.GetUserListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
@@ -105,7 +106,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
         addCommentButton.setText(mActivity.getResources().getString(R.string.conversation_add_comment));
         mCurrentlyAddingAComment.put(currentEventId, false);
         addCommentButton.setTag(currentEventId);
-        addCommentButton.setOnClickListener(this);
+        addCommentButton.setOnClickListener(new AddingComment(mActivity, listOfComment, addCommentButton));
 
         listOfComment.addFooterView(addCommentButton);
 

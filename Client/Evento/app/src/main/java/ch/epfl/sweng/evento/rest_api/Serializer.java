@@ -24,7 +24,7 @@ public final class Serializer {
                 + "  \"Event_name\": \"" + e.getTitle() + "\",\n"
                 + "  \"tags\": \"" + e.getTagsString() + "\",\n"
                 + "  \"image\": \n"
-                + "    \"" + e.getDescription() + "\" ,\n"
+                + "    \"" + e.getPictureAsString() + "\" ,\n"
                 + "  \"description\": \n"
                 + "    \"" + e.getDescription() + "\" ,\n"
                 + "  \"latitude\": " + e.getLatitude() + ",\n"

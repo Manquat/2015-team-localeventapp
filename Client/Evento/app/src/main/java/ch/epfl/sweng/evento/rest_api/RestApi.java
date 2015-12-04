@@ -14,6 +14,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import ch.epfl.sweng.evento.Comment;
+import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.rest_api.callback.GetCommentListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventCallback;
@@ -248,10 +249,11 @@ public class RestApi {
         }).execute();
     }
 
-    public void postComment(int UserId, int EventId, String commentBody,
+    public void postComment(int EventId, String commentBody,
                             final HttpResponseCodeCallback callback) {
         String restUrl = UrlMaker.postComment(mUrlServer);
-        String requestBody = Serializer.comment(UserId, EventId, commentBody);
+        String requestBody = Serializer.comment(Settings.INSTANCE.getUser().getUserId(),
+                EventId, commentBody);
         new PostTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String result) {
