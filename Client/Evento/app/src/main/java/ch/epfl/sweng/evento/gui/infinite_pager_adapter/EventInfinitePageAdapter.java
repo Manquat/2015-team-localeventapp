@@ -57,13 +57,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         LinearLayout rootLayout = (LinearLayout) inflater.inflate(R.layout.event_adapter,
                 (ViewGroup) mActivity.getWindow().getDecorView().getRootView(), false);
 
-        Conversation conversation = event.getConversation();
-        if (conversation.size() == 0) { //TODO remove mock conversation
-            conversation.addComment(new Comment(Settings.INSTANCE.getUser(), "plop", -1));
-            conversation.addComment(new Comment(Settings.INSTANCE.getUser(), "plop", -1));
-        }
-
-        ConversationAdapter conversationAdapter = new ConversationAdapter(mActivity, conversation);
+        ConversationAdapter conversationAdapter = new ConversationAdapter(mActivity, currentEventId);
         ListView listOfComment = (ListView) rootLayout.findViewById(R.id.event_list_comment);
         listOfComment.setAdapter(conversationAdapter);
 

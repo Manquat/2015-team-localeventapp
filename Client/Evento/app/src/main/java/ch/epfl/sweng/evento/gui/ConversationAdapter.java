@@ -7,35 +7,60 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.epfl.sweng.evento.Comment;
 import ch.epfl.sweng.evento.Conversation;
+import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.callback.GetCommentListCallback;
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
+import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 
 /**
  * List view adapter for a conversation
  */
-public class ConversationAdapter extends BaseAdapter {
-    private Conversation mConversation;
+public class ConversationAdapter extends BaseAdapter
+        implements Refreshable, GetCommentListCallback {
+    private int mCurrentEventId;
+    private List<Comment> mListOfComment;
     private Context mContext;
 
-    public ConversationAdapter(Context context, Conversation conversation) {
+    private RestApi mRestApi;
+
+    public ConversationAdapter(Context context, int currentEventId) {
         mContext = context;
-        mConversation = conversation;
+        mCurrentEventId = currentEventId;
+
+        mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+
+        Conversation conversation = EventDatabase.INSTANCE.getEvent(mCurrentEventId).getConversation();
+        if (conversation.size() == 0) { //TODO remove mock conversation
+            conversation.addComment(new Comment(Settings.INSTANCE.getUser(), "plop", -1));
+            conversation.addComment(new Comment(Settings.INSTANCE.getUser(), "plop", -1));
+        }
+
+        mListOfComment = new ArrayList<>();
+
+        refresh();
     }
 
     @Override
     public int getCount() {
-        return mConversation.size();
+        return mListOfComment.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mConversation.getComment(position);
+        return mListOfComment.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return mConversation.getComment(position).getID();
+        return mListOfComment.get(position).getID();
     }
 
     @Override
@@ -46,7 +71,7 @@ public class ConversationAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.list_comment, parent, false);
         }
 
-        Comment comment = mConversation.getComment(position);
+        Comment comment = mListOfComment.get(position);
 
         TextView owner = (TextView) convertView.findViewById(R.id.list_comment_owner);
         owner.setText(comment.getOwner().getUsername());
@@ -55,5 +80,16 @@ public class ConversationAdapter extends BaseAdapter {
         message.setText(comment.getMessage());
 
         return convertView;
+    }
+
+    @Override
+    public void refresh() {
+        mRestApi.getComment(mCurrentEventId, this);
+    }
+
+    @Override
+    public void onCommentListReceived(List<Comment> commentList) {
+        mListOfComment = commentList;
+        notifyDataSetChanged();
     }
 }
