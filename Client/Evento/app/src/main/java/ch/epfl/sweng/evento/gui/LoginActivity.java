@@ -120,10 +120,8 @@ public class LoginActivity extends AppCompatActivity implements
             Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
             if (result.isSuccess()) {
-                GoogleSignInAccount acct = result.getSignInAccount();
-                String idToken = acct.getIdToken();
-                Log.d(TAG, "idToken:" + idToken);
-                Settings.INSTANCE.setIdToken(idToken);
+                storingTheUserOnServerAndInTheSettings(result);
+
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             } else {
@@ -155,31 +153,8 @@ public class LoginActivity extends AppCompatActivity implements
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
-                GoogleSignInAccount acct = result.getSignInAccount();
-                String idToken = acct.getIdToken();
-                Log.d(TAG, "idToken:" + idToken);
-                Settings.INSTANCE.setIdToken(idToken);
 
-                String personName = acct.getDisplayName();
-                String personEmail = acct.getEmail();
-                String personId = acct.getId();
-                User user = new User(personId, personName, personEmail);
-                Settings.INSTANCE.setUser(user);
-                RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
-
-                restApi.postUser(user, new GetUserCallback() {
-                    @Override
-                    public void onDataReceived(User user) {
-                        Settings.INSTANCE.setUser(user);
-                        // assert submission
-                        Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "User information sent to server");
-                    }
-                });
-
-                //TODO Get UserId from Server and set it in settings
-                /*int id = Ask SERVER
-                Settings.INSTANCE.setUserId(id);*/
+                storingTheUserOnServerAndInTheSettings(result);
 
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
@@ -188,6 +163,30 @@ public class LoginActivity extends AppCompatActivity implements
                 Toast.makeText(this, "Could not connect, please try again", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void storingTheUserOnServerAndInTheSettings(GoogleSignInResult googleSignInResult) {
+        GoogleSignInAccount acct = googleSignInResult.getSignInAccount();
+        String idToken = acct.getIdToken();
+        Log.d(TAG, "idToken:" + idToken);
+        Settings.INSTANCE.setIdToken(idToken);
+
+        String personName = acct.getDisplayName();
+        String personEmail = acct.getEmail();
+        String personId = acct.getId();
+        User user = new User(personId, personName, personEmail);
+        Settings.INSTANCE.setUser(user);
+        RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
+
+        restApi.postUser(user, new GetUserCallback() {
+            @Override
+            public void onDataReceived(User user) {
+                Settings.INSTANCE.setUser(user);
+                // assert submission
+                Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "User information sent to server");
+            }
+        });
     }
 
     private void validateServerClientID() {
