@@ -26,7 +26,7 @@ public class JoinEvent extends HttpResponseCodeCallback implements View.OnClickL
     private Button mUnJoinEventButton;
     private boolean mIsTheEventJoined;
 
-    public JoinEvent(Activity parentActivity, int currentEventId,
+    private JoinEvent(Activity parentActivity, int currentEventId,
                      Button joinEventButton, Button unJoinEventButton) {
         mActivity = parentActivity;
         mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
@@ -38,6 +38,11 @@ public class JoinEvent extends HttpResponseCodeCallback implements View.OnClickL
         mUnJoinEventButton.setOnClickListener(this);
 
         updateButtonState();
+    }
+
+    public static void initialize(Activity parentActivity, int currentEventId,
+                            Button joinEventButton, Button unJoinEventButton) {
+        new JoinEvent(parentActivity, currentEventId, joinEventButton, unJoinEventButton);
     }
 
     @Override
