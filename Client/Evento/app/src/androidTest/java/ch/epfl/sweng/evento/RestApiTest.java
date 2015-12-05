@@ -67,7 +67,7 @@ public class RestApiTest {
             + "  \"longitude\": 6.580847,\n"
             + "  \"date\": \"26/02/1992 at 13:30\",\n"
             + "  \"address\": \"Terrain de football de Dorigny\", \n "
-            + "  \"creator\": \"Micheal Jackson\"\n"
+            + "  \"owner\": \"Micheal Jackson\"\n"
             + "}\n";
     private static final Event PROPER_EVENT = new Event(
             17005,
@@ -225,7 +225,7 @@ public class RestApiTest {
             + "  \"longitude\": 6.580847,\n"
             + "  \"address\": \"Satellite\", \n"
             + "  \"date\" : \"1991-01-15T23:00:00Z\",\n "
-            + "   \"creator\": \"Guillaume Meyrat\"\n"
+            + "   \"owner\": \"Guillaume Meyrat\"\n"
             + "}\n";
 
 
@@ -268,7 +268,7 @@ public class RestApiTest {
                 + "  \"latitude\": 46.519428,\n"
                 + "  \"longitude\": 6.580847,\n"
                 + "  \"address\": \"Satellite\", \n "
-                + "  \"creator\": \"Guillaume Meyrat\"\n"
+                + "  \"owner\": \"Guillaume Meyrat\"\n"
                 + "}\n";
 
         String url = urlServer + "events/11";
