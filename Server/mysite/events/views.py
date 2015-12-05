@@ -202,6 +202,26 @@ def commented_events(request, pk, format=None):
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
+@api_view(['GET'])
+def event_detailParticipant(request, pk, format=None):
+    """
+    Retrieve, update or delete an event.
+    """
+
+    if 'HTTP_TOKEN' not in request.META:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    token = request.META['HTTP_TOKEN']
+    if validate_user(token) is False:
+        return  Response(status=status.HTTP_403_FORBIDDEN)
+    try:
+        part = Event.objects.get(pk=pk).participants.all()
+    except Event.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializerUser = ParticipantSerializer(part, many=True)
+        return Response(serializerUser.data)
+
 
 def validate_user(token):
     """
