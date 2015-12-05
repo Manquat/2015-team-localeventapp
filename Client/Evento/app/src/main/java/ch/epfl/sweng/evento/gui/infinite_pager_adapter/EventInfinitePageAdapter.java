@@ -1,7 +1,6 @@
 package ch.epfl.sweng.evento.gui.infinite_pager_adapter;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,13 +32,12 @@ import ch.epfl.sweng.evento.gui.callback.AddingComment;
 import ch.epfl.sweng.evento.gui.callback.JoinEvent;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.GetUserListCallback;
-import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
 /**
  * An infinite page adapter for the event activity
  */
-public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> implements View.OnClickListener {
+public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
     Activity mActivity;
     public static final String TAG = "EventInfPageAdapter";
 
@@ -146,50 +144,6 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
         Button unJoinEventButton = (Button) rootView.findViewById(R.id.remove_user_from_event);
 
        new JoinEvent(mActivity, currentEvent.getID(), joinEventButton, unJoinEventButton);
-    }
-
-    @Override
-    public void onClick(View v) {
-        int currentEventId = (int) v.getTag();
-
-        ListView listView = mListViews.get(currentEventId);
-        listView.removeFooterView(v);
-
-        if (mCurrentlyAddingAComment.get(currentEventId)) {
-            EditText messageBox = mMessagesBox.get(currentEventId);
-            String message = messageBox.getText().toString();
-
-            // creating the new Comment
-            //TODO use the restApi
-            EventDatabase.INSTANCE.getEvent(currentEventId).getConversation()
-                    .addComment(new Comment(Settings.INSTANCE.getUser(), message, -1));
-
-            listView.removeFooterView(messageBox);
-        }
-
-        addingFooterOfTheListView(currentEventId);
-    }
-
-    private void addingFooterOfTheListView(int currentEventID) {
-        Button addCommentButton = new Button(mActivity);
-        boolean currentlyAddingAComment = mCurrentlyAddingAComment.get(currentEventID);
-
-        if (currentlyAddingAComment) {
-            addCommentButton.setText(mActivity.getResources().getString(R.string.conversation_add_comment));
-        } else {
-            EditText message = new EditText(mActivity);
-            message.setHint(mActivity.getResources().getString(R.string.comment_message_hint));
-            mListViews.get(currentEventID).addFooterView(message);
-
-            mMessagesBox.put(currentEventID, message);
-
-            addCommentButton.setText(mActivity.getResources().getString(R.string.event_validate));
-        }
-
-        mCurrentlyAddingAComment.put(currentEventID, !currentlyAddingAComment);
-        addCommentButton.setOnClickListener(this);
-
-        mListViews.get(currentEventID).addFooterView(addCommentButton);
     }
 
     private void getParticipant(final Event currentEvent){
