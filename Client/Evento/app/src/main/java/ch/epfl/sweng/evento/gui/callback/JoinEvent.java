@@ -115,7 +115,7 @@ public class JoinEvent implements
     @Override
     public void onSuccess(String httpResponseCode) {
         Log.d(TAG, "Response" + httpResponseCode);
-        //mActivity.finish();
+        mActivity.finish();
     }
 
     private void getParticipant() {
