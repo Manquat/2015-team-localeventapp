@@ -90,7 +90,14 @@ public class User {
 
     public boolean addMatchedEvent(Event event) {
         if (event != null) {
-            mMatchedEvent.add(event);
+            return mMatchedEvent.add(event);
+        }
+        return false;
+    }
+
+    public boolean removeMatchedEvent(Event event) {
+        if (event != null) {
+            return mMatchedEvent.remove(event);
         }
         return false;
     }

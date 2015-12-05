@@ -30,6 +30,7 @@ import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.gui.ConversationAdapter;
 import ch.epfl.sweng.evento.gui.ExpendableList;
 import ch.epfl.sweng.evento.gui.callback.AddingComment;
+import ch.epfl.sweng.evento.gui.callback.JoinEvent;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.GetUserListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
@@ -140,57 +141,11 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> impl
         ImageView pictureView = (ImageView) rootView.findViewById(R.id.eventPictureView);
         pictureView.setImageBitmap(currentEvent.getPicture());
 
-        Button joinEvent = (Button) rootView.findViewById(R.id.joinEvent);
-        joinEvent.setTag(currentEvent.getID());
+        // configure the joint and unjoin button
+        Button joinEventButton = (Button) rootView.findViewById(R.id.joinEvent);
+        Button unJoinEventButton = (Button) rootView.findViewById(R.id.remove_user_from_event);
 
-        joinEvent.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                int currentEventId = (int) view.getTag();
-                Event currentEvent = EventDatabase.INSTANCE.getEvent(currentEventId);
-                Log.d(TAG, Settings.INSTANCE.getUser().getEmail());
-                if (!currentEvent.addParticipant(Settings.INSTANCE.getUser())) {
-                    Log.d("TAG", "addParticipant just returned false");
-                    mActivity.finish();
-                } else {
-                    Toast.makeText(mActivity.getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
-                    Settings.INSTANCE.getUser().addMatchedEvent(currentEvent);
-                    mRestApi.addParticipant(currentEvent.getID(), Settings.INSTANCE.getUser().getUserId(), new HttpResponseCodeCallback() {
-                        @Override
-                        public void onSuccess(String response) {
-                            Log.d(TAG, "Response" + response);
-                            mActivity.finish();
-                        }
-                    });
-                }
-            }
-        });
-
-        Button removeUserFromEvent = (Button) rootView.findViewById(R.id.remove_user_from_event);
-        if(currentEvent.checkIfParticipantIsIn(Settings.INSTANCE.getUser())){
-            removeUserFromEvent.setVisibility(View.VISIBLE);
-        } else {
-            removeUserFromEvent.setVisibility(View.INVISIBLE);
-        }
-
-        removeUserFromEvent.setTag(currentEvent.getID());
-        removeUserFromEvent.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                int currentEventId = (int) view.getTag();
-                Event currentEvent = EventDatabase.INSTANCE.getEvent(currentEventId);
-                Toast.makeText(mActivity.getApplicationContext(), "Removed from the event", Toast.LENGTH_SHORT).show();
-                mRestApi.removeParticipant(currentEvent.getID(), Settings.INSTANCE.getUser().getUserId(), new HttpResponseCodeCallback() {
-                    @Override
-                    public void onSuccess(String response) {
-                        Log.d(TAG, "Response" + response);
-                        mActivity.finish();
-                    }
-                });
-            }
-        });
+       new JoinEvent(mActivity, currentEvent.getID(), joinEventButton, unJoinEventButton);
     }
 
     @Override

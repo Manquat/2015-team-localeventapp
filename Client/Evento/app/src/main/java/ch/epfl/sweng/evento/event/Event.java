@@ -128,10 +128,10 @@ public class Event implements ClusterItem {
     public boolean addParticipant(User participant) {
         if (participant != null) {
             if (mParticipants.size() < mNumberMaxOfParticipants) {
-                mParticipants.add(participant);
-                return true;
+                return mParticipants.add(participant);
             } else {
                 Log.d("Event.addParticipant", "Can't add a participant more (" + mParticipants.size() + ")");
+                return false;
             }
         }
         Log.d("Event.addParticipant", "Can't add null as a participant");
@@ -149,10 +149,10 @@ public class Event implements ClusterItem {
     public boolean removeParticipant(User participant) {
         if (participant != null) {
             if (checkIfParticipantIsIn(participant)) {
-                mParticipants.remove(participant);
-                return true;
+                return mParticipants.remove(participant);
             } else {
                 Log.d("Event.removeParticipant", participant + " was already not participating.");
+                return false;
             }
         }
         Log.d("Event.addParticipant", "Can't add null as a participant");
