@@ -241,8 +241,10 @@ public class RestApi {
                     try {
                         commentList = Parser.toCommentList(result);
                     } catch (JSONException e) {
-                        Log.e(TAG, "exception in JSON parser");
+                        Log.e(TAG, "getComment exception in JSON parser");
                     }
+                } else {
+                    Log.d(TAG, "getComment null response");
                 }
                 callback.onCommentListReceived(commentList);
             }

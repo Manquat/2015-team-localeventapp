@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +97,7 @@ public class ConversationAdapter extends BaseAdapter
             mListOfComment = commentList;
             notifyDataSetChanged();
         } else {
+            Toast.makeText(mContext, "Error while parsing the comment(s)", Toast.LENGTH_LONG).show();
             Log.d(TAG, "RestAPI return a null list");
         }
     }
