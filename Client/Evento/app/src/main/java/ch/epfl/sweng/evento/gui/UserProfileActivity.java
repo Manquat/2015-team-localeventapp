@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -94,7 +95,27 @@ public class UserProfileActivity extends AppCompatActivity implements
         TextView EmailView = (TextView) (findViewById(R.id.Email));
         EmailView.setText("Email Adress : " + Settings.INSTANCE.getUser().getEmail() );
 
+
+        /*hostedListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view,
+                                    int position, long id) {
+                final String item = (String) parent.getItemAtPosition(position);
+                view.animate().setDuration(2000).alpha(0)
+                        .withEndAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                hostedList.remove(item);
+                                hostedAdapter.notifyDataSetChanged();
+                                view.setAlpha(1);
+                            }
+                        });
+            }
+
+        });*/
     }
+
 
 
 
