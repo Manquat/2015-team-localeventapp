@@ -33,8 +33,22 @@ public class ParserTest {
     }
 
     @Test
-    public void fromStringToCalendarTest() throws ParseException {
+    public void fromStringToCalendarWithMillisecondTest() throws ParseException {
         String date = "2015-12-01T17:26:13.032000Z";
+        Calendar calendar = new GregorianCalendar(2015, 11, 1, 17, 26, 13);
+
+        Calendar result = Parser.fromStringToCalendar(date);
+
+        assertEquals(calendar.get(Calendar.YEAR), result.get(Calendar.YEAR));
+        assertEquals(calendar.get(Calendar.MONTH), result.get(Calendar.MONTH));
+        assertEquals(calendar.get(Calendar.DAY_OF_MONTH), result.get(Calendar.DAY_OF_MONTH));
+        assertEquals(calendar.get(Calendar.HOUR_OF_DAY), result.get(Calendar.HOUR_OF_DAY));
+        assertEquals(calendar.get(Calendar.MINUTE), result.get(Calendar.MINUTE));
+    }
+
+    @Test
+    public void fromStringToCalendarTest() throws ParseException {
+        String date = "2015-12-01T17:26:13Z";
         Calendar calendar = new GregorianCalendar(2015, 11, 1, 17, 26, 13);
 
         Calendar result = Parser.fromStringToCalendar(date);

@@ -66,13 +66,11 @@ public class Parser {
     }
 
     private static Comment toComment(JSONObject jsonObject) throws JSONException {
-        Comment c = new Comment(new User(
+        Comment c = new Comment(
                 jsonObject.getInt("creator"),
                 jsonObject.getString("creator_name"),
-                "email"),
                 jsonObject.getString("body"),
-                jsonObject.getInt("event"));
-
+                jsonObject.getInt("id"));
         return c;
     }
 
@@ -123,7 +121,7 @@ public class Parser {
 
 
     // inner method to correctly form Calendar value
-    private static Calendar fromStringToCalendar(String s) throws ParseException {
+    public static Calendar fromStringToCalendar(String s) throws ParseException {
         Calendar cal = new GregorianCalendar();
 
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);

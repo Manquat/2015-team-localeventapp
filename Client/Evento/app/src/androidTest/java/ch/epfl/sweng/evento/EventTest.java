@@ -30,7 +30,16 @@ public class EventTest {
     @Test
     public void testDateToProperString() {
         eventDate.set(2012, 10, 2, 5, 5, 0);
-        Event e = new Event(0, "foo", "foo", 0, 0, "foo", "foo", new HashSet<String>(), eventDate, eventDate);
+        Event e = new Event(0,
+                "foo",
+                "foo",
+                0,
+                0,
+                "foo",
+                0,
+                new HashSet<String>(),
+                eventDate,
+                eventDate);
         assertEquals(stringDate, e.getProperDateString());
 
     }

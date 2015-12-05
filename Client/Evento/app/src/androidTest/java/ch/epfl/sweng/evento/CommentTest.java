@@ -25,21 +25,26 @@ public class CommentTest {
 
     @Before
     public void init() {
-        mUser = new User(1,"MockJo","mockjo@plop.ch");
+        mUser = new User(1, "MockJo", "mockjo@plop.ch");
         mMessage = "Testing the comment message";
 
-        mComment = new Comment(mUser, mMessage, 4);
+        mComment = new Comment(mUser.getUserId(), mUser.getUsername(), mMessage, -1);
         mTimeStamp = new GregorianCalendar();
     }
 
     @Test
-     public void messageCorrectlyCreated() {
+    public void messageCorrectlyCreated() {
         assertEquals(mMessage, mComment.getMessage());
     }
 
     @Test
-    public void ownerCorrectlyAssociated() {
-        assertEquals(mUser, mComment.getOwnerName());
+    public void creatorIdCorrectlyCreated() {
+        assertEquals(mUser.getUserId(), mComment.getUserId());
+    }
+
+    @Test
+    public void ownerNameCorrectlyAssociated() {
+        assertEquals(mUser.getUsername(), mComment.getCreatorName());
     }
 
     @Test

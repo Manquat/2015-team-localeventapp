@@ -25,9 +25,8 @@ public class Comment {
         return mMessage;
     }
 
-    public String getOwnerName() {
-        // defensive copy
-        return new String(mCreator);
+    public String getCreatorName() {
+        return mCreator;
     }
 
     public int getUserId() {
