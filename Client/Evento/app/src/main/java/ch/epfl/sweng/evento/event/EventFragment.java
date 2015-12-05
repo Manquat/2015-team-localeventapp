@@ -14,16 +14,11 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import ch.epfl.sweng.evento.EventDatabase;
-
 import ch.epfl.sweng.evento.R;
-
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;
-import ch.epfl.sweng.evento.gui.MainActivity;
 import ch.epfl.sweng.evento.rest_api.RestApi;
-import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 

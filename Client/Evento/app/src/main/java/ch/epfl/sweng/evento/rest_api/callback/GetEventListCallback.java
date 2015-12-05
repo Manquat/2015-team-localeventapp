@@ -2,7 +2,6 @@ package ch.epfl.sweng.evento.rest_api.callback;
 
 import java.util.List;
 
-import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 
 /**

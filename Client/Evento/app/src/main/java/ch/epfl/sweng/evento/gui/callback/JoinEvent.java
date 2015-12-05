@@ -22,7 +22,7 @@ import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
 /**
- * Callback for the join button on the event activity
+ * Class that handle all the managing of the participant in the event activity
  */
 public class JoinEvent implements
         View.OnClickListener,
@@ -37,7 +37,6 @@ public class JoinEvent implements
     private Button mJoinEventButton;
     private Button mUnJoinEventButton;
     private boolean mIsTheEventJoined;
-    private ExpandableListView mListViewOfParticipant;
     private ArrayList<String> mListDataHeader;
     private HashMap<String, List<String>> mListDataChild;
     private ExpendableList mListAdapter;
@@ -50,7 +49,6 @@ public class JoinEvent implements
         mCurrentEvent = EventDatabase.INSTANCE.getEvent(currentEventId);
         mJoinEventButton = joinEventButton;
         mUnJoinEventButton = unJoinEventButton;
-        mListViewOfParticipant = listViewOfParticipant;
         mListDataHeader = new ArrayList<>();
         mListDataChild = new HashMap<>();
 
@@ -60,11 +58,10 @@ public class JoinEvent implements
         mListAdapter = new ExpendableList(mActivity, mListDataHeader, mListDataChild);
 
         // setting list adapter
-        mListViewOfParticipant.setAdapter(mListAdapter);
+        listViewOfParticipant.setAdapter(mListAdapter);
 
         // ListView on child click listener
-        mListViewOfParticipant.setOnChildClickListener(this);
-
+        listViewOfParticipant.setOnChildClickListener(this);
 
         updateButtonState();
         getParticipant();
@@ -105,6 +102,7 @@ public class JoinEvent implements
         }
 
         updateButtonState();
+        getParticipant();
     }
 
     private void updateButtonState() {
@@ -117,7 +115,7 @@ public class JoinEvent implements
     @Override
     public void onSuccess(String httpResponseCode) {
         Log.d(TAG, "Response" + httpResponseCode);
-        mActivity.finish();
+        //mActivity.finish();
     }
 
     private void getParticipant() {

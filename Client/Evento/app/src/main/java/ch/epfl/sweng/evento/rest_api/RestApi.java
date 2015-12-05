@@ -15,6 +15,7 @@ import java.util.List;
 
 import ch.epfl.sweng.evento.Comment;
 import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.rest_api.callback.GetCommentListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventCallback;
@@ -29,7 +30,6 @@ import ch.epfl.sweng.evento.rest_api.task.GetTask;
 import ch.epfl.sweng.evento.rest_api.task.PostAndGetUserWithIDTask;
 import ch.epfl.sweng.evento.rest_api.task.PostTask;
 import ch.epfl.sweng.evento.rest_api.task.PutTask;
-import ch.epfl.sweng.evento.User;
 
 /**
  * RestAPI

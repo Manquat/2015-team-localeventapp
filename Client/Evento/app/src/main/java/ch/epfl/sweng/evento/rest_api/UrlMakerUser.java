@@ -1,7 +1,5 @@
 package ch.epfl.sweng.evento.rest_api;
 
-import java.util.GregorianCalendar;
-
 /**
  * Created by thomas on 28/11/15.
  */

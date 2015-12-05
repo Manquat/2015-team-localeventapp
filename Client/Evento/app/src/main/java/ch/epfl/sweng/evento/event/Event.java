@@ -19,7 +19,6 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import ch.epfl.sweng.evento.Conversation;
-
 import ch.epfl.sweng.evento.User;
 
 /**

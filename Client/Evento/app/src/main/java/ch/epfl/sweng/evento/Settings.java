@@ -4,8 +4,6 @@ package ch.epfl.sweng.evento;
  * Created by joachimmuth on 12.11.15.
  */
 
-import ch.epfl.sweng.evento.User;
-
 public enum Settings {
     INSTANCE;
     private String mIdToken = "No Token";
