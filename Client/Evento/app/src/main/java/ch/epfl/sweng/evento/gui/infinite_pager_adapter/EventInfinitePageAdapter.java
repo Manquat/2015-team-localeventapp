@@ -122,12 +122,13 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         TextView addressView = (TextView) rootView.findViewById(R.id.event_address_view);
         TextView descriptionView = (TextView) rootView.findViewById(R.id.event_description_view);
 
-        mExpandableListViews.put(currentEvent.getID(), (ExpandableListView) rootView.findViewById(R.id.list_participant_exp));
+        ExpandableListView listViewOfParticipant = (ExpandableListView) rootView.findViewById(R.id.list_participant_exp);
+        mExpandableListViews.put(currentEvent.getID(), listViewOfParticipant);
 
         mListDataHeader = new ArrayList<String>();
         mListDataChild = new HashMap<String, List<String>>();
 
-        getParticipant(currentEvent);
+        //getParticipant(currentEvent);
 
         titleView.setText(currentEvent.getTitle());
         creatorView.setText(Integer.toString(currentEvent.getCreator()));
@@ -143,7 +144,8 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         Button joinEventButton = (Button) rootView.findViewById(R.id.joinEvent);
         Button unJoinEventButton = (Button) rootView.findViewById(R.id.remove_user_from_event);
 
-       JoinEvent.initialize(mActivity, currentEvent.getID(), joinEventButton, unJoinEventButton);
+       JoinEvent.initialize(mActivity, currentEvent.getID(), joinEventButton, unJoinEventButton,
+               listViewOfParticipant);
     }
 
     private void getParticipant(final Event currentEvent){
