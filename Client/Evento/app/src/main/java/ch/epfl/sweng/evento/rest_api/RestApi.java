@@ -104,15 +104,18 @@ public class RestApi {
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String response) {
-                Log.d(TAG, response);
                 List<User> user = null;
                 if (response != null) {
+                    Log.d(TAG, response);
                     try {
                         user = Parser.toUserList(response);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
 
+                }
+                else {
+                    Log.e(TAG, "getParticipant, the response is null");
                 }
                 callback.onUserListReceived(user);
             }
@@ -187,8 +190,7 @@ public class RestApi {
     public void getMultiplesEventByDate(GregorianCalendar startDate,
                                         GregorianCalendar endDate,
                                         final GetEventListCallback callback) {
-        UrlMakerEvent url = new UrlMakerEvent();
-        String restUrl = url.getByDate(mUrlServer, startDate, endDate);
+        String restUrl = UrlMakerEvent.getByDate(mUrlServer, startDate, endDate);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String result) {
