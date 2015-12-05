@@ -24,28 +24,41 @@ public class AddingComment implements OnClickListener {
     private EditText mMessageBox;
     private Button mAddCommentButton;
     private RestApi mRestApi;
+    private int mCurrentEventId;
 
-    public AddingComment(Activity parentActivity, ListView commentListView, Button parentButton) {
+    private AddingComment(Activity parentActivity, ListView commentListView, int currentEventId) {
         mActivity = parentActivity;
         mListView = commentListView;
         mCurrentlyAddingAComment = false;
-        mAddCommentButton = parentButton;
+        mCurrentEventId = currentEventId;
+
+
+        //initialize the button add comment
+        mAddCommentButton = new Button(mActivity);
+        mAddCommentButton.setText(mActivity.getResources()
+                .getString(R.string.conversation_add_comment));
+        mAddCommentButton.setOnClickListener(this);
+
+        mListView.addFooterView(mAddCommentButton);
+
 
         mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
     }
 
+    public static void initialize(Activity parentActivity, ListView commentListView,
+                                  int currentEventId) {
+        new AddingComment(parentActivity, commentListView, currentEventId);
+    }
+
     @Override
     public void onClick(View v) {
-        int currentEventId = (int) v.getTag();
-
         mListView.removeFooterView(v);
 
         if (mCurrentlyAddingAComment) {
             String message = mMessageBox.getText().toString();
 
             // creating the new Comment
-            //TODO use the restApi
-            mRestApi.postComment(currentEventId, message, new HttpResponseCodeCallback(){
+            mRestApi.postComment(mCurrentEventId, message, new HttpResponseCodeCallback(){
                 @Override
                 public void onSuccess(String httpResponseCode) {
                     Toast.makeText(mActivity, "Success on posting the comment", Toast.LENGTH_LONG)

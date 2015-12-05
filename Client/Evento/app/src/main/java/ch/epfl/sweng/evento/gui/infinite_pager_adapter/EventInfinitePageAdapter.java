@@ -74,12 +74,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
 
         listOfComment.addHeaderView(layout);
 
-        Button addCommentButton = new Button(mActivity);
-        addCommentButton.setText(mActivity.getResources().getString(R.string.conversation_add_comment));
-        addCommentButton.setTag(currentEventId);
-        addCommentButton.setOnClickListener(new AddingComment(mActivity, listOfComment, addCommentButton));
-
-        listOfComment.addFooterView(addCommentButton);
+        AddingComment.initialize(mActivity, listOfComment, currentEventId);
 
         return rootLayout;
     }
