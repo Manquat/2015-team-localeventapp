@@ -39,6 +39,6 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/calendar_list_event"/>
+        android:id="@+id/calendar_list_event" />
 
 </LinearLayout>

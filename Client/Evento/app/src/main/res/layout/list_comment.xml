@@ -20,5 +20,5 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/list_comment_message"
-        android:background="@drawable/list_comment_message"/>
+        android:background="@drawable/list_comment_message" />
 </LinearLayout>
