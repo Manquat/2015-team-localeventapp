@@ -9,22 +9,29 @@ import java.util.GregorianCalendar;
 public class Comment {
     private int mID;
     private String mMessage;
-    private User mOwner;
+    private String mCreator;
+    private int mUserID;
     private final Calendar mDateOfCreation;
 
-    public Comment(User owner, String message, int id) {
-        mOwner = owner;
+    public Comment(int creatorId, String ownerName, String message, int commentId) {
+        mUserID = creatorId;
+        mCreator = ownerName;
         mMessage = message;
         mDateOfCreation = new GregorianCalendar();
-        mID = id;
+        mID = commentId;
     }
 
     public String getMessage(){
         return mMessage;
     }
 
-    public User getOwner() {
-        return mOwner;
+    public String getOwnerName() {
+        // defensive copy
+        return new String(mCreator);
+    }
+
+    public int getUserId() {
+        return mUserID;
     }
 
     public int getID() {
@@ -32,6 +39,7 @@ public class Comment {
     }
 
     public Calendar getTimeOfCreation() {
+        //defensive copy
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(mDateOfCreation.getTime());
         return calendar;

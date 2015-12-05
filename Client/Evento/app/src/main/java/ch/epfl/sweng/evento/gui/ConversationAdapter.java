@@ -70,7 +70,7 @@ public class ConversationAdapter extends BaseAdapter
         Comment comment = mListOfComment.get(position);
 
         TextView owner = (TextView) convertView.findViewById(R.id.list_comment_owner);
-        owner.setText(comment.getOwner().getUsername());
+        owner.setText(comment.getOwnerName().getUsername());
 
         TextView message = (TextView) convertView.findViewById(R.id.list_comment_message);
         message.setText(comment.getMessage());

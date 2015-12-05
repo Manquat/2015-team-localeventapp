@@ -39,7 +39,7 @@ public class CommentTest {
 
     @Test
     public void ownerCorrectlyAssociated() {
-        assertEquals(mUser, mComment.getOwner());
+        assertEquals(mUser, mComment.getOwnerName());
     }
 
     @Test
