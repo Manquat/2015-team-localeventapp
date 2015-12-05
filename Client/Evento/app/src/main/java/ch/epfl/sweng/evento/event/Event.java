@@ -18,7 +18,6 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
-import ch.epfl.sweng.evento.Conversation;
 import ch.epfl.sweng.evento.User;
 
 /**
@@ -37,7 +36,6 @@ public class Event implements ClusterItem {
     private Calendar mStartDate;
     private Calendar mEndDate;
     private String mPicture;
-    private Conversation mConversation;
     private Set<User> mParticipants;
     private final int mNumberMaxOfParticipants;
 
@@ -64,7 +62,6 @@ public class Event implements ClusterItem {
         mStartDate = startDate;
         mEndDate = endDate;
         mPicture = image;
-        mConversation = new Conversation();
         mNumberMaxOfParticipants = 10;//TODO
         mParticipants = participants;
     }
@@ -307,10 +304,6 @@ public class Event implements ClusterItem {
     @Override
     public LatLng getPosition() {
         return mLocation;
-    }
-
-    public Conversation getConversation() {
-        return mConversation;
     }
 
     //This is a temporary method to test if the server can handle very long strings

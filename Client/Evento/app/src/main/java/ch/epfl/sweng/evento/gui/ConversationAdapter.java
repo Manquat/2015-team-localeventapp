@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.evento.Comment;
-import ch.epfl.sweng.evento.Conversation;
-import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.rest_api.RestApi;
@@ -40,12 +38,6 @@ public class ConversationAdapter extends BaseAdapter
         mCurrentEventId = currentEventId;
 
         mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-
-        Conversation conversation = EventDatabase.INSTANCE.getEvent(mCurrentEventId).getConversation();
-        if (conversation.size() == 0) { //TODO remove mock conversation
-            conversation.addComment(new Comment(Settings.INSTANCE.getUser(), "plop", -1));
-            conversation.addComment(new Comment(Settings.INSTANCE.getUser(), "plop", -1));
-        }
 
         mListOfComment = new ArrayList<>();
 
