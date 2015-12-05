@@ -14,7 +14,7 @@ import ch.epfl.sweng.evento.gui.infinite_pager_adapter.InfiniteViewPager;
 
 public class EventActivity extends AppCompatActivity {
 
-    public static final String KEYCURRENTEVENT = "CurrentEventKey";
+    public static final String CURRENT_EVENT_KEY = "CurrentEventKey";
 
 
     private InfiniteViewPager mPager;
@@ -35,7 +35,7 @@ public class EventActivity extends AppCompatActivity {
         int currentEventSignature = EventDatabase.INSTANCE.getFirstEvent().getID();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            currentEventSignature = bundle.getInt(KEYCURRENTEVENT);
+            currentEventSignature = bundle.getInt(CURRENT_EVENT_KEY);
         }
 
         // Creating the EventInfinitePageAdapter at the current position

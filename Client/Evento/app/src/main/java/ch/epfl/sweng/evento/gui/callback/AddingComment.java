@@ -6,9 +6,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import ch.epfl.sweng.evento.Comment;
-import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.rest_api.RestApi;
@@ -49,6 +48,8 @@ public class AddingComment implements OnClickListener {
             mRestApi.postComment(currentEventId, message, new HttpResponseCodeCallback(){
                 @Override
                 public void onSuccess(String httpResponseCode) {
+                    Toast.makeText(mActivity, "Success on posting the comment", Toast.LENGTH_LONG)
+                            .show();
                 }
             });
 

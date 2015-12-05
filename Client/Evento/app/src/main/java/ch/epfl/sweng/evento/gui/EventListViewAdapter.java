@@ -98,7 +98,7 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(mContext, EventActivity.class);
-        intent.putExtra(EventActivity.KEYCURRENTEVENT, id);
+        intent.putExtra(EventActivity.CURRENT_EVENT_KEY, ((Long) id).intValue());
         mActivity.startActivity(intent);
     }
 }

@@ -28,7 +28,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -169,7 +168,7 @@ public class ContentFragment extends Fragment implements Refreshable {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(mActivity, EventActivity.class);
-                        intent.putExtra(EventActivity.KEYCURRENTEVENT, mEvents.get(count).getID());
+                        intent.putExtra(EventActivity.CURRENT_EVENT_KEY, mEvents.get(count).getID());
                         mActivity.startActivity(intent);
                     }
                 });

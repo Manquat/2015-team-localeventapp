@@ -28,7 +28,7 @@ import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
 /**
- * Fragment that display an Event with an ID passed as an Extra with the key KEYCURRENTEVENT.
+ * Fragment that display an Event with an ID passed as an Extra with the key CURRENT_EVENT_KEY.
  * After that allow to swipe left or right to explore the events actually loaded.
  */
 public class EventFragment extends Fragment {
