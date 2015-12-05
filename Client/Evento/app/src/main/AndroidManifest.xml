@@ -41,7 +41,7 @@
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".gui.EventActivity"
+            android:name=".gui.event_activity.EventActivity"
             android:label="@string/title_activity_event"
             android:parentActivityName=".gui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento.gui.callback;
+package ch.epfl.sweng.evento.gui.event_activity;
 
 import android.app.Activity;
 import android.util.Log;

@@ -15,6 +15,7 @@ import java.util.List;
 
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.gui.event_activity.EventActivity;
 
 /**
  * List view adapter that can be used to display the list of event given in the constructor

@@ -18,8 +18,8 @@ import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.gui.ConversationAdapter;
-import ch.epfl.sweng.evento.gui.callback.AddingComment;
-import ch.epfl.sweng.evento.gui.callback.JoinEvent;
+import ch.epfl.sweng.evento.gui.event_activity.AddingComment;
+import ch.epfl.sweng.evento.gui.event_activity.JoinEvent;
 
 /**
  * An infinite page adapter for the event activity

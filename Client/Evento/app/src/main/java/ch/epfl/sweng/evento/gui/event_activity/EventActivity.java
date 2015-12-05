@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento.gui;
+package ch.epfl.sweng.evento.gui.event_activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.gui.CreatingEventActivity;
 import ch.epfl.sweng.evento.gui.infinite_pager_adapter.EventInfinitePageAdapter;
 import ch.epfl.sweng.evento.gui.infinite_pager_adapter.InfiniteViewPager;
 

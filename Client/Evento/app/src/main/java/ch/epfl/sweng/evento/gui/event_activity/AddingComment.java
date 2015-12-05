@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento.gui.callback;
+package ch.epfl.sweng.evento.gui.event_activity;
 
 import android.app.Activity;
 import android.view.View;
@@ -15,7 +15,7 @@ import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
 /**
- * Created by gautier on 04/12/2015.
+ * Class that handle the commenting part in the event activity
  */
 public class AddingComment implements OnClickListener {
     private Activity mActivity;
