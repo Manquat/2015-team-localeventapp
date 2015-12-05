@@ -124,6 +124,25 @@ public class LoginActivity extends AppCompatActivity implements
                 String idToken = acct.getIdToken();
                 Log.d(TAG, "idToken:" + idToken);
                 Settings.INSTANCE.setIdToken(idToken);
+
+                String personName = acct.getDisplayName();
+                String personEmail = acct.getEmail();
+                String personId = acct.getId();
+                User user = new User(personId, personName, personEmail);
+                Settings.INSTANCE.setUser(user);
+                RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
+
+                restApi.postUser(user, new GetUserCallback() {
+                    @Override
+                    public void onDataReceived(User user) {
+                        Settings.INSTANCE.setUser(user);
+                        Log.d(TAG, "Attributed UserId: " + Settings.INSTANCE.getUser().getUserId());
+                        // assert submission
+                        Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "User information sent to server");
+                    }
+                });
+
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             } else {

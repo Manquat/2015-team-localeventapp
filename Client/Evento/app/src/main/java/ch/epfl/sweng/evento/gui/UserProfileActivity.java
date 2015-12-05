@@ -66,21 +66,27 @@ public class UserProfileActivity extends AppCompatActivity implements
 
 
         final ListView matchedListView = (ListView) findViewById(R.id.matchedListView);
-        final ArrayList<String> list = new ArrayList<String>();
-        list.add("Your joined events: ");
+        final ArrayList<String> matchedList = new ArrayList<String>();
+        matchedList.add("Your joined events: ");
         for (int i = 0; i < Settings.INSTANCE.getUser().getMatchedEvent().size(); ++i) {
-            list.add(Settings.INSTANCE.getUser().getMatchedEvent().get(i).getTitle());
+            matchedList.add(Settings.INSTANCE.getUser().getMatchedEvent().get(i).getTitle());
         }
 
-        final StableArrayAdapter adapter = new StableArrayAdapter(this,
-                android.R.layout.simple_list_item_1, list);
-        matchedListView.setAdapter(adapter);
+        final StableArrayAdapter matchedAdapter = new StableArrayAdapter(this,
+                android.R.layout.simple_list_item_1, matchedList);
+        matchedListView.setAdapter(matchedAdapter);
+
 
         final ListView hostedListView = (ListView) findViewById(R.id.hostedListView);
+        final ArrayList<String> hostedList = new ArrayList<String>();
+        hostedList.add("Your own events: ");
         for (int i = 0; i < Settings.INSTANCE.getUser().getHostedEvent().size(); ++i) {
-            list.add(Settings.INSTANCE.getUser().getHostedEvent().get(i).getTitle());
+            hostedList.add(Settings.INSTANCE.getUser().getHostedEvent().get(i).getTitle());
         }
-        hostedListView.setAdapter(adapter);
+
+        final StableArrayAdapter hostedAdapter = new StableArrayAdapter(this,
+                android.R.layout.simple_list_item_1, hostedList);
+        hostedListView.setAdapter(hostedAdapter);
 
 
         TextView UsernameView = (TextView) (findViewById(R.id.Username));
