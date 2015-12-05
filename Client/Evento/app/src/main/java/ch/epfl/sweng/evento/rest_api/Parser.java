@@ -53,7 +53,7 @@ public class Parser {
                     jsonObject.getDouble("latitude"),
                     jsonObject.getDouble("longitude"),
                     jsonObject.getString("address"),
-                    jsonObject.getInt("creator"),
+                    jsonObject.getInt("owner"),
                     new HashSet<String>(){{ add(json.getString("tags"));}},
                     startDate,
                     endDate,
@@ -68,7 +68,7 @@ public class Parser {
     private static Comment toComment(JSONObject jsonObject) throws JSONException {
         Comment c = new Comment(new User(
                 jsonObject.getInt("creator"),
-                "name",
+                jsonObject.getString("creator_name"),
                 "email"),
                 jsonObject.getString("body"),
                 jsonObject.getInt("event"));
@@ -114,7 +114,7 @@ public class Parser {
         JSONArray jsonArray = new JSONArray(response);
         List<User> userList = new ArrayList<>();
 
-        for(int i = 0; i < jsonArray.length(); i++){
+        for(int i = 0; i < jsonArray.length(); i++) {
             userList.add(toUser(jsonArray.getJSONObject(i)));
         }
 

@@ -255,6 +255,7 @@ public class RestApi {
                             final HttpResponseCodeCallback callback) {
         String restUrl = UrlMaker.postComment(mUrlServer);
         String requestBody = Serializer.comment(Settings.INSTANCE.getUser().getUserId(),
+                Settings.INSTANCE.getUser().getUsername(),
                 EventId, commentBody);
         new PostTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
             @Override

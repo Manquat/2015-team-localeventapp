@@ -31,7 +31,7 @@ public final class Serializer {
                 + "  \"longitude\": " + e.getLongitude() + ",\n"
                 + "  \"address\": \"" + e.getAddress() + "\", \n "
                 + " \"date\" : \"" + e.getProperDateString() + "\", \n "
-                + "  \"creator\": \"" + Settings.INSTANCE.getUser().getUserId() + "\" \n"
+                + "  \"owner\": \"" + Settings.INSTANCE.getUser().getUserId() + "\" \n"
 
                 // + "  \"creator\": \"" + e.getCreator() + "\" \n"
                 // + "  \"tags\":" + "Basketball" + "\n"
@@ -44,7 +44,7 @@ public final class Serializer {
                 //+ "  \"id\": "  + ",\n"
                 + "  \"name\": \"" + u.getUsername() + "\", \n"
                 + "  \"email\": \"" + u.getEmail() + "\", \n"
-                + "  \"googleid\": \"" + u.getUserId() + "\" \n"
+                + "  \"googleid\": \"" + u.getGoogleId() + "\" \n"
                 + "}\n";
 
         Log.d(TAG, "Information sent to Server: " + res);
@@ -52,10 +52,11 @@ public final class Serializer {
         return res;
     }
 
-    public static String comment(int userId, int eventId, String commentBody) {
+    public static String comment(int userId, String userName, int eventId, String commentBody) {
         String res = "{\n"
                 + "\"body\": \"" + commentBody + "\",\n"
                 + "\"creator\": " + userId + ",\n"
+                + "\"creator_name\": \"" + userName + "\",\n"
                 + "\"event\": " + eventId + "\n"
                 + "}\n";
         return res;
