@@ -68,7 +68,7 @@ public abstract class UrlMaker {
     }
 
     public static String postComment(String urlServer) {
-        return urlServer + event;
+        return urlServer + event + comment;
     }
 
     public static String getComment(String urlServer, int eventId) {

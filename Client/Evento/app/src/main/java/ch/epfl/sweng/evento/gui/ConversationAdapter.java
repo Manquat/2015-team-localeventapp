@@ -1,6 +1,7 @@
 package ch.epfl.sweng.evento.gui;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
  */
 public class ConversationAdapter extends BaseAdapter
         implements Refreshable, GetCommentListCallback {
+    private static final String TAG = "ConversationAdpt";
+
     private int mCurrentEventId;
     private List<Comment> mListOfComment;
     private Context mContext;
@@ -89,7 +92,11 @@ public class ConversationAdapter extends BaseAdapter
 
     @Override
     public void onCommentListReceived(List<Comment> commentList) {
-        mListOfComment = commentList;
-        notifyDataSetChanged();
+        if (commentList != null) {
+            mListOfComment = commentList;
+            notifyDataSetChanged();
+        } else {
+            Log.d(TAG, "RestAPI return a null list");
+        }
     }
 }
