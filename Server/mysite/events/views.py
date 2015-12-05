@@ -71,31 +71,6 @@ def event_detail(request, pk, format=None):
         event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-@api_view(['GET', 'DELETE'])
-def event_detailuser(request, username, format=None):
-    """
-    Retrieve, update or delete an event.
-    """
-    if 'HTTP_TOKEN' not in request.META:
-        return Response(status=status.HTTP_403_FORBIDDEN)
-    token = request.META['HTTP_TOKEN']
-
-    if validate_user(token) is False:
-        return  Response(status=status.HTTP_403_FORBIDDEN)
-
-    try:
-        event = Event.objects.get(creator=username)
-    except Event.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = EventSerializer(event)
-        return Response(serializer.data)
-
-    elif request.method == 'DELETE':
-        event.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
 @api_view(['GET'])
 def event_detailParticipant(request, pk, format=None):
     """
@@ -145,7 +120,7 @@ def event_detailuser(request, username, format=None):
 @api_view(['GET'])
 def event_requestdate(request, fromdate, todate, format=None):
     """
-    Retrieve 5 events in time frame asked
+    Retrieve  events in time frame asked
     """
 
     if 'HTTP_TOKEN' not in request.META:
@@ -235,7 +210,7 @@ def event_addparticipant(request, pk, pk2, format=None):
 @api_view(['POST'])
 def event_addcomment(request, format=None):
     """
-    Retrieve, update or delete an event.
+    add a comment to an event.
     """
     """
     if 'HTTP_TOKEN' not in request.META:
@@ -254,8 +229,7 @@ def event_addcomment(request, format=None):
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            #comment = serializer.object
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -263,7 +237,7 @@ def event_addcomment(request, format=None):
 @api_view(['GET'])
 def commented_events(request, pk, format=None):
     """
-    Create an User
+    Get all comments of an event
     """
 
     try:

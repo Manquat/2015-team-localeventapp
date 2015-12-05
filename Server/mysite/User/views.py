@@ -24,11 +24,11 @@ def create_user(request, format=None):
         serializer = ParticipantSerializer(data=request.data)
         if serializer.is_valid():
             try:
-                user = participant.objects.get(google_id=request.data['google_id'])
+                user = participant.objects.get(googleid=request.data['googleid'])
                 serializer2 = ParticipantSerializer(user)
             except participant.DoesNotExist:
                 serializer.save()
-                user = participant.objects.get(google_id=request.data['google_id'])
+                user = participant.objects.get(googleid=request.data['googleid'])
                 serializer2 = ParticipantSerializer(user)
             return Response(serializer2.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -63,7 +63,7 @@ def update_user(request, pk, format=None):
 @api_view(['GET'])
 def created_events(request, pk, format=None):
     """
-    Create an User
+    returns events created by user
     """
 
     try:
@@ -79,7 +79,7 @@ def created_events(request, pk, format=None):
 @api_view(['GET'])
 def commented_events(request, pk, format=None):
     """
-    Create an User
+    returns events commented by user
     """
 
     try:
@@ -95,7 +95,7 @@ def commented_events(request, pk, format=None):
 @api_view(['GET'])
 def joined_events(request, pk, format=None):
     """
-    Create an User
+    returns events joined by an user
     """
 
     try:

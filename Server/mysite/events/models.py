@@ -7,7 +7,7 @@ from User.models import participant
 
 class Event(models.Model):
     Event_name = models.CharField(max_length=200, default='No Name!')
-    creator = models.IntegerField(default='1')
+    owner = models.ForeignKey(participant, related_name='events')
     description = models.TextField(default='No Description!')
     latitude = models.FloatField(default=0.00000)
     longitude = models.FloatField(default=0.00000)
@@ -26,8 +26,8 @@ class Event(models.Model):
 
 class Comment(models.Model):
     body = models.TextField(default='No Comment')
-    creator = models.ForeignKey(participant, related_name='comments',blank=True)
-    event = models.ForeignKey(Event, related_name='comments',blank=True)
+    creator = models.ForeignKey(participant, related_name='comments')
+    event = models.ForeignKey(Event, related_name='comments')
     def __unicode__(self):
         return self.body
 
