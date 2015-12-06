@@ -20,6 +20,7 @@ import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.GetUserListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
+import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 
 /**
  * Class that handle all the managing of the participant in the event activity
@@ -28,7 +29,8 @@ public class JoinEvent implements
         View.OnClickListener,
         HttpResponseCodeCallback,
         GetUserListCallback,
-        ExpandableListView.OnChildClickListener {
+        ExpandableListView.OnChildClickListener,
+        Refreshable {
     private static final String TAG = "JoinEvent";
 
     private Activity mActivity;
@@ -40,10 +42,11 @@ public class JoinEvent implements
     private ArrayList<String> mListDataHeader;
     private HashMap<String, List<String>> mListDataChild;
     private ExpendableList mListAdapter;
+    private Refreshable mParentRefreshable;
 
     private JoinEvent(Activity parentActivity, int currentEventId,
                       Button joinEventButton, Button unJoinEventButton,
-                      ExpandableListView listViewOfParticipant) {
+                      ExpandableListView listViewOfParticipant, Refreshable parentRefreshable) {
         mActivity = parentActivity;
         mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
         mCurrentEvent = EventDatabase.INSTANCE.getEvent(currentEventId);
@@ -51,6 +54,7 @@ public class JoinEvent implements
         mUnJoinEventButton = unJoinEventButton;
         mListDataHeader = new ArrayList<>();
         mListDataChild = new HashMap<>();
+        mParentRefreshable = parentRefreshable;
 
         mJoinEventButton.setOnClickListener(this);
         mUnJoinEventButton.setOnClickListener(this);
@@ -69,9 +73,10 @@ public class JoinEvent implements
 
     public static void initialize(Activity parentActivity, int currentEventId,
                                   Button joinEventButton, Button unJoinEventButton,
-                                  ExpandableListView listViewOfParticipant) {
+                                  ExpandableListView listViewOfParticipant,
+                                  Refreshable parentRefreshable) {
         new JoinEvent(parentActivity, currentEventId, joinEventButton, unJoinEventButton,
-                listViewOfParticipant);
+                listViewOfParticipant, parentRefreshable);
     }
 
     @Override
@@ -96,7 +101,8 @@ public class JoinEvent implements
             } else {
                 Toast.makeText(mActivity.getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
                 if (Settings.INSTANCE.getUser().addMatchedEvent(mCurrentEvent)) {
-                    mRestApi.addParticipant(mCurrentEvent.getID(), Settings.INSTANCE.getUser().getUserId(), this);
+                    mRestApi.addParticipant(mCurrentEvent.getID(),
+                            Settings.INSTANCE.getUser().getUserId(), this);
                 }
             }
         }
@@ -115,7 +121,8 @@ public class JoinEvent implements
     @Override
     public void onSuccess(String httpResponseCode) {
         Log.d(TAG, "Response" + httpResponseCode);
-        mActivity.finish();
+        refresh();
+        //mParentRefreshable.refresh();
     }
 
     private void getParticipant() {
@@ -131,9 +138,9 @@ public class JoinEvent implements
             for (User user : userArrayList) {
                 participant.add(user.getUsername());
             }
-            if (mListDataHeader.size() < 2) {
-                mListDataHeader.add("Participant of the event (" + participant.size() + ")");
-            }
+            mListDataHeader.clear();
+            mListDataHeader.add("Participant of the event (" + participant.size() + ")");
+
             mListDataChild.put(mListDataHeader.get(0), participant);
 
             mListAdapter.notifyDataSetChanged();
@@ -145,5 +152,10 @@ public class JoinEvent implements
         final int groupPosTmp = groupPosition;
         final int childPosTmp = childPosition;
         return false;
+    }
+
+    @Override
+    public void refresh() {
+        getParticipant();
     }
 }

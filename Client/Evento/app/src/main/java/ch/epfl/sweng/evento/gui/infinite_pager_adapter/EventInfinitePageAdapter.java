@@ -17,11 +17,13 @@ import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.gui.ConversationAdapter;
 import ch.epfl.sweng.evento.gui.event_activity.AddingComment;
 import ch.epfl.sweng.evento.gui.event_activity.JoinEvent;
+import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 
 /**
  * An infinite page adapter for the event activity
  */
-public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
+public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer>
+        implements Refreshable {
     Activity mActivity;
     public static final String TAG = "EventInfPageAdapter";
 
@@ -95,6 +97,11 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         Button unJoinEventButton = (Button) rootView.findViewById(R.id.remove_user_from_event);
 
        JoinEvent.initialize(mActivity, currentEvent.getID(), joinEventButton, unJoinEventButton,
-               listViewOfParticipant);
+               listViewOfParticipant, this);
+    }
+
+    @Override
+    public void refresh() {
+        notifyDataSetChanged();
     }
 }
