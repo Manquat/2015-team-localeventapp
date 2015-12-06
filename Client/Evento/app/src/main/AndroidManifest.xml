@@ -27,7 +27,7 @@
         android:icon="@drawable/icon_evento"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".gui.LoginActivity"
+            android:name=".gui.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -37,7 +37,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".gui.MainActivity"
+            android:name=".gui.LoginActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
