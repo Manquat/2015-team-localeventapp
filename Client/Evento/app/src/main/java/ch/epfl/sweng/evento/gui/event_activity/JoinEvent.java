@@ -42,11 +42,10 @@ public class JoinEvent implements
     private ArrayList<String> mListDataHeader;
     private HashMap<String, List<String>> mListDataChild;
     private ExpendableList mListAdapter;
-    private Refreshable mParentRefreshable;
 
     private JoinEvent(Activity parentActivity, int currentEventId,
                       Button joinEventButton, Button unJoinEventButton,
-                      ExpandableListView listViewOfParticipant, Refreshable parentRefreshable) {
+                      ExpandableListView listViewOfParticipant) {
         mActivity = parentActivity;
         mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
         mCurrentEvent = EventDatabase.INSTANCE.getEvent(currentEventId);
@@ -54,7 +53,6 @@ public class JoinEvent implements
         mUnJoinEventButton = unJoinEventButton;
         mListDataHeader = new ArrayList<>();
         mListDataChild = new HashMap<>();
-        mParentRefreshable = parentRefreshable;
 
         mJoinEventButton.setOnClickListener(this);
         mUnJoinEventButton.setOnClickListener(this);
@@ -73,10 +71,9 @@ public class JoinEvent implements
 
     public static void initialize(Activity parentActivity, int currentEventId,
                                   Button joinEventButton, Button unJoinEventButton,
-                                  ExpandableListView listViewOfParticipant,
-                                  Refreshable parentRefreshable) {
+                                  ExpandableListView listViewOfParticipant) {
         new JoinEvent(parentActivity, currentEventId, joinEventButton, unJoinEventButton,
-                listViewOfParticipant, parentRefreshable);
+                listViewOfParticipant);
     }
 
     @Override
