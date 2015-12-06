@@ -32,9 +32,6 @@ public final class Serializer {
                 + "  \"address\": \"" + e.getAddress() + "\",\n"
                 + "  \"date\":\"" + e.getProperDateString() + "\",\n"
                 + "  \"owner\":\"" + Settings.INSTANCE.getUser().getUserId() + "\"\n"
-
-                // + "  \"creator\": \"" + e.getCreator() + "\" \n"
-                // + "  \"tags\":" + "Basketball" + "\n"
                 + "}\n";
         return res;
     }
