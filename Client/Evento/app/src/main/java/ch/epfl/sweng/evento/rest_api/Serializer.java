@@ -29,12 +29,9 @@ public final class Serializer {
                 + "    \"" + e.getDescription() + "\" ,\n"
                 + "  \"latitude\": " + e.getLatitude() + ",\n"
                 + "  \"longitude\": " + e.getLongitude() + ",\n"
-                + "  \"address\": \"" + e.getAddress() + "\", \n "
-                + " \"date\" : \"" + e.getProperDateString() + "\", \n "
-                + "  \"owner\": \"" + Settings.INSTANCE.getUser().getUserId() + "\" \n"
-
-                // + "  \"creator\": \"" + e.getCreator() + "\" \n"
-                // + "  \"tags\":" + "Basketball" + "\n"
+                + "  \"address\": \"" + e.getAddress() + "\",\n"
+                + "  \"date\":\"" + e.getProperDateString() + "\",\n"
+                + "  \"owner\":\"" + Settings.INSTANCE.getUser().getUserId() + "\"\n"
                 + "}\n";
         return res;
     }
