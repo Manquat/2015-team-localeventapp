@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import ch.epfl.sweng.evento.rest_api.Parser;
 
@@ -36,6 +37,8 @@ public class ParserTest {
     public void fromStringToCalendarWithMillisecondTest() throws ParseException {
         String date = "2015-12-01T17:26:13.032000Z";
         Calendar calendar = new GregorianCalendar(2015, 11, 1, 17, 26, 13);
+        // set it for jenkins
+        calendar.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
 
         Calendar result = Parser.fromStringToCalendar(date);
 
@@ -50,6 +53,8 @@ public class ParserTest {
     public void fromStringToCalendarTest() throws ParseException {
         String date = "2015-12-01T17:26:13Z";
         Calendar calendar = new GregorianCalendar(2015, 11, 1, 17, 26, 13);
+        // set it for jenkins
+        calendar.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
 
         Calendar result = Parser.fromStringToCalendar(date);
 
