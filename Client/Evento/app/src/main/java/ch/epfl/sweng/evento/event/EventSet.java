@@ -1,6 +1,7 @@
 package ch.epfl.sweng.evento.event;
 
 import android.location.Location;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
