@@ -6,6 +6,7 @@ import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -32,11 +33,10 @@ import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.callback.RestTaskCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
-import ch.epfl.sweng.evento.rest_api.task.GetTask;
-import ch.epfl.sweng.evento.rest_api.task.PostTask;
-import ch.epfl.sweng.evento.rest_api.task.PutTask;
+import ch.epfl.sweng.evento.rest_api.task.*;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by joachimmuth on 21.10.15.
@@ -46,30 +46,17 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class RestApiTest {
-    private static final String TAG = "RestApiTest";
-    private GetTask getTask;
-    private static final String JSON_CONTENT_TYPE = "application/json; charset=utf-8";
+    private static final int MOCK_USER_ID = 1;
     private static final int ASCII_SPACE = 0x20;
     private HttpURLConnection connection;
     private NetworkProvider networkProviderMockito;
-    private static final String wrongUrl = "http://example.com";
+    private static final String wrongUrl = "http://mock.com";
+    private static final String JSON_CONTENT_TYPE = "application/json; charset=utf-8";
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
     //private static final String urlServer = "http://10.0.2.2:8000/";
     private static final String urlServer = "https://protected-hamlet-4797.herokuapp.com/";
 
-    private static final Parser parser = new Parser();
-    private static final String PROPER_JSON_STRING = "{\n"
-            + "  \"id\": 17005,\n"
-            + "  \"Event_name\": \"My football game\",\n"
-            + "  \"description\": \n"
-            + "    \"Okay guys, let's play a little game this evening at dorigny. Remember: no doping allowed!\" ,\n"
-            + "  \"latitude\": 46.519428,\n"
-            + "  \"longitude\": 6.580847,\n"
-            + "  \"date\": \"26/02/1992 at 13:30\",\n"
-            + "  \"address\": \"Terrain de football de Dorigny\", \n "
-            + "  \"owner\": \"Micheal Jackson\"\n"
-            + "}\n";
-    private static final Event PROPER_EVENT = new Event(
+    private static final Event event = new Event(
             17005,
             "My football game",
             "Okay guys, let's play a little game this evening at dorigny. Remember: no doping allowed!",
@@ -80,6 +67,24 @@ public class RestApiTest {
             Event.samplePicture(),
             new HashSet<User>());
 
+    private static final String eventStringSent = "{\n"
+            //+ "  \"id\": 17005,\n"
+            + "  \"Event_name\": \"My football game\",\n"
+            + "  \"tags\": \"" + event.getTagsString() + "\",\n"
+            + "  \"image\": \n"
+            + "    \"" + event.samplePicture() + "\" ,\n"
+            + "  \"description\": \n"
+            + "    \"Okay guys, let's play a little game this evening at dorigny. Remember: no doping allowed!\" ,\n"
+            + "  \"latitude\": 46.519428,\n"
+            + "  \"longitude\": 6.580847,\n"
+            + "  \"address\": \"Terrain de football de Dorigny\",\n"
+            + "  \"date\":\"" + event.getProperDateString() + "\",\n"
+            + "  \"owner\":\""+MOCK_USER_ID+"\"\n"
+            + "}\n";
+
+    private static final String eventStringReceived = "{\n"
+            + "  \"id\": 17005,\n"
+            + eventStringSent.substring(2);
 
     @Before
     public void setUp() throws Exception {
@@ -87,7 +92,7 @@ public class RestApiTest {
         networkProviderMockito = Mockito.mock(NetworkProvider.class);
         Mockito.doReturn(connection).when(networkProviderMockito).getConnection(Mockito.any(URL.class));
 
-        Settings.INSTANCE.setUser(new User(15, "MockJo", "mockjo@plop.ch"));
+        Settings.INSTANCE.setUser(new User(MOCK_USER_ID, "MockJo", "mockjo@plop.ch"));
     }
 
     private void configureResponse(int status, String content, String contentType)
@@ -98,42 +103,26 @@ public class RestApiTest {
         Mockito.doReturn(contentType).when(connection).getContentType();
     }
 
-    private void configureCrash(int status) throws IOException {
-        InputStream dataStream = Mockito.mock(InputStream.class);
-        Mockito.when(dataStream.read())
-                .thenReturn(ASCII_SPACE, ASCII_SPACE, ASCII_SPACE, ASCII_SPACE)
-                .thenThrow(new IOException());
 
-        Mockito.doReturn(status).when(connection).getResponseCode();
-        Mockito.doReturn(dataStream).when(connection).getInputStream();
+    @Test
+    public void serializerTest() throws JSONException {
+        String s = Serializer.event(event);
+        //JSONObject jsonObject = new JSONObject(s);
+        Assert.assertEquals(eventStringSent, s);
     }
 
-    /**
-     * @throws JSONException
-     */
     @Test
-    public void testParsingJsonToEvent() throws JSONException {
-        JSONObject jsonObject = new JSONObject(PROPER_JSON_STRING);
+    public void parserTest() throws JSONException {
+        JSONObject jsonObject = new JSONObject(eventStringReceived);
         Event eventFromJson = Parser.toEvent(jsonObject);
 
-        //assertEquals("Event correctly parsed", eventFromJson, PROPER_EVENT);
-
-        assertEquals("id correctly parsed", PROPER_EVENT.getID(), eventFromJson.getID());
-        assertEquals("title correctly parsed", PROPER_EVENT.getTitle(), eventFromJson.getTitle());
-        assertEquals("description correctly parsed", PROPER_EVENT.getDescription(), eventFromJson.getDescription());
-        assertEquals("xLoc correctly parsed", PROPER_EVENT.getLatitude(), eventFromJson.getLatitude());
-        assertEquals("yLoc correctly parsed", PROPER_EVENT.getLongitude(), eventFromJson.getLongitude());
-        assertEquals("address correctly parsed", PROPER_EVENT.getAddress(), eventFromJson.getAddress());
-        assertEquals("creator correctly parsed", PROPER_EVENT.getCreator(), eventFromJson.getCreator());
-
-    }
-
-    @Test
-    public void testSerializer() throws JSONException {
-        String event_string = Serializer.event(PROPER_EVENT);
-        JSONObject event_json = new JSONObject(event_string);
-        assertEquals("Event title correctly serialized to string", event_json.getString("Event_name"), PROPER_EVENT.getTitle());
-        assertEquals("Event latitude correctly serialized to string", event_json.getDouble("latitude"), PROPER_EVENT.getLatitude());
+        junit.framework.Assert.assertEquals("id correctly parsed", event.getID(), eventFromJson.getID());
+        junit.framework.Assert.assertEquals("title correctly parsed", event.getTitle(), eventFromJson.getTitle());
+        junit.framework.Assert.assertEquals("description correctly parsed", event.getDescription(), eventFromJson.getDescription());
+        junit.framework.Assert.assertEquals("xLoc correctly parsed", event.getLatitude(), eventFromJson.getLatitude());
+        junit.framework.Assert.assertEquals("yLoc correctly parsed", event.getLongitude(), eventFromJson.getLongitude());
+        junit.framework.Assert.assertEquals("address correctly parsed", event.getAddress(), eventFromJson.getAddress());
+        junit.framework.Assert.assertEquals("creator correctly parsed", event.getCreator(), eventFromJson.getCreator());
     }
 
     /**
@@ -142,25 +131,23 @@ public class RestApiTest {
      * @throws IOException
      */
     @Test
-    public void testGetTaskLocal() throws IOException, ExecutionException, InterruptedException {
+    public void testGetTaskMock() throws IOException, ExecutionException, InterruptedException {
         final String testString = "test string";
         configureResponse(HttpURLConnection.HTTP_OK, testString, JSON_CONTENT_TYPE);
 
-        getTask = new GetTask(wrongUrl, networkProviderMockito,
+        GetTask getTask = new GetTask(wrongUrl, networkProviderMockito,
                 new RestTaskCallback() {
                     public void onTaskComplete(String response) {
-                        assertEquals(testString + "\n", response);
+                        junit.framework.Assert.assertEquals(testString + "\n", response);
                     }
                 });
 
         getTask.execute().get();
-
     }
-
 
     @Test
     public void testGetEventLocal() throws IOException, InterruptedException {
-        configureResponse(HttpURLConnection.HTTP_OK, PROPER_JSON_STRING, JSON_CONTENT_TYPE);
+        configureResponse(HttpURLConnection.HTTP_OK, eventStringReceived, JSON_CONTENT_TYPE);
         RestApi restApi = new RestApi(networkProviderMockito, wrongUrl);
         final ArrayList<Event> eventArrayList = new ArrayList<Event>();
         restApi.getEvent(new GetEventCallback() {
@@ -173,144 +160,11 @@ public class RestApiTest {
         Thread.sleep(500);
 
 
-        //assertNotNull("Event is not null", eventArrayList);
-        assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
-        assertEquals("id", eventArrayList.get(0).getID(), PROPER_EVENT.getID());
-        assertEquals("title", eventArrayList.get(0).getTitle(), PROPER_EVENT.getTitle());
-        assertEquals("description", eventArrayList.get(0).getDescription(), PROPER_EVENT.getDescription());
-
-    }
-    @Ignore("If server modification have been done the test fails")
-    @Test
-    public void testGetEventServer() throws InterruptedException {
-        RestApi restApi = new RestApi(networkProvider, urlServer);
-        final ArrayList<Event> eventArrayList = new ArrayList<>();
-        assertEquals("Before requesting, eventArrayList is empty", eventArrayList.size(), 0);
-
-        restApi.getEvent(new GetEventCallback() {
-            @Override
-            public void onEventReceived(Event event) {
-                if (event != null) {
-                    Log.d(TAG, event.getTitle());
-                    Log.d(TAG, Integer.toString((event.getID())));
-                    eventArrayList.add(event);
-                }
-            }
-        });
-
-        Thread.sleep(2000);
-
-        assertEquals("We get one event after requesting once", 1, eventArrayList.size());
-
-        restApi.getEvent(new GetEventCallback() {
-            @Override
-            public void onEventReceived(Event event) {
-                eventArrayList.add(event);
-            }
-        });
-
-        Thread.sleep(200);
-
-
-        assertEquals("We get two event after requesting twice", eventArrayList.size(), 2);
-
-
+        assertNotNull("Event is not null", eventArrayList);
+        junit.framework.Assert.assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
+        junit.framework.Assert.assertEquals("id", event.getID(), eventArrayList.get(0).getID());
+        junit.framework.Assert.assertEquals("title", event.getTitle(), eventArrayList.get(0).getTitle());
+        junit.framework.Assert.assertEquals("description", event.getDescription(), eventArrayList.get(0).getDescription());
     }
 
-    private static final String EVENT_TO_CREATE = "{\n"
-            + "  \"Event_name\": \"Ping-Pong at Sat 2\",\n"
-            + "  \"description\": \n"
-            + "    \"Beer, ping-pong... let's beerpong\" ,\n"
-            + "  \"latitude\": 46.519428,\n"
-            + "  \"longitude\": 6.580847,\n"
-            + "  \"address\": \"Satellite\", \n"
-            + "  \"date\" : \"1991-01-15T23:00:00Z\",\n "
-            + "   \"owner\": \"Guillaume Meyrat\"\n"
-            + "}\n";
-
-
-    private static final Calendar date = new GregorianCalendar(1990, 12, 16, 0, 0);
-    private static final Event e = new Event(10, "Ping-Pong at Sat 2", "Beer, ping-pong... let's beerpong",
-            46.519428, 6.580847, "Satellite", 1, new HashSet<String>(), date, date);
-    private static final String EVENT_TO_CREATE_seri = Serializer.event(e);
-
-
-    @Test
-    public void testPostTaskServer() throws ExecutionException, InterruptedException {
-        String url = urlServer + "events/";
-        PostTask postTask = new PostTask(url, networkProvider, EVENT_TO_CREATE, new RestTaskCallback() {
-            public void onTaskComplete(String response) {
-            }
-        });
-
-        postTask.execute().get();
-    }
-
-    @Test
-    public void testPostEvent() {
-        RestApi restApi = new RestApi(networkProvider, urlServer);
-
-        restApi.postEvent(e, new HttpResponseCodeCallback() {
-            @Override
-            public void onSuccess(String response) {
-                // nothing
-            }
-        });
-    }
-
-
-    @Test
-    public void testPutTask() throws ExecutionException, InterruptedException {
-        String EVENT_TO_PUT = "{\n"
-                + "  \"Event_name\": \"Ping-Pong at Sat 2\",\n"
-                + "  \"description\": \n"
-                + "    \"This event was send using PUT method!\" ,\n"
-                + "  \"latitude\": 46.519428,\n"
-                + "  \"longitude\": 6.580847,\n"
-                + "  \"address\": \"Satellite\", \n "
-                + "  \"owner\": \"Guillaume Meyrat\"\n"
-                + "}\n";
-
-        String url = urlServer + "events/11";
-        final ArrayList<Event> eventArrayList = new ArrayList<>();
-
-        // put event id = 11;
-        PutTask putTask = new PutTask(url, networkProvider, EVENT_TO_PUT, new RestTaskCallback() {
-            @Override
-            public void onTaskComplete(String result) {
-                // nothing
-            }
-        });
-
-        putTask.execute().get();
-    }
-
-    @Test
-    public void testUpdateEvent() throws InterruptedException {
-        Event event = new Event(14, "this is a test of UpdateEvent", "test1", 0, 0, "address", 1, new HashSet<String>(),"image", new HashSet<User>());
-        RestApi restApi = new RestApi(networkProvider, urlServer);
-        restApi.updateEvent(event, new HttpResponseCodeCallback() {
-            @Override
-            public void onSuccess(String response) {
-
-            }
-        });
-
-        Thread.sleep(500);
-
-    }
-
-    @Test
-    public void testDeleteEvent() throws InterruptedException {
-        RestApi restApi = new RestApi(networkProvider, urlServer);
-        restApi.deleteEvent(15, new HttpResponseCodeCallback() {
-            @Override
-            public void onSuccess(String response) {
-
-            }
-        });
-
-        Thread.sleep(500);
-
-    }
 }
