@@ -122,6 +122,7 @@ public class Parser {
 
     public static Calendar fromStringToCalendar(String s) throws ParseException {
         Calendar cal = new GregorianCalendar();
+        cal.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
         SimpleDateFormat timeFormatWithMillis = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.FRANCE);
         if (s.contains(".")){
