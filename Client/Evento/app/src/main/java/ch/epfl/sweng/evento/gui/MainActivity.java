@@ -17,7 +17,11 @@
 
 package ch.epfl.sweng.evento.gui;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -31,6 +35,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import ch.epfl.sweng.evento.EventDatabase;
@@ -54,6 +60,7 @@ import ch.epfl.sweng.evento.tabs_layout.SlidingTabLayout;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static final int NOTIFICATION_ID = 1234567890;
     private static final String TAG = "MainActivity";
     private Toolbar mToolbar;
     private ViewPager mPager;
@@ -147,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     public void refreshFromServer() {
         RestApi mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
 
@@ -160,11 +168,43 @@ public class MainActivity extends AppCompatActivity {
                     ((Refreshable) page).refresh();
                 }
                 Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
+                makeNotifications(eventArrayList);
             }
             public void onUserListReceived(List<User> userArrayList){
 
             }
         });
+    }
+
+    public void makeNotifications(List<Event> eventArrayList) {
+        Calendar currentDate = Calendar.getInstance();
+
+        boolean notif_needed = false;
+        String notif_description="";
+        for (Event event: eventArrayList) {
+            double diffTime = (event.getStartDate().getTimeInMillis() - currentDate.getTimeInMillis())
+                    / (1000 * 3600 * 24);
+
+            if (diffTime < 1.0) {
+                notif_needed = true;
+                notif_description += "The event " + event.getTitle() + " is starting tomorrow. \n";
+
+                //Toast.makeText(getApplicationContext(), "Notified event : " + event.getTitle(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        if(notif_needed){
+            notif_description+="Don't forget to attend !";
+            Notification n  = new Notification.Builder(this)
+                    .setContentTitle("You've got events soon !")
+                    .setContentText(notif_description)
+                    .setSmallIcon(R.drawable.notification)
+                    .setAutoCancel(true).build();
+
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            notificationManager.notify(NOTIFICATION_ID, n);
+        }
     }
 
 
