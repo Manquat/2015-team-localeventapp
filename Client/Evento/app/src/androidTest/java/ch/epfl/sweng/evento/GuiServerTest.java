@@ -7,11 +7,13 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.LargeTest;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import ch.epfl.sweng.evento.gui.LoginActivity;
 import ch.epfl.sweng.evento.gui.MainActivity;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -19,7 +21,6 @@ import static android.support.test.espresso.Espresso.openActionBarOverflowOrOpti
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static junit.framework.Assert.assertEquals;
 
 /**
  * Created by joachimmuth on 23.11.15.
@@ -32,11 +33,28 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class GuiServerTest extends ActivityInstrumentationTestCase2<MainActivity> {
-    private String TAG = "LoadAndPostTest";
+    private String TAG = "GuiServerTest";
+
+//    @Before
+//    public void setUp() {
+//        Settings.INSTANCE.setUser(new User(1, "mockName", "mockEmail"));
+//    }
+//
+//    @Rule
+//    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
+//            MainActivity.class);
+
+    @Rule
+    public ActivityTestRule<MainActivity> startActivity() {
+        Settings.INSTANCE.setUser(new User(15, "mockName", "mockEmail"));
+        Settings.INSTANCE.setIdToken("");
+        return new ActivityTestRule<>(MainActivity.class);
+    }
 
     public GuiServerTest() {
         super(MainActivity.class);
     }
+
 
 
     /**
@@ -46,7 +64,7 @@ public class GuiServerTest extends ActivityInstrumentationTestCase2<MainActivity
      * @throws InterruptedException
      */
 
-    @Ignore("This test fails on my machine. -Solal")
+    //@Ignore("This test fails on my machine. -Solal")
     @Test
     public void testRefreshPostRefresh() throws InterruptedException {
         int numOfEvent;
@@ -60,14 +78,16 @@ public class GuiServerTest extends ActivityInstrumentationTestCase2<MainActivity
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
         onView(withText("Create an event")).perform(click());
 
+        // wait for the keyboard to be up
         Thread.sleep(1000);
+        // close it
         Espresso.pressBack();
 
         Thread.sleep(1000);
         //pressBack(); // to hide the keyboard
         onView(withId(R.id.submitEvent)).perform(click());
 
-        Thread.sleep(1000); // wait for event to be sent
+        Thread.sleep(5000); // wait for event to be sent
 
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
         onView(withText("Refresh")).perform(click());

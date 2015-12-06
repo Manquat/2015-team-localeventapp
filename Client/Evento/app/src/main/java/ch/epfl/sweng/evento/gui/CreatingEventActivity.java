@@ -471,7 +471,7 @@ public class CreatingEventActivity extends AppCompatActivity
 
     private static Spanned formatPlaceDetails(Resources res, CharSequence name, String id,
                                               CharSequence address, CharSequence phoneNumber, Uri websiteUri) {
-        Log.e(TAG, res.getString(R.string.place_details, name, id, address, phoneNumber,
+        Log.i(TAG, res.getString(R.string.place_details, name, id, address, phoneNumber,
                 websiteUri));
         return Html.fromHtml(res.getString(R.string.place_details, name, id, address, phoneNumber,
                 websiteUri));

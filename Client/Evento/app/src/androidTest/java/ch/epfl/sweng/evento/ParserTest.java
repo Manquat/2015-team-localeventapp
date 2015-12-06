@@ -2,18 +2,14 @@ package ch.epfl.sweng.evento;
 
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.util.Log;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 import java.util.TimeZone;
 
 import ch.epfl.sweng.evento.rest_api.Parser;

@@ -1,12 +1,10 @@
 package ch.epfl.sweng.evento;
 
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.suitebuilder.annotation.LargeTest;
 
 import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -27,6 +25,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 /**
  * Test the calendar tab at the UI level (black box approach)
  */
+@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class CalendarGUITest extends ActivityInstrumentationTestCase2<MainActivity> {
     private GregorianCalendar mActualDate;
