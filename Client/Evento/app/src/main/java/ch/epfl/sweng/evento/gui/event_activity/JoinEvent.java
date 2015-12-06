@@ -9,7 +9,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.Settings;
@@ -42,6 +44,7 @@ public class JoinEvent implements
     private ArrayList<String> mListDataHeader;
     private HashMap<String, List<String>> mListDataChild;
     private ExpendableList mListAdapter;
+    private Set<User> mParticipant;
 
     private JoinEvent(Activity parentActivity, int currentEventId,
                       Button joinEventButton, Button unJoinEventButton,
@@ -53,6 +56,7 @@ public class JoinEvent implements
         mUnJoinEventButton = unJoinEventButton;
         mListDataHeader = new ArrayList<>();
         mListDataChild = new HashMap<>();
+        mParticipant = new HashSet<>();
 
         mJoinEventButton.setOnClickListener(this);
         mUnJoinEventButton.setOnClickListener(this);
@@ -80,7 +84,7 @@ public class JoinEvent implements
     public void onClick(View view) {
         if (mIsTheEventJoined) {
             Log.d(TAG, Settings.INSTANCE.getUser().getUsername() + " unjoin");
-            if (!mCurrentEvent.removeParticipant(Settings.INSTANCE.getUser())) {
+            if (!mParticipant.remove(Settings.INSTANCE.getUser())) {
                 Log.d(TAG, "addParticipant just returned false");
                 mActivity.finish();
             } else {
@@ -92,7 +96,7 @@ public class JoinEvent implements
 
         } else {
             Log.d(TAG, Settings.INSTANCE.getUser().getUsername() + " join");
-            if (!mCurrentEvent.addParticipant(Settings.INSTANCE.getUser())) {
+            if (!mParticipant.add(Settings.INSTANCE.getUser())) {
                 Log.d(TAG, "addParticipant just returned false");
                 mActivity.finish();
             } else {
@@ -109,7 +113,7 @@ public class JoinEvent implements
     }
 
     private void updateButtonState() {
-        mIsTheEventJoined = mCurrentEvent.checkIfParticipantIsIn(Settings.INSTANCE.getUser());
+        mIsTheEventJoined = mParticipant.contains(Settings.INSTANCE.getUser());
 
         mJoinEventButton.setEnabled(!mIsTheEventJoined);
         mUnJoinEventButton.setEnabled(mIsTheEventJoined);
@@ -131,6 +135,8 @@ public class JoinEvent implements
     public void onUserListReceived(List<User> userArrayList) {
         Log.d(TAG, "user list received for event " + mCurrentEvent.getTitle());
         if (userArrayList != null) {
+            mParticipant.clear();
+            mParticipant.addAll(userArrayList);
             List<String> participant = new ArrayList<>();
             for (User user : userArrayList) {
                 participant.add(user.getUsername());
@@ -141,6 +147,7 @@ public class JoinEvent implements
             mListDataChild.put(mListDataHeader.get(0), participant);
 
             mListAdapter.notifyDataSetChanged();
+            updateButtonState();
         }
     }
 

@@ -130,5 +130,18 @@ public class User {
         return getHostedEventString("\n");
     }
 
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof User) {
+            User user = (User) object;
+            return mUserId == user.getUserId();
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return mUserId;
+    }
 
 }
