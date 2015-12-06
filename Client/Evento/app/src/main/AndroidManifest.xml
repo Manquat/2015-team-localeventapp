@@ -36,10 +36,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".gui.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <activity
             android:name=".gui.EventActivity"
             android:label="@string/title_activity_event"
@@ -68,8 +70,13 @@
             android:name=".gui.CreatingEventActivity"
             android:label="@string/title_activity_creating_event"></activity>
         <activity
+            android:name=".ManageActivity"
+            android:label="@string/title_activity_manage_activity" >
+        </activity>
+        <activity
             android:name=".gui.SearchActivity"
             android:label="@string/title_activity_search"></activity>
+
     </application>
 
 </manifest>

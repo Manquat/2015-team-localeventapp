@@ -18,16 +18,16 @@ public final class Serializer {
 
         String res = "{\n"
                 + "  \"Event_name\": \"" + e.getTitle() + "\",\n"
+                + "  \"tags\": \"" + e.getTagsString() + "\",\n"
+                + "  \"image\": \n"
+                + "    \"" + e.getDescription() + "\" ,\n"
                 + "  \"description\": \n"
                 + "    \"" + e.getDescription() + "\" ,\n"
                 + "  \"latitude\": " + e.getLatitude() + ",\n"
                 + "  \"longitude\": " + e.getLongitude() + ",\n"
                 + "  \"address\": \"" + e.getAddress() + "\", \n "
                 + " \"date\" : \"" + e.getProperDateString() + "\", \n "
-                //+ "  \"owner\": \"" + e.getCreator() + "\" \n"
-                //+ "  \"creator\": \"" + e.getCreator() + "\" \n"
-                + "  \"creator\": " + 1 + " \n"
-                // + "  \"tags\":" + "Basketball" + "\n"
+                + "  \"creator\": \"" + e.getCreator() + "\" \n"
                 + "}\n";
         return res;
     }

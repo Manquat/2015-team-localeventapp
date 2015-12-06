@@ -1,7 +1,9 @@
 package ch.epfl.sweng.evento.event;
 
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.util.Base64;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -12,9 +14,19 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
+import java.util.HashSet;
+import java.util.Locale;
+
+import java.util.Objects;
+
 import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
+
+import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.User;
+
 
 /**
  * The event class that holds all the information related to the event :
@@ -32,15 +44,21 @@ public class Event implements ClusterItem {
     private Calendar mStartDate;
     private Calendar mEndDate;
     private String mPicture;
+    private Set<User> mParticipants;
+    private final int mNumberMaxOfParticipants;
 
-    public Event(int id,
-                 String title,
-                 String description,
-                 double latitude,
-                 double longitude,
-                 String address,
-                 String creator,
-                 Set<String> tags) {
+
+
+    public Event( int id,
+                  String title,
+                  String description,
+                  double latitude,
+                  double longitude,
+                  String address,
+                  String creator,
+                  Set<String> tags,
+                  String image,
+                  Set<User> participants) {
         mID = id;
         mTitle = title;
         mDescription = description;
@@ -48,9 +66,13 @@ public class Event implements ClusterItem {
         mAddress = address;
         mCreator = creator;
         mTags = tags;
+
         mStartDate = new GregorianCalendar();
         mEndDate = new GregorianCalendar();
         mPicture = samplePicture();
+        mNumberMaxOfParticipants =  10;//TODO
+        mParticipants = new HashSet<User>(participants);
+
     }
 
     public Event(int id,
@@ -80,7 +102,7 @@ public class Event implements ClusterItem {
                  Set<String> tags,
                  Calendar startDate,
                  Calendar endDate) {
-        this(id, title, description, latitude, longitude, address, creator, tags);
+        this(id, title, description, latitude, longitude, address, creator, tags, "image", new HashSet<User>());
         mStartDate = startDate;
         mEndDate = endDate;
         mPicture = samplePicture();
@@ -98,6 +120,38 @@ public class Event implements ClusterItem {
     }
 
 
+    public boolean addParticipant(User participant){
+        if (participant == null) {
+            throw new NullPointerException("participant cannot be null");
+        }
+        if (mParticipants.size() < mNumberMaxOfParticipants) {
+            mParticipants.add(participant);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public Set<User> getAllParticipant()  {
+        return mParticipants;
+    }
+
+    public int getMaxNumberOfParticipant()  {
+        return mNumberMaxOfParticipants;
+    }
+
+    public void removeParticipant(User participant){
+        if (participant == null) {
+            throw new NullPointerException("participant cannot be null");
+        }
+        mParticipants.remove(participant);
+    }
+
+    private boolean checkIfParticipantIsIn(User participant){
+        return mParticipants.contains(participant);
+    }
+
     public void setPicture(String picture) {
         mPicture = picture;
     }
@@ -112,6 +166,10 @@ public class Event implements ClusterItem {
             mPicture = "";
         }
 
+    }
+
+    public boolean isFull(){
+        return mParticipants.size() >= mNumberMaxOfParticipants;
     }
 
 
@@ -173,8 +231,9 @@ public class Event implements ClusterItem {
             return "Football";
         } else if (mTags.contains("Basketball")) {
             return "Basketball";
-        } else {
-            return "Basketball";
+        }
+        else {
+            return "Unknown";
         }
     }
 

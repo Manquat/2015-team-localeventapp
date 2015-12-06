@@ -62,6 +62,9 @@ public class RestApiTest {
     private static final String PROPER_JSON_STRING = "{\n"
             + "  \"id\": 17005,\n"
             + "  \"Event_name\": \"My football game\",\n"
+            + "  \"tags\": \"" + "Foot" + "\",\n"
+            + "  \"image\": \n"
+            + "    \"" + "image" + "\" ,\n"
             + "  \"description\": \n"
             + "    \"Okay guys, let's play a little game this evening at dorigny. Remember: no doping allowed!\" ,\n"
             + "  \"latitude\": 46.519428,\n"
@@ -77,7 +80,9 @@ public class RestApiTest {
             46.519428, 6.580847,
             "Terrain de football de Dorigny",
             "Micheal Jackson",
-            new HashSet<String>());
+            new HashSet<String>(),
+            "image",
+            new HashSet<User>());
 
 
     @Before
@@ -284,7 +289,7 @@ public class RestApiTest {
 
     @Test
     public void testUpdateEvent() throws InterruptedException {
-        Event event = new Event(14, "this is a test of UpdateEvent", "test1", 0, 0, "address", "creator", new HashSet<String>());
+        Event event = new Event(14, "this is a test of UpdateEvent", "test1", 0, 0, "address", "creator", new HashSet<String>(), "image", new HashSet<User>());
         RestApi restApi = new RestApi(networkProvider, urlServer);
         restApi.updateEvent(event, new HttpResponseCodeCallback() {
             @Override
