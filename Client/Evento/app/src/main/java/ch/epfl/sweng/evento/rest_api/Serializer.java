@@ -19,7 +19,6 @@ public final class Serializer {
         String res = "{\n"
                 + "  \"Event_name\": \"" + e.getTitle() + "\",\n"
                 + "  \"tags\": \"" + e.getTagsString() + "\",\n"
-                + "  \"participants\": \"" + "Alfred" + "\",\n"
                 + "  \"image\": \n"
                 + "    \"" + e.getDescription() + "\" ,\n"
                 + "  \"description\": \n"
