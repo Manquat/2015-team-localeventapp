@@ -17,6 +17,7 @@
 
 package ch.epfl.sweng.evento.gui;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,6 +28,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.google.android.gms.plus.Plus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,6 +55,8 @@ import ch.epfl.sweng.evento.tabs_layout.SlidingTabLayout;
  */
 public class MainActivity extends AppCompatActivity {
 
+    public static final String LOGOUT_TAG = "LOGOUT";
+    private static final String LOGOUT = "logout";
     private static final String TAG = "MainActivity";
     private Toolbar mToolbar;
     private ViewPager mPager;
@@ -133,6 +138,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else if (id == R.id.action_refresh) {
             refreshFromServer();
+        } else if( id == R.id.action_logout) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.putExtra(LOGOUT_TAG,LOGOUT);
+            startActivity(intent);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);

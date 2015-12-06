@@ -1,16 +1,16 @@
 <resources>
     <string name="app_name">Evento</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_event">EventActivity</string>
+    <string name="title_activity_main">Evento</string>
+    <string name="title_activity_event">Event details</string>
     <string name="text">You are in a tab</string>
     <string name="url_server">https://protected-hamlet-4797.herokuapp.com/</string>
     <string name="Slogan">This slogan will make you buy our premium features</string>
     <string name="Username">Username</string>
     <string name="Password">Password</string>
-    <string name="title_activity_creating_event">CreatingEventActivity</string>
+    <string name="title_activity_creating_event">Create your own event !</string>
     <string name="server_client_id">274058441827-q1jq5v08sbp9i4gbdfppq60qq7jriejv.apps.googleusercontent.com</string>
-    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_search">Looking for something ?</string>
 
     <string name="autocomplete_hint">Enter place name or address</string>
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
