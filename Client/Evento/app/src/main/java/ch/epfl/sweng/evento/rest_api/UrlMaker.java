@@ -61,7 +61,7 @@ public abstract class UrlMaker {
                                        double latitude, double longitude, double radius) {
         long startTimeInSec = startTime.getTimeInMillis() / 1000;
         long endTimeInSec = endTime.getTimeInMillis() / 1000;
-        String url = urlServer + event + Long.toString(startTimeInSec)
+        String url = urlServer + event  + Long.toString(startTimeInSec)
                 + "/" + Long.toString(endTimeInSec) + "/" + Double.toString(latitude) + "/"
                 + Double.toString(longitude) + "/" + Double.toString(radius);
         return url;

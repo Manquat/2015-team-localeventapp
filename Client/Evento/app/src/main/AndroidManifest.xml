@@ -71,7 +71,7 @@
             android:name=".gui.ManageActivity"
             android:label="@string/title_activity_manage_activity" />
         <activity
-            android:name="gui.SearchActivity"
+            android:name=".gui.SearchActivity"
             android:label="@string/title_activity_search" />
         <activity
             android:name=".gui.UserProfileActivity"
