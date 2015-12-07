@@ -188,6 +188,31 @@ def event_addcomment(request, format=None):
             return Response(status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['DELETE'])
+def event_deletecomment(request,pk, format=None):
+    """
+    add a comment to an event.
+    """
+    """
+    if 'HTTP_TOKEN' not in request.META:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    token = request.META['HTTP_TOKEN']
+    if validate_user(token) is False:
+        return  Response(status=status.HTTP_403_FORBIDDEN)
+    """
+
+    try:
+        comment = Comment.objects.get(pk=pk)
+    except Comment.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'DELETE':
+        if validate_delete(request, comment.creator) or validate_delete(request, comment.event.owner):
+            comment.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
 
 
 @api_view(['GET'])
