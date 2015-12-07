@@ -6,15 +6,18 @@ import java.util.GregorianCalendar;
  * Created by joachimmuth on 22.10.15.
  * Tool allowing to set every type of URL, according with the django server convention
  */
-public final class UrlMaker {
+public abstract class UrlMaker {
 
     private static final String TAG = "UrlMaker";
     private final static String event = "events/";
     private final static String comment = "comments/";
     private final static String accessMaster = "Gandalf/";
+    protected static String access;
 
-    private UrlMaker() {
-        // private constructor
+    abstract protected String getAccess();
+
+    public UrlMaker() {
+        access = getAccess();
     }
 
 
@@ -27,17 +30,20 @@ public final class UrlMaker {
         return url;
     }
 
-
     public static String post(String urlServer) {
-        return urlServer + event;
+        return urlServer + access ;
+    }
+
+    public static String post(String urlServer, String access) {
+        return urlServer + access ;
     }
 
     public static String put(String urlServer, int id) {
-        return urlServer + event + id;
+        return urlServer + access  + id;
     }
 
     public static String delete(String urlServer, int id) {
-        return urlServer + event + id;
+        return urlServer + access  + id;
     }
 
     public static String getByDate(String urlServer, GregorianCalendar startDate, GregorianCalendar endDate) {

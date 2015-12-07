@@ -33,6 +33,7 @@ def create_user(request, format=None):
             return Response(serializer2.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def update_user(request, pk, format=None):
     """
@@ -57,6 +58,7 @@ def update_user(request, pk, format=None):
     elif request.method == 'DELETE':
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 @api_view(['GET'])
 def created_events(request, pk, format=None):

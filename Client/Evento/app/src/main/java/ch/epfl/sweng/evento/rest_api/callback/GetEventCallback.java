@@ -5,6 +5,7 @@ package ch.epfl.sweng.evento.rest_api.callback;
  */
 
 import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.User;
 
 /**
  * Class definition for a callback to be invoked when the response data for the
@@ -17,6 +18,7 @@ public abstract class GetEventCallback {
      * This method is guaranteed to execute on the UI thread.
      */
     public abstract void onEventReceived(Event event);
+    public abstract void onDataReceived(User user);
 
 
     /*

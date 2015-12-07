@@ -206,14 +206,18 @@ public class CreatingEventActivity extends AppCompatActivity
                 }
 
                 // mock creator and random id (ID will be assigned server side)
-                String creator = "Jack Henri";
+                int creator = Settings.INSTANCE.getUser().getID();
                 Random rand = new Random();
                 int id = rand.nextInt(10000);
 
                 // event creation and send
+/*                Event e = new Event(id, titleString, descriptionString, latitude,
+                        longitude, addressString, creator,
+                        mTag, startDate, endDate, picture);*/
+//TODO Concerning the Event abovd: Either change contructor or change the event that is created here!
                 Event e = new Event(id, titleString, descriptionString, latitude,
                         longitude, addressString, creator,
-                        mTag, startDate, endDate, picture);
+                        mTag, startDate, endDate);
 
 
                 restApi.postEvent(e, new HttpResponseCodeCallback() {

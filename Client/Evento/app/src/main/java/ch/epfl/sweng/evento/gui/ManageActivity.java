@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento;
+package ch.epfl.sweng.evento.gui;
 
 import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +11,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.list_view.ListEntryAdapter;
 
 import ch.epfl.sweng.evento.event.Event;

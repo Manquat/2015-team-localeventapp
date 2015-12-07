@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.util.Base64;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
@@ -20,13 +21,14 @@ import java.util.Locale;
 
 import java.util.Objects;
 
+
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
-import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.User;
 
+import ch.epfl.sweng.evento.User;
 
 /**
  * The event class that holds all the information related to the event :
@@ -39,7 +41,7 @@ public class Event implements ClusterItem {
     private final String mDescription;
     private final LatLng mLocation;
     private final String mAddress;
-    private final String mCreator;//might be replaced by some kind of User class
+    private final int mCreator;//might be replaced by some kind of User class
     private final Set<String> mTags;
     private Calendar mStartDate;
     private Calendar mEndDate;
@@ -55,7 +57,7 @@ public class Event implements ClusterItem {
                   double latitude,
                   double longitude,
                   String address,
-                  String creator,
+                  int creator,
                   Set<String> tags,
                   String image,
                   Set<User> participants) {
@@ -66,13 +68,11 @@ public class Event implements ClusterItem {
         mAddress = address;
         mCreator = creator;
         mTags = tags;
-
         mStartDate = new GregorianCalendar();
         mEndDate = new GregorianCalendar();
         mPicture = samplePicture();
         mNumberMaxOfParticipants =  10;//TODO
         mParticipants = new HashSet<User>(participants);
-
     }
 
     public Event(int id,
@@ -81,7 +81,7 @@ public class Event implements ClusterItem {
                  double latitude,
                  double longitude,
                  String address,
-                 String creator,
+                 int creator,
                  Set<String> tags,
                  Calendar startDate,
                  Calendar endDate,
@@ -98,7 +98,7 @@ public class Event implements ClusterItem {
                  double latitude,
                  double longitude,
                  String address,
-                 String creator,
+                 int creator,
                  Set<String> tags,
                  Calendar startDate,
                  Calendar endDate) {
@@ -221,7 +221,7 @@ public class Event implements ClusterItem {
         return mAddress;
     }
 
-    public String getCreator() {
+    public int getCreator() {
         return mCreator;
     }
 
@@ -231,8 +231,7 @@ public class Event implements ClusterItem {
             return "Football";
         } else if (mTags.contains("Basketball")) {
             return "Basketball";
-        }
-        else {
+        } else {
             return "Unknown";
         }
     }

@@ -70,13 +70,17 @@
             android:name=".gui.CreatingEventActivity"
             android:label="@string/title_activity_creating_event"></activity>
         <activity
-            android:name=".ManageActivity"
+            android:name=".gui.ManageActivity"
             android:label="@string/title_activity_manage_activity" >
         </activity>
         <activity
-            android:name=".gui.SearchActivity"
-            android:label="@string/title_activity_search"></activity>
-
+            android:name="gui.SearchActivity"
+            android:label="@string/title_activity_search" >
+        </activity>
+        <activity
+            android:name=".gui.UserProfileActivity"
+            android:label="@string/title_activity_user_profile" >
+        </activity>
     </application>
 
 </manifest>

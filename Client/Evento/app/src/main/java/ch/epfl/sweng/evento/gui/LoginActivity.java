@@ -20,14 +20,22 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 
+import ch.epfl.sweng.evento.User;
+import ch.epfl.sweng.evento.rest_api.RestApi;
+
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
+import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
+    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
+    private static final String urlServer = Settings.getServerUrl();
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 0;
     private GoogleApiClient mGoogleApiClient;
@@ -150,8 +158,30 @@ public class LoginActivity extends AppCompatActivity implements
                 String idToken = acct.getIdToken();
                 Log.d(TAG, "idToken:" + idToken);
                 Settings.INSTANCE.setIdToken(idToken);
+
+                String personName = acct.getDisplayName();
+                String personEmail = acct.getEmail();
+                String personId = acct.getId();
+                User u = new User(personId, personName, personEmail);
+                Settings.INSTANCE.setUser(u);
+                Log.d(TAG, Settings.INSTANCE.getUser().getUsername());
+                Log.d(TAG, Integer.toString(Settings.INSTANCE.getUser().getID()));
+                Log.d(TAG, Settings.INSTANCE.getUser().getEmail());
+                RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
+
+                restApi.postUser(u, new HttpResponseCodeCallback() {
+                    @Override
+                    public void onSuccess(String response) {
+                        // assert submission
+                        Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "User information sent to server");
+                    }
+                });
+
+
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
+
             } else {
                 Toast.makeText(this, "Could not connect, please try again", Toast.LENGTH_SHORT).show();
             }

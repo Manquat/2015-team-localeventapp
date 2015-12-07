@@ -58,7 +58,7 @@ public class Parser {
                 jsonObject.getDouble("latitude"),
                 jsonObject.getDouble("longitude"),
                 jsonObject.getString("address"),
-                jsonObject.getString("creator"),
+                jsonObject.getInt("creator"),
                 new HashSet<String>(Arrays.asList(json.getString("tags").split(";"))),
                 startDate,
                 endDate);
@@ -69,6 +69,7 @@ public class Parser {
 
         return new Comment();
     }
+
 
     public static List<Event> parseFromJSONMultiple(String response) throws JSONException {
         ArrayList<Event> eventArrayList = new ArrayList<>();

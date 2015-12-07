@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,12 +37,14 @@ import ch.epfl.sweng.evento.rest_api.task.PutTask;
  */
 public class EventFragment extends Fragment {
 
+    private static final String TAG = "EventFragment";
     public static final String KEYCURRENTEVENT = "CurrentEvent";
-    private RestApi mRestAPI;
+   /* private RestApi mRestAPI;
     private Event mEvent;
     private ArrayList<String> mListDataHeader;
     private HashMap<String, List<String>> mListDataChild;
     private View mRootView;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -60,13 +63,59 @@ public class EventFragment extends Fragment {
         return mRootView;
     }
 
-    private void updateFields() {
-        TextView titleView = (TextView) mRootView.findViewById(R.id.event_title_view);
-        TextView creatorView = (TextView) mRootView.findViewById(R.id.event_creator_view);
-        TextView startDateView = (TextView) mRootView.findViewById(R.id.event_start_date_view);
-        TextView endDateView = (TextView) mRootView.findViewById(R.id.event_end_date_view);
-        TextView addressView = (TextView) mRootView.findViewById(R.id.event_address_view);
-        TextView descriptionView = (TextView) mRootView.findViewById(R.id.event_description_view);
+
+
+    private void getParticipant(int signature){
+        mParticipants = new ArrayList<User>();
+        mEvent = EventDatabase.INSTANCE.getEvent(signature);
+
+        RestApi restAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+        restAPI.getUser(new GetEventListCallback() {
+            public void onUserListReceived(List<User> userArrayList) {
+                mParticipants = userArrayList;
+            }
+            public void onEventListReceived(List<Event> eventArrayList){
+
+            }
+
+        }, mEvent.getID());
+
+        //Hosted event
+        /*hostedEvent = new ArrayList<Event>();;
+        restAPI.getHostedEvent(new GetMultipleResponseCallback() {
+            public void onDataReceived(List<Event> eventArrayList) {
+                hostedEvent = eventArrayList;
+                Log.d(TAG, hostedEvent.get(0).getTitle());
+                Log.d(TAG, hostedEvent.get(1).getTitle());
+            }
+
+        }, 8);*/
+
+    /*    //Matched event
+        hostedEvent = new ArrayList<Event>();;
+        restAPI.getMatchedEvent(new GetEventListCallback() {
+            public void onEventListReceived(List<Event> eventArrayList) {
+                hostedEvent = eventArrayList;
+                Log.d(TAG, hostedEvent.get(0).getTitle());
+                Log.d(TAG, hostedEvent.get(1).getTitle());
+            }
+            public void onUserListReceived(List<User> userArrayList){
+
+            }
+
+        }, 8);
+
+    }
+
+    private void updateFields(View rootView) {
+        TextView titleView = (TextView) rootView.findViewById(R.id.event_title_view);
+        TextView creatorView = (TextView) rootView.findViewById(R.id.event_creator_view);
+        TextView startDateView = (TextView) rootView.findViewById(R.id.event_start_date_view);
+        TextView endDateView = (TextView) rootView.findViewById(R.id.event_end_date_view);
+        TextView addressView = (TextView) rootView.findViewById(R.id.event_address_view);
+        TextView descriptionView = (TextView) rootView.findViewById(R.id.event_description_view);
+        TextView participantView = (TextView) rootView.findViewById(R.id.listParticipantView);
+
 
         titleView.setText(mEvent.getTitle());
         creatorView.setText(mEvent.getCreator());
@@ -130,11 +179,11 @@ public class EventFragment extends Fragment {
 
         List<String> participant = new ArrayList<String>();
         for (User user: mEvent.getAllParticipant()) {
-            participant.add(user.getmUsername());
+            participant.add(user.getUsername());
         }
 
 
         mListDataChild.put(mListDataHeader.get(0), new ArrayList<String>(Arrays.asList(host)));
         mListDataChild.put(mListDataHeader.get(1), participant);
-    }
+    }*/
 }

@@ -1,5 +1,8 @@
 package ch.epfl.sweng.evento.rest_api;
 
+import android.util.Log;
+
+import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 
 /**
@@ -27,17 +30,29 @@ public final class Serializer {
                 + "  \"longitude\": " + e.getLongitude() + ",\n"
                 + "  \"address\": \"" + e.getAddress() + "\", \n "
                 + " \"date\" : \"" + e.getProperDateString() + "\", \n "
-                + "  \"creator\": \"" + e.getCreator() + "\" \n"
+                + "  \"owner\": " + e.getCreator() + ", \n"
                 + "}\n";
         return res;
     }
 
+    public static String user(User u){
+        String res = "{\n"
+                //+ "  \"id\": "  + ",\n"
+                + "  \"name\": \"" + u.getUsername() + "\", \n"
+                + "  \"email\": \"" + u.getEmail() + "\", \n"
+                + "  \"googleid\": \"" + u.getGoogleID() + "\" \n"
+                + "}\n";
+
+        Log.d(TAG, "Information sent to Server: " + res);
+
+        return res;
+    }
 
     public static String comment(int userId, int eventId, String commentBody) {
         String res = "{\n"
                 + "\"comment\": \"" + commentBody + "\",\n"
                 + "\"user\": \"" + userId + "\",\n"
-                + "\"event\": \"" + eventId + "\",\n"
+                + "\"event\": \"" + eventId + "\" \n"
                 + "}\n";
         return res;
     }

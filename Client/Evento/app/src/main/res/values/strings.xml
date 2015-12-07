@@ -5,6 +5,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_manage_activity">ManageActivity</string>
     <string name="title_activity_event">EventActivity</string>
+    <string name="title_login_activity">LoginActivity</string>
     <string name="text">You are in a tab</string>
     <string name="url_server">https://protected-hamlet-4797.herokuapp.com/</string>
     <string name="Slogan">This slogan will make you buy our premium features</string>
@@ -13,6 +14,7 @@
     <string name="title_activity_creating_event">CreatingEventActivity</string>
     <string name="server_client_id">274058441827-q1jq5v08sbp9i4gbdfppq60qq7jriejv.apps.googleusercontent.com</string>
     <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_user_profile">UserProfileActivity</string>
     <string name="ownEventLabel">Your own event(s) :</string>
     <string name="otherEventLabel">Matched Event(s) :</string>
     <string name="menu_manage_event">Manage</string>
@@ -64,4 +66,7 @@
     <string name="searchByDateToHint">end date</string>
     <string name="searchDistance">In area of</string>
     <string name="searchArea">radius in km</string>
+    <string name="menu_profile">Profile</string>
+
+
 </resources>
