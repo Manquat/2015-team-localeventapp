@@ -65,22 +65,24 @@ public class AddingComment implements OnClickListener, Refreshable {
             String message = mMessageBox.getText().toString();
 
             // creating the new Comment
-            mRestApi.postComment(mCurrentEventId, message, new HttpResponseCodeCallback() {
-                @Override
-                public void onSuccess(String httpResponseCode) {
-                    if (httpResponseCode.equals(SUCCESSFULLY_POST_COMMENT)) {
-                        Log.d(TAG, "Successful post the comment : " + httpResponseCode);
-                        Toast.makeText(mActivity, "Success on posting the comment", Toast.LENGTH_LONG)
-                                .show();
-                        refresh();
-                    } else {
-                        Log.e(TAG, "Error while posting the comment, error code : " + httpResponseCode);
-                        Toast.makeText(mActivity, "Error while posting the comment", Toast.LENGTH_LONG)
-                                .show();
-                        mActivity.finish();
+            if (!message.isEmpty()) {
+                mRestApi.postComment(mCurrentEventId, message, new HttpResponseCodeCallback() {
+                    @Override
+                    public void onSuccess(String httpResponseCode) {
+                        if (httpResponseCode.equals(SUCCESSFULLY_POST_COMMENT)) {
+                            Log.d(TAG, "Successful post the comment : " + httpResponseCode);
+                            Toast.makeText(mActivity, "Success on posting the comment", Toast.LENGTH_LONG)
+                                    .show();
+                            refresh();
+                        } else {
+                            Log.e(TAG, "Error while posting the comment, error code : " + httpResponseCode);
+                            Toast.makeText(mActivity, "Error while posting the comment", Toast.LENGTH_LONG)
+                                    .show();
+                            mActivity.finish();
+                        }
                     }
-                }
-            });
+                });
+            }
 
             mListView.removeFooterView(mMessageBox);
         }
