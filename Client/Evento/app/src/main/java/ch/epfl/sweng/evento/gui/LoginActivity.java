@@ -60,8 +60,9 @@ public class LoginActivity extends AppCompatActivity implements
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setColorScheme(SignInButton.COLOR_DARK);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-
-        if(getIntent().getExtras().getBoolean(MainActivity.LOGOUT_TAG)){
+        if(getIntent() != null &&
+                getIntent().getExtras() != null &&
+                getIntent().getExtras().getBoolean(MainActivity.LOGOUT_TAG,false)){
             logout();
         }
     }
