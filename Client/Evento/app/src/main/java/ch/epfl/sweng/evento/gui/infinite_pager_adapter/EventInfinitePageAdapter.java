@@ -1,7 +1,9 @@
 package ch.epfl.sweng.evento.gui.infinite_pager_adapter;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
@@ -100,14 +102,22 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
                 listViewOfParticipant);
 
         // configure the delete event button
-        boolean isTheCurrentUserTheOwner =
-                (currentEvent.getCreator() == Settings.INSTANCE.getUser().getUserId());
         Button deleteEvent = (Button) rootView.findViewById(R.id.delete_event);
-        deleteEvent.setActivated(isTheCurrentUserTheOwner);
+        deleteEvent.setVisibility(View.INVISIBLE);
         deleteEvent.setOnClickListener(new DeleteEventListener(mActivity, currentEvent.getID()));
 
         Button updateEvent = (Button) rootView.findViewById(R.id.update_event);
-        unJoinEventButton.setActivated(isTheCurrentUserTheOwner);
+        updateEvent.setVisibility(View.INVISIBLE);
         updateEvent.setOnClickListener(new UpdateEventListener(mActivity, currentEvent.getID()));
+
+        boolean isTheCurrentUserTheOwner =
+                (currentEvent.getCreator() == Settings.INSTANCE.getUser().getUserId());
+        Log.d(TAG, "is currentOwner : creator " + currentEvent.getCreator());
+        Log.d(TAG, "is currentOwner : user " + Settings.INSTANCE.getUser().getUserId());
+        Log.d(TAG, "current event : " + currentEvent.getTitle());
+        if (isTheCurrentUserTheOwner) {
+            deleteEvent.setVisibility(View.VISIBLE);
+            updateEvent.setVisibility(View.VISIBLE);
+        }
     }
 }
