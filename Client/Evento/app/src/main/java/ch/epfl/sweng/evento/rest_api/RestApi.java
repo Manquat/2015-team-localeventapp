@@ -360,7 +360,12 @@ public class RestApi {
      * @param callback : manage failure and success
      */
     public void deleteEvent(int id, final HttpResponseCodeCallback callback) {
-        String restUrl = UrlMakerEvent.delete(mUrlServer, id);
+        String restUrl = UrlMaker.delete(mUrlServer, id);
+        Log.d(TAG, "deleteEvent : url : " + restUrl);
+        Log.d(TAG, "deleteEvent : get :" + UrlMakerEvent.get(mUrlServer, id));
+        Log.d(TAG, "deleteEvent : post :" + UrlMakerEvent.post(mUrlServer));
+        Log.d(TAG, "deleteEvent : comment :" + UrlMakerEvent.postComment(mUrlServer));
+        restUrl = "https://protected-hamlet-4797.herokuapp.com/events/1";
         new DeleteTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             public void onTaskComplete(String response) {
                 callback.onSuccess(response);

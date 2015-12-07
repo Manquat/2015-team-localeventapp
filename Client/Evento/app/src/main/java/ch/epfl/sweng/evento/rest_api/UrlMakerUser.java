@@ -6,19 +6,19 @@ package ch.epfl.sweng.evento.rest_api;
 public class UrlMakerUser extends UrlMaker {
 
     public UrlMakerUser() {
-        access = "events/user/";
+        sAccess = "events/user/";
     }
 
     public UrlMakerUser(String access) {
-        this.access = access;
+        this.sAccess = access;
     }
 
     public String getAccess() {
-        return access;
+        return sAccess;
     }
 
     public static String get(String urlServer, int noUser) {
-        return urlServer + access + noUser;
+        return urlServer + sAccess + noUser;
     }
 
 }

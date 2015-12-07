@@ -11,12 +11,12 @@ public abstract class UrlMaker {
     private static final String TAG = "UrlMaker";
     private final static String event = "events/";
     private final static String comment = "comments/";
-    protected static String access;
+    //protected static String sAccess;
 
     abstract protected String getAccess();
 
     public UrlMaker() {
-        access = getAccess();
+        sAccess = getAccess();
     }
 
 
@@ -30,7 +30,7 @@ public abstract class UrlMaker {
     }
 
     public static String post(String urlServer) {
-        return urlServer + access;
+        return urlServer + sAccess;
     }
 
     public static String post(String urlServer, String access) {
@@ -38,19 +38,21 @@ public abstract class UrlMaker {
     }
 
     public static String put(String urlServer, int id) {
-        return urlServer + access + id;
+        return urlServer + sAccess + id;
     }
 
     public static String putParticipant(String urlServer, int idEvent, int idParticipant) {
-        return urlServer + access + idEvent + "/" + idParticipant;
+        return urlServer + sAccess + idEvent + "/" + idParticipant;
     }
 
     public static String deleteParticipant(String urlServer, int idEvent, int idParticipant) {
-        return urlServer + access + idEvent + "/" + idParticipant;
+        return urlServer + sAccess + idEvent + "/" + idParticipant;
     }
 
     public static String delete(String urlServer, int id) {
-        return urlServer + access + id;
+        String string = urlServer + sAccess; //TODO
+        string = string + "i";
+        return urlServer + sAccess + id;
     }
 
     public static String getByDate(String urlServer, GregorianCalendar startDate, GregorianCalendar endDate) {
