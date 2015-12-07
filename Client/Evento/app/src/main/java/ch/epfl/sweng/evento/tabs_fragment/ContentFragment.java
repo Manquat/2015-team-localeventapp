@@ -134,7 +134,7 @@ public class ContentFragment extends Fragment implements Refreshable {
                 Toast.makeText(mActivity.getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
             }
 
-            public void onUserListReceived(List<User> userArrayList){
+            public void onUserListReceived(List<User> userArrayList) {
 
             }
         });
@@ -224,9 +224,9 @@ public class ContentFragment extends Fragment implements Refreshable {
         mActivity.getWindowManager().getDefaultDisplay().getSize(size);
         int screenWidth = size.x;
         int screenHeight = size.y;
-        int halfScreenWidth = (int)(screenWidth *0.5);
-        int quarterScreenWidth = (int)(halfScreenWidth * 0.5);
-        params.width = screenWidth/3-2*PADDING;
+        int halfScreenWidth = (int) (screenWidth * 0.5);
+        int quarterScreenWidth = (int) (halfScreenWidth * 0.5);
+        params.width = screenWidth / 3 - 2 * PADDING;
         //params.width = mWidthColumn - 2 * PADDING;
         //params.height = mHeightRow - 2 * PADDING;
         params.setMargins(PADDING, PADDING, PADDING, PADDING);

@@ -20,7 +20,6 @@ public enum Settings {
     }
 
 
-
     public String getIdToken() {
         return mIdToken;
     }
@@ -29,9 +28,15 @@ public enum Settings {
         this.mIdToken = IdToken;
     }
 
-    public User getUser() {return mUser;}
+    public User getUser() {
+        return mUser;
+    }
+
     public void setUser(User user) {
         this.mUser = user;
     }
-    public void setUserId(int id) {mUserId =id;}
+
+    public void setUserId(int id) {
+        mUserId = id;
+    }
 }

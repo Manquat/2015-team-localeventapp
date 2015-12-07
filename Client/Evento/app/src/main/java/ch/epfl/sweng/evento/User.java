@@ -1,12 +1,6 @@
 package ch.epfl.sweng.evento;
 
-import android.os.Build;
-import android.util.Log;
-
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.event.Event;
@@ -25,22 +19,22 @@ public class User {
     private String mGoogleId;
     private String mUsername;
     private String mEmail;
- 	private Set<Event> mMatchedEvent;
+    private Set<Event> mMatchedEvent;
     private Set<Event> mHostedEvent;
 
 
-	public User(int id, String username, String email){
-	    mUserId = id;
-	    mUsername = username;
-	    mEmail = email;
-	    mMatchedEvent = new HashSet<>();
-	    mHostedEvent = new HashSet<>();
-	}
-	
-	public User(String username,Set<Event> matchedEvent, Set<Event> hostedEvent){
-	    mUsername = username;
-	    mMatchedEvent = new HashSet<>(matchedEvent);
-	    mHostedEvent = new HashSet<>(hostedEvent);
+    public User(int id, String username, String email) {
+        mUserId = id;
+        mUsername = username;
+        mEmail = email;
+        mMatchedEvent = new HashSet<>();
+        mHostedEvent = new HashSet<>();
+    }
+
+    public User(String username, Set<Event> matchedEvent, Set<Event> hostedEvent) {
+        mUsername = username;
+        mMatchedEvent = new HashSet<>(matchedEvent);
+        mHostedEvent = new HashSet<>(hostedEvent);
     }
 
     public User(String mGoogleId, String mUsername, String mEmail) {
@@ -50,11 +44,15 @@ public class User {
     }
 
 
-    public Set<Event> getMatchedEvent() { return mMatchedEvent;}
+    public Set<Event> getMatchedEvent() {
+        return mMatchedEvent;
+    }
 
-    public Set<Event> getHostedEvent() { return mHostedEvent; }
+    public Set<Event> getHostedEvent() {
+        return mHostedEvent;
+    }
 
-    public int getUserId(){
+    public int getUserId() {
         return mUserId;
     }
 
@@ -78,7 +76,7 @@ public class User {
         this.mEmail = mEmail;
     }
 
-    public void setUserId(int id){
+    public void setUserId(int id) {
         this.mUserId = id;
     }
 
@@ -97,7 +95,7 @@ public class User {
 
     public boolean addMatchedEvent(Event event) {
         final String message = "Cannot add a null event as a matched event";
-        if (event != null){
+        if (event != null) {
             return mMatchedEvent.add(event);
         } else {
             throw new NullPointerException(message);
@@ -113,8 +111,8 @@ public class User {
 
     public String getMatchedEventString(String separator) {
         String res = "";
-        if(!mMatchedEvent.isEmpty()){
-            for(Event event: mMatchedEvent){
+        if (!mMatchedEvent.isEmpty()) {
+            for (Event event : mMatchedEvent) {
                 res += event.getTitle() + separator;
             }
         }
@@ -127,8 +125,8 @@ public class User {
 
     public String getHostedEventString(String separator) {
         String res = "";
-        if(!mHostedEvent.isEmpty()){
-            for(Event event: mHostedEvent){
+        if (!mHostedEvent.isEmpty()) {
+            for (Event event : mHostedEvent) {
                 res += event.getTitle() + separator;
             }
         }

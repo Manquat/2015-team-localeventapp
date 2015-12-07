@@ -58,7 +58,7 @@ public class AddingComment implements OnClickListener {
             String message = mMessageBox.getText().toString();
 
             // creating the new Comment
-            mRestApi.postComment(mCurrentEventId, message, new HttpResponseCodeCallback(){
+            mRestApi.postComment(mCurrentEventId, message, new HttpResponseCodeCallback() {
                 @Override
                 public void onSuccess(String httpResponseCode) {
                     Toast.makeText(mActivity, "Success on posting the comment", Toast.LENGTH_LONG)
@@ -81,7 +81,7 @@ public class AddingComment implements OnClickListener {
             message.setHint(mActivity.getResources().getString(R.string.comment_message_hint));
             mListView.addFooterView(message);
 
-            mMessageBox =  message;
+            mMessageBox = message;
 
             mAddCommentButton.setText(mActivity.getResources().getString(R.string.event_validate));
         }

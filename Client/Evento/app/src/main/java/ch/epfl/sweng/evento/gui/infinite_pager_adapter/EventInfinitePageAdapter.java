@@ -94,7 +94,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         Button joinEventButton = (Button) rootView.findViewById(R.id.joinEvent);
         Button unJoinEventButton = (Button) rootView.findViewById(R.id.remove_user_from_event);
 
-       JoinEvent.initialize(mActivity, currentEvent.getID(), joinEventButton, unJoinEventButton,
-               listViewOfParticipant);
+        JoinEvent.initialize(mActivity, currentEvent.getID(), joinEventButton, unJoinEventButton,
+                listViewOfParticipant);
     }
 }

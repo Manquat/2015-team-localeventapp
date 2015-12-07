@@ -1,12 +1,9 @@
 package ch.epfl.sweng.evento;
 
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
-
-import com.google.android.gms.maps.model.LatLng;
 
 
 /**
@@ -21,7 +18,6 @@ public class UserProfilActivity extends AppCompatActivity {
     private TextView mUsernameView;
     private TextView mEmailView;
     private TextView mDateOfBirthView;
-
 
 
     protected void onCreate(Bundle savedInstanceState) {

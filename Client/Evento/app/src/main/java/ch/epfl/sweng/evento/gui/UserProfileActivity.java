@@ -27,7 +27,6 @@ public class UserProfileActivity extends AppCompatActivity implements
     private static final String TAG = "UserProfileActivity";
 
 
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -53,9 +52,9 @@ public class UserProfileActivity extends AppCompatActivity implements
         Settings.INSTANCE.getUser().getMatchedEvent();
 
         TextView UsernameView = (TextView) (findViewById(R.id.Username));
-        UsernameView.setText("Username : " + Settings.INSTANCE.getUser().getUsername() );
+        UsernameView.setText("Username : " + Settings.INSTANCE.getUser().getUsername());
         TextView EmailView = (TextView) (findViewById(R.id.Email));
-        EmailView.setText("Email Adress : " + Settings.INSTANCE.getUser().getEmail() );
+        EmailView.setText("Email Adress : " + Settings.INSTANCE.getUser().getEmail());
 
 
     }

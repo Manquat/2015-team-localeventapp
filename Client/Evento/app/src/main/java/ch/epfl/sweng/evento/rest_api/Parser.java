@@ -9,19 +9,12 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-import java.util.Arrays;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
-
-
-import ch.epfl.sweng.evento.User;
 
 import ch.epfl.sweng.evento.Comment;
 import ch.epfl.sweng.evento.User;
@@ -61,7 +54,9 @@ public class Parser {
                     jsonObject.getDouble("longitude"),
                     jsonObject.getString("address"),
                     jsonObject.getInt("owner"),
-                    new HashSet<String>(){{ add(json.getString("tags"));}},
+                    new HashSet<String>() {{
+                        add(json.getString("tags"));
+                    }},
                     startDate,
                     endDate,
                     jsonObject.getString("image"),
@@ -119,7 +114,7 @@ public class Parser {
         JSONArray jsonArray = new JSONArray(response);
         List<User> userList = new ArrayList<>();
 
-        for(int i = 0; i < jsonArray.length(); i++) {
+        for (int i = 0; i < jsonArray.length(); i++) {
             userList.add(toUser(jsonArray.getJSONObject(i)));
         }
 
@@ -132,7 +127,7 @@ public class Parser {
         cal.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
         SimpleDateFormat timeFormatWithMillis = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.FRANCE);
-        if (s.contains(".")){
+        if (s.contains(".")) {
             timeFormatWithMillis.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
             cal.setTime(timeFormatWithMillis.parse(s));
         } else {

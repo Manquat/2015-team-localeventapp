@@ -1,9 +1,7 @@
 package ch.epfl.sweng.evento.event;
 
-import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
 
@@ -15,17 +13,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
 import java.util.HashSet;
-import java.util.Locale;
-
-import java.util.Objects;
-
 import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
-import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.User;
 
 /**
@@ -130,7 +122,7 @@ public class Event implements ClusterItem {
     }
 
 
-    public boolean addParticipant(User participant){
+    public boolean addParticipant(User participant) {
         if (participant == null) {
             throw new NullPointerException("participant cannot be null");
         }
@@ -143,15 +135,15 @@ public class Event implements ClusterItem {
     }
 
 
-    public Set<User> getAllParticipant()  {
+    public Set<User> getAllParticipant() {
         return mParticipants;
     }
 
-    public int getMaxNumberOfParticipant()  {
+    public int getMaxNumberOfParticipant() {
         return mNumberMaxOfParticipants;
     }
 
-    public boolean removeParticipant(User participant){
+    public boolean removeParticipant(User participant) {
         if (participant == null) {
             throw new NullPointerException("participant cannot be null");
         }
@@ -194,7 +186,7 @@ public class Event implements ClusterItem {
 
     }
 
-    public boolean isFull(){
+    public boolean isFull() {
         return mParticipants.size() >= mNumberMaxOfParticipants;
     }
 
@@ -312,7 +304,6 @@ public class Event implements ClusterItem {
     public LatLng getPosition() {
         return mLocation;
     }
-
 
 
     //This is a temporary method to test if the server can handle very long strings

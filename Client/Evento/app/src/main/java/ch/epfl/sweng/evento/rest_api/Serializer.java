@@ -36,7 +36,7 @@ public final class Serializer {
         return res;
     }
 
-    public static String user(User u){
+    public static String user(User u) {
         String res = "{\n"
                 //+ "  \"id\": "  + ",\n"
                 + "  \"name\": \"" + u.getUsername() + "\", \n"

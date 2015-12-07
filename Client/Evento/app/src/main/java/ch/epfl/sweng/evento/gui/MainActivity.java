@@ -20,8 +20,6 @@ package ch.epfl.sweng.evento.gui;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -169,7 +167,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
                 makeNotifications(eventArrayList);
             }
-            public void onUserListReceived(List<User> userArrayList){
+
+            public void onUserListReceived(List<User> userArrayList) {
 
             }
         });
@@ -179,8 +178,8 @@ public class MainActivity extends AppCompatActivity {
         Calendar currentDate = Calendar.getInstance();
 
         boolean notif_needed = false;
-        String notif_description="";
-        for (Event event: eventArrayList) {
+        String notif_description = "";
+        for (Event event : eventArrayList) {
             double diffTime = (event.getStartDate().getTimeInMillis() - currentDate.getTimeInMillis())
                     / (1000 * 3600 * 24);
 
@@ -191,9 +190,9 @@ public class MainActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "Notified event : " + event.getTitle(), Toast.LENGTH_SHORT).show();
             }
         }
-        if(notif_needed){
-            notif_description+="Don't forget to attend !";
-            Notification n  = new Notification.Builder(this)
+        if (notif_needed) {
+            notif_description += "Don't forget to attend !";
+            Notification n = new Notification.Builder(this)
                     .setContentTitle("You've got events soon !")
                     .setContentText(notif_description)
                     .setSmallIcon(R.drawable.notification)
