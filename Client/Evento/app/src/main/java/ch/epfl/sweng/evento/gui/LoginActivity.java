@@ -98,7 +98,6 @@ public class LoginActivity extends AppCompatActivity implements
         Log.d(TAG, "onConnectionFailed:" + result);
     }
 
-    //@Override
     public void onClick(View v) {
 
         if (v.getId() == R.id.sign_in_button) {
@@ -170,18 +169,23 @@ public class LoginActivity extends AppCompatActivity implements
 
         String personName = acct.getDisplayName();
         String personEmail = acct.getEmail();
-        String personId = acct.getId();
-        User user = new User(personId, personName, personEmail);
-        Settings.INSTANCE.setUser(user);
-        RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
+        String personGoogleId = acct.getId();
 
-        restApi.postUser(user, new GetUserCallback() {
+        RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
+        restApi.postUser(personName, personEmail, personGoogleId, new GetUserCallback() {
             @Override
             public void onDataReceived(User user) {
+
+                if(user == null){
+                    throw new NullPointerException("User null!");
+                }
+
                 Settings.INSTANCE.setUser(user);
                 // assert submission
                 Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "User information sent to server");
+                Log.d(TAG, "Active User with attributed Id: " + Settings.INSTANCE.getUser().getUsername() + " , " + Settings.INSTANCE.getUser().getEmail() +" , UserId: " + Settings.INSTANCE.getUser().getUserId() );
+
             }
         });
     }

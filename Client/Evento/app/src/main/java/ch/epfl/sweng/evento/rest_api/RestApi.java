@@ -285,11 +285,11 @@ public class RestApi {
     }
 
     // Post a user
-    public void postUser(User user, final GetUserCallback callback) {
+    public void postUser(String name, String email, String googleid, final GetUserCallback callback) {
         UrlMakerUser url = new UrlMakerUser("user/");
         String restUrl = url.post(mUrlServer);
         Log.d(TAG, "restURL: " + restUrl);
-        String requestBody = Serializer.user(user);
+        String requestBody = Serializer.user(name, email, googleid);
 
         /*new PostUserTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
             public void onTaskComplete(String response) {
