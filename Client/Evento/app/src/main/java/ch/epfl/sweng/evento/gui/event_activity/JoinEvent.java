@@ -66,7 +66,7 @@ public class JoinEvent implements
         mJoinEventButton.setOnClickListener(this);
         mUnJoinEventButton.setOnClickListener(this);
 
-        getParticipant();
+        //getParticipant();
 
         // ListView on child click listener
         mListViewOfParticipant.setOnChildClickListener(this);
@@ -136,13 +136,15 @@ public class JoinEvent implements
     public void onUserListReceived(List<User> userArrayList) {
         Log.d(TAG, "user list received for event " + mCurrentEvent.getTitle());
         mListDataHeader.clear();
-        if (userArrayList != null) {
+        /*if (userArrayList != null) {
             mParticipant.clear();
             mParticipant.addAll(userArrayList);
             List<String> participant = new ArrayList<String>();
             for (User user : userArrayList) {
                 participant.add(user.getUsername());
             }
+            participant.add("None");
+            Log.d(TAG, participant.get(0));
             mListDataHeader.add("Participant of the event (" + userArrayList.size() + ")");
             mListDataChild.put(mListDataHeader.get(0), participant);
         } else {
@@ -150,13 +152,18 @@ public class JoinEvent implements
             List<String> participant = new ArrayList<String>();
             participant.add("None");
             mListDataChild.put(mListDataHeader.get(0), participant);
-        }
-        mListAdapter = new ExpendableList(mActivity, mListDataHeader, mListDataChild);
+        }*/
+        mListDataHeader.add("Participant of the event (0)");
+        List<String> sport = new ArrayList<String>();
+        sport.add("Football");
+        sport.add("Basketball");
+        mListDataChild.put(mListDataHeader.get(0), sport);
+        mListAdapter = new ExpendableList(mActivity.getApplicationContext(), mListDataHeader, mListDataChild);
         // setting list adapter
         mListViewOfParticipant.setAdapter(mListAdapter);
 
-        mListAdapter.notifyDataSetChanged();
-        updateButtonState();
+        //mListAdapter.notifyDataSetChanged();
+        //updateButtonState();
 
     }
 
