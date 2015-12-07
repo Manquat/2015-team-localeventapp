@@ -56,7 +56,7 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
                         public void onEventListReceived(List<Event> eventArrayList) {
                             if (eventArrayList != null) {
                                 mMatchedEvent = eventArrayList;
-                                int i = 0;
+                                int i = 1;
                                 for (Event event : mMatchedEvent) {
                                     mItems.add(new ListEntryAdapter.Entry(Integer.toString(i++) + "/ " +event.getTitle(), "        " + event.getDescription()));
                                 }
