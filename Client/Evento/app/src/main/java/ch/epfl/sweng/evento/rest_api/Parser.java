@@ -138,7 +138,7 @@ public class Parser {
     }
 
 
-    public static void addTime(Calendar c, String s){
+    public static void addTime(Calendar c, String s) {
         c.add(Calendar.HOUR_OF_DAY, getHour(s));
         c.add(Calendar.MINUTE, getMinutes(s));
     }

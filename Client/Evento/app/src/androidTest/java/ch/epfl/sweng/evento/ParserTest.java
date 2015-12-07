@@ -2,7 +2,6 @@ package ch.epfl.sweng.evento;
 
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,12 +10,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.TimeZone;
 
 import ch.epfl.sweng.evento.event.Event;
@@ -35,11 +31,11 @@ public class ParserTest {
 
     private static final int MOCK_USER_ID = 1;
     private static String TAG = "ParserTest";
-    private static GregorianCalendar startDate = new GregorianCalendar(2000,2,3, 4, 5, 0);
-    private static GregorianCalendar endDate = new GregorianCalendar(2000,2,3, 6, 5, 0);
+    private static GregorianCalendar startDate = new GregorianCalendar(2000, 2, 3, 4, 5, 0);
+    private static GregorianCalendar endDate = new GregorianCalendar(2000, 2, 3, 6, 5, 0);
     private static Event event;
 
-    private static String eventStringReceived ;
+    private static String eventStringReceived;
 
     @Before
     public void init() {
@@ -61,7 +57,7 @@ public class ParserTest {
                 + "  \"address\": \"Terrain de football de Dorigny\",\n"
                 + "  \"date\":\"" + event.getProperDateString() + "\",\n"
                 + "  \"duration\":\"02:00:00\",\n"
-                + "  \"owner\":\""+MOCK_USER_ID+"\"\n"
+                + "  \"owner\":\"" + MOCK_USER_ID + "\"\n"
                 + "}\n";
     }
 
@@ -86,7 +82,6 @@ public class ParserTest {
         Event e = Parser.toEvent(jsonObject);
         assertEquals(endDate.getTimeInMillis(), e.getEndDate().getTimeInMillis());
     }
-
 
 
     @Test
@@ -120,7 +115,6 @@ public class ParserTest {
         assertEquals(calendar.get(Calendar.HOUR_OF_DAY), result.get(Calendar.HOUR_OF_DAY));
         assertEquals(calendar.get(Calendar.MINUTE), result.get(Calendar.MINUTE));
     }
-
 
 
 }
