@@ -41,6 +41,22 @@ public class ParserTest {
     private static final Event event = new Event(0, "", "", 0, 0, "", 0, new HashSet<String>(),
             startDate, endDate);
 
+    private static final String eventStringReceived = "{\n"
+            + "  \"id\": 0,\n"
+            + "  \"Event_name\": \"My football game\",\n"
+            + "  \"tags\": \"" + event.getTagsString() + "\",\n"
+            + "  \"image\": \n"
+            + "    \"" + event.samplePicture() + "\" ,\n"
+            + "  \"description\": \n"
+            + "    \"Okay guys, let's play a little game this evening at dorigny. Remember: no doping allowed!\" ,\n"
+            + "  \"latitude\": 46.519428,\n"
+            + "  \"longitude\": 6.580847,\n"
+            + "  \"address\": \"Terrain de football de Dorigny\",\n"
+            + "  \"date\":\"" + event.getProperDateString() + "\",\n"
+            + "  \"duration\":\"02:00:00\",\n"
+            + "  \"owner\":\""+MOCK_USER_ID+"\"\n"
+            + "}\n";
+
     @Before
     public void init() {
         startDate.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
@@ -61,8 +77,13 @@ public class ParserTest {
         String s = Serializer.event(event);
         JSONObject jsonObject = new JSONObject(s);
         assertEquals("duration : ", "02:00:00", jsonObject.getString("duration"));
+    }
 
-
+    @Test
+    public void parserDurationTest() throws JSONException {
+        JSONObject jsonObject = new JSONObject(eventStringReceived);
+        Event e = Parser.toEvent(jsonObject);
+        assertEquals(endDate, e.getEndDate());
     }
 
 
