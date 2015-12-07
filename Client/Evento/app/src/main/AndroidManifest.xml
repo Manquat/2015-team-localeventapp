@@ -78,6 +78,9 @@
         <activity
             android:name=".gui.UserProfileActivity"
             android:label="@string/title_activity_user_profile" />
+        <activity
+            android:name=".gui.UpdateEventActivity"
+            android:label="@string/title_activity_update_event" />
     </application>
 
 </manifest>

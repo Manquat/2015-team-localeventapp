@@ -1,10 +1,8 @@
-package ch.epfl.sweng.evento.gui.infinite_pager_adapter;
+package ch.epfl.sweng.evento.gui;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
-
-import ch.epfl.sweng.evento.gui.CreatingEventActivity;
 
 /**
  * Created by gautier on 07/12/2015.
@@ -20,7 +18,7 @@ public class UpdateEventListener implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(mActivity, CreatingEventActivity.class);
+        Intent intent = new Intent(mActivity, UpdateEventActivity.class);
         intent.putExtra(CreatingEventActivity.EVENT_TO_UPDATE, mCurrentEventId);
         mActivity.startActivity(intent);
     }

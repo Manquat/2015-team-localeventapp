@@ -68,18 +68,18 @@ public class CreatingEventActivity extends AppCompatActivity
     private static final String urlServer = Settings.getServerUrl();
 
 
-    private TextView mStartDateView;
-    private TextView mEndDateView;
-    private Calendar startDate;
-    private Calendar endDate;
+    protected TextView mStartDateView;
+    protected TextView mEndDateView;
+    private Calendar mStartDate;
+    private Calendar mEndDate;
     private boolean mStartOrEndDate;
     private boolean mDisplayTimeFragment;
     private DatePickerDialogFragment mDateFragment;
     private List<String> mListDataHeader;
     private HashMap<String, List<String>> mListDataChild;
     private GoogleApiClient mGoogleApiClient;
-    private TextView mPlaceDetailsText;
-    private TextView mPlaceDetailsAttribution;
+    protected TextView mPlaceDetailsText;
+    protected TextView mPlaceDetailsAttribution;
     private PlaceAutocompleteAdapter mAdapter;
     private Set<String> mTag = new HashSet<>();
     private double latitude = 0.0;
@@ -92,8 +92,8 @@ public class CreatingEventActivity extends AppCompatActivity
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                           int dayOfMonth) {
         if (!mStartOrEndDate)
-            startDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
-        else endDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
+            mStartDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
+        else mEndDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
         mTimeFragment = new TimePickerDialogFragment();
         mTimeFragment.show(getFragmentManager(), "timePicker");
     }
@@ -101,14 +101,14 @@ public class CreatingEventActivity extends AppCompatActivity
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         if (!mStartOrEndDate) {
-            startDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            startDate.set(Calendar.MINUTE, minute);
-            String s = Event.asNiceString(startDate);
+            mStartDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            mStartDate.set(Calendar.MINUTE, minute);
+            String s = Event.asNiceString(mStartDate);
             mStartDateView.setText(s);
         } else {
-            endDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            endDate.set(Calendar.MINUTE, minute);
-            String s = Event.asNiceString(endDate);
+            mEndDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            mEndDate.set(Calendar.MINUTE, minute);
+            String s = Event.asNiceString(mEndDate);
             mEndDateView.setText(s);
         }
 
@@ -126,7 +126,7 @@ public class CreatingEventActivity extends AppCompatActivity
         mDateFragment.setListener(this);
         final Button pictureButton = (Button) findViewById(R.id.pictureButton);
 
-        // listener for date picker startDate
+        // listener for date picker mStartDate
         mStartDateView = (TextView) findViewById(R.id.startDate);
         mStartDateView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,7 +137,7 @@ public class CreatingEventActivity extends AppCompatActivity
             }
         });
 
-        // listener for date picker endDate
+        // listener for date picker mEndDate
         mEndDateView = (TextView) findViewById(R.id.endDate);
         mEndDateView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,11 +185,11 @@ public class CreatingEventActivity extends AppCompatActivity
                 Bitmap picture;
 
                 // default value completion
-                if (startDate == null) {
-                    startDate = new GregorianCalendar(1990, 12, 16, 0, 0);
+                if (mStartDate == null) {
+                    mStartDate = new GregorianCalendar(1990, 12, 16, 0, 0);
                 }
-                if (endDate == null) {
-                    endDate = new GregorianCalendar(1992, 1, 16, 0, 0);
+                if (mEndDate == null) {
+                    mEndDate = new GregorianCalendar(1992, 1, 16, 0, 0);
                 }
                 if (titleString.isEmpty()) {
                     titleString = "No title";
@@ -214,11 +214,11 @@ public class CreatingEventActivity extends AppCompatActivity
                 // event creation and send
 /*                Event e = new Event(id, titleString, descriptionString, latitude,
                         longitude, addressString, getCreator,
-                        mTag, startDate, endDate, picture);*/
+                        mTag, mStartDate, mEndDate, picture);*/
 //TODO Concerning the Event abovd: Either change contructor or change the event that is created here!
                 Event e = new Event(id, titleString, descriptionString, latitude,
                         longitude, addressString, Settings.INSTANCE.getUser().getUserId(),
-                        mTag, startDate, endDate, picture);
+                        mTag, mStartDate, mEndDate, picture);
 
 
                 restApi.postEvent(e, new HttpResponseCodeCallback() {

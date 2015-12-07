@@ -2,7 +2,6 @@ package ch.epfl.sweng.evento.gui.infinite_pager_adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
@@ -11,18 +10,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.gui.ConversationAdapter;
+import ch.epfl.sweng.evento.gui.UpdateEventListener;
 import ch.epfl.sweng.evento.gui.event_activity.AddingComment;
 import ch.epfl.sweng.evento.gui.event_activity.JoinEvent;
-import ch.epfl.sweng.evento.rest_api.RestApi;
-import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
-import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
 /**
  * An infinite page adapter for the event activity
