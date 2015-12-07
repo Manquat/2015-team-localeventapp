@@ -101,7 +101,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
 
         // configure the delete event button
         boolean isTheCurrentUserTheOwner =
-                currentEvent.getCreator() == Settings.INSTANCE.getUser().getUserId();
+                (currentEvent.getCreator() == Settings.INSTANCE.getUser().getUserId());
         Button deleteEvent = (Button) rootView.findViewById(R.id.delete_event);
         deleteEvent.setActivated(isTheCurrentUserTheOwner);
         deleteEvent.setOnClickListener(new DeleteEventListener(mActivity, currentEvent.getID()));

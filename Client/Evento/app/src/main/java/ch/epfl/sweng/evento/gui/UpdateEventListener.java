@@ -19,7 +19,7 @@ public class UpdateEventListener implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(mActivity, UpdateEventActivity.class);
-        intent.putExtra(CreatingEventActivity.EVENT_TO_UPDATE, mCurrentEventId);
+        intent.putExtra(UpdateEventActivity.EVENT_TO_UPDATE, mCurrentEventId);
         mActivity.startActivity(intent);
     }
 }

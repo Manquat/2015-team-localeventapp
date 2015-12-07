@@ -59,8 +59,6 @@ public class CreatingEventActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener,
         GoogleApiClient.OnConnectionFailedListener {
-    public static final String EVENT_TO_UPDATE = "event_to_update";
-
     private static final String TAG = "CreatingEventActivity";
 
 
@@ -70,18 +68,18 @@ public class CreatingEventActivity extends AppCompatActivity
 
     protected TextView mStartDateView;
     protected TextView mEndDateView;
-    private Calendar mStartDate;
-    private Calendar mEndDate;
+    protected Calendar mStartDate;
+    protected Calendar mEndDate;
     private boolean mStartOrEndDate;
     private boolean mDisplayTimeFragment;
     private DatePickerDialogFragment mDateFragment;
     private List<String> mListDataHeader;
     private HashMap<String, List<String>> mListDataChild;
     private GoogleApiClient mGoogleApiClient;
-    protected TextView mPlaceDetailsText;
-    protected TextView mPlaceDetailsAttribution;
+    private TextView mPlaceDetailsText;
+    private TextView mPlaceDetailsAttribution;
     private PlaceAutocompleteAdapter mAdapter;
-    private Set<String> mTag = new HashSet<>();
+    protected Set<String> mTag = new HashSet<>();
     private double latitude = 0.0;
     private double longitude = 0.0;
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
@@ -173,7 +171,6 @@ public class CreatingEventActivity extends AppCompatActivity
 
             @Override
             public void onClick(View view) {
-                RestApi restApi = new RestApi(networkProvider, urlServer);
                 TextView title = (TextView) findViewById(R.id.title);
                 TextView description = (TextView) findViewById(R.id.eventDescription);
                 TextView address = (TextView) findViewById(R.id.eventAddress);
@@ -221,19 +218,24 @@ public class CreatingEventActivity extends AppCompatActivity
                         mTag, mStartDate, mEndDate, picture);
 
 
-                restApi.postEvent(e, new HttpResponseCodeCallback() {
-                    @Override
-                    public void onSuccess(String response) {
-                        // assert submission
-                        Toast.makeText(getApplicationContext(), "Submitted", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                Toast.makeText(getApplicationContext(), "Submitting " + titleString, Toast.LENGTH_SHORT).show();
+                sendToServer(e);
 
                 finish();
 
             }
         });
+    }
+
+    protected void sendToServer(Event e) {
+        RestApi restApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+        restApi.postEvent(e, new HttpResponseCodeCallback() {
+            @Override
+            public void onSuccess(String response) {
+                // assert submission
+                Toast.makeText(getApplicationContext(), "Submitted", Toast.LENGTH_SHORT).show();
+            }
+        });
+        Toast.makeText(getApplicationContext(), "Submitting " + e.getTitle(), Toast.LENGTH_SHORT).show();
     }
 
     private void setPictureButton(Button pictureButton) {
