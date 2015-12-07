@@ -52,6 +52,7 @@ public class ListEntryAdapter extends ArrayAdapter<ListEntryAdapter.Item> {
             }
         }
         return mView;
+
     }
 
     public static class Entry implements Item {
