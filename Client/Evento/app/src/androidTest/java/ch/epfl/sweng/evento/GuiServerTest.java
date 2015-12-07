@@ -1,11 +1,17 @@
 package ch.epfl.sweng.evento;
 
+import android.app.Activity;
+import android.app.KeyguardManager;
+import android.content.Context;
+import android.os.PowerManager;
+import android.os.RemoteException;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.view.WindowManager;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -22,6 +28,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
+
 /**
  * Created by joachimmuth on 23.11.15.
  */
@@ -34,15 +41,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @LargeTest
 public class GuiServerTest extends ActivityInstrumentationTestCase2<MainActivity> {
     private String TAG = "GuiServerTest";
-
-//    @Before
-//    public void setUp() {
-//        Settings.INSTANCE.setUser(new User(1, "mockName", "mockEmail"));
-//    }
-//
-//    @Rule
-//    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
-//            MainActivity.class);
 
     @Rule
     public ActivityTestRule<MainActivity> startActivity() {
@@ -85,7 +83,7 @@ public class GuiServerTest extends ActivityInstrumentationTestCase2<MainActivity
 
         Thread.sleep(1000);
         //pressBack(); // to hide the keyboard
-        onView(withId(R.id.submitEvent)).perform(click());
+        onView(withText("Validate")).perform(click());
 
         Thread.sleep(5000); // wait for event to be sent
 
