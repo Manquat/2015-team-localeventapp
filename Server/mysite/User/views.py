@@ -70,7 +70,7 @@ def created_events(request, pk, format=None):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        events = Event.objects.filter(owner=pk)
+        events = Event.objects.filter(owner=p)
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
 
@@ -86,7 +86,7 @@ def commented_events(request, pk, format=None):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        comments = Comment.objects.filter(creator=user)
+        comments = Comment.objects.filter(owner=user)
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
