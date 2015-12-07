@@ -215,7 +215,7 @@ public class CreatingEventActivity extends AppCompatActivity
                         mTag, startDate, endDate, picture);*/
 //TODO Concerning the Event abovd: Either change contructor or change the event that is created here!
                 Event e = new Event(id, titleString, descriptionString, latitude,
-                        longitude, addressString, Settings.INSTANCE.getUser().getUserId(),
+                        longitude, addressString, Settings.getUser().getUserId(),
                         mTag, startDate, endDate, picture);
 
 

@@ -95,7 +95,7 @@ public class RestApiTest {
         networkProviderMockito = Mockito.mock(NetworkProvider.class);
         Mockito.doReturn(connection).when(networkProviderMockito).getConnection(Mockito.any(URL.class));
 
-        Settings.INSTANCE.setUser(new User(MOCK_USER_ID, "MockJo", "mockjo@plop.ch"));
+        Settings.setUser(new User(MOCK_USER_ID, "MockJo", "mockjo@plop.ch"));
     }
 
     private void configureResponse(int status, String content, String contentType)

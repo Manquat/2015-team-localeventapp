@@ -34,7 +34,7 @@ public class UserProfileActivity extends AppCompatActivity implements
 
 
         //TODO Get users hosted events and events he participates in, save in settings and show down below
-        int UserId = Settings.INSTANCE.getUser().getUserId();
+        int UserId = Settings.getUser().getUserId();
         List<Event> hostedEvents;
         List<Event> matchedEvents;
         RestApi restApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
@@ -48,13 +48,13 @@ public class UserProfileActivity extends AppCompatActivity implements
             }
         }*/
 
-        Settings.INSTANCE.getUser().getHostedEvent();
-        Settings.INSTANCE.getUser().getMatchedEvent();
+        Settings.getUser().getHostedEvent();
+        Settings.getUser().getMatchedEvent();
 
         TextView UsernameView = (TextView) (findViewById(R.id.Username));
-        UsernameView.setText("Username : " + Settings.INSTANCE.getUser().getUsername());
+        UsernameView.setText("Username : " + Settings.getUser().getUsername());
         TextView EmailView = (TextView) (findViewById(R.id.Email));
-        EmailView.setText("Email Adress : " + Settings.INSTANCE.getUser().getEmail());
+        EmailView.setText("Email Adress : " + Settings.getUser().getEmail());
 
 
     }

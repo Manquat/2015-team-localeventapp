@@ -77,26 +77,26 @@ public class JoinEvent implements
     @Override
     public void onClick(View view) {
         if (mIsTheEventJoined) {
-            Log.d(TAG, Settings.INSTANCE.getUser().getUsername() + " unjoin");
-            if (!mCurrentEvent.removeParticipant(Settings.INSTANCE.getUser())) {
+            Log.d(TAG, Settings.getUser().getUsername() + " unjoin");
+            if (!mCurrentEvent.removeParticipant(Settings.getUser())) {
                 Log.d(TAG, "addParticipant just returned false");
                 mActivity.finish();
             } else {
                 Toast.makeText(mActivity.getApplicationContext(), "UnJoined", Toast.LENGTH_SHORT).show();
-                if (Settings.INSTANCE.getUser().removeMatchedEvent(mCurrentEvent)) {
-                    mRestApi.removeParticipant(mCurrentEvent.getID(), Settings.INSTANCE.getUser().getUserId(), this);
+                if (Settings.getUser().removeMatchedEvent(mCurrentEvent)) {
+                    mRestApi.removeParticipant(mCurrentEvent.getID(), Settings.getUser().getUserId(), this);
                 }
             }
 
         } else {
-            Log.d(TAG, Settings.INSTANCE.getUser().getUsername() + " join");
-            if (!mCurrentEvent.addParticipant(Settings.INSTANCE.getUser())) {
+            Log.d(TAG, Settings.getUser().getUsername() + " join");
+            if (!mCurrentEvent.addParticipant(Settings.getUser())) {
                 Log.d(TAG, "addParticipant just returned false");
                 mActivity.finish();
             } else {
                 Toast.makeText(mActivity.getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
-                if (Settings.INSTANCE.getUser().addMatchedEvent(mCurrentEvent)) {
-                    mRestApi.addParticipant(mCurrentEvent.getID(), Settings.INSTANCE.getUser().getUserId(), this);
+                if (Settings.getUser().addMatchedEvent(mCurrentEvent)) {
+                    mRestApi.addParticipant(mCurrentEvent.getID(), Settings.getUser().getUserId(), this);
                 }
             }
         }
@@ -106,7 +106,7 @@ public class JoinEvent implements
     }
 
     private void updateButtonState() {
-        mIsTheEventJoined = mCurrentEvent.checkIfParticipantIsIn(Settings.INSTANCE.getUser());
+        mIsTheEventJoined = mCurrentEvent.checkIfParticipantIsIn(Settings.getUser());
 
         mJoinEventButton.setEnabled(!mIsTheEventJoined);
         mUnJoinEventButton.setEnabled(mIsTheEventJoined);
