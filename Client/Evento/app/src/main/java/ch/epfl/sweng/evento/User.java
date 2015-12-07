@@ -1,12 +1,6 @@
 package ch.epfl.sweng.evento;
 
-import android.os.Build;
-import android.util.Log;
-
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.event.Event;

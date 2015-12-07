@@ -1,12 +1,7 @@
 package ch.epfl.sweng.evento.event;
 
-import android.annotation.TargetApi;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.util.Base64;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -17,19 +12,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
 import java.util.HashSet;
-import java.util.Locale;
-
-import java.util.Objects;
-
 import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
-import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.User;
-import ch.epfl.sweng.evento.gui.EventActivity;
 
 
 /**

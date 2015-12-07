@@ -1,8 +1,8 @@
 package ch.epfl.sweng.evento;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -11,9 +11,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.epfl.sweng.evento.list_view.ListEntryAdapter;
-
 import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.list_view.ListEntryAdapter;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 

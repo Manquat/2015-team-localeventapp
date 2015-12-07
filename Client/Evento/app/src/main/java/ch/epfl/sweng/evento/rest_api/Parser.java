@@ -9,19 +9,13 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 import java.util.Arrays;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
-
-
-import ch.epfl.sweng.evento.User;
 
 import ch.epfl.sweng.evento.Comment;
 import ch.epfl.sweng.evento.event.Event;

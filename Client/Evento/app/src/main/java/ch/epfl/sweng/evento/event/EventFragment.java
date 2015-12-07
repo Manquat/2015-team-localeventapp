@@ -1,6 +1,5 @@
 package ch.epfl.sweng.evento.event;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import ch.epfl.sweng.evento.EventDatabase;
@@ -28,7 +26,6 @@ import ch.epfl.sweng.evento.gui.MainActivity;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
-import ch.epfl.sweng.evento.rest_api.task.PutTask;
 
 /**
  * Fragment that display an Event with an ID passed as an Extra with the key KEYCURRENTEVENT.
