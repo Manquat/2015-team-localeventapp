@@ -70,7 +70,7 @@ def created_events(request, pk, format=None):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        events = Event.objects.filter(creator=pk)
+        events = Event.objects.filter(owner=pk)
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
 
