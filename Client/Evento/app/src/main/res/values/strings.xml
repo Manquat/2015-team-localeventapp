@@ -57,7 +57,10 @@
     <string name="eventFrag_from">From : </string>
     <string name="eventFrag_to">to : </string>
     <string name="eventFrag_at">at : </string>
+    <string name="enter_user_to_add">Enter the name of a user you want to add </string>
     <string name="eventFrag_tags">Tags : </string>
+    <string name="manage_button_add">Add</string>
+    <string name="manage_button_go">Details</string>
     <string name="eventFrag_description">Descrition : </string>
     <string name="locationLabel">Search by location</string>
     <string name="searchByPlace_hint">location</string>
