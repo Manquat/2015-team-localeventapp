@@ -1,6 +1,12 @@
 package ch.epfl.sweng.evento;
 
+import android.os.Build;
+import android.util.Log;
+
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.event.Event;
@@ -10,7 +16,6 @@ import ch.epfl.sweng.evento.event.Event;
  * Created by Gaffinet on 30/11/2015.
  */
 public class User {
-
 
     private static final String TAG = "User";
 
@@ -84,15 +89,18 @@ public class User {
     public boolean addHostedEvent(Event event) {
         if (event != null) {
             mHostedEvent.add(event);
+        } else {
+            throw new NullPointerException(message);
         }
-        return false;
     }
 
-    public boolean addMatchedEvent(Event event) {
-        if (event != null) {
+    public void addMatchedEvent(Event event) {
+        final String message = "Cannot add a null event as a matched event";
+        if (event != null){
             return mMatchedEvent.add(event);
+        } else {
+            throw new NullPointerException(message);
         }
-        return false;
     }
 
     public boolean removeMatchedEvent(Event event) {
@@ -128,7 +136,23 @@ public class User {
 
     public String getHostedEventString() {
         return getHostedEventString("\n");
+    }*/
+
+    public void setmEmail(String mEmail) {
+        this.mEmail = mEmail;
     }
 
+    /*public void setmDateOfBirth(Event.CustomDate mDateOfBirth) {
+        this.mDateOfBirth = mDateOfBirth;
+    }*/
 
+    /*
+    public void setmHomeAddress(LatLng mHomeAddress) {
+        this.mHomeAddress = mHomeAddress;
+    }
+
+    public void setmStartOfMembership(Event.CustomDate mStartOfMembership) {
+        this.mStartOfMembership = mStartOfMembership;
+    }
+    */
 }

@@ -40,6 +40,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import ch.epfl.sweng.evento.EventDatabase;
+import ch.epfl.sweng.evento.ManageActivity;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;

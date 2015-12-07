@@ -1,7 +1,9 @@
 package ch.epfl.sweng.evento.event;
 
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
 
@@ -13,11 +15,17 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
 import java.util.HashSet;
+import java.util.Locale;
+
+import java.util.Objects;
+
 import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
+import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.User;
 
 /**
@@ -121,44 +129,39 @@ public class Event implements ClusterItem {
                 + "), " + this.getCreator() + ", (" + this.getProperDateString();
     }
 
-    public boolean addParticipant(User participant) {
-        if (participant != null) {
-            if (mParticipants.size() < mNumberMaxOfParticipants) {
-                return mParticipants.add(participant);
-            } else {
-                Log.d("Event.addParticipant", "Can't add a participant more (" + mParticipants.size() + ")");
-                return false;
-            }
+
+    public boolean addParticipant(User participant){
+        if (participant == null) {
+            throw new NullPointerException("participant cannot be null");
         }
-        Log.d("Event.addParticipant", "Can't add null as a participant");
-        return false;
+        if (mParticipants.size() < mNumberMaxOfParticipants) {
+            mParticipants.add(participant);
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public Set<User> getAllParticipant() {
+
+    public Set<User> getAllParticipant()  {
         return mParticipants;
     }
 
-    public int getMaxNumberOfParticipant() {
+    public int getMaxNumberOfParticipant()  {
         return mNumberMaxOfParticipants;
     }
 
-    public boolean removeParticipant(User participant) {
-        if (participant != null) {
-            if (checkIfParticipantIsIn(participant)) {
-                return mParticipants.remove(participant);
-            } else {
-                Log.d("Event.removeParticipant", participant + " was already not participating.");
-                return false;
-            }
+    public boolean removeParticipant(User participant){
+        if (participant == null) {
+            throw new NullPointerException("participant cannot be null");
         }
-        Log.d("Event.addParticipant", "Can't add null as a participant");
-        return false;
+        Log.d("Event.addParticipant", "removing the participant");
+        return mParticipants.remove(participant);
     }
 
     public boolean checkIfParticipantIsIn(User participant) {
         if (participant != null) return mParticipants.contains(participant);
-        Log.d("Event.checkIfPart.", "Can't check if null is a participant");
-        return false;
+        throw new NullPointerException("Participant can't be null");
     }
 
     public static String bitmapToString(Bitmap bitmap) {
@@ -189,6 +192,10 @@ public class Event implements ClusterItem {
             mPicture = "";
         }
 
+    }
+
+    public boolean isFull(){
+        return mParticipants.size() >= mNumberMaxOfParticipants;
     }
 
 
@@ -250,8 +257,9 @@ public class Event implements ClusterItem {
             return "Football";
         } else if (mTags.contains("Basketball")) {
             return "Basketball";
+        }
         } else {
-            return "Basketball";
+            return "Unknown";
         }
     }
 
