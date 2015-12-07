@@ -89,9 +89,9 @@ public class JoinEvent implements
                 mActivity.finish();
             } else {
                 Toast.makeText(mActivity.getApplicationContext(), "UnJoined", Toast.LENGTH_SHORT).show();
-                if (Settings.INSTANCE.getUser().removeMatchedEvent(mCurrentEvent)) {
+                //if (Settings.INSTANCE.getUser().removeMatchedEvent(mCurrentEvent)) {
                     mRestApi.removeParticipant(mCurrentEvent.getID(), Settings.INSTANCE.getUser().getUserId(), this);
-                }
+                //}
             }
 
         } else {
