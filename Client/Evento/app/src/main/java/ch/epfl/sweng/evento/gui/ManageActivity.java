@@ -1,6 +1,7 @@
 package ch.epfl.sweng.evento.gui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.gui.event_activity.EventActivity;
 import ch.epfl.sweng.evento.list_view.ListEntryAdapter;
 
 import ch.epfl.sweng.evento.R;
@@ -83,6 +85,17 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
 
         ListEntryAdapter.Entry item = (ListEntryAdapter.Entry) mItems.get(position);
         Toast.makeText(this, "You clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(mActivity, EventActivity.class);
+
+        if(position < mHostedEvent.size()+1) {
+            intent.putExtra(EventActivity.CURRENT_EVENT_KEY, mHostedEvent.get(position-1).getID());
+        }
+        if(position > mHostedEvent.size()+1) {
+            intent.putExtra(EventActivity.CURRENT_EVENT_KEY, mMatchedEvent.get(position-mHostedEvent.size()-2).getID());
+        }
+
+        mActivity.startActivity(intent);
 
     }
 
