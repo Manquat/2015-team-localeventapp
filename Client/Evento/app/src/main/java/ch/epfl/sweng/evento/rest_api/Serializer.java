@@ -52,7 +52,7 @@ public final class Serializer {
     public static String comment(int userId, String userName, int eventId, String commentBody) {
         String res = "{\n"
                 + "\"body\": \"" + commentBody + "\",\n"
-                + "\"getCreator\": " + userId + ",\n"
+                + "\"creator\": " + userId + ",\n"
                 + "\"creator_name\": \"" + userName + "\",\n"
                 + "\"event\": " + eventId + "\n"
                 + "}\n";
