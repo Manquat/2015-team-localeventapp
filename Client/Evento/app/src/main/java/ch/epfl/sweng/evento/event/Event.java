@@ -1,8 +1,11 @@
 package ch.epfl.sweng.evento.event;
 
 import android.annotation.TargetApi;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.Base64;
 
@@ -26,6 +29,7 @@ import java.util.TimeZone;
 
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.User;
+import ch.epfl.sweng.evento.gui.EventActivity;
 
 
 /**
@@ -264,6 +268,7 @@ public class Event implements ClusterItem {
         byte[] encodeByte = Base64.decode(mPicture, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
     }
+
 
     @Override
     public LatLng getPosition() {

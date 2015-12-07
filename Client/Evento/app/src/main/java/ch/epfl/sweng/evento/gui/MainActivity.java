@@ -39,6 +39,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.ManageActivity;
@@ -128,6 +130,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Setting the ViewPager For the SlidingTabsLayout
         mTabs.setViewPager(mPager);
+
+        //to refresh every 10 minutes
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                refreshFromServer();
+            }
+        }, 0, 10*60*1000);
     }
 
 
