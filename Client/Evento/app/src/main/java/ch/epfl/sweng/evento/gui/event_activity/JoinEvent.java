@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -14,11 +15,13 @@ import java.util.List;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.EventDatabase;
+import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.gui.ExpendableList;
 import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.callback.GetUserCallback;
 import ch.epfl.sweng.evento.rest_api.callback.GetUserListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
@@ -45,6 +48,7 @@ public class JoinEvent implements
     private HashMap<String, List<String>> mListDataChild;
     private ExpendableList mListAdapter;
     private Set<User> mParticipant;
+    private ExpandableListView mListViewOfParticipant;
 
     private JoinEvent(Activity parentActivity, int currentEventId,
                       Button joinEventButton, Button unJoinEventButton,
@@ -57,20 +61,17 @@ public class JoinEvent implements
         mListDataHeader = new ArrayList<>();
         mListDataChild = new HashMap<>();
         mParticipant = new HashSet<>();
+        mListViewOfParticipant = listViewOfParticipant;
 
         mJoinEventButton.setOnClickListener(this);
         mUnJoinEventButton.setOnClickListener(this);
 
-        mListAdapter = new ExpendableList(mActivity, mListDataHeader, mListDataChild);
-
-        // setting list adapter
-        listViewOfParticipant.setAdapter(mListAdapter);
+        getParticipant();
 
         // ListView on child click listener
-        listViewOfParticipant.setOnChildClickListener(this);
+        mListViewOfParticipant.setOnChildClickListener(this);
 
         updateButtonState();
-        getParticipant();
     }
 
     public static void initialize(Activity parentActivity, int currentEventId,
@@ -134,21 +135,29 @@ public class JoinEvent implements
     @Override
     public void onUserListReceived(List<User> userArrayList) {
         Log.d(TAG, "user list received for event " + mCurrentEvent.getTitle());
+        mListDataHeader.clear();
         if (userArrayList != null) {
             mParticipant.clear();
             mParticipant.addAll(userArrayList);
-            List<String> participant = new ArrayList<>();
+            List<String> participant = new ArrayList<String>();
             for (User user : userArrayList) {
                 participant.add(user.getUsername());
             }
-            mListDataHeader.clear();
-            mListDataHeader.add("Participant of the event (" + participant.size() + ")");
-
+            mListDataHeader.add("Participant of the event (" + userArrayList.size() + ")");
             mListDataChild.put(mListDataHeader.get(0), participant);
-
-            mListAdapter.notifyDataSetChanged();
-            updateButtonState();
+        } else {
+            mListDataHeader.add("Participant of the event (0)");
+            List<String> participant = new ArrayList<String>();
+            participant.add("None");
+            mListDataChild.put(mListDataHeader.get(0), participant);
         }
+        mListAdapter = new ExpendableList(mActivity, mListDataHeader, mListDataChild);
+        // setting list adapter
+        mListViewOfParticipant.setAdapter(mListAdapter);
+
+        mListAdapter.notifyDataSetChanged();
+        updateButtonState();
+
     }
 
     @Override
@@ -161,5 +170,25 @@ public class JoinEvent implements
     @Override
     public void refresh() {
         getParticipant();
+    }
+
+
+
+    private void getParticipant(Event event, ExpandableListView listViewOfParticipant) {
+        final ExpandableListView innerListViewOfParticipant = listViewOfParticipant;
+
+
+
+                /*// ListView on child click listener
+                innerListViewOfParticipant.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+                    @Override
+                    public boolean onChildClick(ExpandableListView parent, View v,
+                                                int groupPosition, int childPosition, long id) {
+                        final int groupPosTmp = groupPosition;
+                        final int childPosTmp = childPosition;
+                        return false;
+                    }
+                });*/
     }
 }
