@@ -195,33 +195,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void makeNotifications(List<Event> eventArrayList) {
-        Calendar currentDate = Calendar.getInstance();
+        if(eventArrayList != null) {
+            Calendar currentDate = Calendar.getInstance();
 
-        boolean notif_needed = false;
-        String notif_description="";
-        for (Event event: eventArrayList) {
-            double diffTime = (event.getStartDate().getTimeInMillis() - currentDate.getTimeInMillis())
-                    / (1000 * 3600 * 24);
+            boolean notif_needed = false;
+            String notif_description = "";
+            for (Event event : eventArrayList) {
+                double diffTime = (event.getStartDate().getTimeInMillis() - currentDate.getTimeInMillis())
+                        / (1000 * 3600 * 24);
 
-            if (diffTime < 1.0) {
-                notif_needed = true;
-                notif_description += "The event " + event.getTitle() + " is starting tomorrow. \n";
+                if (diffTime < 1.0) {
+                    notif_needed = true;
+                    notif_description += "The event " + event.getTitle() + " is starting tomorrow. \n";
 
-                //Toast.makeText(getApplicationContext(), "Notified event : " + event.getTitle(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Notified event : " + event.getTitle(), Toast.LENGTH_SHORT).show();
+                }
             }
-        }
-        if(notif_needed){
-            notif_description+="Don't forget to attend !";
-            Notification n  = new Notification.Builder(this)
-                    .setContentTitle("You've got events soon !")
-                    .setContentText(notif_description)
-                    .setSmallIcon(R.drawable.notification)
-                    .setAutoCancel(true).build();
+            if (notif_needed) {
+                notif_description += "Don't forget to attend !";
+                Notification n = new Notification.Builder(this)
+                        .setContentTitle("You've got events soon !")
+                        .setContentText(notif_description)
+                        .setSmallIcon(R.drawable.notification)
+                        .setAutoCancel(true).build();
 
-            NotificationManager notificationManager =
-                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                NotificationManager notificationManager =
+                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-            notificationManager.notify(NOTIFICATION_ID, n);
+                notificationManager.notify(NOTIFICATION_ID, n);
+            }
         }
     }
 
