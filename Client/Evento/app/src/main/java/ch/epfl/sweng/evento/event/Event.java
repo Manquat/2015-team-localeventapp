@@ -121,18 +121,19 @@ public class Event implements ClusterItem {
                 + "), " + this.getCreator() + ", (" + this.getProperDateString();
     }
 
+
     public boolean addParticipant(User participant) {
-        if (participant != null) {
-            if (mParticipants.size() < mNumberMaxOfParticipants) {
-                return mParticipants.add(participant);
-            } else {
-                Log.d("Event.addParticipant", "Can't add a participant more (" + mParticipants.size() + ")");
-                return false;
-            }
+        if (participant == null) {
+            throw new NullPointerException("participant cannot be null");
         }
-        Log.d("Event.addParticipant", "Can't add null as a participant");
-        return false;
+        if (mParticipants.size() < mNumberMaxOfParticipants) {
+            mParticipants.add(participant);
+            return true;
+        } else {
+            return false;
+        }
     }
+
 
     public Set<User> getAllParticipant() {
         return mParticipants;
@@ -143,22 +144,16 @@ public class Event implements ClusterItem {
     }
 
     public boolean removeParticipant(User participant) {
-        if (participant != null) {
-            if (checkIfParticipantIsIn(participant)) {
-                return mParticipants.remove(participant);
-            } else {
-                Log.d("Event.removeParticipant", participant + " was already not participating.");
-                return false;
-            }
+        if (participant == null) {
+            throw new NullPointerException("participant cannot be null");
         }
-        Log.d("Event.addParticipant", "Can't add null as a participant");
-        return false;
+        Log.d("Event.addParticipant", "removing the participant");
+        return mParticipants.remove(participant);
     }
 
     public boolean checkIfParticipantIsIn(User participant) {
         if (participant != null) return mParticipants.contains(participant);
-        Log.d("Event.checkIfPart.", "Can't check if null is a participant");
-        return false;
+        throw new NullPointerException("Participant can't be null");
     }
 
     public static String bitmapToString(Bitmap bitmap) {
@@ -189,6 +184,10 @@ public class Event implements ClusterItem {
             mPicture = "";
         }
 
+    }
+
+    public boolean isFull() {
+        return mParticipants.size() >= mNumberMaxOfParticipants;
     }
 
 
@@ -251,7 +250,7 @@ public class Event implements ClusterItem {
         } else if (mTags.contains("Basketball")) {
             return "Basketball";
         } else {
-            return "Basketball";
+            return "Unknown";
         }
     }
 
@@ -305,7 +304,6 @@ public class Event implements ClusterItem {
     public LatLng getPosition() {
         return mLocation;
     }
-
 
 
     //This is a temporary method to test if the server can handle very long strings

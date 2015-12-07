@@ -96,7 +96,7 @@ public class AddingComment implements OnClickListener, Refreshable {
             message.setHint(mActivity.getResources().getString(R.string.comment_message_hint));
             mListView.addFooterView(message);
 
-            mMessageBox =  message;
+            mMessageBox = message;
 
             mAddCommentButton.setText(mActivity.getResources().getString(R.string.event_validate));
         }

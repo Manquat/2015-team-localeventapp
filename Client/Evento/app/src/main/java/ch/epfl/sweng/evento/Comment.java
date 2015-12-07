@@ -21,7 +21,7 @@ public class Comment {
         mID = commentId;
     }
 
-    public String getMessage(){
+    public String getMessage() {
         return mMessage;
     }
 

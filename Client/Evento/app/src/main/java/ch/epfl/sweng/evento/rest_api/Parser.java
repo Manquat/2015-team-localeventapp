@@ -54,7 +54,9 @@ public class Parser {
                     jsonObject.getDouble("longitude"),
                     jsonObject.getString("address"),
                     jsonObject.getInt("owner"),
-                    new HashSet<String>(){{ add(json.getString("tags"));}},
+                    new HashSet<String>() {{
+                        add(json.getString("tags"));
+                    }},
                     startDate,
                     endDate,
                     jsonObject.getString("image"),
@@ -112,7 +114,7 @@ public class Parser {
         JSONArray jsonArray = new JSONArray(response);
         List<User> userList = new ArrayList<>();
 
-        for(int i = 0; i < jsonArray.length(); i++) {
+        for (int i = 0; i < jsonArray.length(); i++) {
             userList.add(toUser(jsonArray.getJSONObject(i)));
         }
 
@@ -125,7 +127,7 @@ public class Parser {
         cal.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
         SimpleDateFormat timeFormatWithMillis = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.FRANCE);
-        if (s.contains(".")){
+        if (s.contains(".")) {
             timeFormatWithMillis.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
             cal.setTime(timeFormatWithMillis.parse(s));
         } else {

@@ -134,7 +134,7 @@ public class ContentFragment extends Fragment implements Refreshable {
                 Toast.makeText(mActivity.getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
             }
 
-            public void onUserListReceived(List<User> userArrayList){
+            public void onUserListReceived(List<User> userArrayList) {
 
             }
         });
@@ -156,11 +156,10 @@ public class ContentFragment extends Fragment implements Refreshable {
         mGridLayout.setColumnCount(mNumberOfColumn);
         mGridLayout.removeAllViews();
 
-
         boolean[] tmpBooleanRow = new boolean[mNumberOfColumn];
         Span tmpSpanSmtgOrNot = Span.NOTHING;
+        int spanning = 0;
         for (int yPos = 0, countEvent = 0; countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; yPos++) {
-
             for (int xPos = 0; xPos < mNumberOfColumn && countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; xPos++, countEvent++) {
                 final MyView tView = new MyView(mView.getContext(), xPos, yPos);
                 final int count = countEvent;
@@ -180,6 +179,7 @@ public class ContentFragment extends Fragment implements Refreshable {
                     } else if (mEvents.get(countEvent).getTags().contains("Basketball")) {
                         tmpSpanSmtgOrNot = Span.TWO_ROWS;
                         tView.setImageResource(R.drawable.basket);
+                        ++spanning;
                         mDisplayOrNot.get(yPos + 1)[xPos] = false;
                     } else {
                         tmpSpanSmtgOrNot = Span.NOTHING;
@@ -224,9 +224,9 @@ public class ContentFragment extends Fragment implements Refreshable {
         mActivity.getWindowManager().getDefaultDisplay().getSize(size);
         int screenWidth = size.x;
         int screenHeight = size.y;
-        int halfScreenWidth = (int)(screenWidth *0.5);
-        int quarterScreenWidth = (int)(halfScreenWidth * 0.5);
-        params.width = screenWidth/3-2*PADDING;
+        int halfScreenWidth = (int) (screenWidth * 0.5);
+        int quarterScreenWidth = (int) (halfScreenWidth * 0.5);
+        params.width = screenWidth / 3 - 2 * PADDING;
         //params.width = mWidthColumn - 2 * PADDING;
         //params.height = mHeightRow - 2 * PADDING;
         params.setMargins(PADDING, PADDING, PADDING, PADDING);

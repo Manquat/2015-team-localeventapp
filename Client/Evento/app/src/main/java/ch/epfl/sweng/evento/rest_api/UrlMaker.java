@@ -30,27 +30,27 @@ public abstract class UrlMaker {
     }
 
     public static String post(String urlServer) {
-        return urlServer + access ;
+        return urlServer + access;
     }
 
     public static String post(String urlServer, String access) {
-        return urlServer + access ;
+        return urlServer + access;
     }
 
     public static String put(String urlServer, int id) {
-        return urlServer + access  + id;
+        return urlServer + access + id;
     }
 
     public static String putParticipant(String urlServer, int idEvent, int idParticipant) {
-        return urlServer + access  + idEvent + "/" + idParticipant;
+        return urlServer + access + idEvent + "/" + idParticipant;
     }
 
     public static String deleteParticipant(String urlServer, int idEvent, int idParticipant) {
-        return urlServer + access  + idEvent + "/" + idParticipant;
+        return urlServer + access + idEvent + "/" + idParticipant;
     }
 
     public static String delete(String urlServer, int id) {
-        return urlServer + access  + id;
+        return urlServer + access + id;
     }
 
     public static String getByDate(String urlServer, GregorianCalendar startDate, GregorianCalendar endDate) {
@@ -61,7 +61,7 @@ public abstract class UrlMaker {
                                        double latitude, double longitude, double radius) {
         long startTimeInSec = startTime.getTimeInMillis() / 1000;
         long endTimeInSec = endTime.getTimeInMillis() / 1000;
-        String url = urlServer + event  + Long.toString(startTimeInSec)
+        String url = urlServer + event + Long.toString(startTimeInSec)
                 + "/" + Long.toString(endTimeInSec) + "/" + Double.toString(latitude) + "/"
                 + Double.toString(longitude) + "/" + Double.toString(radius);
         return url;

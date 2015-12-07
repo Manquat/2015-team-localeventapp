@@ -20,8 +20,6 @@ public class MyView extends ImageView {
     }
 
 
-
-
     public MyView(Context context) {
         super(context);
     }

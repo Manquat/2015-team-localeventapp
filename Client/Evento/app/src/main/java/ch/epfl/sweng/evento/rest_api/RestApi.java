@@ -113,8 +113,7 @@ public class RestApi {
                         Log.e(TAG, "exception in JSON parser");
                     }
 
-                }
-                else {
+                } else {
                     Log.e(TAG, "getParticipant, the response is null");
                 }
                 callback.onUserListReceived(user);
@@ -222,7 +221,7 @@ public class RestApi {
                 List<Event> eventArrayList = null;
                 if (result != null) {
                     try {
-                        eventArrayList= Parser.toEventList(result);
+                        eventArrayList = Parser.toEventList(result);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
