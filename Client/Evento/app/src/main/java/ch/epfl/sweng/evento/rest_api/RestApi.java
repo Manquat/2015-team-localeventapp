@@ -224,7 +224,8 @@ public class RestApi {
     }
 
     public void getComment(int EventId, final GetCommentListCallback callback) {
-        final String restUrl = UrlMaker.getComment(mUrlServer, EventId);
+        String restUrl = UrlMaker.getComment(mUrlServer, EventId);
+        Log.d(TAG, "getComment : " + restUrl);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String result) {
