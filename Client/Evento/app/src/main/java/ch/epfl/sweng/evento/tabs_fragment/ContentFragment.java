@@ -169,7 +169,7 @@ public class ContentFragment extends Fragment implements Refreshable {
                     }
                 });
                 if (mDisplayOrNot.get(yPos)[xPos]) {
-                    if (mEvents.get(countEvent).getTags().contains("Foot!") ||
+                    /*if (mEvents.get(countEvent).getTags().contains("Foot!") ||
                             mEvents.get(countEvent).getTags().contains("Football")) {
                         tmpSpanSmtgOrNot = Span.NOTHING;
                         tView.setImageResource(R.drawable.football);
@@ -181,7 +181,10 @@ public class ContentFragment extends Fragment implements Refreshable {
                     } else {
                         tmpSpanSmtgOrNot = Span.NOTHING;
                         tView.setImageResource(R.drawable.unknown);
-                    }
+                    }*/
+                    //to draw the Event's own picture instead of one based on its tags
+                    tView.setImageBitmap(mEvents.get(countEvent).getPicture());
+
                     tView.setAdjustViewBounds(true);
                     mMyViews.add(tView);
 

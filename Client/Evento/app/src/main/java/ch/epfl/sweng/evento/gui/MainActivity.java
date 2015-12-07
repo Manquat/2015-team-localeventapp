@@ -65,7 +65,6 @@ import ch.epfl.sweng.evento.tabs_layout.SlidingTabLayout;
 public class MainActivity extends AppCompatActivity {
 
     public static final String LOGOUT_TAG = "LOGOUT";
-    private static final String LOGOUT = "logout";
     private static final int NOTIFICATION_ID = 1234567890;
     private static final String TAG = "MainActivity";
     private Toolbar mToolbar;
@@ -173,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
             refreshFromServer();
         } else if( id == R.id.action_logout) {
             Intent intent = new Intent(this, LoginActivity.class);
-            intent.putExtra(LOGOUT_TAG,LOGOUT);
+            intent.putExtra(LOGOUT_TAG,true);
             startActivity(intent);
             finish();
         } else if (id == R.id.action_manageYourEvent) {
