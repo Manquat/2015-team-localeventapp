@@ -10,6 +10,7 @@
     <string name="url_server">https://protected-hamlet-4797.herokuapp.com/</string>
     <string name="Slogan">This slogan will make you buy our premium features</string>
     <string name="Username">Username</string>
+    <string name="only_on_my_event_str">Filter my \npersonal event(s) :</string>
     <string name="Password">Password</string>
     <string name="title_activity_creating_event">CreatingEventActivity</string>
     <string name="server_client_id">274058441827-q1jq5v08sbp9i4gbdfppq60qq7jriejv.apps.googleusercontent.com</string>
