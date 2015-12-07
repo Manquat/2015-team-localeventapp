@@ -41,13 +41,14 @@ public class EventFragment extends Fragment {
     private View mRootView;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         Bundle bundle = getArguments();
         int currentEventID = bundle.getInt(KEYCURRENTEVENT);
         mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
 
         mEvent = EventDatabase.INSTANCE.getEvent(currentEventID);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -81,12 +82,12 @@ public class EventFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 MainActivity.getUser(1).addMatchedEvent(mEvent);
-                if(mEvent.addParticipant(MainActivity.getUser(1))) {
+                if (mEvent.addParticipant(MainActivity.getUser(1))) {
                     Toast.makeText(getActivity().getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
-                    if(mEvent.isFull()) {
+                    if (mEvent.isFull()) {
                         joinEvent.setClickable(false);
                     }
-                    mRestAPI.updateEvent(mEvent,new HttpResponseCodeCallback() {
+                    mRestAPI.updateEvent(mEvent, new HttpResponseCodeCallback() {
                         @Override
                         public void onSuccess(String response) {
                             Log.d("EventFrag.upd.", "Response" + response);
@@ -126,7 +127,7 @@ public class EventFragment extends Fragment {
         String host = mEvent.getCreator();
 
         List<String> participant = new ArrayList<String>();
-        for (User user: mEvent.getAllParticipant()) {
+        for (User user : mEvent.getAllParticipant()) {
             participant.add(user.getmUsername());
         }
 

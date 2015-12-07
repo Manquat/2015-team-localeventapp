@@ -62,22 +62,21 @@ public class MainActivity extends AppCompatActivity {
     public static final String LOGOUT_TAG = "LOGOUT";
     private static final int NOTIFICATION_ID = 1234567890;
     private static final String TAG = "MainActivity";
+    private static final int MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
+    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
+    private static final String urlServer = Settings.getServerUrl();
+    private static User user1;
+    private static User user2;
     private Toolbar mToolbar;
     private ViewPager mPager;
     private ViewPageAdapter mAdapter;
     private SlidingTabLayout mTabs;
     private List<CharSequence> mTitles = new ArrayList<CharSequence>(
             Arrays.asList("Maps", "Events", "Calendar"));
-    private static final int MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
-    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-
-    private static final String urlServer = Settings.getServerUrl();
     private ArrayList<Event> mEventArrayList = new ArrayList<>();
-    private static User user1;
-    private static User user2;
 
-    public static User getUser(int user){
-        switch(user){
+    public static User getUser(int user) {
+        switch (user) {
             case 1:
                 return user1;
             case 2:
@@ -131,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 refreshFromServer();
             }
-        }, 0, 10*60*1000);
+        }, 0, 10 * 60 * 1000);
     }
 
 
@@ -165,9 +164,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else if (id == R.id.action_refresh) {
             refreshFromServer();
-        } else if( id == R.id.action_logout) {
+        } else if (id == R.id.action_logout) {
             Intent intent = new Intent(this, LoginActivity.class);
-            intent.putExtra(LOGOUT_TAG,true);
+            intent.putExtra(LOGOUT_TAG, true);
             startActivity(intent);
             finish();
         } else if (id == R.id.action_manageYourEvent) {
@@ -199,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void makeNotifications(List<Event> eventArrayList) {
-        if(eventArrayList != null) {
+        if (eventArrayList != null) {
             Calendar currentDate = Calendar.getInstance();
 
             boolean notif_needed = false;

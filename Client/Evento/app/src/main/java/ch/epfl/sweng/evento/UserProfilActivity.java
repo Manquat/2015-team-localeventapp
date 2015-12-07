@@ -20,7 +20,6 @@ public class UserProfilActivity extends AppCompatActivity {
     private TextView mDateOfBirthView;
 
 
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

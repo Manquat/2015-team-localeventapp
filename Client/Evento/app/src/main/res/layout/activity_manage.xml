@@ -1,13 +1,15 @@
 <LinearLayout
-    android:layout_height="fill_parent"
-    android:layout_width="fill_parent"
-    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="ch.epfl.sweng.evento.ManageActivity"
-    android:id="@+id/activity_manage">
+    android:id="@+id/activity_manage"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context="ch.epfl.sweng.evento.ManageActivity">
 
-    <ListView android:id="@+id/listViewManage" android:layout_height="wrap_content" android:layout_width="match_parent">
-    </ListView>
+    <ListView
+        android:id="@+id/listViewManage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
 
 </LinearLayout>

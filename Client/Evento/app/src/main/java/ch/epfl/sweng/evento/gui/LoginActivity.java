@@ -60,9 +60,10 @@ public class LoginActivity extends AppCompatActivity implements
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setColorScheme(SignInButton.COLOR_DARK);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-        if(getIntent() != null &&
+
+        if (getIntent() != null &&
                 getIntent().getExtras() != null &&
-                getIntent().getExtras().getBoolean(MainActivity.LOGOUT_TAG,false)){
+                getIntent().getExtras().getBoolean(MainActivity.LOGOUT_TAG, false)) {
             logout();
         }
     }
@@ -175,8 +176,8 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
-    public void logout(){
-        if(mGoogleApiClient.isConnected()) {
+    public void logout() {
+        if (mGoogleApiClient.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
             mGoogleApiClient.disconnect();
             mGoogleApiClient.connect();

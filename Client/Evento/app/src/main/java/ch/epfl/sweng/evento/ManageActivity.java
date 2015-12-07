@@ -32,7 +32,7 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
         setContentView(R.layout.activity_manage);
         mActivity = this;
         mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-        mListView=(ListView)findViewById(R.id.listViewManage);
+        mListView = (ListView) findViewById(R.id.listViewManage);
 
         mItems.add(new ListEntryAdapter.Section("Hosted Event"));
         for (Event event : mHostedEvent) {
@@ -53,7 +53,7 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onItemClick(AdapterView arg0, View arg1, int position, long arg3) {
 
-        ListEntryAdapter.Entry item = (ListEntryAdapter.Entry)mItems.get(position);
+        ListEntryAdapter.Entry item = (ListEntryAdapter.Entry) mItems.get(position);
         Toast.makeText(this, "You clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
     }
 

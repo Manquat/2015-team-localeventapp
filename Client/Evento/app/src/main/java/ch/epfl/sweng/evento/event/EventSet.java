@@ -37,6 +37,23 @@ public class EventSet {
         mIDs = new HashMap<>();
     }
 
+    /**
+     * This method returns an error Event.
+     * This is just temporary before implementing good exception handling
+     *
+     * @return an error event
+     */
+    public static Event getErrorEvent() {
+        return new Event(0,
+                "ERROR",
+                "The Event doesn't exist or wasn't there",
+                0.0, 0.0,
+                "",
+                "",
+                new HashSet<String>(),
+                new GregorianCalendar(),
+                new GregorianCalendar());
+    }
 
     public void clear() {
         mEvents.clear();
@@ -113,7 +130,6 @@ public class EventSet {
         }
     }
 
-
     /**
      * Returns the Event with the closest lower signature from the one passed in argument
      *
@@ -148,7 +164,6 @@ public class EventSet {
             mEvents.put(signature, event);
         }
     }
-
 
     /**
      * Returns a set of Events that are at most at 'distance'
@@ -203,7 +218,6 @@ public class EventSet {
         return newEventSet;
     }
 
-
     /**
      * Returns a set of all the Events that start after the date passed in argument
      *
@@ -219,7 +233,6 @@ public class EventSet {
         }
         return newEventSet;
     }
-
 
     /**
      * Returns a set of all the Events that start on the same day as the date passed in argument
@@ -269,24 +282,6 @@ public class EventSet {
         }
 
         return numberOfEvents;
-    }
-
-    /**
-     * This method returns an error Event.
-     * This is just temporary before implementing good exception handling
-     *
-     * @return an error event
-     */
-    public static Event getErrorEvent() {
-        return new Event(0,
-                "ERROR",
-                "The Event doesn't exist or wasn't there",
-                0.0, 0.0,
-                "",
-                "",
-                new HashSet<String>(),
-                new GregorianCalendar(),
-                new GregorianCalendar());
     }
 
     public int getPosition(int id) {

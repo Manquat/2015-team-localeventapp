@@ -9,7 +9,7 @@ public enum Settings {
     INSTANCE;
     private String mIdToken = "No Token";
 
-    private Settings() {
+    Settings() {
         // private constructor
     }
 

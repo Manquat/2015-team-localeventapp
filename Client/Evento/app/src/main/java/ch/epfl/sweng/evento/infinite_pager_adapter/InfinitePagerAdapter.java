@@ -117,6 +117,15 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter {
         return mCurrentIndicator;
     }
 
+    /**
+     * Sets {@code indicator} as the current visible indicator.
+     *
+     * @param indicator a indicator value.
+     */
+    void setCurrentIndicator(final T indicator) {
+        mCurrentIndicator = indicator;
+    }
+
     private T getIndicatorFromPagePosition(final int pagePosition) {
         T indicator = null;
         switch (pagePosition) {
@@ -174,16 +183,6 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter {
             pageModel.removeAllChildren();
         }
     }
-
-    /**
-     * Sets {@code indicator} as the current visible indicator.
-     *
-     * @param indicator a indicator value.
-     */
-    void setCurrentIndicator(final T indicator) {
-        mCurrentIndicator = indicator;
-    }
-
 
     /**
      * @return the next indicator.

@@ -24,7 +24,7 @@ public class User {
     //private LatLng mHomeAddress;
     //private Event.CustomDate mStartOfMembership;
 
-    public User(int id, String username, String email){
+    public User(int id, String username, String email) {
         mID = id;
         mUsername = username;
         mEmail = email;
@@ -36,9 +36,13 @@ public class User {
         return mUsername;
     }
 
-    public Set<Event> getMatchedEvent() { return mMatchedEvent;}
+    public Set<Event> getMatchedEvent() {
+        return mMatchedEvent;
+    }
 
-    public Set<Event> getHostedEvent() { return mHostedEvent; }
+    public Set<Event> getHostedEvent() {
+        return mHostedEvent;
+    }
 
     public String getmEmail() {
         return mEmail;
@@ -59,19 +63,14 @@ public class User {
     }
     */
 
-    public void addHostedEvent(Event event) {
-        final String message = "Cannot add a null event as a hosted event";
-        if (event != null){
-            mHostedEvent.add(event);
-        } else {
-            throw new NullPointerException(message);
-        }
+    public void setmEmail(String mEmail) {
+        this.mEmail = mEmail;
     }
 
-    public void addMatchedEvent(Event event) {
-        final String message = "Cannot add a null event as a matched event";
-        if (event != null){
-            mMatchedEvent.add(event);
+    public void addHostedEvent(Event event) {
+        final String message = "Cannot add a null event as a hosted event";
+        if (event != null) {
+            mHostedEvent.add(event);
         } else {
             throw new NullPointerException(message);
         }
@@ -105,8 +104,13 @@ public class User {
         return getHostedEventString("\n");
     }*/
 
-    public void setmEmail(String mEmail) {
-        this.mEmail = mEmail;
+    public void addMatchedEvent(Event event) {
+        final String message = "Cannot add a null event as a matched event";
+        if (event != null) {
+            mMatchedEvent.add(event);
+        } else {
+            throw new NullPointerException(message);
+        }
     }
 
     /*public void setmDateOfBirth(Event.CustomDate mDateOfBirth) {

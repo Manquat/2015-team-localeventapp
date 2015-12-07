@@ -22,11 +22,11 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
     private static final String TAG = "RestTask";
     private static final int HTTP_SUCCESS_START = 200;
     private static final int HTTP_SUCCESS_END = 299;
+    private final String mMethodType;
     private String mRestUrl;
     private RestTaskCallback mCallback;
     private NetworkProvider mNetworkProvider;
     private String mRequestBody;
-    private final String mMethodType;
 
 
     public RestTask(String methodType, String restUrl, NetworkProvider networkProvider, RestTaskCallback callback,

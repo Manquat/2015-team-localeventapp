@@ -33,24 +33,23 @@ public class Event implements ClusterItem {
     private final String mAddress;
     private final String mCreator;//might be replaced by some kind of User class
     private final Set<String> mTags;
+    private final int mNumberMaxOfParticipants;
     private Calendar mStartDate;
     private Calendar mEndDate;
     private String mPicture;
     private Set<User> mParticipants;
-    private final int mNumberMaxOfParticipants;
 
 
-
-    public Event( int id,
-                  String title,
-                  String description,
-                  double latitude,
-                  double longitude,
-                  String address,
-                  String creator,
-                  Set<String> tags,
-                  String image,
-                  Set<User> participants) {
+    public Event(int id,
+                 String title,
+                 String description,
+                 double latitude,
+                 double longitude,
+                 String address,
+                 String creator,
+                 Set<String> tags,
+                 String image,
+                 Set<User> participants) {
         mID = id;
         mTitle = title;
         mDescription = description;
@@ -62,7 +61,7 @@ public class Event implements ClusterItem {
         mStartDate = new GregorianCalendar();
         mEndDate = new GregorianCalendar();
         mPicture = samplePicture();
-        mNumberMaxOfParticipants =  10;//TODO
+        mNumberMaxOfParticipants = 10;//TODO
         mParticipants = new HashSet<User>(participants);
 
     }
@@ -100,167 +99,9 @@ public class Event implements ClusterItem {
         mPicture = samplePicture();
     }
 
-    /**
-     * Easy way to print a event in a log
-     * Not equivalent to serialized event (RestApi.Serializer) which provide string event acceptable
-     * for the server
-     */
-    public String toString() {
-        return this.getTitle() + ", " + this.getDescription() + ", " + this.getAddress()
-                + ", (" + Double.toString(this.getLatitude()) + ", " + Double.toString(this.getLongitude())
-                + "), " + this.getCreator() + ", (" + this.getProperDateString();
-    }
-
-
-    public boolean addParticipant(User participant){
-        if (participant == null) {
-            throw new NullPointerException("participant cannot be null");
-        }
-        if (mParticipants.size() < mNumberMaxOfParticipants) {
-            mParticipants.add(participant);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    public Set<User> getAllParticipant()  {
-        return mParticipants;
-    }
-
-    public int getMaxNumberOfParticipant()  {
-        return mNumberMaxOfParticipants;
-    }
-
-    public void removeParticipant(User participant){
-        if (participant == null) {
-            throw new NullPointerException("participant cannot be null");
-        }
-        mParticipants.remove(participant);
-    }
-
-    private boolean checkIfParticipantIsIn(User participant){
-        return mParticipants.contains(participant);
-    }
-
-    public void setPicture(String picture) {
-        mPicture = picture;
-    }
-
-    public void setPicture(Bitmap bitmap) {
-        if (bitmap != null) {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-            byte[] b = outputStream.toByteArray();
-            mPicture = Base64.encodeToString(b, Base64.DEFAULT);
-        } else {
-            mPicture = "";
-        }
-
-    }
-
-    public boolean isFull(){
-        return mParticipants.size() >= mNumberMaxOfParticipants;
-    }
-
-
-    public String getProperDateString() {
-        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
-        timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
-        return timeFormat.format(mStartDate.getTime());
-    }
-
     public static String asNiceString(Calendar calendar) {
         DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
         return dateFormat.format(calendar.getTime());
-    }
-
-
-    public String getStartDateAsString() {
-        return asNiceString(mStartDate);
-    }
-
-    public String getEndDateAsString() {
-        return asNiceString(mEndDate);
-    }
-
-    public int getID() {
-        return mID;
-    }
-
-    public String getTitle() {
-        return mTitle;
-    }
-
-    public String getDescription() {
-        return mDescription;
-    }
-
-    public double getLatitude() {
-        return mLocation.latitude;
-    }
-
-    public double getLongitude() {
-        return mLocation.longitude;
-    }
-
-    public LatLng getLocation() {
-        return mLocation;
-    }
-
-    public String getAddress() {
-        return mAddress;
-    }
-
-    public String getCreator() {
-        return mCreator;
-    }
-
-    public String getTagsString() {
-        if (mTags.contains("Foot!") ||
-                mTags.contains("Football")) {
-            return "Football";
-        } else if (mTags.contains("Basketball")) {
-            return "Basketball";
-        }
-        else {
-            return "Unknown";
-        }
-    }
-
-    public Set<String> getTags() {
-        return mTags;
-    }
-
-    public Calendar getStartDate() {
-        return mStartDate;
-    }
-
-    public Calendar getEndDate() {
-        return mEndDate;
-    }
-
-    public String getPictureAsString() {
-        return mPicture;
-    }
-
-    /**
-     * converts the String member named mPicture that represents a Bitmap image encoded in base64
-     * into an actual Bitmap.
-     *
-     * @return The Bitmap converted from mPicture
-     */
-    public Bitmap getPicture() {
-
-        byte[] encodeByte = Base64.decode(mPicture, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-    }
-
-
-    @Override
-    public LatLng getPosition() {
-        return mLocation;
     }
 
     //This is a temporary method to test if the server can handle very long strings
@@ -349,6 +190,158 @@ public class Event implements ClusterItem {
                 "AwQtAAAACQAD+Sb7AwAJAQMAE/wDAQ35AwUM/AMAEPsDABL8BAQpAAAACQAD+Sb7AwAJAQMAE/wD " +
                 "AQ35AwUM/AMAEPsDABL8BAQpAAAACQAD+Sb7AwAJAQMAE/wDAQ35AwUM/AMAEPsDABL8BAQpAAAA " +
                 "yAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAAAE=";
+    }
+
+    /**
+     * Easy way to print a event in a log
+     * Not equivalent to serialized event (RestApi.Serializer) which provide string event acceptable
+     * for the server
+     */
+    public String toString() {
+        return this.getTitle() + ", " + this.getDescription() + ", " + this.getAddress()
+                + ", (" + Double.toString(this.getLatitude()) + ", " + Double.toString(this.getLongitude())
+                + "), " + this.getCreator() + ", (" + this.getProperDateString();
+    }
+
+    public boolean addParticipant(User participant) {
+        if (participant == null) {
+            throw new NullPointerException("participant cannot be null");
+        }
+        if (mParticipants.size() < mNumberMaxOfParticipants) {
+            mParticipants.add(participant);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Set<User> getAllParticipant() {
+        return mParticipants;
+    }
+
+    public int getMaxNumberOfParticipant() {
+        return mNumberMaxOfParticipants;
+    }
+
+    public void removeParticipant(User participant) {
+        if (participant == null) {
+            throw new NullPointerException("participant cannot be null");
+        }
+        mParticipants.remove(participant);
+    }
+
+    private boolean checkIfParticipantIsIn(User participant) {
+        return mParticipants.contains(participant);
+    }
+
+    public void setPicture(String picture) {
+        mPicture = picture;
+    }
+
+    public boolean isFull() {
+        return mParticipants.size() >= mNumberMaxOfParticipants;
+    }
+
+    public String getProperDateString() {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
+        timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+        return timeFormat.format(mStartDate.getTime());
+    }
+
+    public String getStartDateAsString() {
+        return asNiceString(mStartDate);
+    }
+
+    public String getEndDateAsString() {
+        return asNiceString(mEndDate);
+    }
+
+    public int getID() {
+        return mID;
+    }
+
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public String getDescription() {
+        return mDescription;
+    }
+
+    public double getLatitude() {
+        return mLocation.latitude;
+    }
+
+    public double getLongitude() {
+        return mLocation.longitude;
+    }
+
+    public LatLng getLocation() {
+        return mLocation;
+    }
+
+    public String getAddress() {
+        return mAddress;
+    }
+
+    public String getCreator() {
+        return mCreator;
+    }
+
+    public String getTagsString() {
+        if (mTags.contains("Foot!") ||
+                mTags.contains("Football")) {
+            return "Football";
+        } else if (mTags.contains("Basketball")) {
+            return "Basketball";
+        } else {
+            return "Unknown";
+        }
+    }
+
+    public Set<String> getTags() {
+        return mTags;
+    }
+
+    public Calendar getStartDate() {
+        return mStartDate;
+    }
+
+    public Calendar getEndDate() {
+        return mEndDate;
+    }
+
+    public String getPictureAsString() {
+        return mPicture;
+    }
+
+    /**
+     * converts the String member named mPicture that represents a Bitmap image encoded in base64
+     * into an actual Bitmap.
+     *
+     * @return The Bitmap converted from mPicture
+     */
+    public Bitmap getPicture() {
+
+        byte[] encodeByte = Base64.decode(mPicture, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+    }
+
+    public void setPicture(Bitmap bitmap) {
+        if (bitmap != null) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            byte[] b = outputStream.toByteArray();
+            mPicture = Base64.encodeToString(b, Base64.DEFAULT);
+        } else {
+            mPicture = "";
+        }
+
+    }
+
+    @Override
+    public LatLng getPosition() {
+        return mLocation;
     }
 }
 

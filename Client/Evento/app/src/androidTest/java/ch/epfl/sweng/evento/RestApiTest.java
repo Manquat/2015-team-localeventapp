@@ -47,16 +47,12 @@ import static junit.framework.Assert.assertEquals;
 @LargeTest
 public class RestApiTest {
     private static final String TAG = "RestApiTest";
-    private GetTask getTask;
     private static final String JSON_CONTENT_TYPE = "application/json; charset=utf-8";
     private static final int ASCII_SPACE = 0x20;
-    private HttpURLConnection connection;
-    private NetworkProvider networkProviderMockito;
     private static final String wrongUrl = "http://example.com";
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
     //private static final String urlServer = "http://10.0.2.2:8000/";
     private static final String urlServer = "https://protected-hamlet-4797.herokuapp.com/";
-
     private static final Parser parser = new Parser();
     private static final String PROPER_JSON_STRING = "{\n"
             + "  \"id\": 17005,\n"
@@ -82,7 +78,23 @@ public class RestApiTest {
             new HashSet<String>(),
             "image",
             new HashSet<User>());
-
+    private static final String EVENT_TO_CREATE = "{\n"
+            + "  \"Event_name\": \"Ping-Pong at Sat 2\",\n"
+            + "  \"description\": \n"
+            + "    \"Beer, ping-pong... let's beerpong\" ,\n"
+            + "  \"latitude\": 46.519428,\n"
+            + "  \"longitude\": 6.580847,\n"
+            + "  \"address\": \"Satellite\", \n"
+            + "  \"date\" : \"1991-01-15T23:00:00Z\",\n "
+            + "   \"creator\": \"Guillaume Meyrat\"\n"
+            + "}\n";
+    private static final Calendar date = new GregorianCalendar(1990, 12, 16, 0, 0);
+    private static final Event e = new Event(10, "Ping-Pong at Sat 2", "Beer, ping-pong... let's beerpong",
+            46.519428, 6.580847, "Satellite", "Guillaume Meyrat", new HashSet<String>(), date, date);
+    private static final String EVENT_TO_CREATE_seri = Serializer.event(e);
+    private GetTask getTask;
+    private HttpURLConnection connection;
+    private NetworkProvider networkProviderMockito;
 
     @Before
     public void setUp() throws Exception {
@@ -158,7 +170,6 @@ public class RestApiTest {
 
     }
 
-
     @Test
     public void testGetEventLocal() throws IOException, InterruptedException {
         configureResponse(HttpURLConnection.HTTP_OK, PROPER_JSON_STRING, JSON_CONTENT_TYPE);
@@ -181,6 +192,7 @@ public class RestApiTest {
         assertEquals("description", eventArrayList.get(0).getDescription(), PROPER_EVENT.getDescription());
 
     }
+
     @Ignore("If server modification have been done the test fails")
     @Test
     public void testGetEventServer() throws InterruptedException {
@@ -217,24 +229,6 @@ public class RestApiTest {
 
 
     }
-
-    private static final String EVENT_TO_CREATE = "{\n"
-            + "  \"Event_name\": \"Ping-Pong at Sat 2\",\n"
-            + "  \"description\": \n"
-            + "    \"Beer, ping-pong... let's beerpong\" ,\n"
-            + "  \"latitude\": 46.519428,\n"
-            + "  \"longitude\": 6.580847,\n"
-            + "  \"address\": \"Satellite\", \n"
-            + "  \"date\" : \"1991-01-15T23:00:00Z\",\n "
-            + "   \"creator\": \"Guillaume Meyrat\"\n"
-            + "}\n";
-
-
-    private static final Calendar date = new GregorianCalendar(1990, 12, 16, 0, 0);
-    private static final Event e = new Event(10, "Ping-Pong at Sat 2", "Beer, ping-pong... let's beerpong",
-            46.519428, 6.580847, "Satellite", "Guillaume Meyrat", new HashSet<String>(), date, date);
-    private static final String EVENT_TO_CREATE_seri = Serializer.event(e);
-
 
     @Test
     public void testPostTaskServer() throws ExecutionException, InterruptedException {
