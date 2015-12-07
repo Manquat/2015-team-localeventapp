@@ -76,7 +76,9 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
 
         mConversationAdapter = new ConversationAdapter(mActivity, currentEventId);
         ListView listOfComment = (ListView) rootLayout.findViewById(R.id.event_list_comment);
+
         listOfComment.setAdapter(mConversationAdapter);
+
 
         GridLayout layout = (GridLayout) inflater.inflate(R.layout.fragment_event,
                 listOfComment, false);
@@ -86,6 +88,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         listOfComment.addHeaderView(layout);
 
         AddingComment.initialize(mActivity, listOfComment, currentEventId, mConversationAdapter);
+
 
         return rootLayout;
     }
