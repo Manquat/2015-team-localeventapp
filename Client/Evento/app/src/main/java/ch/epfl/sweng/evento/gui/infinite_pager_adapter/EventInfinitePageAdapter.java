@@ -43,6 +43,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
     private List<Event> hostedEvent;
     private ExpandableListView mExpListView;
     private RestApi mRestApi;
+    private ConversationAdapter mConversationAdapter;
 
 
     public EventInfinitePageAdapter(Integer initialEventId, Activity activity) {
@@ -73,8 +74,11 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         LinearLayout rootLayout = (LinearLayout) inflater.inflate(R.layout.event_adapter,
                 (ViewGroup) mActivity.getWindow().getDecorView().getRootView(), false);
 
-        ConversationAdapter conversationAdapter = new ConversationAdapter(mActivity, currentEventId);
+        mConversationAdapter = new ConversationAdapter(mActivity, currentEventId);
         ListView listOfComment = (ListView) rootLayout.findViewById(R.id.event_list_comment);
+
+        listOfComment.setAdapter(mConversationAdapter);
+
 
         GridLayout layout = (GridLayout) inflater.inflate(R.layout.fragment_event,
                 listOfComment, false);
@@ -83,9 +87,8 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
 
         listOfComment.addHeaderView(layout);
 
-        listOfComment.setAdapter(conversationAdapter);
+        AddingComment.initialize(mActivity, listOfComment, currentEventId, mConversationAdapter);
 
-        AddingComment.initialize(mActivity, listOfComment, currentEventId, conversationAdapter);
 
         return rootLayout;
     }
@@ -123,11 +126,45 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         ImageView pictureView = (ImageView) rootView.findViewById(R.id.eventPictureView);
         pictureView.setImageBitmap(currentEvent.getPicture());
         mExpListView = (ExpandableListView) rootView.findViewById(R.id.list_participant_exp);
-        // configure the joint and unjoin button
-        Button joinEventButton = (Button) rootView.findViewById(R.id.joinEvent);
-        Button unJoinEventButton = (Button) rootView.findViewById(R.id.remove_user_from_event);
+        prepareListData();
+        ExpendableList mListAdapter = new ExpendableList(mActivity.getApplicationContext(), mListDataHeader, mListDataChild);
 
-        JoinEvent.initialize(mActivity, currentEvent.getID(), joinEventButton, unJoinEventButton,
-                mExpListView);
+        // setting list adapter
+        mExpListView.setAdapter(mListAdapter);
+        mExpListView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mConversationAdapter.refresh();
+            }
+        });
+
+        // configure the joint and unjoin button
+        //Button joinEventButton = (Button) rootView.findViewById(R.id.joinEvent);
+        //Button unJoinEventButton = (Button) rootView.findViewById(R.id.remove_user_from_event);
+
+        //JoinEvent.initialize(mActivity, currentEvent.getID(), joinEventButton, unJoinEventButton,
+             //   mExpListView);
+    }
+
+    private void prepareListData() {
+        mListDataHeader = new ArrayList<String>();
+        mListDataChild = new HashMap<String, List<String>>();
+
+        // Adding child data
+        mListDataHeader.add("Participant of the event");
+
+        // Adding child data
+        List<String> participant = new ArrayList<String>();
+        participant.add("dff");
+        participant.add("ddf");
+        participant.add("dfdf");
+        participant.add(" ");
+        participant.add(" ");
+        participant.add(" ");
+        participant.add(" ");
+        participant.add(" ");
+
+
+        mListDataChild.put(mListDataHeader.get(0), participant);
     }
 }
