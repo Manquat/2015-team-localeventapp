@@ -87,14 +87,15 @@ public class User {
     }
 
     public boolean addHostedEvent(Event event) {
+        final String message = "Cannot add a null event as a hosted event";
         if (event != null) {
-            mHostedEvent.add(event);
+            return mHostedEvent.add(event);
         } else {
             throw new NullPointerException(message);
         }
     }
 
-    public void addMatchedEvent(Event event) {
+    public boolean addMatchedEvent(Event event) {
         final String message = "Cannot add a null event as a matched event";
         if (event != null){
             return mMatchedEvent.add(event);
@@ -136,7 +137,7 @@ public class User {
 
     public String getHostedEventString() {
         return getHostedEventString("\n");
-    }*/
+    }
 
     public void setmEmail(String mEmail) {
         this.mEmail = mEmail;

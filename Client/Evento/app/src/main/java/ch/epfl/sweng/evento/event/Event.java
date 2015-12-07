@@ -257,7 +257,6 @@ public class Event implements ClusterItem {
             return "Football";
         } else if (mTags.contains("Basketball")) {
             return "Basketball";
-        }
         } else {
             return "Unknown";
         }
