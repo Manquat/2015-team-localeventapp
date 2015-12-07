@@ -90,6 +90,9 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         startDateView.setText(currentEvent.getStartDateAsString());
         endDateView.setText(currentEvent.getEndDateAsString());
         addressView.setText(currentEvent.getAddress());
+        Point screenSize = new Point();
+        mActivity.getWindowManager().getDefaultDisplay().getSize(screenSize);
+        addressView.setMaxWidth((screenSize.x * 3)/4);
         descriptionView.setText(currentEvent.getDescription());
 
         ImageView pictureView = (ImageView) rootView.findViewById(R.id.eventPictureView);
