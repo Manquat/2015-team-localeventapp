@@ -10,7 +10,7 @@ import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
 /**
- * Created by Tago on 07/12/2015.
+ * Created by gautier on 07/12/2015.
  */
 public class DeleteEventListener implements View.OnClickListener {
     private Activity mActivity;

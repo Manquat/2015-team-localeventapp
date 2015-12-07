@@ -109,24 +109,9 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         Button deleteEvent = (Button) rootView.findViewById(R.id.delete_event);
         deleteEvent.setActivated(isTheCurrentUserTheOwner);
         deleteEvent.setOnClickListener(new DeleteEventListener(mActivity, currentEvent.getID()));
-        /*deleteEvent.setTag(currentEvent.getID());
-        deleteEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int currentEventId = (int) v.getTag();
-                RestApi restApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-                restApi.deleteEvent(currentEventId, new HttpResponseCodeCallback() {
-                    @Override
-                    public void onSuccess(String httpResponseCode) {
-                        Toast.makeText(mActivity, "Successfully delete the event : " + httpResponseCode,
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-                mActivity.finish();
-            }
-        });*/
 
         Button updateEvent = (Button) rootView.findViewById(R.id.update_event);
         unJoinEventButton.setActivated(isTheCurrentUserTheOwner);
+        updateEvent.setOnClickListener(new UpdateEventListener(mActivity, currentEvent.getID()));
     }
 }

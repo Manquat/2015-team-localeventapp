@@ -59,6 +59,8 @@ public class CreatingEventActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener,
         GoogleApiClient.OnConnectionFailedListener {
+    public static final String EVENT_TO_UPDATE = "event_to_update";
+
     private static final String TAG = "CreatingEventActivity";
 
 
