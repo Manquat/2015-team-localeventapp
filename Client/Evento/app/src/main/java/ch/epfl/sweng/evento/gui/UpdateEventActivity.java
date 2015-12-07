@@ -68,7 +68,7 @@ public class UpdateEventActivity extends CreatingEventActivity {
                 event.getLatitude(),
                 event.getLongitude(),
                 event.getAddress(),
-                Settings.INSTANCE.getUser().getUserId(),
+                Settings.getUser().getUserId(),
                 event.getTags(),
                 event.getStartDate(),
                 event.getEndDate(),

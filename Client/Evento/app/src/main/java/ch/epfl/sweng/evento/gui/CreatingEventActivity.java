@@ -209,13 +209,10 @@ public class CreatingEventActivity extends AppCompatActivity
                 int id = rand.nextInt(10000);
 
                 // event creation and send
-/*                Event e = new Event(id, titleString, descriptionString, latitude,
-                        longitude, addressString, getCreator,
-                        mTag, mStartDate, mEndDate, picture);*/
-//TODO Concerning the Event abovd: Either change contructor or change the event that is created here!
                 Event e = new Event(id, titleString, descriptionString, latitude,
-                        longitude, addressString, Settings.INSTANCE.getUser().getUserId(),
+                        longitude, addressString, Settings.getUser().getUserId(),
                         mTag, mStartDate, mEndDate, picture);
+
 
 
                 sendToServer(e);

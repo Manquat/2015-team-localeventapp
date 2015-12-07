@@ -85,8 +85,8 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
     protected HttpURLConnection setHttpUrlConnection() throws IOException {
         URL url = new URL(mRestUrl);
         HttpURLConnection conn = mNetworkProvider.getConnection(url);
-        conn.setRequestProperty("token", Settings.INSTANCE.getIdToken());
-        conn.setRequestProperty("userid", Integer.toString(Settings.INSTANCE.getUser().getUserId()));
+        conn.setRequestProperty("token", Settings.getIdToken());
+        conn.setRequestProperty("userid", Integer.toString(Settings.getUser().getUserId()));
         return conn;
     }
 
