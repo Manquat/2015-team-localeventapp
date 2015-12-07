@@ -27,7 +27,6 @@ import ch.epfl.sweng.evento.list_view.ListEntryAdapter;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.event.Event;
-import ch.epfl.sweng.evento.list_view.ListEntryAdapter;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.GetUserCallback;
@@ -49,12 +48,16 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage);
+
+        TextView WelcomeView = (TextView) (findViewById(R.id.Welcome));
+        WelcomeView.setText("Welcome " + Settings.INSTANCE.getUser().getUsername() + ".");
+
         mActivity = this;
         mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
         mListView=(ListView)findViewById(R.id.listViewManage);
 
         mHostedEvent = new ArrayList<Event>();;
-        mItems.add(new ListEntryAdapter.Section("Hosted Event"));
+        mItems.add(new ListEntryAdapter.Section("Hosted Events"));
         mRestAPI.getHostedEvent(new GetEventListCallback() {
             public void onEventListReceived(List<Event> eventArrayList) {
                 if (eventArrayList != null) {
@@ -63,7 +66,7 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
                     for (Event event : mHostedEvent) {
                         mItems.add(new ListEntryAdapter.Entry(Integer.toString(i++) + "/ " + event.getTitle(), "        " + event.getDescription()));
                     }
-                    mItems.add(new ListEntryAdapter.Section("Matched Event"));
+                    mItems.add(new ListEntryAdapter.Section("Joined Events"));
                     mRestAPI.getMatchedEvent(new GetEventListCallback() {
                         public void onEventListReceived(List<Event> eventArrayList) {
                             if (eventArrayList != null) {
