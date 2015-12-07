@@ -69,7 +69,7 @@ public class Parser {
 
     private static Comment toComment(JSONObject jsonObject) throws JSONException {
         Comment c = new Comment(
-                jsonObject.getInt("creator"),
+                jsonObject.getInt("getCreator"),
                 jsonObject.getString("creator_name"),
                 jsonObject.getString("body"),
                 jsonObject.getInt("id"));

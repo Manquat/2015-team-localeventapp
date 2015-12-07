@@ -25,7 +25,7 @@ import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 
 /**
- * Class that handle all the managing of the participant in the event activity
+ * Class that handle all the managing of the getParticipant in the event activity
  */
 public class JoinEvent implements
         View.OnClickListener,

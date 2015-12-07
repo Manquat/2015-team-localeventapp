@@ -6,19 +6,15 @@ import java.util.GregorianCalendar;
  * Created by joachimmuth on 22.10.15.
  * Tool allowing to set every type of URL, according with the django server convention
  */
-public abstract class UrlMaker {
+public class UrlMaker {
 
     private static final String TAG = "UrlMaker";
     private final static String event = "events/";
     private final static String comment = "comments/";
-    //protected static String sAccess;
+    private final static String user = "user/";
 
-    abstract protected String getAccess();
-
-    public UrlMaker() {
-        sAccess = getAccess();
+    private UrlMaker() {
     }
-
 
     public static String get(String urlServer, int noEvent) {
         return urlServer + event + noEvent + ".json";
@@ -30,29 +26,27 @@ public abstract class UrlMaker {
     }
 
     public static String post(String urlServer) {
-        return urlServer + sAccess;
+        return urlServer + event;
     }
 
-    public static String post(String urlServer, String access) {
-        return urlServer + access;
+    public static String postUser(String urlServer) {
+        return urlServer + user;
     }
 
     public static String put(String urlServer, int id) {
-        return urlServer + sAccess + id;
+        return urlServer + event + id;
     }
 
     public static String putParticipant(String urlServer, int idEvent, int idParticipant) {
-        return urlServer + sAccess + idEvent + "/" + idParticipant;
+        return urlServer + event + idEvent + "/" + idParticipant;
     }
 
     public static String deleteParticipant(String urlServer, int idEvent, int idParticipant) {
-        return urlServer + sAccess + idEvent + "/" + idParticipant;
+        return urlServer + event + idEvent + "/" + idParticipant;
     }
 
     public static String delete(String urlServer, int id) {
-        String string = urlServer + sAccess; //TODO
-        string = string + "i";
-        return urlServer + sAccess + id;
+        return urlServer + event + id;
     }
 
     public static String getByDate(String urlServer, GregorianCalendar startDate, GregorianCalendar endDate) {
@@ -75,5 +69,21 @@ public abstract class UrlMaker {
 
     public static String getComment(String urlServer, int eventId) {
         return urlServer + event + comment + eventId;
+    }
+
+    public static String getCreator(String urlServer, int userId) {
+        return urlServer + user + "creator/" + userId;
+    }
+
+    public static String getParticipant(String urlServer, int userId) {
+        return urlServer + user + "participant/" + userId;
+    }
+
+    public static String getUsers(String urlServer, int eventId) {
+        return urlServer + event + user + eventId;
+    }
+
+    public static String getUser(String urlServer, int userId) {
+        return urlServer + user + userId;
     }
 }

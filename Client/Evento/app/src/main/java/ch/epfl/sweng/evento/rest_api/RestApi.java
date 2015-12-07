@@ -59,8 +59,7 @@ public class RestApi {
      */
     public void getEvent(final GetEventCallback callback) {
         //mNoEvent += 1;
-        UrlMakerEvent url = new UrlMakerEvent();
-        String restUrl = url.get(mUrlServer, mNoEvent);
+        String restUrl = UrlMaker.get(mUrlServer, mNoEvent);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String response) {
@@ -80,8 +79,7 @@ public class RestApi {
     }
 
     public void getAll(final GetEventListCallback callback) {
-        UrlMakerEvent url = new UrlMakerEvent();
-        String restUrl = url.getAll(mUrlServer);
+        String restUrl = UrlMaker.getAll(mUrlServer);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String response) {
@@ -99,8 +97,7 @@ public class RestApi {
     }
 
     public void getParticipant(final GetUserListCallback callback, int idEvent) {
-        UrlMakerUser url = new UrlMakerUser();
-        String restUrl = url.get(mUrlServer, idEvent);
+        String restUrl = UrlMaker.getUsers(mUrlServer, idEvent);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String response) {
@@ -122,8 +119,7 @@ public class RestApi {
     }
 
     public void getUser(final GetUserCallback callback, int idUser) {
-        UrlMakerUser url = new UrlMakerUser("user/");
-        String restUrl = url.get(mUrlServer, idUser);
+        String restUrl = UrlMaker.getUser(mUrlServer, idUser);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String response) {
@@ -145,9 +141,7 @@ public class RestApi {
 
 
     public void getHostedEvent(final GetEventListCallback callback, int idUser) {
-        final String accessToHostedEvent = "user/creator/";
-        UrlMakerUser url = new UrlMakerUser(accessToHostedEvent);
-        String restUrl = url.get(mUrlServer, idUser);
+        String restUrl = UrlMaker.getCreator(mUrlServer, idUser);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String response) {
@@ -166,9 +160,7 @@ public class RestApi {
     }
 
     public void getMatchedEvent(final GetEventListCallback callback, int idUser) {
-        final String accessToMatchedEvent = "user/participant/";
-        UrlMakerUser url = new UrlMakerUser(accessToMatchedEvent);
-        String restUrl = url.get(mUrlServer, idUser);
+        String restUrl = UrlMaker.getParticipant(mUrlServer, idUser);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String response) {
@@ -189,7 +181,7 @@ public class RestApi {
     public void getMultiplesEventByDate(GregorianCalendar startDate,
                                         GregorianCalendar endDate,
                                         final GetEventListCallback callback) {
-        String restUrl = UrlMakerEvent.getByDate(mUrlServer, startDate, endDate);
+        String restUrl = UrlMaker.getByDate(mUrlServer, startDate, endDate);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String result) {
@@ -213,8 +205,7 @@ public class RestApi {
                               double longitude,
                               double radius,
                               final GetEventListCallback callback) {
-        UrlMakerEvent url = new UrlMakerEvent();
-        String restUrl = url.getWithFilter(mUrlServer, startTime, endTime, latitude, longitude, radius);
+        String restUrl = UrlMaker.getWithFilter(mUrlServer, startTime, endTime, latitude, longitude, radius);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String result) {
@@ -274,7 +265,7 @@ public class RestApi {
      *                 message for the user
      */
     public void postEvent(Event event, final HttpResponseCodeCallback callback) {
-        String restUrl = UrlMakerEvent.post(mUrlServer);
+        String restUrl = UrlMaker.post(mUrlServer);
         String requestBody = Serializer.event(event);
         new PostTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
             public void onTaskComplete(String response) {
@@ -285,8 +276,7 @@ public class RestApi {
 
     // Post a user
     public void postUser(User user, final GetUserCallback callback) {
-        UrlMakerUser url = new UrlMakerUser("user/");
-        String restUrl = url.post(mUrlServer);
+        String restUrl = UrlMaker.postUser(mUrlServer);
         Log.d(TAG, "restURL: " + restUrl);
         String requestBody = Serializer.user(user);
         /*new PostUserTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
@@ -320,7 +310,7 @@ public class RestApi {
      * @param callback : manage failure and success case
      */
     public void updateEvent(Event event, final HttpResponseCodeCallback callback) {
-        String restUrl = UrlMakerEvent.put(mUrlServer, event.getID());
+        String restUrl = UrlMaker.put(mUrlServer, event.getID());
         String requestBody = Serializer.event(event);
 
         new PutTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
@@ -331,8 +321,7 @@ public class RestApi {
     }
 
     public void addParticipant(int idEvent, int idUser, final HttpResponseCodeCallback callback) {
-        UrlMakerEvent url = new UrlMakerEvent();
-        String restUrl = UrlMakerEvent.putParticipant(mUrlServer, idEvent, idUser);
+        String restUrl = UrlMaker.putParticipant(mUrlServer, idEvent, idUser);
         String requestBody = "empty";
 
         new PutTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
@@ -343,8 +332,7 @@ public class RestApi {
     }
 
     public void removeParticipant(int idEvent, int idUser, final HttpResponseCodeCallback callback) {
-        UrlMakerEvent url = new UrlMakerEvent();
-        String restUrl = UrlMakerEvent.deleteParticipant(mUrlServer, idEvent, idUser);
+        String restUrl = UrlMaker.deleteParticipant(mUrlServer, idEvent, idUser);
 
         new DeleteTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             public void onTaskComplete(String response) {
@@ -362,10 +350,9 @@ public class RestApi {
     public void deleteEvent(int id, final HttpResponseCodeCallback callback) {
         String restUrl = UrlMaker.delete(mUrlServer, id);
         Log.d(TAG, "deleteEvent : url : " + restUrl);
-        Log.d(TAG, "deleteEvent : get :" + UrlMakerEvent.get(mUrlServer, id));
-        Log.d(TAG, "deleteEvent : post :" + UrlMakerEvent.post(mUrlServer));
-        Log.d(TAG, "deleteEvent : comment :" + UrlMakerEvent.postComment(mUrlServer));
-        restUrl = "https://protected-hamlet-4797.herokuapp.com/events/1";
+        Log.d(TAG, "deleteEvent : get :" + UrlMaker.get(mUrlServer, id));
+        Log.d(TAG, "deleteEvent : post :" + UrlMaker.post(mUrlServer));
+        Log.d(TAG, "deleteEvent : comment :" + UrlMaker.postComment(mUrlServer));
         new DeleteTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             public void onTaskComplete(String response) {
                 callback.onSuccess(response);

@@ -205,13 +205,13 @@ public class CreatingEventActivity extends AppCompatActivity
                     picture = ((BitmapDrawable) drawable).getBitmap();
                 }
 
-                // mock creator and random id (ID will be assigned server side)
+                // mock getCreator and random id (ID will be assigned server side)
                 Random rand = new Random();
                 int id = rand.nextInt(10000);
 
                 // event creation and send
 /*                Event e = new Event(id, titleString, descriptionString, latitude,
-                        longitude, addressString, creator,
+                        longitude, addressString, getCreator,
                         mTag, startDate, endDate, picture);*/
 //TODO Concerning the Event abovd: Either change contructor or change the event that is created here!
                 Event e = new Event(id, titleString, descriptionString, latitude,
