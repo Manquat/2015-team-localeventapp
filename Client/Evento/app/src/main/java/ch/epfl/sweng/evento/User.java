@@ -1,18 +1,9 @@
 package ch.epfl.sweng.evento;
 
 
-import android.os.Build;
-import android.util.Log;
-
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-
-import java.util.HashSet;
-import java.util.Set;
-
 import ch.epfl.sweng.evento.event.Event;
 
 
@@ -23,10 +14,7 @@ public class User {
 
     private static final String TAG = "User";
 
-
-    //A unique Id for each Google Account
     private int mUserId;
-    private String mGoogleId;
     private String mUsername;
     private String mEmail;
 
@@ -41,24 +29,10 @@ public class User {
 	    mMatchedEvent = new ArrayList<>();
 	    mHostedEvent = new ArrayList<>();
 	}
-	
-	public User(String username,List<Event> matchedEvent, List<Event> hostedEvent){
-	    mUsername = username;
-	    mMatchedEvent = (matchedEvent);
-	    mHostedEvent = (hostedEvent);
-    }
-
-
-    public User(String mGoogleId, String mUsername, String mEmail) {
-        this.mGoogleId = mGoogleId;
-        this.mUsername = mUsername;
-        this.mEmail = mEmail;
-    }
 
     public List<Event> getMatchedEvent() { return mMatchedEvent;}
 
     public List<Event> getHostedEvent() { return mHostedEvent; }
-
 
     public int getUserId() {
         return mUserId;
@@ -70,31 +44,6 @@ public class User {
 
     public String getEmail() {
         return mEmail;
-    }
-
-
-    public String getGoogleId() {
-        return mGoogleId;
-    }
-
-
-
-
-    public void setUserId(int id) {
-        this.mUserId = id;
-    }
-
-    public void setGoogleId(String mUserId) {
-        this.mGoogleId = mUserId;
-    }
-
-    public boolean addHostedEvent(Event event) {
-        final String message = "Cannot add a null event as a hosted event";
-        if (event != null) {
-            return mHostedEvent.add(event);
-        } else {
-            throw new NullPointerException(message);
-        }
     }
 
     public boolean addMatchedEvent(Event event) {
@@ -127,7 +76,5 @@ public class User {
         return mUserId;
     }
 
-    /*public void setmStartOfMembership(Event.CustomDate mStartOfMembership) {
-        this.mStartOfMembership = mStartOfMembership;
-    }*/
+
 }
