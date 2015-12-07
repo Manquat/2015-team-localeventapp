@@ -4,6 +4,8 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,10 +15,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.rest_api.Parser;
+import ch.epfl.sweng.evento.rest_api.Serializer;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -28,10 +33,39 @@ import static junit.framework.Assert.assertEquals;
 @LargeTest
 public class ParserTest {
 
+    private static final int MOCK_USER_ID = 1;
+    private static String TAG = "ParserTest";
+    private static GregorianCalendar startDate = new GregorianCalendar(2000,2,3, 4, 5, 0);
+    private static GregorianCalendar endDate = new GregorianCalendar(2000,2,3, 6, 5, 0);
+
+    private static final Event event = new Event(0, "", "", 0, 0, "", 0, new HashSet<String>(),
+            startDate, endDate);
+
     @Before
     public void init() {
+        startDate.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+        endDate.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
+        Settings.INSTANCE.setUser(new User(MOCK_USER_ID, "MockJo", "mockjo@plop.ch"));
+    }
+
+    @Test
+    public void serializerMilliToHHMMSSTest() {
+        long l = 7200000;
+        String s = Serializer.fromMillisToHHMMSS(l);
+        assertEquals("02:00:00", s);
+    }
+
+
+    @Test
+    public void serializerDurationTest() throws JSONException {
+        String s = Serializer.event(event);
+        JSONObject jsonObject = new JSONObject(s);
+        assertEquals("duration : ", "02:00:00", jsonObject.getString("duration"));
+
 
     }
+
+
 
     @Test
     public void fromStringToCalendarWithMillisecondTest() throws ParseException {

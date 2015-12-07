@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 
 import ch.epfl.sweng.evento.event.Event;
@@ -67,6 +68,7 @@ public class RestApiTest {
             Event.samplePicture(),
             new HashSet<User>());
 
+
     private static final String eventStringSent = "{\n"
             //+ "  \"id\": 17005,\n"
             + "  \"Event_name\": \"My football game\",\n"
@@ -79,6 +81,7 @@ public class RestApiTest {
             + "  \"longitude\": 6.580847,\n"
             + "  \"address\": \"Terrain de football de Dorigny\",\n"
             + "  \"date\":\"" + event.getProperDateString() + "\",\n"
+            + "  \"duration\":\"00:00:00\",\n"
             + "  \"owner\":\""+MOCK_USER_ID+"\"\n"
             + "}\n";
 
@@ -166,5 +169,8 @@ public class RestApiTest {
         junit.framework.Assert.assertEquals("title", event.getTitle(), eventArrayList.get(0).getTitle());
         junit.framework.Assert.assertEquals("description", event.getDescription(), eventArrayList.get(0).getDescription());
     }
+
+
+
 
 }

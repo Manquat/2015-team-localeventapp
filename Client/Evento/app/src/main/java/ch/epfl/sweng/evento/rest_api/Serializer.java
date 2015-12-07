@@ -9,6 +9,7 @@ import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 
+import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 /**
@@ -25,6 +26,7 @@ public final class Serializer {
 
     public static String event(Event e) {
         long duration = e.getEndDate().getTimeInMillis() - e.getStartDate().getTimeInMillis();
+
 
         String res = "{\n"
                 + "  \"Event_name\": \"" + e.getTitle() + "\",\n"
@@ -67,10 +69,11 @@ public final class Serializer {
     }
 
     public static String fromMillisToHHMMSS(long millis){
-        long millisNonNegativ = min(millis, 0);
-        String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millisNonNegativ),
-                TimeUnit.MILLISECONDS.toMinutes(millisNonNegativ) % TimeUnit.HOURS.toMinutes(1),
-                TimeUnit.MILLISECONDS.toSeconds(millisNonNegativ) % TimeUnit.MINUTES.toSeconds(1));
+        Log.d(TAG, "time : " + Long.toString(millis));
+        long millisNonNegative = max(millis, 0);
+        String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millisNonNegative),
+                TimeUnit.MILLISECONDS.toMinutes(millisNonNegative) % TimeUnit.HOURS.toMinutes(1),
+                TimeUnit.MILLISECONDS.toSeconds(millisNonNegative) % TimeUnit.MINUTES.toSeconds(1));
         Log.d(TAG, "hh:mm:ss " + hms);
         return hms;
     }
