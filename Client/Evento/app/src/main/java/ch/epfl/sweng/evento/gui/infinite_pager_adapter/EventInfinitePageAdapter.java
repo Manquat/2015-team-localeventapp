@@ -1,6 +1,7 @@
 package ch.epfl.sweng.evento.gui.infinite_pager_adapter;
 
 import android.app.Activity;
+import android.graphics.Point;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
