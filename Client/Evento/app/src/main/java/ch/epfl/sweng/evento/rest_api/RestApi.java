@@ -249,6 +249,7 @@ public class RestApi {
         String requestBody = Serializer.comment(Settings.INSTANCE.getUser().getUserId(),
                 Settings.INSTANCE.getUser().getUsername(),
                 EventId, commentBody);
+        Log.d(TAG, "postComment : url : " + restUrl);
         new PostTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String result) {

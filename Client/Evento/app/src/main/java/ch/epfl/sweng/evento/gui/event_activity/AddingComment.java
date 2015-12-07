@@ -69,7 +69,7 @@ public class AddingComment implements OnClickListener, Refreshable {
                 mRestApi.postComment(mCurrentEventId, message, new HttpResponseCodeCallback() {
                     @Override
                     public void onSuccess(String httpResponseCode) {
-                        if (httpResponseCode.equals(SUCCESSFULLY_POST_COMMENT)) {
+                        if (httpResponseCode != null && httpResponseCode.equals(SUCCESSFULLY_POST_COMMENT)) {
                             Log.d(TAG, "Successful post the comment : " + httpResponseCode);
                             Toast.makeText(mActivity, "Success on posting the comment", Toast.LENGTH_LONG)
                                     .show();
