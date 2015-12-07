@@ -2,9 +2,14 @@ package ch.epfl.sweng.evento.rest_api;
 
 import android.util.Log;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
+
+import static java.lang.Math.min;
 
 /**
  * Created by joachimmuth on 16.10.15.
@@ -19,6 +24,7 @@ public final class Serializer {
     }
 
     public static String event(Event e) {
+        long duration = e.getEndDate().getTimeInMillis() - e.getStartDate().getTimeInMillis();
 
         String res = "{\n"
                 + "  \"Event_name\": \"" + e.getTitle() + "\",\n"
@@ -31,6 +37,7 @@ public final class Serializer {
                 + "  \"longitude\": " + e.getLongitude() + ",\n"
                 + "  \"address\": \"" + e.getAddress() + "\",\n"
                 + "  \"date\":\"" + e.getProperDateString() + "\",\n"
+                + "  \"duration\":\"" + fromMillisToHHMMSS(duration) + "\",\n"
                 + "  \"owner\":\"" + Settings.INSTANCE.getUser().getUserId() + "\"\n"
                 + "}\n";
         return res;
@@ -57,5 +64,14 @@ public final class Serializer {
                 + "\"event\": " + eventId + "\n"
                 + "}\n";
         return res;
+    }
+
+    public static String fromMillisToHHMMSS(long millis){
+        long millisNonNegativ = min(millis, 0);
+        String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millisNonNegativ),
+                TimeUnit.MILLISECONDS.toMinutes(millisNonNegativ) % TimeUnit.HOURS.toMinutes(1),
+                TimeUnit.MILLISECONDS.toSeconds(millisNonNegativ) % TimeUnit.MINUTES.toSeconds(1));
+        Log.d(TAG, "hh:mm:ss " + hms);
+        return hms;
     }
 }
