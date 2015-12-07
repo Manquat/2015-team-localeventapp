@@ -2,6 +2,7 @@ package ch.epfl.sweng.evento.gui.infinite_pager_adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
@@ -10,13 +11,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.gui.ConversationAdapter;
 import ch.epfl.sweng.evento.gui.event_activity.AddingComment;
 import ch.epfl.sweng.evento.gui.event_activity.JoinEvent;
+import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
 /**
  * An infinite page adapter for the event activity
@@ -90,11 +96,21 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         ImageView pictureView = (ImageView) rootView.findViewById(R.id.eventPictureView);
         pictureView.setImageBitmap(currentEvent.getPicture());
 
-        // configure the joint and unjoin button
+        // configure the joint and unJoin button
         Button joinEventButton = (Button) rootView.findViewById(R.id.joinEvent);
         Button unJoinEventButton = (Button) rootView.findViewById(R.id.remove_user_from_event);
 
         JoinEvent.initialize(mActivity, currentEvent.getID(), joinEventButton, unJoinEventButton,
                 listViewOfParticipant);
+
+        // configure the delete event button
+        boolean isTheCurrentUserTheOwner =
+                currentEvent.getCreator() == Settings.INSTANCE.getUser().getUserId();
+        Button deleteEvent = (Button) rootView.findViewById(R.id.delete_event);
+        deleteEvent.setActivated(isTheCurrentUserTheOwner);
+        
+
+        Button updateEvent = (Button) rootView.findViewById(R.id.update_event);
+        unJoinEventButton.setActivated(isTheCurrentUserTheOwner);
     }
 }

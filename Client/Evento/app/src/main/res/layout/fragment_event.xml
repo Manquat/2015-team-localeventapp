@@ -155,11 +155,31 @@
         android:text="@string/createEvent_description"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
+    <Button
+        android:id="@+id/delete_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_columnSpan="2"
+        android:layout_row="9"
+        android:text="@string/event_fragment_delete"
+        android:layout_gravity="start" />
+
+    <Button
+        android:id="@+id/update_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_columnSpan="2"
+        android:layout_gravity="end"
+        android:layout_row="9"
+        android:text="@string/event_fragment_update" />
+
     <ExpandableListView
         android:id="@+id/list_participant_exp"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_row="9"
+        android:layout_row="10"
         android:layout_columnSpan="2"
         android:layout_column="0" />
 
@@ -169,7 +189,7 @@
         android:layout_height="wrap_content"
         android:layout_column="0"
         android:layout_columnSpan="2"
-        android:layout_row="10"
+        android:layout_row="11"
         android:text="@string/event_fragment_remove"
         android:layout_gravity="start" />
 
@@ -180,7 +200,7 @@
         android:layout_column="0"
         android:layout_columnSpan="2"
         android:layout_gravity="end"
-        android:layout_row="10"
+        android:layout_row="11"
         android:text="@string/event_fragment_join" />
 
 </GridLayout>
