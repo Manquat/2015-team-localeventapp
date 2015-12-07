@@ -66,8 +66,12 @@ def event_detail(request, pk, format=None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        event.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if validate_delete(request, event.owner):
+            event.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
 
 @api_view(['GET'])
 def event_requestdate(request, fromdate, todate, format=None):
@@ -205,7 +209,7 @@ def commented_events(request, pk, format=None):
 @api_view(['GET'])
 def event_detailParticipant(request, pk, format=None):
     """
-    Retrieve, update or delete an event.
+    Get participants of an event
     """
 
     if 'HTTP_TOKEN' not in request.META:
@@ -244,5 +248,22 @@ def validate_user(token):
         return False
 
     return False
+
+def validate_delete(request,owner):
+    """
+    Validate Userid
+    """
+    if 'HTTP_USERID' not in request.META:
+        return False
+    id = request.META['HTTP_USERID']
+    try:
+        user = participant.objects.get(pk=id)
+    except participant.DoesNotExist:
+        return False
+
+    if user.pk == owner.pk:
+        return True
+    else:
+        return False
 
 

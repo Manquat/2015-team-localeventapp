@@ -14,4 +14,4 @@ class EventSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ('body','creator_name', 'creator', 'event')
+        fields = ('id','body','creator_name', 'creator', 'event')
