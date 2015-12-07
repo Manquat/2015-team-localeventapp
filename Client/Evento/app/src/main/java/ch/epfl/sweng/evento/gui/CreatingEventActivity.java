@@ -183,13 +183,18 @@ public class CreatingEventActivity extends AppCompatActivity
 
                 // default value completion
                 if (mStartDate == null) {
-                    mStartDate = new GregorianCalendar(1990, 12, 16, 0, 0);
+                    mStartDate = new GregorianCalendar();
                 }
                 if (mEndDate == null) {
-                    mEndDate = new GregorianCalendar(1992, 1, 16, 0, 0);
+                    mEndDate = new GregorianCalendar();
+                }
+
+                if(mEndDate.compareTo(mStartDate) < 0){
+                    Toast.makeText(getApplicationContext(), "Please pick a date of end after the starting time ", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 if (titleString.isEmpty()) {
-                    titleString = "No title";
+                    titleString = "No Title";
                 }
                 if (descriptionString.isEmpty()) {
                     descriptionString = "No description";
@@ -209,10 +214,6 @@ public class CreatingEventActivity extends AppCompatActivity
                 int id = rand.nextInt(10000);
 
                 // event creation and send
-/*                Event e = new Event(id, titleString, descriptionString, latitude,
-                        longitude, addressString, getCreator,
-                        mTag, mStartDate, mEndDate, picture);*/
-//TODO Concerning the Event abovd: Either change contructor or change the event that is created here!
                 Event e = new Event(id, titleString, descriptionString, latitude,
                         longitude, addressString, Settings.INSTANCE.getUser().getUserId(),
                         mTag, mStartDate, mEndDate, picture);
