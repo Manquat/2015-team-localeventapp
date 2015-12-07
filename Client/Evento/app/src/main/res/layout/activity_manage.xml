@@ -4,11 +4,52 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context=".gui.ManageActivity">
+    tools:context=".gui.ManageActivity"
+    android:weightSum = "1">
 
-    <ListView
-        android:id="@+id/listViewManage"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Not properly affected"
+                android:id="@+id/Welcome"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="1"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="2dp"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/findeventsbelow"
+                android:id="@+id/findeventsbelow"
+                android:layout_gravity="top|left|center_vertical"
+                android:layout_weight="1"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listViewManage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight = "5"
+            android:layout_gravity="top" />
+
+    </LinearLayout>
 
 </RelativeLayout>

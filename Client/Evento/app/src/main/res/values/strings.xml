@@ -47,7 +47,7 @@
     <string name="createEvent_description">description</string>
     <string name="eventFragment_join">Join the event !</string>
     <string name="event_fragment_join">Join the event !</string>
-    <string name="event_fragment_remove">Removed from the event</string>
+    <string name="event_fragment_remove">Leave the event !</string>
     <string name="addPictureEvent">Nothing to show</string>
     <string name="search_startDate">Start Date</string>
     <string name="search_endDate">End Date</string>
@@ -72,6 +72,8 @@
     <string name="searchDistance">In area of</string>
     <string name="searchArea">radius in km</string>
     <string name="menu_profile">Profile</string>
+    <string name="findeventsbelow">Down below you can see the events you are hosting as well as the events you joined.</string>
+
 
 
     <string name="eventFragment_conversation">Conversation</string>

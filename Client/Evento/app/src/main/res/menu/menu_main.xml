@@ -37,12 +37,6 @@
         android:icon="@drawable/ic_action_user"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/user_profile"
-        android:orderInCategory="300"
-        android:title="@string/menu_profile"
-        android:icon="@drawable/ic_action_user"
-        app:showAsAction="ifRoom" />
 
 
 </menu>
