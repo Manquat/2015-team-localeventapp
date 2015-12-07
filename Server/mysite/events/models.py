@@ -17,6 +17,7 @@ class Event(models.Model):
     tags = models.CharField(max_length=200, default='Foot!')
     image = models.TextField(default='No Image')
     participants = models.ManyToManyField(participant, blank=True)
+
     def __unicode__(self):
         return self.Event_name
 

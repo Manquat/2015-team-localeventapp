@@ -63,7 +63,6 @@ public class LoginActivity extends AppCompatActivity implements
 
         Intent intent = getIntent();
         String logout = intent.getStringExtra(MainActivity.LOGOUT_TAG);
-        Log.v(MainActivity.LOGOUT_TAG,logout);
         if(logout == "logout"){
             logout();
         }

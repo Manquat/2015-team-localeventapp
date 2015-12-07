@@ -69,6 +69,7 @@ def event_detail(request, pk, format=None):
         event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 @api_view(['GET'])
 def event_requestdate(request, fromdate, todate, format=None):
     """

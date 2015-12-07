@@ -14,7 +14,6 @@ public enum Settings {
     }
 
     public static String getServerUrl() {
-        //return "http://128.179.177.242:8000/";
         return "https://protected-hamlet-4797.herokuapp.com/";
     }
 

@@ -9,12 +9,19 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import java.util.Arrays;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+
+
+import ch.epfl.sweng.evento.User;
 
 import ch.epfl.sweng.evento.Comment;
 import ch.epfl.sweng.evento.event.Event;
@@ -45,21 +52,16 @@ public class Parser {
             Log.e(TAG, "Date not correctly parsed", e);
         }
 
-        try {
-            return new Event(jsonObject.getInt("id"),
-                    jsonObject.getString("Event_name"),
-                    jsonObject.getString("description"),
-                    jsonObject.getDouble("latitude"),
-                    jsonObject.getDouble("longitude"),
-                    jsonObject.getString("address"),
-                    jsonObject.getString("creator"),
-                    new HashSet<String>(),
-                    startDate,
-                    endDate);
-
-        } catch (IllegalArgumentException e) {
-            throw new JSONException("Invalid question structure");
-        }
+        return new Event(jsonObject.getInt("id"),
+                jsonObject.getString("Event_name"),
+                jsonObject.getString("description"),
+                jsonObject.getDouble("latitude"),
+                jsonObject.getDouble("longitude"),
+                jsonObject.getString("address"),
+                jsonObject.getString("creator"),
+                new HashSet<String>(Arrays.asList(json.getString("tags").split(";"))),
+                startDate,
+                endDate);
     }
 
     private static Comment parseJsonToComment(JSONObject jsonObject) {
