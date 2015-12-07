@@ -1,7 +1,9 @@
 package ch.epfl.sweng.evento.gui;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -23,6 +25,7 @@ import java.util.Set;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.gui.event_activity.EventActivity;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
@@ -38,16 +41,21 @@ public class UserProfileActivity extends AppCompatActivity implements
 
     private static final String TAG = "UserProfileActivity";
 
+    private Activity mActivity;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_userprofile);
 
+        //Show Name and Email on Profile page.
+        TextView UsernameView = (TextView) (findViewById(R.id.Username));
+        UsernameView.setText("Username : " + Settings.INSTANCE.getUser().getUsername());
+        TextView EmailView = (TextView) (findViewById(R.id.Email));
+        EmailView.setText("Email Address : " + Settings.INSTANCE.getUser().getEmail());
 
-        //TODO Get users hosted events, save in settings and show down below
         int UserId = Settings.INSTANCE.getUser().getUserId();
-
         RestApi restApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
 
         restApi.getHostedEvent(new GetEventListCallback() {
@@ -89,30 +97,44 @@ public class UserProfileActivity extends AppCompatActivity implements
         hostedListView.setAdapter(hostedAdapter);
 
 
-        TextView UsernameView = (TextView) (findViewById(R.id.Username));
-        UsernameView.setText("Username : " + Settings.INSTANCE.getUser().getUsername());
-        TextView EmailView = (TextView) (findViewById(R.id.Email));
-        EmailView.setText("Email Adress : " + Settings.INSTANCE.getUser().getEmail());
-
-
-        /*hostedListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        hostedListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
-                                    int position, long id) {
+                                    final int position, long id) {
                 final String item = (String) parent.getItemAtPosition(position);
                 view.animate().setDuration(2000).alpha(0)
                         .withEndAction(new Runnable() {
                             @Override
                             public void run() {
-                                hostedList.remove(item);
-                                hostedAdapter.notifyDataSetChanged();
-                                view.setAlpha(1);
+                                Intent intent = new Intent(mActivity, EventActivity.class);
+                                intent.putExtra(EventActivity.CURRENT_EVENT_KEY, Settings.INSTANCE.getUser().getHostedEvent().get(position).getID());
+                                mActivity.startActivity(intent);
                             }
                         });
             }
 
-        });*/
+        });
+
+        matchedListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view,
+                                    final int position, long id) {
+                final String item = (String) parent.getItemAtPosition(position);
+                view.animate().setDuration(2000).alpha(0)
+                        .withEndAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(mActivity, EventActivity.class);
+                                intent.putExtra(EventActivity.CURRENT_EVENT_KEY, Settings.INSTANCE.getUser().getMatchedEvent().get(position).getID());
+                                mActivity.startActivity(intent);
+                            }
+                        });
+            }
+
+        });
+
     }
 
 
