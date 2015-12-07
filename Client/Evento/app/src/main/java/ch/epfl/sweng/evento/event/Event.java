@@ -148,7 +148,7 @@ public class Event implements ClusterItem {
         mParticipants.remove(participant);
     }
 
-    private boolean checkIfParticipantIsIn(User participant){
+    public boolean checkIfParticipantIsIn(User participant){
         return mParticipants.contains(participant);
     }
 
@@ -356,6 +356,8 @@ public class Event implements ClusterItem {
                 "AQ35AwUM/AMAEPsDABL8BAQpAAAACQAD+Sb7AwAJAQMAE/wDAQ35AwUM/AMAEPsDABL8BAQpAAAA " +
                 "yAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAAAE=";
     }
+
+
 }
 
 

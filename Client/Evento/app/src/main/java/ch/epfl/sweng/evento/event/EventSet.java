@@ -284,7 +284,7 @@ public class EventSet {
                 "The Event doesn't exist or wasn't there",
                 0.0, 0.0,
                 "",
-                1,
+                0,
                 new HashSet<String>(),
                 new GregorianCalendar(),
                 new GregorianCalendar());

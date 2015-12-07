@@ -25,6 +25,7 @@ import ch.epfl.sweng.evento.rest_api.RestApi;
 
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.rest_api.callback.GetUserCallback;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
@@ -123,6 +124,25 @@ public class LoginActivity extends AppCompatActivity implements
                 String idToken = acct.getIdToken();
                 Log.d(TAG, "idToken:" + idToken);
                 Settings.INSTANCE.setIdToken(idToken);
+
+                String personName = acct.getDisplayName();
+                String personEmail = acct.getEmail();
+                String personId = acct.getId();
+                User user = new User(personId, personName, personEmail);
+                Settings.INSTANCE.setUser(user);
+                RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
+
+                restApi.postUser(user, new GetUserCallback() {
+                    @Override
+                    public void onDataReceived(User user) {
+                        Settings.INSTANCE.setUser(user);
+                        Log.d(TAG, "Attributed UserId: " + Settings.INSTANCE.getUser().getUserId());
+                        // assert submission
+                        Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "User information sent to server");
+                    }
+                });
+
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             } else {
@@ -162,16 +182,17 @@ public class LoginActivity extends AppCompatActivity implements
                 String personName = acct.getDisplayName();
                 String personEmail = acct.getEmail();
                 String personId = acct.getId();
-                User u = new User(personId, personName, personEmail);
-                Settings.INSTANCE.setUser(u);
-                Log.d(TAG, Settings.INSTANCE.getUser().getUsername());
-                Log.d(TAG, Integer.toString(Settings.INSTANCE.getUser().getID()));
-                Log.d(TAG, Settings.INSTANCE.getUser().getEmail());
+                User user = new User(personId, personName, personEmail);
+                Settings.INSTANCE.setUser(user);
+
+
                 RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
 
-                restApi.postUser(u, new HttpResponseCodeCallback() {
+                restApi.postUser(user, new GetUserCallback() {
                     @Override
-                    public void onSuccess(String response) {
+                    public void onDataReceived(User user) {
+                        Settings.INSTANCE.setUser(user);
+                        Log.d(TAG, "Attributed UserId: " + Settings.INSTANCE.getUser().getUserId());
                         // assert submission
                         Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "User information sent to server");

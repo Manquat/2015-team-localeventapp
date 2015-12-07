@@ -163,12 +163,12 @@ public class ContentFragment extends Fragment implements Refreshable {
         for (int yPos = 0, countEvent = 0; countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; yPos++) {
             for (int xPos = 0; xPos < mNumberOfColumn && countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; xPos++, countEvent++) {
                 final MyView tView = new MyView(mView.getContext(), xPos, yPos);
-                final int spanningView = spanning;
+                final int count = countEvent;
                 tView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(mActivity, EventActivity.class);
-                        intent.putExtra(EventActivity.KEYCURRENTEVENT, mEvents.get(tView.getIdX() + tView.getIdY() * mNumberOfColumn-spanningView).getID());
+                        intent.putExtra(EventActivity.KEYCURRENTEVENT, mEvents.get(count).getID());
                         mActivity.startActivity(intent);
                     }
                 });

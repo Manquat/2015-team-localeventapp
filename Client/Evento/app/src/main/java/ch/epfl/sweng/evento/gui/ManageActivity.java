@@ -17,6 +17,7 @@ import ch.epfl.sweng.evento.list_view.ListEntryAdapter;
 
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
 public class ManageActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -37,18 +38,39 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
         mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
         mListView=(ListView)findViewById(R.id.listViewManage);
 
+        mHostedEvent = new ArrayList<Event>();;
         mItems.add(new ListEntryAdapter.Section("Hosted Event"));
-        for (Event event : mHostedEvent) {
-            mItems.add(new ListEntryAdapter.Entry(event.getTitle(), event.getDescription()));
-        }
+        mRestAPI.getHostedEvent(new GetEventListCallback() {
+            public void onEventListReceived(List<Event> eventArrayList) {
+                if (eventArrayList != null) {
+                    mHostedEvent = eventArrayList;
+                    int i=1;
+                    for (Event event : mHostedEvent) {
+                        mItems.add(new ListEntryAdapter.Entry(Integer.toString(i++) + "/ " + event.getTitle(), "        " + event.getDescription()));
+                    }
+                    mItems.add(new ListEntryAdapter.Section("Matched Event"));
+                    mRestAPI.getMatchedEvent(new GetEventListCallback() {
+                        public void onEventListReceived(List<Event> eventArrayList) {
+                            if (eventArrayList != null) {
+                                mMatchedEvent = eventArrayList;
+                                int i = 0;
+                                for (Event event : mMatchedEvent) {
+                                    mItems.add(new ListEntryAdapter.Entry(Integer.toString(i++) + "/ " +event.getTitle(), "        " + event.getDescription()));
+                                }
+                                ListEntryAdapter adapter = new ListEntryAdapter(mActivity, mItems);
+                                mListView.setAdapter(adapter);
+                            }
+                        }
 
-        mItems.add(new ListEntryAdapter.Section("Matched Event"));
-        for (Event event : mMatchedEvent) {
-            mItems.add(new ListEntryAdapter.Entry(event.getTitle(), event.getDescription()));
-        }
+                    }, Settings.INSTANCE.getUser().getUserId());
 
-        ListEntryAdapter adapter = new ListEntryAdapter(this, mItems);
-        mListView.setAdapter(adapter);
+                    ListEntryAdapter adapter = new ListEntryAdapter(mActivity, mItems);
+                    mListView.setAdapter(adapter);
+                }
+            }
+
+        }, Settings.INSTANCE.getUser().getUserId());
+
         mListView.setOnItemClickListener(this);
     }
 
@@ -58,6 +80,7 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
 
         ListEntryAdapter.Entry item = (ListEntryAdapter.Entry)mItems.get(position);
         Toast.makeText(this, "You clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
+
     }
 
 

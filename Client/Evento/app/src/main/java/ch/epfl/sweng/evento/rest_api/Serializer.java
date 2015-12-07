@@ -2,6 +2,7 @@ package ch.epfl.sweng.evento.rest_api;
 
 import android.util.Log;
 
+import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 
@@ -23,14 +24,14 @@ public final class Serializer {
                 + "  \"Event_name\": \"" + e.getTitle() + "\",\n"
                 + "  \"tags\": \"" + e.getTagsString() + "\",\n"
                 + "  \"image\": \n"
-                + "    \"" + e.getDescription() + "\" ,\n"
+                + "    \"" + e.getPictureAsString() + "\" ,\n"
                 + "  \"description\": \n"
                 + "    \"" + e.getDescription() + "\" ,\n"
                 + "  \"latitude\": " + e.getLatitude() + ",\n"
                 + "  \"longitude\": " + e.getLongitude() + ",\n"
-                + "  \"address\": \"" + e.getAddress() + "\", \n "
-                + " \"date\" : \"" + e.getProperDateString() + "\", \n "
-                + "  \"owner\": " + e.getCreator() + ", \n"
+                + "  \"address\": \"" + e.getAddress() + "\",\n"
+                + "  \"date\":\"" + e.getProperDateString() + "\",\n"
+                + "  \"owner\":\"" + Settings.INSTANCE.getUser().getUserId() + "\"\n"
                 + "}\n";
         return res;
     }
@@ -40,7 +41,7 @@ public final class Serializer {
                 //+ "  \"id\": "  + ",\n"
                 + "  \"name\": \"" + u.getUsername() + "\", \n"
                 + "  \"email\": \"" + u.getEmail() + "\", \n"
-                + "  \"googleid\": \"" + u.getGoogleID() + "\" \n"
+                + "  \"googleid\": \"" + u.getGoogleId() + "\" \n"
                 + "}\n";
 
         Log.d(TAG, "Information sent to Server: " + res);

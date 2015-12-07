@@ -18,11 +18,14 @@ import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.rest_api.callback.GetCommentListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventCallback;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
+import ch.epfl.sweng.evento.rest_api.callback.GetUserCallback;
+import ch.epfl.sweng.evento.rest_api.callback.GetUserListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.callback.RestTaskCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 import ch.epfl.sweng.evento.rest_api.task.DeleteTask;
 import ch.epfl.sweng.evento.rest_api.task.GetTask;
+import ch.epfl.sweng.evento.rest_api.task.PostAndGetUserWithIDTask;
 import ch.epfl.sweng.evento.rest_api.task.PostTask;
 import ch.epfl.sweng.evento.rest_api.task.PutTask;
 import ch.epfl.sweng.evento.User;
@@ -64,7 +67,7 @@ public class RestApi {
                 if (response != null) {
                     try {
                         JSONObject JsonResponse = new JSONObject(response);
-                        event = ParserEvent.parseFromJSON(JsonResponse);
+                        event = Parser.parseFromJSON(JsonResponse);
                     } catch (JSONException e) {
                         Log.e(TAG, "Exception thrown in getEvent", e);
                     }
@@ -84,7 +87,7 @@ public class RestApi {
                 List<Event> eventArrayList = null;
                 if (response != null) {
                     try {
-                        eventArrayList = ParserEvent.parseFromJSONMultiple(response);
+                        eventArrayList = Parser.parseFromJSONMultiple(response);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -94,16 +97,17 @@ public class RestApi {
         }).execute();
     }
 
- public void getUser(final GetEventListCallback callback, int idEvent) {
+    public void getParticipant(final GetUserListCallback callback, int idEvent) {
         UrlMakerUser url = new UrlMakerUser();
         String restUrl = url.get(mUrlServer, idEvent);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String response) {
+                Log.d(TAG, response);
                 List<User> user = null;
                 if (response != null) {
                     try {
-                        user = ParserUser.parseUserFromJSONMultiple(response);
+                        user = Parser.parseUserFromJSONMultiple(response);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -113,6 +117,29 @@ public class RestApi {
             }
         }).execute();
     }
+
+    public void getUser(final GetUserCallback callback, int idUser) {
+        UrlMakerUser url = new UrlMakerUser("user/");
+        String restUrl = url.get(mUrlServer, idUser);
+        new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
+            @Override
+            public void onTaskComplete(String response) {
+                Log.d(TAG, response);
+                User user = null;
+                if (response != null) {
+                    try {
+                        JSONObject JsonResponse = new JSONObject(response);
+                        user = Parser.parseUserFromJSON(JsonResponse);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "exception in JSON parser");
+                    }
+
+                }
+                callback.onDataReceived(user);
+            }
+        }).execute();
+    }
+
 
     public void getHostedEvent(final GetEventListCallback callback, int idUser) {
         final String accessToHostedEvent = "user/creator/";
@@ -124,7 +151,7 @@ public class RestApi {
                 List<Event> event = null;
                 if (response != null) {
                     try {
-                        event = ParserEvent.parseFromJSONMultiple(response);
+                        event = Parser.parseFromJSONMultiple(response);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -139,13 +166,14 @@ public class RestApi {
         final String accessToMatchedEvent = "user/participant/";
         UrlMakerUser url = new UrlMakerUser(accessToMatchedEvent);
         String restUrl = url.get(mUrlServer, idUser);
+        Log.d(TAG, "toto2 " + restUrl);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String response) {
                 List<Event> event = null;
                 if (response != null) {
                     try {
-                        event = ParserEvent.parseFromJSONMultiple(response);
+                        event = Parser.parseFromJSONMultiple(response);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -167,7 +195,7 @@ public class RestApi {
                 List<Event> eventArrayList = null;
                 if (result != null) {
                     try {
-                        eventArrayList = ParserEvent.parseFromJSONMultiple(result);
+                        eventArrayList = Parser.parseFromJSONMultiple(result);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -192,7 +220,7 @@ public class RestApi {
                 List<Event> eventArrayList = null;
                 if (result != null) {
                     try {
-                        eventArrayList= ParserEvent.parseFromJSONMultiple(result);
+                        eventArrayList= Parser.parseFromJSONMultiple(result);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -251,13 +279,33 @@ public class RestApi {
     }
 
     // Post a user
-    public void postUser(User user, final HttpResponseCodeCallback callback) {
-        String restUrl = UrlMaker.post(mUrlServer, "user/");
+    public void postUser(User user, final GetUserCallback callback) {
+        UrlMakerUser url = new UrlMakerUser("user/");
+        String restUrl = url.post(mUrlServer);
         Log.d(TAG, "restURL: " + restUrl);
         String requestBody = Serializer.user(user);
-        new PostTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
+
+        /*new PostUserTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
             public void onTaskComplete(String response) {
                 callback.onSuccess(response);
+            }
+        }).execute();*/
+
+        new PostAndGetUserWithIDTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
+            @Override
+            public void onTaskComplete(String response) {
+                Log.d(TAG, response);
+                User user = null;
+                if (response != null) {
+                    try {
+                        JSONObject JsonResponse = new JSONObject(response);
+                        user = Parser.parseUserFromJSON(JsonResponse);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "Exception thrown in getEvent", e);
+                    }
+
+                }
+                callback.onDataReceived(user);
             }
         }).execute();
     }
@@ -273,6 +321,29 @@ public class RestApi {
         String requestBody = Serializer.event(event);
 
         new PutTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
+            public void onTaskComplete(String response) {
+                callback.onSuccess(response);
+            }
+        }).execute();
+    }
+
+    public void addParticipant(int idEvent, int idUser, final HttpResponseCodeCallback callback) {
+        UrlMakerEvent url = new UrlMakerEvent();
+        String restUrl = UrlMakerEvent.putParticipant(mUrlServer, idEvent, idUser);
+        String requestBody = "empty";
+
+        new PutTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
+            public void onTaskComplete(String response) {
+                callback.onSuccess(response);
+            }
+        }).execute();
+    }
+
+    public void removeParticipant(int idEvent, int idUser, final HttpResponseCodeCallback callback) {
+        UrlMakerEvent url = new UrlMakerEvent();
+        String restUrl = UrlMakerEvent.deleteParticipant(mUrlServer, idEvent, idUser);
+
+        new DeleteTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             public void onTaskComplete(String response) {
                 callback.onSuccess(response);
             }

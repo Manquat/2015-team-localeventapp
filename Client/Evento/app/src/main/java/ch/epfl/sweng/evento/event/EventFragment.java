@@ -51,7 +51,10 @@ public class EventFragment extends Fragment {
         Bundle bundle = getArguments();
         int currentEventID = bundle.getInt(KEYCURRENTEVENT);
         mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3236a57983a9577df19acf749e4a7823aa1c95b3
         mEvent = EventDatabase.INSTANCE.getEvent(currentEventID);
     }
     @Override
@@ -60,7 +63,14 @@ public class EventFragment extends Fragment {
         mRootView = inflater.inflate(R.layout.fragment_event, container, false);
         updateFields();
 
+<<<<<<< HEAD
         return mRootView;
+=======
+        //getParticipant(currentEventID);
+        updateFields(rootView);
+
+        return rootView;
+>>>>>>> 3236a57983a9577df19acf749e4a7823aa1c95b3
     }
 
 
@@ -69,6 +79,7 @@ public class EventFragment extends Fragment {
         mParticipants = new ArrayList<User>();
         mEvent = EventDatabase.INSTANCE.getEvent(signature);
 
+<<<<<<< HEAD
         RestApi restAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
         restAPI.getUser(new GetEventListCallback() {
             public void onUserListReceived(List<User> userArrayList) {
@@ -102,8 +113,9 @@ public class EventFragment extends Fragment {
             public void onUserListReceived(List<User> userArrayList){
 
             }
+=======
+>>>>>>> 3236a57983a9577df19acf749e4a7823aa1c95b3
 
-        }, 8);
 
     }
 
@@ -114,7 +126,6 @@ public class EventFragment extends Fragment {
         TextView endDateView = (TextView) rootView.findViewById(R.id.event_end_date_view);
         TextView addressView = (TextView) rootView.findViewById(R.id.event_address_view);
         TextView descriptionView = (TextView) rootView.findViewById(R.id.event_description_view);
-        TextView participantView = (TextView) rootView.findViewById(R.id.listParticipantView);
 
 
         titleView.setText(mEvent.getTitle());
@@ -123,15 +134,24 @@ public class EventFragment extends Fragment {
         endDateView.setText(mEvent.getEndDateAsString());
         addressView.setText(mEvent.getAddress());
         descriptionView.setText(mEvent.getDescription());
+<<<<<<< HEAD
         setTagExpandableList();
+=======
+>>>>>>> 3236a57983a9577df19acf749e4a7823aa1c95b3
 
         ImageView pictureView = (ImageView) mRootView.findViewById(R.id.eventPictureView);
         pictureView.setImageBitmap(mEvent.getPicture());
+<<<<<<< HEAD
         final Button joinEvent = (Button) mRootView.findViewById(R.id.joinEvent);
+=======
+
+        Button joinEvent = (Button) rootView.findViewById(R.id.joinEvent);
+>>>>>>> 3236a57983a9577df19acf749e4a7823aa1c95b3
         joinEvent.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
+<<<<<<< HEAD
                 MainActivity.getUser(1).addMatchedEvent(mEvent);
                 if(mEvent.addParticipant(MainActivity.getUser(1))) {
                     Toast.makeText(getActivity().getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
@@ -139,14 +159,43 @@ public class EventFragment extends Fragment {
                         joinEvent.setClickable(false);
                     }
                     mRestAPI.updateEvent(mEvent,new HttpResponseCodeCallback() {
+=======
+                if(!mEvent.addParticipant(Settings.INSTANCE.getUser())) {
+                    Log.d(TAG, "addParticipant just returned false");
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
+                    Settings.INSTANCE.getUser().addMatchedEvent(mEvent);
+                    mRestAPI.addParticipant(mEvent.getID(), Settings.INSTANCE.getUser().getUserId(), new HttpResponseCodeCallback() {
+>>>>>>> 3236a57983a9577df19acf749e4a7823aa1c95b3
                         @Override
                         public void onSuccess(String response) {
-                            Log.d("EventFrag.upd.", "Response" + response);
+                            Log.d(TAG, "Response" + response);
                         }
                     });
                 } else {
                     Toast.makeText(getActivity().getApplicationContext(), "Sorry but this event just got completed by another guy.", Toast.LENGTH_SHORT).show();
                 }
+                getActivity().finish();
+            }
+        });
+
+        Button removeUserFromEvent = (Button) rootView.findViewById(R.id.remove_user_from_event);
+        if(mEvent.checkIfParticipantIsIn(Settings.INSTANCE.getUser())){
+            removeUserFromEvent.setVisibility(View.VISIBLE);
+        } else {
+            removeUserFromEvent.setVisibility(View.INVISIBLE);
+        }
+        removeUserFromEvent.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity().getApplicationContext(), "Removed from the event", Toast.LENGTH_SHORT).show();
+                mRestAPI.removeParticipant(mEvent.getID(), Settings.INSTANCE.getUser().getUserId(), new HttpResponseCodeCallback() {
+                    @Override
+                    public void onSuccess(String response) {
+                        Log.d(TAG, "Response" + response);
+                    }
+                });
                 getActivity().finish();
             }
         });

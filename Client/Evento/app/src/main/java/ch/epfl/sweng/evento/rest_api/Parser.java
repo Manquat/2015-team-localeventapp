@@ -52,17 +52,54 @@ public class Parser {
             Log.e(TAG, "Date not correctly parsed", e);
         }
 
-        return new Event(jsonObject.getInt("id"),
-                jsonObject.getString("Event_name"),
-                jsonObject.getString("description"),
-                jsonObject.getDouble("latitude"),
-                jsonObject.getDouble("longitude"),
-                jsonObject.getString("address"),
-                jsonObject.getInt("creator"),
-                new HashSet<String>(Arrays.asList(json.getString("tags").split(";"))),
-                startDate,
-                endDate);
+        try {
+            return new Event(jsonObject.getInt("id"),
+                    jsonObject.getString("Event_name"),
+                    jsonObject.getString("description"),
+                    jsonObject.getDouble("latitude"),
+                    jsonObject.getDouble("longitude"),
+                    jsonObject.getString("address"),
+                    jsonObject.getInt("owner"),
+                    new HashSet<String>(Arrays.asList(json.getString("tags").split(";"))),
+                    startDate,
+                    endDate);
+
+        } catch (IllegalArgumentException e) {
+            throw new JSONException("Invalid question structure");
+        }
     }
+
+    public static User parseUserFromJSON(JSONObject jsonObject) throws JSONException {
+
+        final JSONObject json = jsonObject;
+
+        try {
+            return new User(jsonObject.getInt("id"),
+                    jsonObject.getString("name"),
+                    jsonObject.getString("email")
+            );
+
+        } catch (IllegalArgumentException e) {
+            throw new JSONException("Invalid question structure");
+        }
+    }
+
+    public static List<User> parseUserFromJSONMultiple(String response) throws JSONException {
+        Log.d(TAG, response);
+        ArrayList<User> userArrayList = new ArrayList<>();
+
+        // split received string into multiple JSONable string
+        response = response.replace("},{", "}\n{");
+        response = response.substring(1);
+        String[] responseLines = response.split("\n");
+        int i;
+        for (String line : responseLines) {
+            JSONObject jsonObject = new JSONObject(line);
+            userArrayList.add(parseUserFromJSON(jsonObject));
+        }
+        return userArrayList;
+    }
+
 
     private static Comment parseJsonToComment(JSONObject jsonObject) {
         final JSONObject json = jsonObject;

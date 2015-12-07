@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -33,6 +34,8 @@ public class ParserEvent {
 //            }
 //            tags.add(jsonTags.getString(i));
 //        }
+
+        final JSONObject json = jsonObject;
 
         return null;
     }
