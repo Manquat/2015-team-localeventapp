@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.epfl.sweng.evento.infinite_pager_adapter;
+package ch.epfl.sweng.evento.gui.infinite_pager_adapter;
 
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ch.epfl.sweng.evento.infinite_pager_adapter.internal.Constants;
-import ch.epfl.sweng.evento.infinite_pager_adapter.internal.PageModel;
+import ch.epfl.sweng.evento.gui.infinite_pager_adapter.internal.Constants;
+import ch.epfl.sweng.evento.gui.infinite_pager_adapter.internal.PageModel;
 
-import static ch.epfl.sweng.evento.infinite_pager_adapter.internal.Constants.PAGE_COUNT;
+import static ch.epfl.sweng.evento.gui.infinite_pager_adapter.internal.Constants.PAGE_COUNT;
 
 /**
- * Base class providing the adapter to populate inside of a {@link ch.epfl.sweng.evento.infinite_pager_adapter.InfiniteViewPager}.
+ * Base class providing the adapter to populate inside of a {@link ch.epfl.sweng.evento.gui.infinite_pager_adapter.InfiniteViewPager}.
  * The indication for each page is up the implementation. Meaning that it is up to the implementation what the next
  * and previous page indication is. This is more generic than the regular PagerAdapter
  * implementation, where the pages are indicated by its index and accessed through
@@ -35,7 +35,7 @@ import static ch.epfl.sweng.evento.infinite_pager_adapter.internal.Constants.PAG
  * <p/>
  * When you implement an adapter you must implement the following methods:
  * <ul>
- * <li>{@link ch.epfl.sweng.evento.infinite_pager_adapter.InfinitePagerAdapter#instantiateItem(Object)}</li>
+ * <li>{@link ch.epfl.sweng.evento.gui.infinite_pager_adapter.InfinitePagerAdapter#instantiateItem(Object)}</li>
  * <li>{@link InfinitePagerAdapter#getNextIndicator()}</li>
  * <li>{@link InfinitePagerAdapter#getPreviousIndicator()}</li>
  * </ul>

@@ -20,13 +20,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 
-import ch.epfl.sweng.evento.User;
-import ch.epfl.sweng.evento.rest_api.RestApi;
-
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.User;
+import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.GetUserCallback;
-import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 
@@ -62,6 +60,8 @@ public class LoginActivity extends AppCompatActivity implements
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .addOnConnectionFailedListener(this)
                 .build();
+
+        mGoogleApiClient.disconnect();
 
 
         // The Color Scheme of the sign in button and setup of the OnClickListener to Sign in if clicked.
@@ -120,29 +120,7 @@ public class LoginActivity extends AppCompatActivity implements
             Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
             if (result.isSuccess()) {
-                GoogleSignInAccount acct = result.getSignInAccount();
-                String idToken = acct.getIdToken();
-                Log.d(TAG, "idToken:" + idToken);
-                Settings.INSTANCE.setIdToken(idToken);
-
-                String personName = acct.getDisplayName();
-                String personEmail = acct.getEmail();
-                String personId = acct.getId();
-                User user = new User(personId, personName, personEmail);
-                Settings.INSTANCE.setUser(user);
-                RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
-
-                restApi.postUser(user, new GetUserCallback() {
-                    @Override
-                    public void onDataReceived(User user) {
-                        Settings.INSTANCE.setUser(user);
-                        Log.d(TAG, "Attributed UserId: " + Settings.INSTANCE.getUser().getUserId());
-                        // assert submission
-                        Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "User information sent to server");
-                    }
-                });
-
+                storingTheUserOnServerAndInTheSettings(result);
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             } else {
@@ -174,32 +152,7 @@ public class LoginActivity extends AppCompatActivity implements
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
-                GoogleSignInAccount acct = result.getSignInAccount();
-                String idToken = acct.getIdToken();
-                Log.d(TAG, "idToken:" + idToken);
-                Settings.INSTANCE.setIdToken(idToken);
-
-                String personName = acct.getDisplayName();
-                String personEmail = acct.getEmail();
-                String personId = acct.getId();
-                User user = new User(personId, personName, personEmail);
-                Settings.INSTANCE.setUser(user);
-
-
-                RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
-
-                restApi.postUser(user, new GetUserCallback() {
-                    @Override
-                    public void onDataReceived(User user) {
-                        Settings.INSTANCE.setUser(user);
-                        Log.d(TAG, "Attributed UserId: " + Settings.INSTANCE.getUser().getUserId());
-                        // assert submission
-                        Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "User information sent to server");
-                    }
-                });
-
-
+                storingTheUserOnServerAndInTheSettings(result);
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
 
@@ -207,6 +160,30 @@ public class LoginActivity extends AppCompatActivity implements
                 Toast.makeText(this, "Could not connect, please try again", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void storingTheUserOnServerAndInTheSettings(GoogleSignInResult googleSignInResult) {
+        GoogleSignInAccount acct = googleSignInResult.getSignInAccount();
+        String idToken = acct.getIdToken();
+        Log.d(TAG, "idToken:" + idToken);
+        Settings.INSTANCE.setIdToken(idToken);
+
+        String personName = acct.getDisplayName();
+        String personEmail = acct.getEmail();
+        String personId = acct.getId();
+        User user = new User(personId, personName, personEmail);
+        Settings.INSTANCE.setUser(user);
+        RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
+
+        restApi.postUser(user, new GetUserCallback() {
+            @Override
+            public void onDataReceived(User user) {
+                Settings.INSTANCE.setUser(user);
+                // assert submission
+                Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "User information sent to server");
+            }
+        });
     }
 
     private void validateServerClientID() {

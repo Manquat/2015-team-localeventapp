@@ -24,7 +24,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import ch.epfl.sweng.evento.EventDatabase;
-import ch.epfl.sweng.evento.event.EventsClusterRenderer;
+import ch.epfl.sweng.evento.gui.EventsClusterRenderer;
 import ch.epfl.sweng.evento.tabs_fragment.Maps.EventClusterManager;
 
 

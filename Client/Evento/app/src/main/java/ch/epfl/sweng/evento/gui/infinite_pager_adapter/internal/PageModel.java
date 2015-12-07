@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ch.epfl.sweng.evento.infinite_pager_adapter.internal;
+package ch.epfl.sweng.evento.gui.infinite_pager_adapter.internal;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Internal model of a page
  *
- * @param <T> the datatype of the {@link ch.epfl.sweng.evento.infinite_pager_adapter} indicator.
+ * @param <T> the datatype of the {@link ch.epfl.sweng.evento.gui.infinite_pager_adapter} indicator.
  */
 public final class PageModel<T> {
     private T mIndicator;

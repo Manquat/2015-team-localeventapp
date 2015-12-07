@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -21,10 +22,8 @@ import java.util.Set;
 
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
-import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.rest_api.RestApi;
-import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 
@@ -37,7 +36,6 @@ public class UserProfileActivity extends AppCompatActivity implements
 
 
     private static final String TAG = "UserProfileActivity";
-
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,9 +89,9 @@ public class UserProfileActivity extends AppCompatActivity implements
 
 
         TextView UsernameView = (TextView) (findViewById(R.id.Username));
-        UsernameView.setText("Username : " + Settings.INSTANCE.getUser().getUsername() );
+        UsernameView.setText("Username : " + Settings.INSTANCE.getUser().getUsername());
         TextView EmailView = (TextView) (findViewById(R.id.Email));
-        EmailView.setText("Email Adress : " + Settings.INSTANCE.getUser().getEmail() );
+        EmailView.setText("Email Adress : " + Settings.INSTANCE.getUser().getEmail());
 
 
         /*hostedListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -14,6 +14,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import ch.epfl.sweng.evento.Comment;
+import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.rest_api.callback.GetCommentListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventCallback;
@@ -28,7 +30,6 @@ import ch.epfl.sweng.evento.rest_api.task.GetTask;
 import ch.epfl.sweng.evento.rest_api.task.PostAndGetUserWithIDTask;
 import ch.epfl.sweng.evento.rest_api.task.PostTask;
 import ch.epfl.sweng.evento.rest_api.task.PutTask;
-import ch.epfl.sweng.evento.User;
 
 /**
  * RestAPI
@@ -67,7 +68,7 @@ public class RestApi {
                 if (response != null) {
                     try {
                         JSONObject JsonResponse = new JSONObject(response);
-                        event = Parser.parseFromJSON(JsonResponse);
+                        event = Parser.toEvent(JsonResponse);
                     } catch (JSONException e) {
                         Log.e(TAG, "Exception thrown in getEvent", e);
                     }
@@ -87,7 +88,7 @@ public class RestApi {
                 List<Event> eventArrayList = null;
                 if (response != null) {
                     try {
-                        eventArrayList = Parser.parseFromJSONMultiple(response);
+                        eventArrayList = Parser.toEventList(response);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -103,15 +104,17 @@ public class RestApi {
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String response) {
-                Log.d(TAG, response);
                 List<User> user = null;
                 if (response != null) {
+                    Log.d(TAG, response);
                     try {
-                        user = Parser.parseUserFromJSONMultiple(response);
+                        user = Parser.toUserList(response);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
 
+                } else {
+                    Log.e(TAG, "getParticipant, the response is null");
                 }
                 callback.onUserListReceived(user);
             }
@@ -129,7 +132,7 @@ public class RestApi {
                 if (response != null) {
                     try {
                         JSONObject JsonResponse = new JSONObject(response);
-                        user = Parser.parseUserFromJSON(JsonResponse);
+                        user = Parser.toUser(JsonResponse);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -151,7 +154,7 @@ public class RestApi {
                 List<Event> event = null;
                 if (response != null) {
                     try {
-                        event = Parser.parseFromJSONMultiple(response);
+                        event = Parser.toEventList(response);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -173,7 +176,7 @@ public class RestApi {
                 List<Event> event = null;
                 if (response != null) {
                     try {
-                        event = Parser.parseFromJSONMultiple(response);
+                        event = Parser.toEventList(response);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -187,15 +190,14 @@ public class RestApi {
     public void getMultiplesEventByDate(GregorianCalendar startDate,
                                         GregorianCalendar endDate,
                                         final GetEventListCallback callback) {
-        UrlMakerEvent url = new UrlMakerEvent();
-        String restUrl = url.getByDate(mUrlServer, startDate, endDate);
+        String restUrl = UrlMakerEvent.getByDate(mUrlServer, startDate, endDate);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String result) {
                 List<Event> eventArrayList = null;
                 if (result != null) {
                     try {
-                        eventArrayList = Parser.parseFromJSONMultiple(result);
+                        eventArrayList = Parser.toEventList(result);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -220,7 +222,7 @@ public class RestApi {
                 List<Event> eventArrayList = null;
                 if (result != null) {
                     try {
-                        eventArrayList= Parser.parseFromJSONMultiple(result);
+                        eventArrayList = Parser.toEventList(result);
                     } catch (JSONException e) {
                         Log.e(TAG, "exception in JSON parser");
                     }
@@ -239,20 +241,24 @@ public class RestApi {
                 List<Comment> commentList = null;
                 if (result != null) {
                     try {
-                        commentList = Parser.parseFromJsonListOfComment(result);
+                        commentList = Parser.toCommentList(result);
                     } catch (JSONException e) {
-                        Log.e(TAG, "exception in JSON parser");
+                        Log.e(TAG, "getComment exception in JSON parser");
                     }
+                } else {
+                    Log.d(TAG, "getComment null response");
                 }
                 callback.onCommentListReceived(commentList);
             }
         }).execute();
     }
 
-    public void postComment(int UserId, int EventId, String commentBody,
+    public void postComment(int EventId, String commentBody,
                             final HttpResponseCodeCallback callback) {
         String restUrl = UrlMaker.postComment(mUrlServer);
-        String requestBody = Serializer.comment(UserId, EventId, commentBody);
+        String requestBody = Serializer.comment(Settings.INSTANCE.getUser().getUserId(),
+                Settings.INSTANCE.getUser().getUsername(),
+                EventId, commentBody);
         new PostTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String result) {
@@ -299,7 +305,7 @@ public class RestApi {
                 if (response != null) {
                     try {
                         JSONObject JsonResponse = new JSONObject(response);
-                        user = Parser.parseUserFromJSON(JsonResponse);
+                        user = Parser.toUser(JsonResponse);
                     } catch (JSONException e) {
                         Log.e(TAG, "Exception thrown in getEvent", e);
                     }

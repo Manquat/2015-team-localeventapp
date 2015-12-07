@@ -36,7 +36,7 @@ public final class Serializer {
         return res;
     }
 
-    public static String user(User u){
+    public static String user(User u) {
         String res = "{\n"
                 //+ "  \"id\": "  + ",\n"
                 + "  \"name\": \"" + u.getUsername() + "\", \n"
@@ -49,11 +49,12 @@ public final class Serializer {
         return res;
     }
 
-    public static String comment(int userId, int eventId, String commentBody) {
+    public static String comment(int userId, String userName, int eventId, String commentBody) {
         String res = "{\n"
-                + "\"comment\": \"" + commentBody + "\",\n"
-                + "\"user\": \"" + userId + "\",\n"
-                + "\"event\": \"" + eventId + "\" \n"
+                + "\"body\": \"" + commentBody + "\",\n"
+                + "\"creator\": " + userId + ",\n"
+                + "\"creator_name\": \"" + userName + "\",\n"
+                + "\"event\": " + eventId + "\n"
                 + "}\n";
         return res;
     }

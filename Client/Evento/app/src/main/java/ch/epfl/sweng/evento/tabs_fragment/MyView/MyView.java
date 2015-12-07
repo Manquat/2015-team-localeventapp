@@ -7,7 +7,6 @@ package ch.epfl.sweng.evento.tabs_fragment.MyView;
 import android.content.Context;
 
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 public class MyView extends ImageView {
 
@@ -20,8 +19,6 @@ public class MyView extends ImageView {
         midX = x;
         midY = y;
     }
-
-
 
 
     public MyView(Context context) {

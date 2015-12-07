@@ -5,7 +5,6 @@ package ch.epfl.sweng.evento.rest_api.callback;
  */
 
 import ch.epfl.sweng.evento.event.Event;
-import ch.epfl.sweng.evento.User;
 
 /**
  * Class definition for a callback to be invoked when the response data for the

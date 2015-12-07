@@ -79,7 +79,7 @@ public class CreatingEventActivity extends AppCompatActivity
     private TextView mPlaceDetailsText;
     private TextView mPlaceDetailsAttribution;
     private PlaceAutocompleteAdapter mAdapter;
-    private Set<String> mTag;
+    private Set<String> mTag = new HashSet<>();
     private double latitude = 0.0;
     private double longitude = 0.0;
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
@@ -218,9 +218,8 @@ public class CreatingEventActivity extends AppCompatActivity
                         mTag, startDate, endDate, picture);*/
 
                 Event e = new Event(id, titleString, descriptionString, latitude,
-                        longitude, addressString, creator,
-                        mTag, startDate, endDate);
-
+                        longitude, addressString, Settings.INSTANCE.getUser().getUserId(),
+                        mTag, startDate, endDate, picture);
 
                 restApi.postEvent(e, new HttpResponseCodeCallback() {
                     @Override

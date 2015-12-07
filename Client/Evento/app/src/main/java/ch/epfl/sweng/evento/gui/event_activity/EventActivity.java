@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento.gui;
+package ch.epfl.sweng.evento.gui.event_activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,12 +9,13 @@ import android.view.MenuItem;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.infinite_pager_adapter.EventInfinitePageAdapter;
-import ch.epfl.sweng.evento.infinite_pager_adapter.InfiniteViewPager;
+import ch.epfl.sweng.evento.gui.CreatingEventActivity;
+import ch.epfl.sweng.evento.gui.infinite_pager_adapter.EventInfinitePageAdapter;
+import ch.epfl.sweng.evento.gui.infinite_pager_adapter.InfiniteViewPager;
 
 public class EventActivity extends AppCompatActivity {
 
-    public static final String KEYCURRENTEVENT = "CurrentEventKey";
+    public static final String CURRENT_EVENT_KEY = "CurrentEventKey";
 
 
     private InfiniteViewPager mPager;
@@ -35,7 +36,7 @@ public class EventActivity extends AppCompatActivity {
         int currentEventSignature = EventDatabase.INSTANCE.getFirstEvent().getID();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            currentEventSignature = bundle.getInt(KEYCURRENTEVENT);
+            currentEventSignature = bundle.getInt(CURRENT_EVENT_KEY);
         }
 
         // Creating the EventInfinitePageAdapter at the current position

@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento.event;
+package ch.epfl.sweng.evento.gui;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.event.MultiDrawable;
 
 /**
  * Control the way the event are clustered on the map

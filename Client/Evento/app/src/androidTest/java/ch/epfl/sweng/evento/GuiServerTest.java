@@ -28,6 +28,7 @@ import static junit.framework.Assert.assertEquals;
 /**
  * Tests the GUI against the real server
  */
+
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class GuiServerTest extends ActivityInstrumentationTestCase2<MainActivity> {
@@ -45,8 +46,8 @@ public class GuiServerTest extends ActivityInstrumentationTestCase2<MainActivity
      * @throws InterruptedException
      */
 
-    @Test
     @Ignore("This test fails on my machine. -Solal")
+    @Test
     public void testRefreshPostRefresh() throws InterruptedException {
         int numOfEvent;
 

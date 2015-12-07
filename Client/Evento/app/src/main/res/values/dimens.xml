@@ -16,4 +16,11 @@
     <dimen name="calendar_date_height">75dp</dimen>
     <dimen name="calendar_grid_view_height">350dp</dimen>
     <dimen name="event_image_height">250dp</dimen>
+
+    <!-- Toolbar height -->
+    <dimen name="toolbar_height">50dp</dimen>
+
+    <!-- Comment list -->
+    <dimen name="comment_text_padding">10dp</dimen>
+    <dimen name="comment_corner_radius">20dp</dimen>
 </resources>

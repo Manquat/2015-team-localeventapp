@@ -46,9 +46,9 @@
     <string name="createEvent_tags">tags</string>
     <string name="createEvent_description">description</string>
     <string name="eventFragment_join">Join the event !</string>
-    <string name="addPictureEvent">Nothing to show</string>
     <string name="event_fragment_join">Join the event !</string>
     <string name="event_fragment_remove">Removed from the event</string>
+    <string name="addPictureEvent">Nothing to show</string>
     <string name="search_startDate">Start Date</string>
     <string name="search_endDate">End Date</string>
     <string name="search_buttonValidate">Validate</string>
@@ -71,4 +71,8 @@
     <string name="menu_profile">Profile</string>
 
 
+    <string name="eventFragment_conversation">Conversation</string>
+    <string name="title_activity_conversation">Conversation</string>
+    <string name="conversation_add_comment">Add a comment</string>
+    <string name="comment_message_hint">Your comment</string>
 </resources>

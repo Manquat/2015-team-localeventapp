@@ -72,6 +72,7 @@ def event_detail(request, pk, format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 @api_view(['GET', 'DELETE'])
 def event_detailuser(request, username, format=None):
@@ -98,6 +99,8 @@ def event_detailuser(request, username, format=None):
         event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+=======
+>>>>>>> refreshEventActivity
 @api_view(['GET'])
 def event_detailParticipant(request, pk, format=None):
     """
@@ -131,6 +134,7 @@ def event_detailuser(request, username, format=None):
     if validate_user(token) is False:
         return  Response(status=status.HTTP_403_FORBIDDEN)
 
+<<<<<<< HEAD
     try:
         event = Event.objects.get(creator=username)
     except Event.DoesNotExist:
@@ -145,6 +149,8 @@ def event_detailuser(request, username, format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 >>>>>>> 18a31a380003d9e2c4e0cbfd50d56ec43216c8eb
 
+=======
+>>>>>>> refreshEventActivity
 @api_view(['GET'])
 def event_requestdate(request, fromdate, todate, format=None):
     """

@@ -134,7 +134,7 @@ public class SearchActivity extends AppCompatActivity
                         finish();
                     }
 
-                    public void onUserListReceived(List<User> userArrayList){
+                    public void onUserListReceived(List<User> userArrayList) {
 
                     }
                 });

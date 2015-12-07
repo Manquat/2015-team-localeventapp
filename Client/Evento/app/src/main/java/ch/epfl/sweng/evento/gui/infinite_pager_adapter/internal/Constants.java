@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ch.epfl.sweng.evento.infinite_pager_adapter.internal;
+package ch.epfl.sweng.evento.gui.infinite_pager_adapter.internal;
 
 public final class Constants {
 

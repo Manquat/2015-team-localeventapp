@@ -24,7 +24,7 @@ import java.util.Collection;
 
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.event.Event;
-import ch.epfl.sweng.evento.gui.EventActivity;
+import ch.epfl.sweng.evento.gui.event_activity.EventActivity;
 
 /**
  * Extension of the cluster manager class to centralize all the management of the markers of the
@@ -141,7 +141,7 @@ public class EventClusterManager extends ClusterManager<Event> implements
         // TODO Does nothing, but you could go into the event's page, for example.
 
         Intent intent = new Intent(mContext, EventActivity.class);
-        intent.putExtra(EventActivity.KEYCURRENTEVENT, event.getID());
+        intent.putExtra(EventActivity.CURRENT_EVENT_KEY, event.getID());
         mActivity.startActivity(intent);
     }
 

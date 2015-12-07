@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento.event;
+package ch.epfl.sweng.evento.gui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,7 +14,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.gui.EventActivity;
+import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.gui.event_activity.EventActivity;
 
 /**
  * List view adapter that can be used to display the list of event given in the constructor
@@ -98,7 +99,7 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(mContext, EventActivity.class);
-        intent.putExtra(EventActivity.KEYCURRENTEVENT, id);
+        intent.putExtra(EventActivity.CURRENT_EVENT_KEY, ((Long) id).intValue());
         mActivity.startActivity(intent);
     }
 }

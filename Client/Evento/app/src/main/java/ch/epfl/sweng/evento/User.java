@@ -1,5 +1,6 @@
 package ch.epfl.sweng.evento;
 
+
 import android.os.Build;
 import android.util.Log;
 
@@ -8,6 +9,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import java.util.HashSet;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.event.Event;
@@ -26,6 +29,7 @@ public class User {
     private String mGoogleId;
     private String mUsername;
     private String mEmail;
+
  	private List<Event> mMatchedEvent;
     private List<Event> mHostedEvent;
 
@@ -45,7 +49,6 @@ public class User {
     }
 
 
-
     public User(String mGoogleId, String mUsername, String mEmail) {
         this.mGoogleId = mGoogleId;
         this.mUsername = mUsername;
@@ -56,7 +59,8 @@ public class User {
 
     public List<Event> getHostedEvent() { return mHostedEvent; }
 
-    public int getUserId(){
+
+    public int getUserId() {
         return mUserId;
     }
 
@@ -76,7 +80,7 @@ public class User {
 
 
 
-    public void setUserId(int id){
+    public void setUserId(int id) {
         this.mUserId = id;
     }
 
@@ -84,19 +88,19 @@ public class User {
         this.mGoogleId = mUserId;
     }
 
-    public void addHostedEvent(Event event) {
+    public boolean addHostedEvent(Event event) {
         final String message = "Cannot add a null event as a hosted event";
         if (event != null) {
-            mHostedEvent.add(event);
+            return mHostedEvent.add(event);
         } else {
             throw new NullPointerException(message);
         }
     }
 
-    public void addMatchedEvent(Event event) {
+    public boolean addMatchedEvent(Event event) {
         final String message = "Cannot add a null event as a matched event";
-        if (event != null){
-            mMatchedEvent.add(event);
+        if (event != null) {
+            return mMatchedEvent.add(event);
         } else {
             throw new NullPointerException(message);
         }
@@ -109,6 +113,21 @@ public class User {
     public void setMatchedEvent(List<Event> mMatchedEvent) {
         this.mMatchedEvent = mMatchedEvent;
     }
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof User) {
+            User user = (User) object;
+            return mUserId == user.getUserId();
+        }
+        return false;
+    }
 
+    @Override
+    public int hashCode() {
+        return mUserId;
+    }
 
+    /*public void setmStartOfMembership(Event.CustomDate mStartOfMembership) {
+        this.mStartOfMembership = mStartOfMembership;
+    }*/
 }
