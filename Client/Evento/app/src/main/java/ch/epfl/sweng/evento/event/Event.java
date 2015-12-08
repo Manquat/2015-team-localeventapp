@@ -145,7 +145,7 @@ public class Event implements ClusterItem {
             byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
             return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         } catch (Exception e) {
-            e.getMessage();
+            Log.e(TAG, "Failed to bitmap encode the image", e);
             return null;
         }
     }

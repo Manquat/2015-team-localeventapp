@@ -30,6 +30,7 @@ import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 import ch.epfl.sweng.evento.rest_api.task.GetTask;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -104,7 +105,7 @@ public class RestApiTest {
     public void serializerTest() throws JSONException {
         String s = Serializer.event(event);
         //JSONObject jsonObject = new JSONObject(s);
-        Assert.assertEquals(eventStringSent, s);
+        assertEquals(eventStringSent, s);
     }
 
     @Test
@@ -112,13 +113,13 @@ public class RestApiTest {
         JSONObject jsonObject = new JSONObject(eventStringReceived);
         Event eventFromJson = Parser.toEvent(jsonObject);
 
-        junit.framework.Assert.assertEquals("id correctly parsed", event.getID(), eventFromJson.getID());
-        junit.framework.Assert.assertEquals("title correctly parsed", event.getTitle(), eventFromJson.getTitle());
-        junit.framework.Assert.assertEquals("description correctly parsed", event.getDescription(), eventFromJson.getDescription());
-        junit.framework.Assert.assertEquals("xLoc correctly parsed", event.getLatitude(), eventFromJson.getLatitude());
-        junit.framework.Assert.assertEquals("yLoc correctly parsed", event.getLongitude(), eventFromJson.getLongitude());
-        junit.framework.Assert.assertEquals("address correctly parsed", event.getAddress(), eventFromJson.getAddress());
-        junit.framework.Assert.assertEquals("creator correctly parsed", event.getCreator(), eventFromJson.getCreator());
+        assertEquals("id correctly parsed", event.getID(), eventFromJson.getID());
+        assertEquals("title correctly parsed", event.getTitle(), eventFromJson.getTitle());
+        assertEquals("description correctly parsed", event.getDescription(), eventFromJson.getDescription());
+        assertEquals("xLoc correctly parsed", event.getLatitude(), eventFromJson.getLatitude());
+        assertEquals("yLoc correctly parsed", event.getLongitude(), eventFromJson.getLongitude());
+        assertEquals("address correctly parsed", event.getAddress(), eventFromJson.getAddress());
+        assertEquals("creator correctly parsed", event.getCreator(), eventFromJson.getCreator());
     }
 
     /**
@@ -134,7 +135,7 @@ public class RestApiTest {
         GetTask getTask = new GetTask(wrongUrl, networkProviderMockito,
                 new RestTaskCallback() {
                     public void onTaskComplete(String response) {
-                        junit.framework.Assert.assertEquals(testString + "\n", response);
+                        assertEquals(testString + "\n", response);
                     }
                 });
 
@@ -157,10 +158,10 @@ public class RestApiTest {
 
 
         assertNotNull("Event is not null", eventArrayList);
-        junit.framework.Assert.assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
-        junit.framework.Assert.assertEquals("id", event.getID(), eventArrayList.get(0).getID());
-        junit.framework.Assert.assertEquals("title", event.getTitle(), eventArrayList.get(0).getTitle());
-        junit.framework.Assert.assertEquals("description", event.getDescription(), eventArrayList.get(0).getDescription());
+        assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
+        assertEquals("id", event.getID(), eventArrayList.get(0).getID());
+        assertEquals("title", event.getTitle(), eventArrayList.get(0).getTitle());
+        assertEquals("description", event.getDescription(), eventArrayList.get(0).getDescription());
     }
 
 

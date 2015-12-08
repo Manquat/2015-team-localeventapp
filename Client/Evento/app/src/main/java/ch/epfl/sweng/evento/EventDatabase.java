@@ -44,10 +44,6 @@ public enum EventDatabase {
             public void onEventListReceived(List<Event> events) {
                 addAll(events);
             }
-
-            public void onUserListReceived(List<User> userArrayList) {
-
-            }
         });
     }
 
@@ -77,10 +73,6 @@ public enum EventDatabase {
             public void onEventListReceived(List<Event> eventArrayList) {
                 mEventSet.clear();
                 addAll(eventArrayList);
-            }
-
-            public void onUserListReceived(List<User> userArrayList) {
-
             }
         });
     }
