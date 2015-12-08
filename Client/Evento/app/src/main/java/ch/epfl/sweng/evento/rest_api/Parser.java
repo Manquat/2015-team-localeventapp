@@ -41,7 +41,7 @@ public class Parser {
         addTime(endDate, jsonObject.getString("duration"));
 
 
-        Event event =  new Event(jsonObject.getInt("id"),
+        Event event = new Event(jsonObject.getInt("id"),
                 jsonObject.getString("Event_name"),
                 jsonObject.getString("description"),
                 jsonObject.getDouble("latitude"),

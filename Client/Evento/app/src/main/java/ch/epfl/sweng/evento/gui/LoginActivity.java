@@ -26,7 +26,6 @@ import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.GetUserCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
-import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
