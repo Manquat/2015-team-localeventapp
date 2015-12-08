@@ -139,6 +139,29 @@ public class RestApi {
         }).execute();
     }
 
+    public void getUserByName(final GetUserCallback callback, String username) {
+        UrlMakerUser url = new UrlMakerUser("user/");
+        String restUrl = url.get(mUrlServer, username);
+        Log.d(TAG, restUrl);
+        new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
+            @Override
+            public void onTaskComplete(String response) {
+                Log.d(TAG, response);
+                User user = null;
+                if (response != null) {
+                    try {
+                        JSONObject JsonResponse = new JSONObject(response);
+                        user = Parser.toUser(JsonResponse);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "exception in JSON parser");
+                    }
+
+                }
+                callback.onDataReceived(user);
+            }
+        }).execute();
+    }
+
 
     public void getHostedEvent(final GetEventListCallback callback, int idUser) {
         String restUrl = UrlMaker.getCreator(mUrlServer, idUser);
@@ -161,6 +184,7 @@ public class RestApi {
 
     public void getMatchedEvent(final GetEventListCallback callback, int idUser) {
         String restUrl = UrlMaker.getParticipant(mUrlServer, idUser);
+        Log.d(TAG, "toto2 " + restUrl);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String response) {
@@ -277,15 +301,17 @@ public class RestApi {
     }
 
     // Post a user
-    public void postUser(User user, final GetUserCallback callback) {
+    public void postUser(String name, String email, String googleid, final GetUserCallback callback) {
         String restUrl = UrlMaker.postUser(mUrlServer);
         Log.d(TAG, "restURL: " + restUrl);
-        String requestBody = Serializer.user(user);
+        String requestBody = Serializer.user(name, email, googleid);
+
         /*new PostUserTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
             public void onTaskComplete(String response) {
                 callback.onSuccess(response);
             }
         }).execute();*/
+
         new PostAndGetUserWithIDTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
             @Override
             public void onTaskComplete(String response) {

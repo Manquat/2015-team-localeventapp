@@ -210,6 +210,9 @@ public class CreatingEventActivity extends AppCompatActivity
                 }
 
                 // mock getCreator and random id (ID will be assigned server side)
+
+                int creator = Settings.INSTANCE.getUser().getUserId();
+
                 Random rand = new Random();
                 int id = rand.nextInt(10000);
 
@@ -217,7 +220,6 @@ public class CreatingEventActivity extends AppCompatActivity
                 Event e = new Event(id, titleString, descriptionString, latitude,
                         longitude, addressString, Settings.getUser().getUserId(),
                         mTag, mStartDate, mEndDate, picture);
-
 
 
                 sendToServer(e);

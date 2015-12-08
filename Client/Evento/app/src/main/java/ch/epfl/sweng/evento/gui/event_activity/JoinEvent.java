@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -14,11 +15,13 @@ import java.util.List;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.EventDatabase;
+import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.gui.ExpendableList;
 import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.callback.GetUserCallback;
 import ch.epfl.sweng.evento.rest_api.callback.GetUserListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
@@ -31,7 +34,6 @@ public class JoinEvent implements
         View.OnClickListener,
         HttpResponseCodeCallback,
         GetUserListCallback,
-        ExpandableListView.OnChildClickListener,
         Refreshable {
     private static final String TAG = "JoinEvent";
 
@@ -41,43 +43,33 @@ public class JoinEvent implements
     private Button mJoinEventButton;
     private Button mUnJoinEventButton;
     private boolean mIsTheEventJoined;
-    private ArrayList<String> mListDataHeader;
-    private HashMap<String, List<String>> mListDataChild;
-    private ExpendableList mListAdapter;
     private Set<User> mParticipant;
+    private Refreshable mParentRefreshable;
 
     private JoinEvent(Activity parentActivity, int currentEventId,
                       Button joinEventButton, Button unJoinEventButton,
-                      ExpandableListView listViewOfParticipant) {
+                      Refreshable parentRefreshable) {
         mActivity = parentActivity;
         mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
         mCurrentEvent = EventDatabase.INSTANCE.getEvent(currentEventId);
         mJoinEventButton = joinEventButton;
         mUnJoinEventButton = unJoinEventButton;
-        mListDataHeader = new ArrayList<>();
-        mListDataChild = new HashMap<>();
         mParticipant = new HashSet<>();
+        mParentRefreshable = parentRefreshable;
 
         mJoinEventButton.setOnClickListener(this);
         mUnJoinEventButton.setOnClickListener(this);
 
-        mListAdapter = new ExpendableList(mActivity, mListDataHeader, mListDataChild);
-
-        // setting list adapter
-        listViewOfParticipant.setAdapter(mListAdapter);
-
-        // ListView on child click listener
-        listViewOfParticipant.setOnChildClickListener(this);
+        //getParticipant();
 
         updateButtonState();
-        getParticipant();
     }
 
     public static void initialize(Activity parentActivity, int currentEventId,
                                   Button joinEventButton, Button unJoinEventButton,
-                                  ExpandableListView listViewOfParticipant) {
+                                  Refreshable listOfParticipant) {
         new JoinEvent(parentActivity, currentEventId, joinEventButton, unJoinEventButton,
-                listViewOfParticipant);
+                listOfParticipant);
     }
 
     @Override
@@ -89,9 +81,9 @@ public class JoinEvent implements
                 mActivity.finish();
             } else {
                 Toast.makeText(mActivity.getApplicationContext(), "UnJoined", Toast.LENGTH_SHORT).show();
-                if (Settings.getUser().removeMatchedEvent(mCurrentEvent)) {
+                //if (Settings.getUser().removeMatchedEvent(mCurrentEvent)) {
                     mRestApi.removeParticipant(mCurrentEvent.getID(), Settings.getUser().getUserId(), this);
-                }
+                //}
             }
 
         } else {
@@ -117,13 +109,14 @@ public class JoinEvent implements
 
         mJoinEventButton.setEnabled(!mIsTheEventJoined);
         mUnJoinEventButton.setEnabled(mIsTheEventJoined);
+
+        mParentRefreshable.refresh();
     }
 
     @Override
     public void onSuccess(String httpResponseCode) {
         Log.d(TAG, "Response" + httpResponseCode);
         refresh();
-        //mParentRefreshable.refresh();
     }
 
     private void getParticipant() {
@@ -137,25 +130,9 @@ public class JoinEvent implements
         if (userArrayList != null) {
             mParticipant.clear();
             mParticipant.addAll(userArrayList);
-            List<String> participant = new ArrayList<>();
-            for (User user : userArrayList) {
-                participant.add(user.getUsername());
-            }
-            mListDataHeader.clear();
-            mListDataHeader.add("Participant of the event (" + participant.size() + ")");
-
-            mListDataChild.put(mListDataHeader.get(0), participant);
-
-            mListAdapter.notifyDataSetChanged();
-            updateButtonState();
         }
-    }
 
-    @Override
-    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-        final int groupPosTmp = groupPosition;
-        final int childPosTmp = childPosition;
-        return false;
+        updateButtonState();
     }
 
     @Override

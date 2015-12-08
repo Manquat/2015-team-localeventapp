@@ -4,43 +4,52 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context=".gui.ManageActivity">
+    tools:context=".gui.ManageActivity"
+    android:weightSum = "1">
 
-    <ListView
-        android:id="@+id/listViewManage"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/ownEventLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/ownEventLabel" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/otherEventLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/ownEventLabel"
-        android:layout_marginTop="142dp"
-        android:text="@string/otherEventLabel" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Not properly affected"
+                android:id="@+id/Welcome"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="1"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="2dp"
+                android:gravity="center" />
 
-    <TextView
-        android:id="@+id/hostedEvent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/ownEventLabel"
-        android:text="" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/findeventsbelow"
+                android:id="@+id/findeventsbelow"
+                android:layout_gravity="top|left|center_vertical"
+                android:layout_weight="1"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/matchedEvent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/otherEventLabel"
-        android:text="" />
+        <ListView
+            android:id="@+id/listViewManage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight = "5"
+            android:layout_gravity="top" />
+
+    </LinearLayout>
+
 </RelativeLayout>

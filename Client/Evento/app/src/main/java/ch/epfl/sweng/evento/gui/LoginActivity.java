@@ -98,7 +98,6 @@ public class LoginActivity extends AppCompatActivity implements
         Log.d(TAG, "onConnectionFailed:" + result);
     }
 
-    //@Override
     public void onClick(View v) {
 
         if (v.getId() == R.id.sign_in_button) {
@@ -121,7 +120,6 @@ public class LoginActivity extends AppCompatActivity implements
             GoogleSignInResult result = opr.get();
             if (result.isSuccess()) {
                 storingTheUserOnServerAndInTheSettings(result);
-
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             } else {
@@ -153,9 +151,7 @@ public class LoginActivity extends AppCompatActivity implements
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
-
                 storingTheUserOnServerAndInTheSettings(result);
-
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
 
@@ -177,14 +173,21 @@ public class LoginActivity extends AppCompatActivity implements
         User user = new User(personId, personName, personEmail);
         Settings.setUser(user);
         RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
-
-        restApi.postUser(user, new GetUserCallback() {
+        restApi.postUser(personName, personEmail, personGoogleId, new GetUserCallback() {
             @Override
             public void onDataReceived(User user) {
                 Settings.setUser(user);
+
+                if(user == null){
+                    throw new NullPointerException("User null!");
+                }
+
+                Settings.INSTANCE.setUser(user);
                 // assert submission
                 Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "User information sent to server");
+                Log.d(TAG, "Active User with attributed Id: " + Settings.INSTANCE.getUser().getUsername() + " , " + Settings.INSTANCE.getUser().getEmail() +" , UserId: " + Settings.INSTANCE.getUser().getUserId() );
+
             }
         });
     }

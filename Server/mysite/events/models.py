@@ -17,6 +17,13 @@ class Event(models.Model):
     tags = models.CharField(max_length=200, default='Foot!')
     image = models.TextField(default='No Image')
     participants = models.ManyToManyField(participant, blank=True)
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+=======
+>>>>>>> 18a31a380003d9e2c4e0cbfd50d56ec43216c8eb
+=======
+>>>>>>> refreshEventActivity
     def __unicode__(self):
         return self.Event_name
 

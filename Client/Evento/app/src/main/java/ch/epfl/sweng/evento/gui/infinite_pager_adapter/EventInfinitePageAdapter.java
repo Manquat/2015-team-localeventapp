@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,11 +16,16 @@ import android.widget.TextView;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.gui.ConversationAdapter;
 import ch.epfl.sweng.evento.gui.UpdateEventListener;
+import ch.epfl.sweng.evento.gui.ListOfParticipantListener;
 import ch.epfl.sweng.evento.gui.event_activity.AddingComment;
 import ch.epfl.sweng.evento.gui.event_activity.JoinEvent;
+import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.callback.GetUserCallback;
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
 /**
  * An infinite page adapter for the event activity
@@ -29,12 +33,14 @@ import ch.epfl.sweng.evento.gui.event_activity.JoinEvent;
 public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
     Activity mActivity;
     public static final String TAG = "EventInfPageAdapter";
+    private RestApi mRestApi;
+    private ConversationAdapter mConversationAdapter;
 
 
     public EventInfinitePageAdapter(Integer initialEventId, Activity activity) {
         super(initialEventId);
-
         mActivity = activity;
+        mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
     }
 
     @Override
@@ -72,8 +78,22 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
 
         AddingComment.initialize(mActivity, listOfComment, currentEventId, conversationAdapter);
 
+
         return rootLayout;
     }
+
+    private void getHost(Event event, View view){
+        final View innerView = view;
+
+        mRestApi.getUser(new GetUserCallback() {
+            public void onDataReceived(User user) {
+                TextView creatorView = (TextView) innerView.findViewById(R.id.event_creator_view);
+                creatorView.setText(user.getUsername());
+
+            }
+        }, event.getCreator());
+    }
+
 
     private void updateFields(ViewGroup rootView, final Event currentEvent) {
         TextView titleView = (TextView) rootView.findViewById(R.id.event_title_view);
@@ -83,7 +103,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         TextView addressView = (TextView) rootView.findViewById(R.id.event_address_view);
         TextView descriptionView = (TextView) rootView.findViewById(R.id.event_description_view);
 
-        ExpandableListView listViewOfParticipant = (ExpandableListView) rootView.findViewById(R.id.list_participant_exp);
+        getHost(currentEvent, rootView);
 
         titleView.setText(currentEvent.getTitle());
         creatorView.setText(Integer.toString(currentEvent.getCreator()));
@@ -97,13 +117,16 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
 
         ImageView pictureView = (ImageView) rootView.findViewById(R.id.eventPictureView);
         pictureView.setImageBitmap(currentEvent.getPicture());
+        Button listOfParticipant = (Button) rootView.findViewById(R.id.list_participant_exp);
+        ListOfParticipantListener participant =
+                new ListOfParticipantListener(mActivity, currentEvent.getID(), listOfParticipant);
 
         // configure the joint and unJoin button
         Button joinEventButton = (Button) rootView.findViewById(R.id.joinEvent);
         Button unJoinEventButton = (Button) rootView.findViewById(R.id.remove_user_from_event);
 
         JoinEvent.initialize(mActivity, currentEvent.getID(), joinEventButton, unJoinEventButton,
-                listViewOfParticipant);
+                participant);
 
         // configure the delete event button
         Button deleteEvent = (Button) rootView.findViewById(R.id.delete_event);

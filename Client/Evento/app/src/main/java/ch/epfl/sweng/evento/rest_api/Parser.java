@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -54,9 +55,7 @@ public class Parser {
                     jsonObject.getDouble("longitude"),
                     jsonObject.getString("address"),
                     jsonObject.getInt("owner"),
-                    new HashSet<String>() {{
-                        add(json.getString("tags"));
-                    }},
+                    new HashSet<String>(Arrays.asList(json.getString("tags").split(";"))),
                     startDate,
                     endDate,
                     jsonObject.getString("image"),
@@ -66,6 +65,22 @@ public class Parser {
             throw new JSONException("Invalid question structure");
         }
     }
+
+    public static User parseUserFromJSON(JSONObject jsonObject) throws JSONException {
+
+        final JSONObject json = jsonObject;
+
+        try {
+            return new User(jsonObject.getInt("id"),
+                    jsonObject.getString("name"),
+                    jsonObject.getString("email")
+            );
+
+        } catch (IllegalArgumentException e) {
+            throw new JSONException("Invalid question structure");
+        }
+    }
+
 
     private static Comment toComment(JSONObject jsonObject) throws JSONException {
         Comment c = new Comment(

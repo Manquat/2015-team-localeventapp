@@ -155,12 +155,12 @@ public class RestApiTest {
 
         Thread.sleep(500);
 
-
         assertNotNull("Event is not null", eventArrayList);
         junit.framework.Assert.assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
         junit.framework.Assert.assertEquals("id", event.getID(), eventArrayList.get(0).getID());
         junit.framework.Assert.assertEquals("title", event.getTitle(), eventArrayList.get(0).getTitle());
         junit.framework.Assert.assertEquals("description", event.getDescription(), eventArrayList.get(0).getDescription());
+
     }
 
 

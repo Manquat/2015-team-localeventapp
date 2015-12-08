@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -37,6 +39,7 @@ import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.list_view.ListEntryAdapter;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
@@ -60,9 +63,9 @@ public class SearchActivity extends AppCompatActivity
     private double radius = 1500;
     private TextView mPlaceDetailsText;
     private PlaceAutocompleteAdapter mAdapter;
-
+    private RestApi mRestApi;
     private GoogleApiClient mGoogleApiClient;
-
+    private boolean mFilterPersonalEvent;
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
 
     private static final String urlServer = Settings.getServerUrl();
@@ -75,6 +78,7 @@ public class SearchActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
         Button validateButton = (Button) findViewById(R.id.validate_search);
         mDateFragment = new DatePickerDialogFragment();
         mDateFragment.setListener(this);
@@ -104,16 +108,19 @@ public class SearchActivity extends AppCompatActivity
 
         setValidateButtonAndSend(validateButton);
     }
+    public void onCheckboxClicked(View view) {
+        mFilterPersonalEvent = ((CheckBox) view).isChecked();
+    }
+
 
     private void setValidateButtonAndSend(Button validateButton) {
         validateButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-                RestApi mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+                Log.d(TAG, Boolean.toString(mFilterPersonalEvent));
 
                 if (startDate == null) {
-                    startDate = new GregorianCalendar(2000, 1, 1, 0, 0);
+                    startDate = new GregorianCalendar(1990, 1, 1, 0, 0);
                 }
                 if (endDate == null) {
                     endDate = new GregorianCalendar(2020, 1, 1, 0, 0);
@@ -130,8 +137,17 @@ public class SearchActivity extends AppCompatActivity
                     @Override
                     public void onEventListReceived(List<Event> eventArrayList) {
                         EventDatabase.INSTANCE.clear();
-                        EventDatabase.INSTANCE.addAll(eventArrayList);
-                        finish();
+                        if (!mFilterPersonalEvent) {
+                            EventDatabase.INSTANCE.addAll(eventArrayList);
+                            finish();
+                        } else {
+                            List<Event> personalEvent = new ArrayList<Event>();
+                            Log.d(TAG, Integer.toString(personalEvent.size()));
+                            selectPersonalEvent(personalEvent, eventArrayList);
+                            //selectPersonalEvent(eventArrayList, personalEvent);
+
+                        }
+
                     }
 
                     public void onUserListReceived(List<User> userArrayList) {
@@ -142,6 +158,46 @@ public class SearchActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(), "Load events by search parameters", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void selectPersonalEvent(List<Event> event, List<Event> input){
+        final List<Event> innerEvent = event;
+        final List<Event> innerInput = input;
+        mRestApi.getHostedEvent(new GetEventListCallback() {
+            public void onEventListReceived(List<Event> eventArrayList) {
+                if (eventArrayList != null) {
+                    innerEvent.addAll(eventArrayList);
+                    mRestApi.getMatchedEvent(new GetEventListCallback() {
+                        public void onEventListReceived(List<Event> eventArrayList) {
+                            if (eventArrayList != null) {
+                                innerEvent.addAll(eventArrayList);
+                                Log.d(TAG, Integer.toString(innerEvent.size()));
+                                Log.d(TAG, Integer.toString(innerInput.size()));
+                                //innerInput.retainAll(innerEvent);
+                                Log.d(TAG, Integer.toString(innerInput.size()));
+                                List<Event> res = new ArrayList<Event>();
+                                retainAll(innerInput, innerEvent, res);
+                                EventDatabase.INSTANCE.addAll(res);
+                                finish();
+                            }
+                        }
+
+                    }, Settings.INSTANCE.getUser().getUserId());
+                }
+            }
+
+        }, Settings.INSTANCE.getUser().getUserId());
+    }
+
+    private void retainAll(List<Event> input, List<Event> filter, List<Event> res){
+        boolean isInside = false;
+        for(Event event: input){
+            for(Event filterIter: filter){
+                if(event.getID() == filterIter.getID()) isInside = true;
+            }
+            if(isInside) res.add(event);
+            isInside = false;
+        }
     }
 
     @Override

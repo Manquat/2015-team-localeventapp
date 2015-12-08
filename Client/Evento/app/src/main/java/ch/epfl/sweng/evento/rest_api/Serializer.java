@@ -43,12 +43,11 @@ public final class Serializer {
         return res;
     }
 
-    public static String user(User u) {
+    public static String user(String name, String email, String googleid) {
         String res = "{\n"
-                //+ "  \"id\": "  + ",\n"
-                + "  \"name\": \"" + u.getUsername() + "\", \n"
-                + "  \"email\": \"" + u.getEmail() + "\", \n"
-                + "  \"googleid\": \"" + u.getGoogleId() + "\" \n"
+                + "  \"name\": \"" + name + "\", \n"
+                + "  \"email\": \"" + email + "\", \n"
+                + "  \"googleid\": \"" + googleid + "\" \n"
                 + "}\n";
 
         Log.d(TAG, "Information sent to Server: " + res);
