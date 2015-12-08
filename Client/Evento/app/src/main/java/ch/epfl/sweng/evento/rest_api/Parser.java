@@ -40,8 +40,8 @@ public class Parser {
         try {
             Calendar cal = fromStringToCalendar(jsonObject.getString("date"));
             startDate.setTime(cal.getTime());
-            endDate = startDate;
-            Log.d(TAG, startDate.toString());
+            endDate.setTime(startDate.getTime());
+            addTime(endDate, jsonObject.getString("duration"));
         } catch (ParseException e) {
             Log.e(TAG, "Date not correctly parsed", e);
         }
@@ -136,4 +136,22 @@ public class Parser {
         }
         return cal;
     }
+
+
+    public static void addTime(Calendar c, String s) {
+        c.add(Calendar.HOUR_OF_DAY, getHour(s));
+        c.add(Calendar.MINUTE, getMinutes(s));
+    }
+
+    private static int getMinutes(String s) {
+        int m = Integer.parseInt(s.split(":")[1]);
+        return m;
+    }
+
+    private static int getHour(String s) {
+        int h = Integer.parseInt(s.split(":")[0]);
+        return h;
+    }
+
+
 }

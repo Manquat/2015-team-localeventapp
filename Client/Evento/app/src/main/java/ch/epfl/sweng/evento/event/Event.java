@@ -66,45 +66,22 @@ public class Event implements ClusterItem {
         mParticipants = participants;
     }
 
-    public Event(int id,
-                 String title,
-                 String description,
-                 double latitude,
-                 double longitude,
-                 String address,
-                 int creator,
-                 Set<String> tags,
-                 Calendar startDate,
-                 Calendar endDate,
-                 Bitmap picture) {
+    public Event(int id, String title, String description, double latitude, double longitude,
+                 String address, int creator, Set<String> tags, Calendar startDate,
+                 Calendar endDate, Bitmap picture) {
         this(id, title, description, latitude, longitude, address, creator, tags,
                 startDate, endDate, bitmapToString(picture), new HashSet<User>());
     }
 
-    public Event(int id,
-                 String title,
-                 String description,
-                 double latitude,
-                 double longitude,
-                 String address,
-                 int creator,
-                 Set<String> tags,
-                 Calendar startDate,
+    public Event(int id, String title, String description, double latitude, double longitude,
+                 String address, int creator, Set<String> tags, Calendar startDate,
                  Calendar endDate) {
         this(id, title, description, latitude, longitude, address, creator, tags,
                 startDate, endDate, samplePicture(), new HashSet<User>());
     }
 
-    public Event(int id,
-                 String title,
-                 String description,
-                 double latitude,
-                 double longitude,
-                 String address,
-                 int creator,
-                 Set<String> tags,
-                 String image,
-                 Set<User> users) {
+    public Event(int id, String title, String description, double latitude, double longitude,
+                 String address, int creator, Set<String> tags, String image, Set<User> users) {
         this(id, title, description, latitude, longitude, address, creator, tags,
                 new GregorianCalendar(), new GregorianCalendar(), image, users);
 

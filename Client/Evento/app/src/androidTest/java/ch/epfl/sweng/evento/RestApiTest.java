@@ -2,13 +2,11 @@ package ch.epfl.sweng.evento;
 
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -19,8 +17,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.concurrent.ExecutionException;
 
@@ -29,13 +25,11 @@ import ch.epfl.sweng.evento.rest_api.Parser;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.Serializer;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventCallback;
-import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.callback.RestTaskCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
-import ch.epfl.sweng.evento.rest_api.task.*;
+import ch.epfl.sweng.evento.rest_api.task.GetTask;
 
-import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -67,6 +61,7 @@ public class RestApiTest {
             Event.samplePicture(),
             new HashSet<User>());
 
+
     private static final String eventStringSent = "{\n"
             //+ "  \"id\": 17005,\n"
             + "  \"Event_name\": \"My football game\",\n"
@@ -79,7 +74,8 @@ public class RestApiTest {
             + "  \"longitude\": 6.580847,\n"
             + "  \"address\": \"Terrain de football de Dorigny\",\n"
             + "  \"date\":\"" + event.getProperDateString() + "\",\n"
-            + "  \"owner\":\""+MOCK_USER_ID+"\"\n"
+            + "  \"duration\":\"00:00:00\",\n"
+            + "  \"owner\":\"" + MOCK_USER_ID + "\"\n"
             + "}\n";
 
     private static final String eventStringReceived = "{\n"
@@ -92,7 +88,7 @@ public class RestApiTest {
         networkProviderMockito = Mockito.mock(NetworkProvider.class);
         Mockito.doReturn(connection).when(networkProviderMockito).getConnection(Mockito.any(URL.class));
 
-        Settings.INSTANCE.setUser(new User(MOCK_USER_ID, "MockJo", "mockjo@plop.ch"));
+        Settings.setUser(new User(MOCK_USER_ID, "MockJo", "mockjo@plop.ch"));
     }
 
     private void configureResponse(int status, String content, String contentType)
@@ -166,5 +162,6 @@ public class RestApiTest {
         junit.framework.Assert.assertEquals("title", event.getTitle(), eventArrayList.get(0).getTitle());
         junit.framework.Assert.assertEquals("description", event.getDescription(), eventArrayList.get(0).getDescription());
     }
+
 
 }

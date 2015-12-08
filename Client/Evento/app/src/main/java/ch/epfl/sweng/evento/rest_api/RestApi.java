@@ -247,8 +247,8 @@ public class RestApi {
     public void postComment(int EventId, String commentBody,
                             final HttpResponseCodeCallback callback) {
         String restUrl = UrlMaker.postComment(mUrlServer);
-        String requestBody = Serializer.comment(Settings.INSTANCE.getUser().getUserId(),
-                Settings.INSTANCE.getUser().getUsername(),
+        String requestBody = Serializer.comment(Settings.getUser().getUserId(),
+                Settings.getUser().getUsername(),
                 EventId, commentBody);
         Log.d(TAG, "postComment : url : " + restUrl);
         new PostTask(restUrl, mNetworkProvider, requestBody, new RestTaskCallback() {
