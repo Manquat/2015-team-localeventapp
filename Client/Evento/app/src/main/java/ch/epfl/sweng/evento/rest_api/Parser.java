@@ -164,7 +164,10 @@ public class Parser {
     }
 
     private static int getHour(String s) {
-        int h = Integer.parseInt(s.split(":")[0]);
+        //Log.d(TAG, "getHour : " + s);
+        s = s.split(":")[0];
+        s = s.split(" ")[0];
+        int h = Integer.parseInt(s);
         return h;
     }
 
