@@ -140,8 +140,7 @@ public class RestApi {
     }
 
     public void getUserByName(final GetUserCallback callback, String username) {
-        UrlMakerUser url = new UrlMakerUser("user/");
-        String restUrl = url.get(mUrlServer, username);
+        String restUrl = UrlMaker.getUserByName(mUrlServer, username);
         Log.d(TAG, restUrl);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
             @Override

@@ -1,6 +1,7 @@
 package ch.epfl.sweng.evento.gui;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -120,8 +121,9 @@ public class LoginActivity extends AppCompatActivity implements
             GoogleSignInResult result = opr.get();
             if (result.isSuccess()) {
                 storingTheUserOnServerAndInTheSettings(result);
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
+
+                //Intent intent = new Intent(this, MainActivity.class);
+                //startActivity(intent);
             } else {
                 Toast.makeText(this, "Could not connect, please try again", Toast.LENGTH_SHORT).show();
             }
@@ -152,8 +154,8 @@ public class LoginActivity extends AppCompatActivity implements
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 storingTheUserOnServerAndInTheSettings(result);
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(this, MainActivity.class);
+                //startActivity(intent);
 
             } else {
                 Toast.makeText(this, "Could not connect, please try again", Toast.LENGTH_SHORT).show();
@@ -169,9 +171,10 @@ public class LoginActivity extends AppCompatActivity implements
 
         String personName = acct.getDisplayName();
         String personEmail = acct.getEmail();
-        String personId = acct.getId();
-        User user = new User(personId, personName, personEmail);
+        String personGoogleId = acct.getId();
+        User user = new User(-1, personName, personEmail);
         Settings.setUser(user);
+        final Activity loginActivity = this;
         RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
         restApi.postUser(personName, personEmail, personGoogleId, new GetUserCallback() {
             @Override
@@ -182,12 +185,14 @@ public class LoginActivity extends AppCompatActivity implements
                     throw new NullPointerException("User null!");
                 }
 
-                Settings.INSTANCE.setUser(user);
+                Settings.setUser(user);
                 // assert submission
                 Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "User information sent to server");
-                Log.d(TAG, "Active User with attributed Id: " + Settings.INSTANCE.getUser().getUsername() + " , " + Settings.INSTANCE.getUser().getEmail() +" , UserId: " + Settings.INSTANCE.getUser().getUserId() );
+                Log.d(TAG, "Active User with attributed Id: " + Settings.getUser().getUsername() + " , " + Settings.getUser().getEmail() +" , UserId: " + Settings.getUser().getUserId() );
 
+                Intent intent = new Intent(loginActivity, MainActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -211,7 +211,7 @@ public class CreatingEventActivity extends AppCompatActivity
 
                 // mock getCreator and random id (ID will be assigned server side)
 
-                int creator = Settings.INSTANCE.getUser().getUserId();
+                int creator = Settings.getUser().getUserId();
 
                 Random rand = new Random();
                 int id = rand.nextInt(10000);

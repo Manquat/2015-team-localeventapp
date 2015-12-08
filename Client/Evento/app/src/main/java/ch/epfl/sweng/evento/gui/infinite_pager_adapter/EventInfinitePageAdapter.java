@@ -138,9 +138,9 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         updateEvent.setOnClickListener(new UpdateEventListener(mActivity, currentEvent.getID()));
 
         boolean isTheCurrentUserTheOwner =
-                (currentEvent.getCreator() == Settings.INSTANCE.getUser().getUserId());
+                (currentEvent.getCreator() == Settings.getUser().getUserId());
         Log.d(TAG, "is currentOwner : creator " + currentEvent.getCreator());
-        Log.d(TAG, "is currentOwner : user " + Settings.INSTANCE.getUser().getUserId());
+        Log.d(TAG, "is currentOwner : user " + Settings.getUser().getUserId());
         Log.d(TAG, "current event : " + currentEvent.getTitle());
         if (isTheCurrentUserTheOwner) {
             deleteEvent.setVisibility(View.VISIBLE);

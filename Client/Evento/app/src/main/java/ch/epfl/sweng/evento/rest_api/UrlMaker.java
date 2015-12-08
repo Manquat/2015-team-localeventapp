@@ -86,4 +86,8 @@ public class UrlMaker {
     public static String getUser(String urlServer, int userId) {
         return urlServer + user + userId;
     }
+
+    public static String getUserByName(String urlServer, String username) {
+        return urlServer + user + username;
+    }
 }

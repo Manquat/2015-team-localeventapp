@@ -182,11 +182,11 @@ public class SearchActivity extends AppCompatActivity
                             }
                         }
 
-                    }, Settings.INSTANCE.getUser().getUserId());
+                    }, Settings.getUser().getUserId());
                 }
             }
 
-        }, Settings.INSTANCE.getUser().getUserId());
+        }, Settings.getUser().getUserId());
     }
 
     private void retainAll(List<Event> input, List<Event> filter, List<Event> res){

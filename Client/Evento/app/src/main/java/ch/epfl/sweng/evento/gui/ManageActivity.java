@@ -50,7 +50,7 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
         setContentView(R.layout.activity_manage);
 
         TextView WelcomeView = (TextView) (findViewById(R.id.Welcome));
-        WelcomeView.setText("Welcome " + Settings.INSTANCE.getUser().getUsername() + ".");
+        WelcomeView.setText("Welcome " + Settings.getUser().getUsername() + ".");
 
         mActivity = this;
         mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
@@ -80,14 +80,14 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
                             }
                         }
 
-                    }, Settings.INSTANCE.getUser().getUserId());
+                    }, Settings.getUser().getUserId());
 
                     ListEntryAdapter adapter = new ListEntryAdapter(mActivity, mItems);
                     mListView.setAdapter(adapter);
                 }
             }
 
-        }, Settings.INSTANCE.getUser().getUserId());
+        }, Settings.getUser().getUserId());
 
         mListView.setOnItemClickListener(this);
     }
