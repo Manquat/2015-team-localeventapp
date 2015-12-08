@@ -21,4 +21,7 @@ public class UrlMakerUser extends UrlMaker {
         return urlServer + access + noUser;
     }
 
+    public static String get(String urlServer, String username) {
+        return urlServer + access + username;
+    }
 }

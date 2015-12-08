@@ -143,6 +143,29 @@ public class RestApi {
         }).execute();
     }
 
+    public void getUserByName(final GetUserCallback callback, String username) {
+        UrlMakerUser url = new UrlMakerUser("user/");
+        String restUrl = url.get(mUrlServer, username);
+        Log.d(TAG, restUrl);
+        new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
+            @Override
+            public void onTaskComplete(String response) {
+                Log.d(TAG, response);
+                User user = null;
+                if (response != null) {
+                    try {
+                        JSONObject JsonResponse = new JSONObject(response);
+                        user = Parser.toUser(JsonResponse);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "exception in JSON parser");
+                    }
+
+                }
+                callback.onDataReceived(user);
+            }
+        }).execute();
+    }
+
 
     public void getHostedEvent(final GetEventListCallback callback, int idUser) {
         final String accessToHostedEvent = "user/creator/";

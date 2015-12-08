@@ -31,6 +31,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
     Activity mActivity;
     public static final String TAG = "EventInfPageAdapter";
     private RestApi mRestApi;
+    private ConversationAdapter mConversationAdapter;
 
 
     public EventInfinitePageAdapter(Integer initialEventId, Activity activity) {
@@ -63,6 +64,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
 
         ConversationAdapter conversationAdapter = new ConversationAdapter(mActivity, currentEventId);
         ListView listOfComment = (ListView) rootLayout.findViewById(R.id.event_list_comment);
+        listOfComment.setAdapter(conversationAdapter);
 
         GridLayout layout = (GridLayout) inflater.inflate(R.layout.fragment_event,
                 listOfComment, false);
@@ -71,9 +73,8 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
 
         listOfComment.addHeaderView(layout);
 
-        listOfComment.setAdapter(conversationAdapter);
-
         AddingComment.initialize(mActivity, listOfComment, currentEventId, conversationAdapter);
+
 
         return rootLayout;
     }
@@ -113,6 +114,11 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         Button listOfParticipant = (Button) rootView.findViewById(R.id.list_participant_exp);
         ListOfParticipantListener participant =
                 new ListOfParticipantListener(mActivity, currentEvent.getID(), listOfParticipant);
+
+
+        ExpendableList mListAdapter = new ExpendableList(mActivity.getApplicationContext(), mListDataHeader, mListDataChild);
+
+        // setting list adapter
 
         // configure the joint and unjoin button
         Button joinEventButton = (Button) rootView.findViewById(R.id.joinEvent);
