@@ -78,7 +78,8 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
 
             // setting a default image as the image in the list
             ImageView imageView = (ImageView) rootView.findViewById(R.id.list_event_image);
-            imageView.setImageResource(R.drawable.basket);
+            imageView.setImageBitmap(mEvents.get(position).getPicture());
+            //imageView.setImageResource(R.drawable.basket);
         }
 
         return rootView;
