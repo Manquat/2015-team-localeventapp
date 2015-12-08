@@ -22,6 +22,7 @@ The repository contains both android and Django server files, stored respectivel
 ## GUI testing
 The GUI tests can NOT be launch in jenkins, because of an unkown issue. To the corrector: you can run these tests locally.
 1) Comment the ```@ignore``` instruction above all GUI tests
+(an exhaustive lists of all test classes containing GUI tests will be provided right here)
 
 2) Set the xamarin emulator and the Google Play as described in forum post
 https://sweng-forum.epfl.ch/t/android-emulator-with-google-play-services/191
