@@ -51,10 +51,10 @@ public class UserProfileActivity extends AppCompatActivity implements
         Settings.getUser().getHostedEvent();
         Settings.getUser().getMatchedEvent();
 
-        TextView UsernameView = (TextView) (findViewById(R.id.Username));
-        UsernameView.setText("Username : " + Settings.getUser().getUsername());
-        TextView EmailView = (TextView) (findViewById(R.id.Email));
-        EmailView.setText("Email Adress : " + Settings.getUser().getEmail());
+        TextView usernameView = (TextView) (findViewById(R.id.Username));
+        usernameView.setText("Username : " + Settings.getUser().getUsername());
+        TextView emailView = (TextView) (findViewById(R.id.Email));
+        emailView.setText("Email Adress : " + Settings.getUser().getEmail());
 
 
     }

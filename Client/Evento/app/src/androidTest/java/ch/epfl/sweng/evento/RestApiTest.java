@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.concurrent.ExecutionException;
@@ -43,6 +44,7 @@ import static org.junit.Assert.assertNotNull;
 public class RestApiTest {
     private static final int MOCK_USER_ID = 1;
     private static final int ASCII_SPACE = 0x20;
+    private static final double DELTA_FLOAT_COMPARISON = 0.01;
     private HttpURLConnection connection;
     private NetworkProvider networkProviderMockito;
     private static final String wrongUrl = "http://mock.com";
@@ -109,15 +111,15 @@ public class RestApiTest {
     }
 
     @Test
-    public void parserTest() throws JSONException {
+    public void parserTest() throws JSONException, ParseException {
         JSONObject jsonObject = new JSONObject(eventStringReceived);
         Event eventFromJson = Parser.toEvent(jsonObject);
 
         assertEquals("id correctly parsed", event.getID(), eventFromJson.getID());
         assertEquals("title correctly parsed", event.getTitle(), eventFromJson.getTitle());
         assertEquals("description correctly parsed", event.getDescription(), eventFromJson.getDescription());
-        assertEquals("xLoc correctly parsed", event.getLatitude(), eventFromJson.getLatitude());
-        assertEquals("yLoc correctly parsed", event.getLongitude(), eventFromJson.getLongitude());
+        assertEquals("xLoc correctly parsed", event.getLatitude(), eventFromJson.getLatitude(), DELTA_FLOAT_COMPARISON);
+        assertEquals("yLoc correctly parsed", event.getLongitude(), eventFromJson.getLongitude(), DELTA_FLOAT_COMPARISON);
         assertEquals("address correctly parsed", event.getAddress(), eventFromJson.getAddress());
         assertEquals("creator correctly parsed", event.getCreator(), eventFromJson.getCreator());
     }

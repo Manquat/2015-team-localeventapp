@@ -10,6 +10,7 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -71,6 +72,8 @@ public class RestApi {
                         event = Parser.toEvent(JsonResponse);
                     } catch (JSONException e) {
                         Log.e(TAG, "Exception thrown in getEvent", e);
+                    } catch (ParseException e) {
+                        Log.e(TAG, "Exception thrown in getEvent", e);
                     }
 
                 }
@@ -90,7 +93,9 @@ public class RestApi {
                     try {
                         eventArrayList = Parser.toEventList(response);
                     } catch (JSONException e) {
-                        Log.e(TAG, "exception in JSON parser");
+                        Log.e(TAG, "exception in JSON parser", e);
+                    } catch (ParseException e) {
+                        Log.e(TAG, "exception in JSON parser", e);
                     }
                 }
                 callback.onEventListReceived(eventArrayList);
@@ -156,7 +161,9 @@ public class RestApi {
                     try {
                         event = Parser.toEventList(response);
                     } catch (JSONException e) {
-                        Log.e(TAG, "exception in JSON parser");
+                        Log.e(TAG, "exception in JSON parser", e);
+                    } catch (ParseException e) {
+                        Log.e(TAG, "exception in JSON parser", e);
                     }
 
                 }
@@ -177,7 +184,9 @@ public class RestApi {
                     try {
                         event = Parser.toEventList(response);
                     } catch (JSONException e) {
-                        Log.e(TAG, "exception in JSON parser");
+                        Log.e(TAG, "exception in JSON parser", e);
+                    } catch (ParseException e) {
+                        Log.e(TAG, "exception in JSON parser", e);
                     }
 
                 }
@@ -198,7 +207,9 @@ public class RestApi {
                     try {
                         eventArrayList = Parser.toEventList(result);
                     } catch (JSONException e) {
-                        Log.e(TAG, "exception in JSON parser");
+                        Log.e(TAG, "exception in JSON parser", e);
+                    } catch (ParseException e) {
+                        Log.e(TAG, "exception in JSON parser", e);
                     }
 
                 }
@@ -223,7 +234,9 @@ public class RestApi {
                     try {
                         eventArrayList = Parser.toEventList(result);
                     } catch (JSONException e) {
-                        Log.e(TAG, "exception in JSON parser");
+                        Log.e(TAG, "exception in JSON parser", e);
+                    } catch (ParseException e) {
+                        Log.e(TAG, "exception in JSON parser", e);
                     }
 
                 }

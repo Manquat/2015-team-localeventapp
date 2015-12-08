@@ -157,19 +157,15 @@ public class MainActivity extends AppCompatActivity {
 
         mRestApi.getAll(new GetEventListCallback() {
             @Override
-            public void onEventListReceived(List<Event> eventArrayList) {
+            public void onEventListReceived(List<Event> events) {
                 EventDatabase.INSTANCE.clear();
-                EventDatabase.INSTANCE.addAll(eventArrayList);
+                EventDatabase.INSTANCE.addAll(events);
                 Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + mPager.getCurrentItem());
                 if (page instanceof Refreshable) {
                     ((Refreshable) page).refresh();
                 }
                 Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
-                makeNotifications(eventArrayList);
-            }
-
-            public void onUserListReceived(List<User> userArrayList) {
-
+                makeNotifications(events);
             }
         });
     }

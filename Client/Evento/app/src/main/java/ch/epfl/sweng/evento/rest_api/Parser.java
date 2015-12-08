@@ -1,7 +1,5 @@
 package ch.epfl.sweng.evento.rest_api;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,41 +28,35 @@ public class Parser {
         return null;
     }
 
-    public static Event toEvent(JSONObject jsonObject) throws JSONException {
+    public static Event toEvent(JSONObject jsonObject) throws JSONException, ParseException {
 
         final JSONObject json = jsonObject;
 
         GregorianCalendar startDate = new GregorianCalendar(0, 0, 0);
         GregorianCalendar endDate = new GregorianCalendar(0, 0, 0);
 
-        try {
-            Calendar cal = fromStringToCalendar(jsonObject.getString("date"));
-            startDate.setTime(cal.getTime());
-            endDate.setTime(startDate.getTime());
-            addTime(endDate, jsonObject.getString("duration"));
-        } catch (ParseException e) {
-            Log.e(TAG, "Date not correctly parsed", e);
-        }
+        Calendar cal = fromStringToCalendar(jsonObject.getString("date"));
+        startDate.setTime(cal.getTime());
+        endDate.setTime(startDate.getTime());
+        addTime(endDate, jsonObject.getString("duration"));
 
-        try {
-            return new Event(jsonObject.getInt("id"),
-                    jsonObject.getString("Event_name"),
-                    jsonObject.getString("description"),
-                    jsonObject.getDouble("latitude"),
-                    jsonObject.getDouble("longitude"),
-                    jsonObject.getString("address"),
-                    jsonObject.getInt("owner"),
-                    new HashSet<String>() {{
-                        add(json.getString("tags"));
-                    }},
-                    startDate,
-                    endDate,
-                    jsonObject.getString("image"),
-                    new HashSet<User>());
 
-        } catch (IllegalArgumentException e) {
-            throw new JSONException("Invalid question structure");
-        }
+        Event event =  new Event(jsonObject.getInt("id"),
+                jsonObject.getString("Event_name"),
+                jsonObject.getString("description"),
+                jsonObject.getDouble("latitude"),
+                jsonObject.getDouble("longitude"),
+                jsonObject.getString("address"),
+                jsonObject.getInt("owner"),
+                new HashSet<String>() {{
+                    add(json.getString("tags"));
+                }},
+                startDate,
+                endDate,
+                jsonObject.getString("image"),
+                new HashSet<User>());
+
+        return event;
     }
 
     private static Comment toComment(JSONObject jsonObject) throws JSONException {
@@ -76,7 +68,7 @@ public class Parser {
         return c;
     }
 
-    public static List<Event> toEventList(String response) throws JSONException {
+    public static List<Event> toEventList(String response) throws JSONException, ParseException {
         ArrayList<Event> eventArrayList = new ArrayList<>();
         JSONArray jsonArray = new JSONArray(response);
 
@@ -88,16 +80,10 @@ public class Parser {
 
     public static User toUser(JSONObject jsonObject) throws JSONException {
         final JSONObject json = jsonObject;
-
-        try {
-            return new User(jsonObject.getInt("id"),
-                    jsonObject.getString("name"),
-                    jsonObject.getString("email")
-            );
-
-        } catch (IllegalArgumentException e) {
-            throw new JSONException("Invalid question structure");
-        }
+        User user = new User(jsonObject.getInt("id"),
+                jsonObject.getString("name"),
+                jsonObject.getString("email"));
+        return user;
     }
 
     public static List<Comment> toCommentList(String result) throws JSONException {

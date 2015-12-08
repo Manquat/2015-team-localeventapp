@@ -33,7 +33,6 @@ public class LoginActivity extends AppCompatActivity implements
         View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
-    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
     private static final String urlServer = Settings.getServerUrl();
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 0;
@@ -183,8 +182,8 @@ public class LoginActivity extends AppCompatActivity implements
             public void onDataReceived(User user) {
                 Settings.setUser(user);
                 // assert submission
-                Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "User information sent to server");
+                Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "User information sent to server");
             }
         });
     }
@@ -196,7 +195,7 @@ public class LoginActivity extends AppCompatActivity implements
             String message = "Invalid server client ID in strings.xml, must end with " + suffix;
 
             Log.w(TAG, message);
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Problem with server authentication, try to re-log in the app please.", Toast.LENGTH_LONG).show();
         }
     }
 }

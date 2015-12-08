@@ -89,8 +89,8 @@ public class ConversationAdapter extends BaseAdapter
             mListOfComment = commentList;
             notifyDataSetChanged();
         } else {
-            Toast.makeText(mContext, "Error while parsing the comment(s)", Toast.LENGTH_LONG).show();
-            Log.d(TAG, "RestAPI return a null list");
+            Log.e(TAG, "Null commentList received");
+            Toast.makeText(mContext, "You're connection seems to have problem. Please try to refresh.", Toast.LENGTH_LONG).show();
         }
     }
 }

@@ -77,7 +77,7 @@ public class ParserTest {
     }
 
     @Test
-    public void parserDurationTest() throws JSONException {
+    public void parserDurationTest() throws JSONException, ParseException {
         JSONObject jsonObject = new JSONObject(eventStringReceived);
         Event e = Parser.toEvent(jsonObject);
         assertEquals(endDate.getTimeInMillis(), e.getEndDate().getTimeInMillis());
