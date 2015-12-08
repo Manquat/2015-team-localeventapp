@@ -115,11 +115,6 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         ListOfParticipantListener participant =
                 new ListOfParticipantListener(mActivity, currentEvent.getID(), listOfParticipant);
 
-
-        ExpendableList mListAdapter = new ExpendableList(mActivity.getApplicationContext(), mListDataHeader, mListDataChild);
-
-        // setting list adapter
-
         // configure the joint and unjoin button
         Button joinEventButton = (Button) rootView.findViewById(R.id.joinEvent);
         Button unJoinEventButton = (Button) rootView.findViewById(R.id.remove_user_from_event);

@@ -127,7 +127,7 @@ public class JoinEvent implements
     @Override
     public void onUserListReceived(List<User> userArrayList) {
         Log.d(TAG, "user list received for event " + mCurrentEvent.getTitle());
-        /*if (userArrayList != null) {
+        if (userArrayList != null) {
             mParticipant.clear();
             mParticipant.addAll(userArrayList);
         }
