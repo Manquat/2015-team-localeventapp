@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -188,6 +189,10 @@ public class EventClusterManager extends ClusterManager<Event> implements
             case 1:
                 view = ViewGroup.inflate(mContext, R.layout.infomarker_event, null);
                 Event event = mEventsClick.iterator().next();
+
+                ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
+                imageView.setImageBitmap(event.getPicture());
+
                 TextView tvTitle = (TextView) view.findViewById(R.id.info_title);
                 tvTitle.setText(event.getTitle());
                 tvTitle.setTextColor(ContextCompat.getColor(mContext, R.color.defaultTextColor));
