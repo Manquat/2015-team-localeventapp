@@ -9,6 +9,7 @@ from . import views
 urlpatterns = [
     url(r'^user/$', views.create_user),
     url(r'^user/(?P<pk>[0-9]+)$', views.update_user),
+    url(r'^user/(?P<name>[A-Za-z]+)$', views.get_user),
     url(r'^user/creator/(?P<pk>[0-9]+)$', views.created_events),
     url(r'^user/participant/(?P<pk>[0-9]+)$', views.joined_events),
     url(r'^user/comments/(?P<pk>[0-9]+)$', views.commented_events),

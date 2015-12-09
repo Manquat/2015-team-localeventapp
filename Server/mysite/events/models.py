@@ -27,6 +27,7 @@ class Event(models.Model):
 
 class Comment(models.Model):
     body = models.TextField(default='No Comment')
+    creator_name = models.CharField(max_length=200, default='No Name')
     creator = models.ForeignKey(participant, related_name='comments')
     event = models.ForeignKey(Event, related_name='comments')
     def __unicode__(self):

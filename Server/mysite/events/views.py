@@ -66,8 +66,12 @@ def event_detail(request, pk, format=None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        event.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if validate_delete(request, event.owner):
+            event.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
 
 
 @api_view(['GET'])
@@ -185,23 +189,53 @@ def event_addcomment(request, format=None):
             return Response(status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-@api_view(['GET'])
+@api_view(['GET','DELETE'])
 def commented_events(request, pk, format=None):
     """
     Get all comments of an event
     """
 
+    if request.method == 'GET':
+        try:
+            event = Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        comments = Comment.objects.filter(event=event)
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'DELETE':
+        try:
+            comment = Comment.objects.get(pk=pk)
+        except Comment.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        if validate_delete(request, comment.creator) or validate_delete(request, comment.event.owner):
+            comment.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+@api_view(['GET'])
+def event_detailParticipant(request, pk, format=None):
+    """
+    Get participants of an event
+    """
+
+    if 'HTTP_TOKEN' not in request.META:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    token = request.META['HTTP_TOKEN']
+    if validate_user(token) is False:
+        return  Response(status=status.HTTP_403_FORBIDDEN)
     try:
-        event = Event.objects.get(pk=pk)
+        part = Event.objects.get(pk=pk).participants.all()
     except Event.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        comments = Comment.objects.filter(event=event)
-        serializer = CommentSerializer(comments, many=True)
-        return Response(serializer.data)
+        serializerUser = ParticipantSerializer(part, many=True)
+        return Response(serializerUser.data)
 
 
 def validate_user(token):
@@ -225,5 +259,22 @@ def validate_user(token):
         return False
 
     return False
+
+def validate_delete(request,owner):
+    """
+    Validate Userid
+    """
+    if 'HTTP_USERID' not in request.META:
+        return False
+    id = request.META['HTTP_USERID']
+    try:
+        user = participant.objects.get(pk=id)
+    except participant.DoesNotExist:
+        return False
+
+    if user.pk == owner.pk:
+        return True
+    else:
+        return False
 
 
