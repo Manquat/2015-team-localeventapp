@@ -42,7 +42,7 @@ public class ParserTest {
         // force TimeZone, for jenkins
         startDate.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
         endDate.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
-        Settings.setUser(new User(MOCK_USER_ID, "MockJo", "mockjo@plop.ch"));
+        Settings.INSTANCE.setUser(new User(MOCK_USER_ID, "MockJo", "mockjo@plop.ch"));
         event = new Event(0, "", "", 0, 0, "", 0, new HashSet<String>(), startDate, endDate);
         eventStringReceived = "{\n"
                 + "  \"id\": 0,\n"

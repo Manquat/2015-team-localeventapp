@@ -4,10 +4,11 @@ package ch.epfl.sweng.evento;
  * Created by joachimmuth on 12.11.15.
  */
 
-public class Settings {
-    private static String mIdToken = "No Token";
-    private static User mUser;
-    private static int mUserId;
+public enum Settings {
+    INSTANCE;
+    private String mIdToken = "No Token";
+    private User mUser;
+    private int mUserId;
 
     private Settings() {
         // private constructor
@@ -19,23 +20,23 @@ public class Settings {
     }
 
 
-    public static String getIdToken() {
+    public String getIdToken() {
         return mIdToken;
     }
 
-    public static void setIdToken(String IdToken) {
+    public void setIdToken(String IdToken) {
         mIdToken = IdToken;
     }
 
-    public static User getUser() {
+    public User getUser() {
         return mUser;
     }
 
-    public static void setUser(User user) {
+    public void setUser(User user) {
         mUser = user;
     }
 
-    public static void setUserId(int id) {
+    public void setUserId(int id) {
         mUserId = id;
     }
 }

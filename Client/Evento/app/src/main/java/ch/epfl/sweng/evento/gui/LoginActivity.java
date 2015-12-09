@@ -167,19 +167,19 @@ public class LoginActivity extends AppCompatActivity implements
         GoogleSignInAccount acct = googleSignInResult.getSignInAccount();
         String idToken = acct.getIdToken();
         Log.d(TAG, "idToken:" + idToken);
-        Settings.setIdToken(idToken);
+        Settings.INSTANCE.setIdToken(idToken);
 
         String personName = acct.getDisplayName();
         String personEmail = acct.getEmail();
         String personId = acct.getId();
         User user = new User(personId, personName, personEmail);
-        Settings.setUser(user);
+        Settings.INSTANCE.setUser(user);
         RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
 
         restApi.postUser(user, new GetUserCallback() {
             @Override
             public void onDataReceived(User user) {
-                Settings.setUser(user);
+                Settings.INSTANCE.setUser(user);
                 // assert submission
                 Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
                 Log.i(TAG, "User information sent to server");

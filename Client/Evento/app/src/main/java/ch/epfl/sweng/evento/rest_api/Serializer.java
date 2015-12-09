@@ -38,7 +38,7 @@ public final class Serializer {
                 + "  \"address\": \"" + e.getAddress() + "\",\n"
                 + "  \"date\":\"" + e.getProperDateString() + "\",\n"
                 + "  \"duration\":\"" + fromMillisToHHMMSS(duration) + "\",\n"
-                + "  \"owner\":\"" + Settings.getUser().getUserId() + "\"\n"
+                + "  \"owner\":\"" + Settings.INSTANCE.getUser().getUserId() + "\"\n"
                 + "}\n";
         return res;
     }
