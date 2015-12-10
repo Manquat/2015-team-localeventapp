@@ -74,7 +74,7 @@ public class JoinEvent implements
         if (mIsTheEventJoined)
         {
             Log.d(TAG, Settings.getUser().getUsername() + " unjoin");
-            if (!mCurrentEvent.removeParticipant(Settings.getUser()))
+            if (!mParticipant.remove(Settings.getUser()))
             {
                 Log.d(TAG, "addParticipant just returned false");
                 mActivity.finish();
@@ -88,7 +88,7 @@ public class JoinEvent implements
         } else
         {
             Log.d(TAG, Settings.getUser().getUsername() + " join");
-            if (!mCurrentEvent.addParticipant(Settings.getUser()))
+            if (!mParticipant.add(Settings.getUser()))
             {
                 Log.d(TAG, "addParticipant just returned false");
                 mActivity.finish();

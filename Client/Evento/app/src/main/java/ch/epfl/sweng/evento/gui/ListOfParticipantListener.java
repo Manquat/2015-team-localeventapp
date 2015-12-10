@@ -2,12 +2,17 @@ package ch.epfl.sweng.evento.gui;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.TextView;
 
 import java.util.List;
 
+import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.rest_api.RestApi;
@@ -75,7 +80,11 @@ public class ListOfParticipantListener implements
             participantName[i] = mParticipant.get(i).getUsername();
         }
 
-        builder.setTitle("Touch a participant to see his profile")
+        String chars = "Touch a participant to see his profile";
+        SpannableString str = new SpannableString(chars);
+        str.setSpan(new ForegroundColorSpan(Color.BLACK), 0, chars.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        builder.setTitle(str)
                 .setItems(participantName, new DialogInterface.OnClickListener()
                 {
                     @Override

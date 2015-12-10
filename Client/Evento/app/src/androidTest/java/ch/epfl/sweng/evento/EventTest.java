@@ -51,7 +51,8 @@ public class EventTest {
         mUser = new User(MOCK_USER_ID, "Mock User", "mockuser@plop.ch");
         mUser2 = new User(MOCK_USER_ID2, "Mock User 2", "mockuser2@plop.ch");
         mParticipants.add(mUser);
-        mEvent = new Event(3, mTitle, mDescription, 20.5, 150.7, mAdress, 5, mTags, mStartDate, mEndDate, mImage, mParticipants);
+        mEvent = new Event(3, mTitle, mDescription, 20.5, 150.7, mAdress, 5, mTags,
+                mStartDate, mEndDate, mImage);
     }
 
     @Test
@@ -112,48 +113,6 @@ public class EventTest {
     @Test
     public void testGetPictureAsString() {
         assertEquals(mImage, mEvent.getPictureAsString());
-    }
-
-    @Test
-    public void testGetParticipant() {
-        assertEquals(mParticipants, mEvent.getAllParticipant());
-    }
-
-    @Test
-    public void testAddParticipant() {
-        mEvent.addParticipant(mUser2);
-        mParticipants.add(mUser);
-        assertEquals(mParticipants, mEvent.getAllParticipant());
-    }
-
-    @Test
-    public void testAddNullParticipant() {
-        try {
-            mEvent.addParticipant(null);
-            fail("Did not raise NullPointerException");
-        } catch (NullPointerException e) {
-        }
-    }
-
-    @Test
-    public void testRemoveNullParticipant() {
-        try {
-            mEvent.removeParticipant(null);
-            fail("Did not raise NullPointerException");
-        } catch (NullPointerException e) {
-        }
-    }
-
-    @Test
-    public void testRemoveParticipant() {
-        mEvent.removeParticipant(mUser2);
-        mParticipants.remove(mUser2);
-        assertEquals(mParticipants, mEvent.getAllParticipant());
-    }
-
-    @Test
-    public void testCheckParticipant() {
-        assertEquals(false, mEvent.checkIfParticipantIsIn(mUser2));
     }
 }
 

@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
- * Container of the info relative to the calendar
+ * Class that's holds the data for the grid view use in the GridCalendarAdapter
  */
 public class CalendarGrid
 {
@@ -22,6 +22,11 @@ public class CalendarGrid
     private int mIndexOfCurrentDay; // the index of the current day in the list of mDays and mCurrent
     private int mCurrentMonth;      // the current month (0 for january, ...)
     private int mCurrentYear;       // the current year
+
+    private enum Current
+    {
+        CURRENT, NEXT, PREVIOUS
+    }
 
     /**
      * Create a grid focused on the day given by the actual position of the calendar
@@ -55,97 +60,68 @@ public class CalendarGrid
         setFocusedDay(day, month, year);
     }
 
+    /**
+     * Getter of the current focused day
+     * @return a Calendar at the current focused day
+     */
     public Calendar getFocusedDate()
     {
         return new GregorianCalendar(mCurrentYear, mCurrentMonth, mDays.get(mIndexOfCurrentDay));
     }
 
+    /**
+     * Getter of the current month
+     * @return the int corresponding of the current month : 0 for january, ..., 11 for december
+     */
     public int getCurrentMonth()
     {
         return mCurrentMonth;
     }
 
+    /**
+     * Getter for the current year
+     * @return the year as an int, like in a the gregorian calendar.
+     */
     public int getCurrentYear()
     {
         return mCurrentYear;
     }
 
+    /**
+     * Getter of the day of the month in function of the position in the grid
+     * @param position the position in the grid [0, 41]
+     * @return the number of the day in the month
+     */
     public int getDay(int position)
     {
         return mDays.get(position);
     }
 
+    /**
+     * Getter of the day as the number since the begging of the year in function of the position
+     * @param position the position in the grid [0, 41]
+     * @return the number of the day since the begging of the year
+     */
     public int getDayOfYear(int position)
     {
-        GregorianCalendar cal;
+        int effectiveMonth = mCurrentMonth;
         switch (mCurrent.get(position))
         {
             case CURRENT:
-                cal = new GregorianCalendar(mCurrentYear, mCurrentMonth, mDays.get(position));
                 break;
             case PREVIOUS:
-                cal = new GregorianCalendar(mCurrentYear, mCurrentMonth - 1, mDays.get(position));
+                ++effectiveMonth;
                 break;
             case NEXT:
-                cal = new GregorianCalendar(mCurrentYear, mCurrentMonth + 1, mDays.get(position));
+                --effectiveMonth;
                 break;
             default:
                 Log.e(TAG, "No such Current Type!");
                 throw new AssertionError(Current.values());
         }
 
-        return cal.get(Calendar.DAY_OF_YEAR);
-    }
-
-    /**
-     * Return a tag in the form of CURRENT-DAY-MONTH-YEAR,
-     * where CURRENT can have 4 values : CURRENT_MONTH, NEXT_MONTH, PREVIOUS_MONTH and CURRENT_DAY
-     *
-     * @param position the position of the days in the grid (range 1-42)
-     * @return A string containing the tags
-     */
-    public String getStringTagAt(int position)
-    {
-        String tag;
-
-        // adding the CURRENT attribute
-        switch (mCurrent.get(position))
-        {
-            case CURRENT:
-                tag = "CURRENT_";
-                if (position == mIndexOfCurrentDay)
-                {
-                    tag += "DAY";
-                } else
-                {
-                    tag += "MONTH";
-                }
-                break;
-            case PREVIOUS:
-                tag = "PREVIOUS_MONTH";
-                break;
-            case NEXT:
-                tag = "NEXT_MONTH";
-                break;
-            default:
-                Log.e(TAG, "No such Current Type!");
-                throw new AssertionError(Current.values());
-        }
-
-        tag += "-";
-
-        // adding the DAY attribute
-        tag += String.valueOf(mDays.get(position));
-        tag += "-";
-
-        // adding the MONTH attribute
-        tag += String.valueOf(mCurrentMonth);
-        tag += "-";
-
-        // adding the YEAR attribute
-        tag += String.valueOf(mCurrentYear);
-
-        return tag;
+        GregorianCalendar calendar = new GregorianCalendar(mCurrentYear, effectiveMonth, mDays.get(position));
+        return calendar.get(Calendar.DAY_OF_YEAR);
     }
 
     /**
@@ -188,10 +164,10 @@ public class CalendarGrid
             case CURRENT:
                 break;
             case NEXT:
-                effectiveMonth += 1;
+                ++effectiveMonth;
                 break;
             case PREVIOUS:
-                effectiveMonth -= 1;
+                --effectiveMonth;
                 break;
             default:
                 Log.e(TAG, "No such Current enum");
@@ -215,6 +191,7 @@ public class CalendarGrid
         // finding the index of the current day
         for (int i = 0; i < mDays.size(); i++)
         {
+            //avoiding the day that are not in the current month
             if (mCurrent.get(i) == Current.CURRENT)
             {
                 if (mDays.get(i) == day)
@@ -373,10 +350,5 @@ public class CalendarGrid
     public void prevMonth()
     {
         setFocusedDay(mDays.get(mIndexOfCurrentDay), mCurrentMonth - 1, mCurrentYear);
-    }
-
-    private enum Current
-    {
-        CURRENT, NEXT, PREVIOUS
     }
 }
