@@ -6,14 +6,21 @@
 
     <ImageView
         android:id="@+id/list_event_image"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
+        android:layout_gravity="start"
+        android:layout_width="@dimen/list_event_height"
+        android:layout_height="@dimen/list_event_height"
+        android:cropToPadding="true"
+        android:src="@drawable/football"
+        />
 
     <TextView
         android:id="@+id/list_event_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/list_event_height"
+        android:layout_weight="1"
         android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="center_vertical"
+        android:paddingStart="5dp"/>
 
 </LinearLayout>
