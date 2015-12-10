@@ -19,8 +19,8 @@ import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.gui.ConversationAdapter;
-import ch.epfl.sweng.evento.gui.UpdateEventListener;
 import ch.epfl.sweng.evento.gui.ListOfParticipantListener;
+import ch.epfl.sweng.evento.gui.UpdateEventListener;
 import ch.epfl.sweng.evento.gui.event_activity.AddingComment;
 import ch.epfl.sweng.evento.gui.event_activity.JoinEvent;
 import ch.epfl.sweng.evento.rest_api.RestApi;
@@ -82,7 +82,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         return rootLayout;
     }
 
-    private void getHost(Event event, View view){
+    private void getHost(Event event, View view) {
         final View innerView = view;
 
         mRestApi.getUser(new GetUserCallback() {
@@ -112,10 +112,10 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         addressView.setText(currentEvent.getAddress());
         Point screenSize = new Point();
         mActivity.getWindowManager().getDefaultDisplay().getSize(screenSize);
-        addressView.setMaxWidth((screenSize.x * 3)/4);
+        addressView.setMaxWidth((screenSize.x * 3) / 4);
 
         descriptionView.setText(currentEvent.getDescription());
-        descriptionView.setMaxWidth((screenSize.x * 3)/4);
+        descriptionView.setMaxWidth((screenSize.x * 3) / 4);
 
         ImageView pictureView = (ImageView) rootView.findViewById(R.id.eventPictureView);
         pictureView.setImageBitmap(currentEvent.getPicture());

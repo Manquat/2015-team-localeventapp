@@ -5,7 +5,6 @@ import android.util.Log;
 import java.util.concurrent.TimeUnit;
 
 import ch.epfl.sweng.evento.Settings;
-import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 
 import static java.lang.Math.max;

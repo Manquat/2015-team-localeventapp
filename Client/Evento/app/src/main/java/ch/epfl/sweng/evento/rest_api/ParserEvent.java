@@ -1,16 +1,11 @@
 package ch.epfl.sweng.evento.rest_api;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
-import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
 
 /**
@@ -18,6 +13,7 @@ import ch.epfl.sweng.evento.event.Event;
  */
 public class ParserEvent {
     private static final String TAG = "ParserEvent";
+
     public static ArrayList<Event> events(String s) {
         return null;
     }

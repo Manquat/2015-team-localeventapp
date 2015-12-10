@@ -1,9 +1,9 @@
 package ch.epfl.sweng.evento;
 
 
-
 import java.util.ArrayList;
 import java.util.List;
+
 import ch.epfl.sweng.evento.event.Event;
 
 
@@ -18,21 +18,25 @@ public class User {
     private String mUsername;
     private String mEmail;
 
- 	private List<Event> mMatchedEvent;
+    private List<Event> mMatchedEvent;
     private List<Event> mHostedEvent;
 
 
-	public User(int id, String username, String email){
-	    mUserId = id;
-	    mUsername = username;
-	    mEmail = email;
-	    mMatchedEvent = new ArrayList<>();
-	    mHostedEvent = new ArrayList<>();
-	}
+    public User(int id, String username, String email) {
+        mUserId = id;
+        mUsername = username;
+        mEmail = email;
+        mMatchedEvent = new ArrayList<>();
+        mHostedEvent = new ArrayList<>();
+    }
 
-    public List<Event> getMatchedEvent() { return mMatchedEvent;}
+    public List<Event> getMatchedEvent() {
+        return mMatchedEvent;
+    }
 
-    public List<Event> getHostedEvent() { return mHostedEvent; }
+    public List<Event> getHostedEvent() {
+        return mHostedEvent;
+    }
 
     public int getUserId() {
         return mUserId;
@@ -62,6 +66,7 @@ public class User {
     public void setMatchedEvent(List<Event> mMatchedEvent) {
         this.mMatchedEvent = mMatchedEvent;
     }
+
     @Override
     public boolean equals(Object object) {
         if (object instanceof User) {

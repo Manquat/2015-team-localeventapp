@@ -13,21 +13,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
-import java.util.HashSet;
-import java.util.Locale;
-
-import java.util.Objects;
-
-
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
-import java.util.TimeZone;
-
-
-import ch.epfl.sweng.evento.User;
-
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -144,7 +129,6 @@ public class Event implements ClusterItem {
         Log.d("Event.addParticipant", "removing the participant");
         return mParticipants.remove(participant);
     }
-
 
 
     public static String bitmapToString(Bitmap bitmap) {

@@ -181,7 +181,7 @@ public class LoginActivity extends AppCompatActivity implements
             public void onDataReceived(User user) {
                 Settings.setUser(user);
 
-                if(user == null){
+                if (user == null) {
                     throw new NullPointerException("User null!");
                 }
 
@@ -189,7 +189,7 @@ public class LoginActivity extends AppCompatActivity implements
                 // assert submission
                 Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "User information sent to server");
-                Log.d(TAG, "Active User with attributed Id: " + Settings.getUser().getUsername() + " , " + Settings.getUser().getEmail() +" , UserId: " + Settings.getUser().getUserId() );
+                Log.d(TAG, "Active User with attributed Id: " + Settings.getUser().getUsername() + " , " + Settings.getUser().getEmail() + " , UserId: " + Settings.getUser().getUserId());
 
                 Intent intent = new Intent(loginActivity, MainActivity.class);
                 startActivity(intent);

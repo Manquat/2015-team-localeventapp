@@ -53,7 +53,6 @@ import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
-import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 
 public class CreatingEventActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener,
@@ -184,7 +183,7 @@ public class CreatingEventActivity extends AppCompatActivity
                     mEndDate = new GregorianCalendar();
                 }
 
-                if(mEndDate.compareTo(mStartDate) < 0){
+                if (mEndDate.compareTo(mStartDate) < 0) {
                     Toast.makeText(getApplicationContext(), "Please pick a date of end after the starting time ", Toast.LENGTH_SHORT).show();
                     return;
                 }

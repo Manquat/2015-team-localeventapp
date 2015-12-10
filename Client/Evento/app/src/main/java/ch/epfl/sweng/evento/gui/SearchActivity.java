@@ -39,7 +39,6 @@ import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
-import ch.epfl.sweng.evento.list_view.ListEntryAdapter;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
@@ -108,6 +107,7 @@ public class SearchActivity extends AppCompatActivity
 
         setValidateButtonAndSend(validateButton);
     }
+
     public void onCheckboxClicked(View view) {
         mFilterPersonalEvent = ((CheckBox) view).isChecked();
     }
@@ -160,7 +160,7 @@ public class SearchActivity extends AppCompatActivity
         });
     }
 
-    private void selectPersonalEvent(List<Event> event, List<Event> input){
+    private void selectPersonalEvent(List<Event> event, List<Event> input) {
         final List<Event> innerEvent = event;
         final List<Event> innerInput = input;
         mRestApi.getHostedEvent(new GetEventListCallback() {
@@ -189,13 +189,13 @@ public class SearchActivity extends AppCompatActivity
         }, Settings.getUser().getUserId());
     }
 
-    private void retainAll(List<Event> input, List<Event> filter, List<Event> res){
+    private void retainAll(List<Event> input, List<Event> filter, List<Event> res) {
         boolean isInside = false;
-        for(Event event: input){
-            for(Event filterIter: filter){
-                if(event.getID() == filterIter.getID()) isInside = true;
+        for (Event event : input) {
+            for (Event filterIter : filter) {
+                if (event.getID() == filterIter.getID()) isInside = true;
             }
-            if(isInside) res.add(event);
+            if (isInside) res.add(event);
             isInside = false;
         }
     }

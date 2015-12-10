@@ -4,24 +4,17 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ExpandableListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import ch.epfl.sweng.evento.EventDatabase;
-import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
-import ch.epfl.sweng.evento.gui.ExpendableList;
 import ch.epfl.sweng.evento.rest_api.RestApi;
-import ch.epfl.sweng.evento.rest_api.callback.GetUserCallback;
 import ch.epfl.sweng.evento.rest_api.callback.GetUserListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
@@ -82,7 +75,7 @@ public class JoinEvent implements
             } else {
                 Toast.makeText(mActivity.getApplicationContext(), "UnJoined", Toast.LENGTH_SHORT).show();
                 //if (Settings.getUser().removeMatchedEvent(mCurrentEvent)) {
-                    mRestApi.removeParticipant(mCurrentEvent.getID(), Settings.getUser().getUserId(), this);
+                mRestApi.removeParticipant(mCurrentEvent.getID(), Settings.getUser().getUserId(), this);
                 //}
             }
 
