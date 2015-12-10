@@ -395,6 +395,10 @@ public class Event implements ClusterItem
         return false;
     }
 
+    /**
+     * Generate an hash code base only on the event id
+     * @return an hash code
+     */
     @Override
     public int hashCode()
     {
