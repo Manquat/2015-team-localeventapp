@@ -140,6 +140,9 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
                         Locale.getDefault()));
                 textView.setGravity(Gravity.CENTER);
 
+                int dimension = mContext.getResources().getDimensionPixelSize(R.dimen.calendar_button_height);
+                textView.setHeight(dimension);
+
                 rootView = textView;
             }
         } else {
