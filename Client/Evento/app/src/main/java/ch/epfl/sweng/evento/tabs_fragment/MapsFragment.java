@@ -101,6 +101,9 @@ public class MapsFragment extends SupportMapFragment implements
     public void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
+
+        //adding the maps as an observer of the eventDatabase
+        EventDatabase.INSTANCE.addObserver(this);
     }
 
     /**
@@ -112,6 +115,9 @@ public class MapsFragment extends SupportMapFragment implements
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
+
+        //remove the maps as an observer of the eventDatabase
+        EventDatabase.INSTANCE.removeObserver(this);
     }
 
     /**
@@ -220,12 +226,16 @@ public class MapsFragment extends SupportMapFragment implements
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient); //may return null in case of non connected device
         }
 
-        mMap.clear();
-        mClusterManager.clearItems();
+        if (mMap != null) {
+            mMap.clear();
+        }
+        if (mClusterManager != null) {
+            mClusterManager.clearItems();
 
-        // add all event to the cluster manager of map
-        mClusterManager.addItems(EventDatabase.INSTANCE.getAllEvents());
-        mClusterManager.cluster();
+            // add all event to the cluster manager of map
+            mClusterManager.addItems(EventDatabase.INSTANCE.getAllEvents());
+            mClusterManager.cluster();
+        }
     }
 
     @Override
