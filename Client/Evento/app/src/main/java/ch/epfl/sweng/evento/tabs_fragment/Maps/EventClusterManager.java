@@ -212,6 +212,7 @@ public class EventClusterManager extends ClusterManager<Event> implements
 
                     TextView textView = (TextView) subView.findViewById(R.id.list_event_title);
                     textView.setText(iEvent.getTitle());
+                    textView.setTextColor(mContext.getResources().getColor(R.color.black));
 
                     ImageView imageEvent = (ImageView) subView.findViewById(R.id.list_event_image);
                     int dimension = mContext.getResources()

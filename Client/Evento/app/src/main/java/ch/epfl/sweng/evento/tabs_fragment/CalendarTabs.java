@@ -66,6 +66,7 @@ public class CalendarTabs extends Fragment implements
         prevButton.setOnClickListener(this);
 
         mCurrentDate = (TextView) view.findViewById(R.id.dayTitle);
+        mCurrentDate.setTextColor(getResources().getColor(R.color.currentDay));
 
         // show a date picker when click on the date
         mDatePicker = new DatePickerDialog(getContext(), this, actualDate.get(Calendar.YEAR),

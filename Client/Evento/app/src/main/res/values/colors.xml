@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#e4dd08</color>
     <color name="red">#ff3831</color>
     <color name="white">#ffffff</color>
     <color name="background_window">#FFE5E5E5</color>
@@ -16,4 +16,7 @@
     <color name="backgroundTitle">#3b3b3b</color>
     <color name="fontTitleFrag">#e4dd08</color>
     <color name="secondaryText">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="dayOfWeek">#ffffff</color>
+    <color name="currentDay">#ffffff</color>
 </resources>

@@ -140,9 +140,9 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
                         Locale.getDefault()));
                 textView.setGravity(Gravity.CENTER);
 
-                int dimension = mContext.getResources().getDimensionPixelSize(R.dimen.calendar_button_height);
+                int dimension = mContext.getResources().getDimensionPixelSize(R.dimen.calendar_grid_item_height);
                 textView.setHeight(dimension);
-
+                textView.setTextColor(mContext.getResources().getColor(R.color.dayOfWeek));
                 rootView = textView;
             }
         } else {
@@ -175,7 +175,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
             if (mCalendarGrid.isCurrentMonth(position)) {
                 day.setStateCurrentMonth(true);
-                day.setTextColor(ContextCompat.getColor(mContext, R.color.defaultTextColor));
+                day.setTextColor(ContextCompat.getColor(mContext, R.color.currentDay));
             }
 
             if (mCalendarGrid.isCurrentDay(position)) {
