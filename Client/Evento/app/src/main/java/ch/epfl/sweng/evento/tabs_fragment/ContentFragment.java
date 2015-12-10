@@ -114,6 +114,20 @@ public class ContentFragment extends Fragment implements Refreshable {
         if (mView != null) refresh();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        //adding content fragment as observer of EventDatabase
+        EventDatabase.INSTANCE.addObserver(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //remove content fragment as observer of EventDatabase
+        EventDatabase.INSTANCE.removeObserver(this);
+    }
+
     public void refresh() {
 
         mEvents = EventDatabase.INSTANCE.getAllEvents();

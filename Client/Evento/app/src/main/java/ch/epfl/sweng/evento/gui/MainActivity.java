@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
 
     @Override
     public void refresh() {
-        recreate();
+        //recreate();
         makeNotifications(EventDatabase.INSTANCE.getAllEvents());
         Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
     }
