@@ -203,8 +203,8 @@ public class CreatingEventActivity extends AppCompatActivity
                     addressString = "No address";
                 }
                 if (drawable == null) {
-                    Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-                    picture = Bitmap.createBitmap(100, 100, conf);
+                    //Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+                    picture = Event.stringToBitMap(Event.samplePicture());
                 } else {
                     picture = ((BitmapDrawable) drawable).getBitmap();
                 }
