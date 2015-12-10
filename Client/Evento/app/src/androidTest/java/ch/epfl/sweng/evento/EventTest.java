@@ -7,10 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.TimeZone;
 
 import ch.epfl.sweng.evento.event.Event;
@@ -87,7 +85,7 @@ public class EventTest {
 
     @Test
     public void testGetCreator() {
-        assertEquals(5, mEvent.getCreator());
+        assertEquals(5, mEvent.getOwner());
     }
 
     @Test
