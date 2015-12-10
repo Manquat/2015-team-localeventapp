@@ -56,6 +56,11 @@ public class AddingComment implements OnClickListener, Refreshable {
         EventDatabase.INSTANCE.addObserver(this);
     }
 
+    public void finalize() {
+        //remove as observer of the EventDatabase
+        EventDatabase.INSTANCE.removeObserver(this);
+    }
+
     public static void initialize(Activity parentActivity, ListView commentListView,
                                   int currentEventId, Refreshable refreshableParent) {
         new AddingComment(parentActivity, commentListView, currentEventId, refreshableParent);
@@ -115,8 +120,6 @@ public class AddingComment implements OnClickListener, Refreshable {
             mListView.removeFooterView(mMessageBox);
             mAddCommentButton.setText(mActivity.getResources().getString(R.string.conversation_add_comment));
         }
-
-        //mListView.addFooterView(mAddCommentButton);
     }
 
     @Override
