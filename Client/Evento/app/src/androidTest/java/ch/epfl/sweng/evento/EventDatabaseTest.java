@@ -56,9 +56,12 @@ public class EventDatabaseTest {
         mUser = new User(MOCK_USER_ID, "Mock User", "mockuser@plop.ch");
         mUser2 = new User(MOCK_USER_ID2, "Mock User 2", "mockuser2@plop.ch");
         mParticipants.add(mUser);
-        mEvent1 = new Event(1, mTitle + 1, mDescription + 1, 20.5, 150.7, mAdress, 5, mTags, mStartDate, mEndDate, mImage, mParticipants);
-        mEvent2 = new Event(2, mTitle + 2, mDescription + 2, 20.5, 150.7, mAdress, 5, mTags, mStartDate, mEndDate, mImage, mParticipants);
-        mEvent3 = new Event(3, mTitle + 3, mDescription + 3, 20.5, 150.7, mAdress, 5, mTags, new GregorianCalendar(2002, 2, 3, 6, 5, 0), new GregorianCalendar(2002, 2, 3, 6, 5, 0), mImage, mParticipants);
+        mEvent1 = new Event(1, mTitle + 1, mDescription + 1, 20.5, 150.7, mAdress, 5, mTags, mStartDate, mEndDate, mImage);
+        mEvent2 = new Event(2, mTitle + 2, mDescription + 2, 20.5, 150.7, mAdress, 5, mTags, mStartDate, mEndDate, mImage);
+        mEvent3 = new Event(3, mTitle + 3, mDescription + 3, 20.5, 150.7, mAdress, 5, mTags,
+                new GregorianCalendar(2002, 2, 3, 6, 5, 0),
+                new GregorianCalendar(2002, 2, 3, 6, 5, 0),
+                mImage);
         mEvents = Arrays.asList(mEvent1, mEvent2, mEvent3);
         EventDatabase.INSTANCE.addAll(mEvents);
     }

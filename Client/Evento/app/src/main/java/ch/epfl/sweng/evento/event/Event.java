@@ -39,7 +39,6 @@ public class Event implements ClusterItem
     private Calendar mStartDate; // the beginning of the event as a Calendar
     private Calendar mEndDate; // the end of the event as a Calendar
     private String mPicture; // the picture of the event as a string
-    private Set<User> mParticipants;
 
 
     public Event(int id,
@@ -52,8 +51,7 @@ public class Event implements ClusterItem
                  Set<String> tags,
                  Calendar startDate,
                  Calendar endDate,
-                 String image,
-                 Set<User> participants)
+                 String image)
     {
         mID = id;
         mTitle = title;
@@ -73,7 +71,7 @@ public class Event implements ClusterItem
                  Calendar endDate, Bitmap picture)
     {
         this(id, title, description, latitude, longitude, address, creator, tags,
-                startDate, endDate, bitmapToString(picture), new HashSet<User>());
+                startDate, endDate, bitmapToString(picture));
     }
 
     public Event(int id, String title, String description, double latitude, double longitude,
@@ -81,14 +79,14 @@ public class Event implements ClusterItem
                  Calendar endDate)
     {
         this(id, title, description, latitude, longitude, address, creator, tags,
-                startDate, endDate, samplePicture(), new HashSet<User>());
+                startDate, endDate, samplePicture());
     }
 
     public Event(int id, String title, String description, double latitude, double longitude,
-                 String address, int creator, Set<String> tags, String image, Set<User> users)
+                 String address, int creator, Set<String> tags, String image)
     {
         this(id, title, description, latitude, longitude, address, creator, tags,
-                new GregorianCalendar(), new GregorianCalendar(), image, users);
+                new GregorianCalendar(), new GregorianCalendar(), image);
 
     }
 
@@ -137,50 +135,9 @@ public class Event implements ClusterItem
                 + "), " + this.getCreator() + ", (" + this.getProperDateString();
     }
 
-    public boolean addParticipant(User participant)
-    {
-        if (participant == null)
-        {
-            throw new NullPointerException("participant cannot be null");
-        }
-        if (mParticipants.size() < mNumberMaxOfParticipants)
-        {
-            mParticipants.add(participant);
-            return true;
-        } else
-        {
-            return false;
-        }
-    }
-
-    public Set<User> getAllParticipant()
-    {
-        return mParticipants;
-    }
-
     public int getMaxNumberOfParticipant()
     {
         return mNumberMaxOfParticipants;
-    }
-
-    public boolean removeParticipant(User participant)
-    {
-        if (participant == null)
-        {
-            throw new NullPointerException("participant cannot be null");
-        }
-        Log.d("Event.addParticipant", "removing the participant");
-        return mParticipants.remove(participant);
-    }
-
-    public boolean checkIfParticipantIsIn(User participant)
-    {
-        return mParticipants.contains(participant);
-    }
-
-    public boolean isFull()
-    {
-        return mParticipants.size() >= mNumberMaxOfParticipants;
     }
 
     public String getProperDateString()
@@ -253,11 +210,6 @@ public class Event implements ClusterItem
         {
             return "Unknown";
         }
-    }
-
-    public void setListOfParticipant(Set<User> str)
-    {
-        mParticipants = str;
     }
 
     public Set<String> getTags()

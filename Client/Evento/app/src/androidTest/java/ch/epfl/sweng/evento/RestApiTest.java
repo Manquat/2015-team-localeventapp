@@ -53,8 +53,7 @@ public class RestApiTest {
             "Terrain de football de Dorigny",
             1,
             new HashSet<String>(),
-            Event.samplePicture(),
-            new HashSet<User>());
+            Event.samplePicture());
     private static final String EVENT_TO_CREATE = "{\n"
             + "  \"Event_name\": \"Ping-Pong at Sat 2\",\n"
             + "  \"description\": \n"
