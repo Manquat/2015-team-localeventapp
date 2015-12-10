@@ -23,4 +23,7 @@
     <!-- Comment list -->
     <dimen name="comment_text_padding">10dp</dimen>
     <dimen name="comment_corner_radius">20dp</dimen>
+    <dimen name="calendar_event_padding_bottom">10dp</dimen>
+    <dimen name="calendar_event_padding_sides">20dp</dimen>
+    <dimen name="calendar_event_padding_top">35dp</dimen>
 </resources>
