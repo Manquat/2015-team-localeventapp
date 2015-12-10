@@ -2,7 +2,6 @@ package ch.epfl.sweng.evento.gui;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,16 +20,12 @@ import java.util.List;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;
+import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.gui.event_activity.EventActivity;
 import ch.epfl.sweng.evento.list_view.ListEntryAdapter;
-
-import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.Settings;
-import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.GetUserCallback;
-import ch.epfl.sweng.evento.rest_api.callback.GetUserListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
@@ -54,15 +49,16 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
 
         mActivity = this;
         mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-        mListView=(ListView)findViewById(R.id.listViewManage);
+        mListView = (ListView) findViewById(R.id.listViewManage);
 
-        mHostedEvent = new ArrayList<Event>();;
+        mHostedEvent = new ArrayList<Event>();
+        ;
         mItems.add(new ListEntryAdapter.Section("Hosted Events"));
         mRestAPI.getHostedEvent(new GetEventListCallback() {
             public void onEventListReceived(List<Event> eventArrayList) {
                 if (eventArrayList != null) {
                     mHostedEvent = eventArrayList;
-                    int i=1;
+                    int i = 1;
                     for (Event event : mHostedEvent) {
                         mItems.add(new ListEntryAdapter.Entry(Integer.toString(i++) + "/ " + event.getTitle(), "        " + event.getDescription()));
                     }
@@ -73,7 +69,7 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
                                 mMatchedEvent = eventArrayList;
                                 int i = 1;
                                 for (Event event : mMatchedEvent) {
-                                    mItems.add(new ListEntryAdapter.Entry(Integer.toString(i++) + "/ " +event.getTitle(), "        " + event.getDescription()));
+                                    mItems.add(new ListEntryAdapter.Entry(Integer.toString(i++) + "/ " + event.getTitle(), "        " + event.getDescription()));
                                 }
                                 ListEntryAdapter adapter = new ListEntryAdapter(mActivity, mItems);
                                 mListView.setAdapter(adapter);

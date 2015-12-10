@@ -7,11 +7,11 @@ import java.util.GregorianCalendar;
  * A comment about an Event made by one user
  */
 public class Comment {
+    private final Calendar mDateOfCreation;
     private int mID;
     private String mMessage;
     private String mCreator;
     private int mUserID;
-    private final Calendar mDateOfCreation;
 
     public Comment(int creatorId, String ownerName, String message, int commentId) {
         mUserID = creatorId;

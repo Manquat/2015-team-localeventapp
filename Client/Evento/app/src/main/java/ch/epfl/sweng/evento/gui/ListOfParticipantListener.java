@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -27,9 +26,9 @@ public class ListOfParticipantListener implements
         Refreshable {
     private static final String PARTICIPANT = "Number of participants : ";
     private final Activity mActivity;
+    private final RestApi mRestApi;
     private List<User> mParticipant;
     private TextView mParentListOfParent;
-    private final RestApi mRestApi;
     private int mCurrentEventId;
 
     public ListOfParticipantListener(Activity parentActivity, int currentEventId, TextView parentListOfParticipant) {
@@ -66,7 +65,7 @@ public class ListOfParticipantListener implements
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
 
         CharSequence[] participantName = new CharSequence[mParticipant.size()];
-        for (int i=0; i < mParticipant.size(); i++) {
+        for (int i = 0; i < mParticipant.size(); i++) {
             participantName[i] = mParticipant.get(i).getUsername();
         }
 

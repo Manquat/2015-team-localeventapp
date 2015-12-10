@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import ch.epfl.sweng.evento.EventDatabase;

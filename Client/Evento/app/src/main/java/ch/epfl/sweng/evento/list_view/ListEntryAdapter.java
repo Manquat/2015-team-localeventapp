@@ -55,6 +55,10 @@ public class ListEntryAdapter extends ArrayAdapter<ListEntryAdapter.Item> {
 
     }
 
+    public interface Item {
+        boolean isSection();
+    }
+
     public static class Entry implements Item {
         private final String mTitle;
         private final String mEntry;
@@ -94,10 +98,6 @@ public class ListEntryAdapter extends ArrayAdapter<ListEntryAdapter.Item> {
         public boolean isSection() {
             return true;
         }
-    }
-
-    public interface Item {
-        boolean isSection();
     }
 
 }

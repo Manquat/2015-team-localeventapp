@@ -1,35 +1,6 @@
 package ch.epfl.sweng.evento.event;
 
-import android.app.Activity;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-
-import ch.epfl.sweng.evento.EventDatabase;
-import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.Settings;
-import ch.epfl.sweng.evento.User;
-import ch.epfl.sweng.evento.gui.ExpendableList;
-import ch.epfl.sweng.evento.gui.MainActivity;
-import ch.epfl.sweng.evento.rest_api.RestApi;
-import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
-import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
-import ch.epfl.sweng.evento.rest_api.task.PutTask;
 
 /**
  * Fragment that display an Event with an ID passed as an Extra with the key KEYCURRENTEVENT.
@@ -37,8 +8,8 @@ import ch.epfl.sweng.evento.rest_api.task.PutTask;
  */
 public class EventFragment extends Fragment {
 
-    private static final String TAG = "EventFragment";
     public static final String KEYCURRENTEVENT = "CurrentEvent";
+    private static final String TAG = "EventFragment";
    /* private RestApi mRestAPI;
     private Event mEvent;
     private ArrayList<String> mListDataHeader;

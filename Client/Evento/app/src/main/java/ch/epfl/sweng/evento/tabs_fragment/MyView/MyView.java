@@ -5,7 +5,6 @@ package ch.epfl.sweng.evento.tabs_fragment.MyView;
  */
 
 import android.content.Context;
-
 import android.widget.ImageView;
 
 public class MyView extends ImageView {

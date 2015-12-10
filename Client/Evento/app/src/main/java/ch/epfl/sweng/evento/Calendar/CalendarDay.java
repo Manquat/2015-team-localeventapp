@@ -43,25 +43,6 @@ public class CalendarDay extends Button {
     }
 
     /**
-     * Getter for the CurrentMonth state
-     *
-     * @return the state of the CurrentMonth state
-     */
-    public boolean getStateCurrentMonth() {
-        return mIsCurrentMonth;
-    }
-
-    /**
-     * Getter for the HaveEvents state
-     *
-     * @return the state of the HaveEvents state
-     */
-    public boolean getStateHaveEvents() {
-        return mHaveEvents;
-    }
-
-
-    /**
      * Setter for the CurrentDay state
      *
      * @param isCurrentDay the state wanted for the CurrentDay state
@@ -72,6 +53,15 @@ public class CalendarDay extends Button {
     }
 
     /**
+     * Getter for the CurrentMonth state
+     *
+     * @return the state of the CurrentMonth state
+     */
+    public boolean getStateCurrentMonth() {
+        return mIsCurrentMonth;
+    }
+
+    /**
      * Setter for the CurrentMonth state
      *
      * @param isCurrentMonth the state wanted for the CurrentMonth state
@@ -79,6 +69,15 @@ public class CalendarDay extends Button {
     public void setStateCurrentMonth(boolean isCurrentMonth) {
         mIsCurrentMonth = isCurrentMonth;
         refreshDrawableState();
+    }
+
+    /**
+     * Getter for the HaveEvents state
+     *
+     * @return the state of the HaveEvents state
+     */
+    public boolean getStateHaveEvents() {
+        return mHaveEvents;
     }
 
     /**

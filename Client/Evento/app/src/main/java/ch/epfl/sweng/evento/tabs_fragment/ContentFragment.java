@@ -53,15 +53,14 @@ import ch.epfl.sweng.evento.tabs_fragment.MyView.MyView;
 public class ContentFragment extends Fragment implements Refreshable {
 
 
-    final int PADDING = 5;
     private static final int MAX_NUMBER_OF_EVENT = 50;
-    private int mNumberOfEvent;
     private static final String TAG = "ContentFragment";
-
     private static Vector<ImageButton> mMosaicVector = new Vector<ImageButton>();
+    final int PADDING = 5;
+    public Calendar dateFilter;
+    private int mNumberOfEvent;
     private List<Event> mEvents;
     private RestApi mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-
     private GridLayout mGridLayout;
     private Activity mActivity;
     private int mNumberOfRow;
@@ -72,7 +71,6 @@ public class ContentFragment extends Fragment implements Refreshable {
     private Vector<MyView> mMyViews;
     private View mView;
     private Toolbar mToolbar;
-    public Calendar dateFilter;
 
 
     /**
@@ -96,17 +94,12 @@ public class ContentFragment extends Fragment implements Refreshable {
         mNumberOfEvent = 0;
     }
 
-
-    public enum Span {NOTHING, TWO_ROWS, TWO_COLUMNS}
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         refreshFromServer();
         mActivity = getActivity();
     }
-
 
     @Override
     public void onResume() {
@@ -243,5 +236,7 @@ public class ContentFragment extends Fragment implements Refreshable {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
+
+    public enum Span {NOTHING, TWO_ROWS, TWO_COLUMNS}
 
 }
