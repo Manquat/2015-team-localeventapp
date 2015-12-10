@@ -31,8 +31,8 @@ import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
  * An infinite page adapter for the event activity
  */
 public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
-    Activity mActivity;
     public static final String TAG = "EventInfPageAdapter";
+    Activity mActivity;
     private RestApi mRestApi;
     private ConversationAdapter mConversationAdapter;
 

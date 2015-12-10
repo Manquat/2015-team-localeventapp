@@ -26,9 +26,9 @@ public class ListOfParticipantListener implements
         Refreshable {
     private static final String PARTICIPANT = "Number of participants : ";
     private final Activity mActivity;
+    private final RestApi mRestApi;
     private List<User> mParticipant;
     private TextView mParentListOfParent;
-    private final RestApi mRestApi;
     private int mCurrentEventId;
 
     public ListOfParticipantListener(Activity parentActivity, int currentEventId, TextView parentListOfParticipant) {
