@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void refreshFromServer() {
-        RestApi mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+        /*RestApi mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
 
         mRestApi.getAll(new GetEventListCallback() {
             @Override
@@ -164,11 +164,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
                 makeNotifications(eventArrayList);
             }
+        });*/
 
-            public void onUserListReceived(List<User> userArrayList) {
-
-            }
-        });
+        EventDatabase.INSTANCE.refresh();
+        recreate();
+        Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
     }
 
     public void makeNotifications(List<Event> eventArrayList) {
