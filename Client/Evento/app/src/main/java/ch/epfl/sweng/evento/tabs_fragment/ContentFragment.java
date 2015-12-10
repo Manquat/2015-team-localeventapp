@@ -217,7 +217,7 @@ public class ContentFragment extends Fragment implements Refreshable
                                 ++mNumberOfRow;
                                 mGridLayout.setRowCount(mNumberOfRow);
                             }
-                            addViewToGridLayout(tView, yPos, xPos, 1, 1, mHeightRow, mWidthColumn);
+                            addViewToGridLayout(tView, yPos, xPos, 1, 1, mWidthColumn);
                             break;
                         case TWO_ROWS:
                             while ((yPos + 1) >= mNumberOfRow)
@@ -225,10 +225,10 @@ public class ContentFragment extends Fragment implements Refreshable
                                 ++mNumberOfRow;
                                 mGridLayout.setRowCount(mNumberOfRow);
                             }
-                            addViewToGridLayout(tView, yPos, xPos, 2, 1, mHeightRow, mWidthColumn);
+                            addViewToGridLayout(tView, yPos, xPos, 2, 1, mWidthColumn);
                             break;
                         case TWO_COLUMNS:
-                            addViewToGridLayout(tView, yPos, xPos, 1, 2, mHeightRow, mWidthColumn);
+                            addViewToGridLayout(tView, yPos, xPos, 1, 2, mWidthColumn);
                             break;
                     }
                 } else
@@ -239,19 +239,9 @@ public class ContentFragment extends Fragment implements Refreshable
         }
     }
 
-    public void addViewToGridLayout(View view, int row, int column, int rowSpan, int columnSpan, int height, int width)
+    public void addViewToGridLayout(View view, int row, int column, int rowSpan, int columnSpan, int width)
     {
-        int pWidth = mGridLayout.getWidth();
-        int pHeight = mGridLayout.getHeight();
-        mWidthColumn = 0;
-        mHeightRow = 0;
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-        Point size = new Point();
-        mActivity.getWindowManager().getDefaultDisplay().getSize(size);
-        int screenWidth = size.x;
-        int screenHeight = size.y;
-        int halfScreenWidth = (int) (screenWidth * 0.5);
-        int quarterScreenWidth = (int) (halfScreenWidth * 0.5);
         params.width = width + 2 * PADDING;
         params.setMargins(PADDING, PADDING, PADDING, PADDING);
         params.columnSpec = GridLayout.spec(column, columnSpan);

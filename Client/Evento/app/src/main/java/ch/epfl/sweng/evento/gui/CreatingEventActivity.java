@@ -501,21 +501,30 @@ public class CreatingEventActivity extends AppCompatActivity
         // Adding child data
         mListDataHeader.add("Sport");
         mListDataHeader.add("Party");
-        mListDataHeader.add("Stuff");
+        mListDataHeader.add("Travel");
 
         // Adding child data
         List<String> sport = new ArrayList<String>();
         sport.add("Football");
         sport.add("Basketball");
+        sport.add("Badminton");
+        sport.add("Ping-Pond");
 
         List<String> party = new ArrayList<String>();
-        party.add("Bal");
-        party.add("Boule");
-        party.add("Bill");
+        party.add("Birthday");
+        party.add("Surprise");
+        party.add("Dinner");
+        party.add("Garden");
+        party.add("Tea");
+        party.add("Beer-Pong");
+        party.add("Dance and Ball");
+        party.add("Go for Hang-over");
 
         List<String> stuff = new ArrayList<String>();
-        stuff.add("Penguin");
-        stuff.add("Smurfs");
+        stuff.add("Cinema");
+        stuff.add("Cleaning");
+        party.add("Role Play Game");
+        party.add("Trekking");
 
 
         mListDataChild.put(mListDataHeader.get(0), sport);
