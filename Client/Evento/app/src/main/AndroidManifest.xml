@@ -76,9 +76,6 @@
             android:name=".gui.SearchActivity"
             android:label="@string/title_activity_search" />
         <activity
-            android:name=".gui.UserProfileActivity"
-            android:label="@string/title_activity_user_profile" />
-        <activity
             android:name=".gui.UpdateEventActivity"
             android:label="@string/title_activity_update_event" />
 

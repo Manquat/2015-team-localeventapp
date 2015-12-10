@@ -11,7 +11,6 @@ import java.util.List;
 
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;
-import ch.epfl.sweng.evento.UserProfilActivity;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.GetUserListCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
@@ -73,8 +72,6 @@ public class ListOfParticipantListener implements
                 .setItems(participantName, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(mActivity, UserProfilActivity.class);
-                        mActivity.startActivity(intent);
                     }
                 });
         builder.create().show();
