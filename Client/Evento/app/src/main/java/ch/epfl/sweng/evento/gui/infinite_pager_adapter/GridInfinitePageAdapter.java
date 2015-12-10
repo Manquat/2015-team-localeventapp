@@ -114,12 +114,22 @@ public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> imple
         refresh();
     }
 
+    /**
+     * Return the events at the current selected day
+     *
+     * @return Collection of event order as ID
+     */
     public List<Event> getCurrentEvents()
     {
         Calendar focusedDate = new GregorianCalendar(mYear, getCurrentIndicator(), mDayOfMonth);
         return EventDatabase.INSTANCE.filterOnDay(focusedDate).toArrayList();
     }
 
+    /**
+     * Return a string with the date of the current day focused
+     *
+     * @return the date format as th default local convention
+     */
     public String getStringDate()
     {
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL);
