@@ -29,7 +29,7 @@ public class EventTest {
     private String TAG = "EventTest";
     private GregorianCalendar mStartDate = new GregorianCalendar(2000, 2, 3, 4, 5, 0);
     private GregorianCalendar mEndDate = new GregorianCalendar(2000, 2, 3, 6, 5, 0);
-    private Event mEvent, mEventnodate, mEventnoimg;
+    private Event mEvent;
     private User mUser, mUser2;
     private HashSet<String> mTags;
     private HashSet<User> mParticipants;
@@ -50,8 +50,6 @@ public class EventTest {
         mUser2 = new User(MOCK_USER_ID2, "Mock User 2", "mockuser2@plop.ch");
         mParticipants.add(mUser);
         mEvent = new Event(3, mTitle, mDescription, 20.5, 150.7, mAdress, 5, mTags, mStartDate, mEndDate, mImage, mParticipants);
-        mEventnodate = new Event(3, mTitle, mDescription, 20.5, 150.7, mAdress, 5, mTags, mImage, mParticipants);
-        mEventnoimg = new Event(3, mTitle, mDescription, 20.5, 150.7, mAdress, 5, mTags, mStartDate, mEndDate);
     }
 
     @Test

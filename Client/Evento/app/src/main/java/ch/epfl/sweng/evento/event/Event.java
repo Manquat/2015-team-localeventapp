@@ -270,6 +270,19 @@ public class Event implements ClusterItem {
         return mLocation;
     }
 
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Event) {
+            Event event = (Event) object;
+            return mID == event.mID;
+        }
+        return false;
+    }
+    @Override
+    public int hashCode() {
+        return mID;
+    }
+
 
 }
 
