@@ -4,6 +4,7 @@ package ch.epfl.sweng.evento.gui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -46,6 +47,7 @@ public class LoginActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
         // make sure there is a valid server client ID.
         validateServerClientID();
@@ -205,15 +207,12 @@ public class LoginActivity extends AppCompatActivity implements
         Settings.setUser(user);
         final Activity loginActivity = this;
         RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
-        restApi.postUser(personName, personEmail, personGoogleId, new GetUserCallback()
-        {
+        restApi.postUser(personName, personEmail, personGoogleId, new GetUserCallback() {
             @Override
-            public void onDataReceived(User user)
-            {
+            public void onDataReceived(User user) {
                 Settings.setUser(user);
 
-                if (user == null)
-                {
+                if (user == null) {
                     throw new NullPointerException("User null!");
                 }
 
@@ -246,9 +245,12 @@ public class LoginActivity extends AppCompatActivity implements
     {
         if (mGoogleApiClient.isConnected())
         {
+            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().clear().commit();
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
             mGoogleApiClient.disconnect();
             mGoogleApiClient.connect();
+
         }
     }
+
 }
