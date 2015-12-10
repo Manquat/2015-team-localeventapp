@@ -34,11 +34,11 @@ public class Event implements ClusterItem {
     private final String mAddress;
     private final int mCreatorId;//might be replaced by some kind of User class
     private final Set<String> mTags;
+    private final int mNumberMaxOfParticipants;
     private Calendar mStartDate;
     private Calendar mEndDate;
     private String mPicture;
     private Set<User> mParticipants;
-    private final int mNumberMaxOfParticipants;
 
 
     public Event(int id,
@@ -89,6 +89,12 @@ public class Event implements ClusterItem {
 
     }
 
+    public static String asNiceString(Calendar calendar) {
+        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+        return dateFormat.format(calendar.getTime());
+    }
+
+
     /**
      * Easy way to print a event in a log
      * Not equivalent to serialized event (RestApi.Serializer) which provide string event acceptable
@@ -112,7 +118,6 @@ public class Event implements ClusterItem {
             return false;
         }
     }
-
 
     public Set<User> getAllParticipant() {
         return mParticipants;
@@ -153,35 +158,15 @@ public class Event implements ClusterItem {
 
     }
 
-    public void setPicture(String picture) {
-        mPicture = picture;
-    }
-
-    public void setPicture(Bitmap bitmap) {
-        if (bitmap != null) {
-            mPicture = bitmapToString(bitmap);
-        } else {
-            mPicture = "";
-        }
-
-    }
-
     public boolean isFull() {
         return mParticipants.size() >= mNumberMaxOfParticipants;
     }
-
 
     public String getProperDateString() {
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.FRANCE);
         timeFormat.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
         return timeFormat.format(mStartDate.getTime());
     }
-
-    public static String asNiceString(Calendar calendar) {
-        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-        return dateFormat.format(calendar.getTime());
-    }
-
 
     public String getStartDateAsString() {
         return asNiceString(mStartDate);
@@ -264,6 +249,7 @@ public class Event implements ClusterItem {
 
         return stringToBitMap(mPicture);
     }
+
 
     @Override
     public LatLng getPosition() {

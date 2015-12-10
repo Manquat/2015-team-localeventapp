@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item app:state_current_day="true" app:state_have_events="true" android:drawable="@drawable/calendar_event_selected_day" />
+    <item android:drawable="@drawable/calendar_event_selected_day" app:state_current_day="true" app:state_have_events="true" />
 
-    <item app:state_current_day="true" android:drawable="@drawable/calendar_selected_day" />
+    <item android:drawable="@drawable/calendar_selected_day" app:state_current_day="true" />
 
-    <item app:state_have_events="true" android:drawable="@drawable/calendar_event_default_day" />
+    <item android:drawable="@drawable/calendar_event_default_day" app:state_have_events="true" />
 
     <item android:drawable="@drawable/calendar_default_day" />
 

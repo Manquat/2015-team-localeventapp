@@ -2,9 +2,9 @@
     <string name="addPictureButton">Picture</string>
     <string name="app_name">Evento</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Evento</string>
+    <string name="title_activity_event">Event details</string>
     <string name="title_activity_manage_activity">ManageActivity</string>
-    <string name="title_activity_event">EventActivity</string>
     <string name="title_login_activity">LoginActivity</string>
     <string name="text">You are in a tab</string>
     <string name="url_server">https://protected-hamlet-4797.herokuapp.com/</string>
@@ -12,10 +12,10 @@
     <string name="Username">Username</string>
     <string name="only_on_my_event_str">Filter my \npersonal event(s) :</string>
     <string name="Password">Password</string>
-    <string name="title_activity_creating_event">CreatingEventActivity</string>
+    <string name="title_activity_creating_event">Create your own event !</string>
     <string name="server_client_id">274058441827-q1jq5v08sbp9i4gbdfppq60qq7jriejv.apps.googleusercontent.com</string>
-    <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_user_profile">UserProfileActivity</string>
+    <string name="title_activity_search">Looking for something ?</string>
     <string name="ownEventLabel">Your own event(s) :</string>
     <string name="otherEventLabel">Matched Event(s) :</string>
     <string name="menu_manage_event">Manage</string>

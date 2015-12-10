@@ -9,7 +9,7 @@ public class Settings {
     private static User mUser;
     private static int mUserId;
 
-    private Settings() {
+    Settings() {
         // private constructor
     }
 

@@ -193,7 +193,7 @@ public class InfiniteViewPager extends ViewPager {
     /**
      * Callback interface for responding to changing state of the selected indicator.
      */
-    public static interface OnInfinitePageChangeListener {
+    public interface OnInfinitePageChangeListener {
 
         /**
          * This method will be invoked when the current page is scrolled, either as part

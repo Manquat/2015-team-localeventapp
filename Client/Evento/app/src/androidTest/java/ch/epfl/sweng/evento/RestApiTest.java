@@ -17,6 +17,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.concurrent.ExecutionException;
 
@@ -41,13 +43,10 @@ import static org.junit.Assert.assertNotNull;
 @LargeTest
 public class RestApiTest {
     private static final int MOCK_USER_ID = 1;
-    private static final int ASCII_SPACE = 0x20;
     private HttpURLConnection connection;
     private NetworkProvider networkProviderMockito;
     private static final String wrongUrl = "http://mock.com";
     private static final String JSON_CONTENT_TYPE = "application/json; charset=utf-8";
-    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    //private static final String urlServer = "http://10.0.2.2:8000/";
     private static final String urlServer = "https://protected-hamlet-4797.herokuapp.com/";
 
     private static final Event event = new Event(
@@ -60,7 +59,20 @@ public class RestApiTest {
             new HashSet<String>(),
             Event.samplePicture(),
             new HashSet<User>());
-
+    private static final String EVENT_TO_CREATE = "{\n"
+            + "  \"Event_name\": \"Ping-Pong at Sat 2\",\n"
+            + "  \"description\": \n"
+            + "    \"Beer, ping-pong... let's beerpong\" ,\n"
+            + "  \"latitude\": 46.519428,\n"
+            + "  \"longitude\": 6.580847,\n"
+            + "  \"address\": \"Satellite\", \n"
+            + "  \"date\" : \"1991-01-15T23:00:00Z\",\n "
+            + "   \"creator\": \"Guillaume Meyrat\"\n"
+            + "}\n";
+    private static final Calendar date = new GregorianCalendar(1990, 12, 16, 0, 0);
+    private static final Event e = new Event(10, "Ping-Pong at Sat 2", "Beer, ping-pong... let's beerpong",
+            46.519428, 6.580847, "Satellite",MOCK_USER_ID, new HashSet<String>(), date, date);
+    private static final String EVENT_TO_CREATE_seri = Serializer.event(e);
 
     private static final String eventStringSent = "{\n"
             //+ "  \"id\": 17005,\n"

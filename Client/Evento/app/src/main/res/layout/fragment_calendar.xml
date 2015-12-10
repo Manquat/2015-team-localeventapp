@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/calendar_date_height">
+        android:layout_height="@dimen/calendar_date_height"
+        android:orientation="horizontal">
 
         <Button
+            android:id="@+id/prevButton"
             android:layout_width="@dimen/calendar_button_width"
             android:layout_height="match_parent"
-            android:text="@string/prev"
-            android:id="@+id/prevButton" />
+            android:text="@string/prev" />
 
         <TextView
+            android:id="@+id/dayTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/dayTitle"
             android:layout_weight="5"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <Button
+            android:id="@+id/nextButton"
             android:layout_width="@dimen/calendar_button_width"
             android:layout_height="match_parent"
-            android:text="@string/next"
-            android:id="@+id/nextButton" />
+            android:text="@string/next" />
 
     </LinearLayout>
 
     <ch.epfl.sweng.evento.gui.infinite_pager_adapter.InfiniteViewPager
+        android:id="@+id/calendar_infinite_pager"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/calendar_grid_view_height"
-        android:id="@+id/calendar_infinite_pager" />
+        android:layout_height="@dimen/calendar_grid_view_height" />
 
     <ListView
+        android:id="@+id/calendar_list_event"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/calendar_list_event" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

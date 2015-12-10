@@ -1,31 +1,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".gui.SearchActivity"
-    android:id="@+id/search">
+    tools:context=".gui.SearchActivity">
 
 
     <TextView
+        android:id="@+id/activityTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/searchFragmentTitle"
-        android:id="@+id/activityTitle"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="@string/searchFragmentTitle"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 
     <GridLayout
+        android:id="@+id/gridView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/gridView"
-        android:layout_below="@+id/activityTitle"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/activityTitle"
         android:layout_marginTop="38dp">
 
         <TextView
@@ -41,59 +41,59 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:autoLink="all"
-            android:text=""
             android:paddingTop="@dimen/vertical_page_margin"
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/searchByDateFromText"
             android:id="@+id/searchByDateFromLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
             android:layout_row="0"
-            android:layout_column="0" />
+            android:text="@string/searchByDateFromText"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="date"
-            android:ems="10"
             android:id="@+id/startDate_search"
-            android:hint="@string/startDate"
-            android:layout_row="0"
-            android:layout_column="1"
-            android:minLines="3" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/searchByDateTo"
-            android:id="@+id/endDateLabel"
-            android:layout_row="2"
-            android:layout_column="0" />
-
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="date"
-            android:ems="10"
-            android:id="@+id/endDate_search"
-            android:hint="@string/searchByDateToHint"
-            android:layout_row="2"
             android:layout_column="1"
+            android:layout_row="0"
+            android:ems="10"
+            android:hint="@string/startDate"
+            android:inputType="date"
             android:minLines="3" />
 
         <TextView
+            android:id="@+id/endDateLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/event_address"
+            android:layout_column="0"
+            android:layout_row="2"
+            android:text="@string/searchByDateTo"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <EditText
+            android:id="@+id/endDate_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:layout_row="2"
+            android:ems="10"
+            android:hint="@string/searchByDateToHint"
+            android:inputType="date"
+            android:minLines="3" />
+
+        <TextView
             android:id="@+id/eventAddressLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
             android:layout_row="3"
-            android:layout_column="0" />
+            android:text="@string/event_address"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <AutoCompleteTextView
             android:id="@+id/searchAddress"
@@ -104,23 +104,23 @@
             android:singleLine="true" />
 
         <TextView
+            android:id="@+id/searchDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/searchDistance"
-            android:id="@+id/searchDistance"
+            android:layout_column="0"
             android:layout_row="4"
-            android:layout_column="0" />
+            android:text="@string/searchDistance"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
+            android:id="@+id/searchDistanceSearch"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="date"
-            android:ems="10"
-            android:id="@+id/searchDistanceSearch"
-            android:hint="@string/searchArea"
-            android:layout_row="4"
             android:layout_column="1"
+            android:layout_row="4"
+            android:ems="10"
+            android:hint="@string/searchArea"
+            android:inputType="date"
             android:minLines="3" />
 
         <TextView
@@ -145,11 +145,11 @@
     </GridLayout>
 
     <Button
+        android:id="@+id/validate_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/validate_search"
-        android:layout_below="@+id/gridView"
         android:layout_alignEnd="@+id/gridView"
+        android:layout_below="@+id/gridView"
         android:layout_marginTop="61dp"
         android:text="@string/search_buttonValidate" />
 
