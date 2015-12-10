@@ -9,7 +9,8 @@ import java.net.URL;
  * Constructs {@link HttpURLConnection} objects that can be used to
  * retrieve data from a given {@link URL}.
  */
-public interface NetworkProvider {
+public interface NetworkProvider
+{
 
     /**
      * @param url a valid HTTP or HTTPS URL

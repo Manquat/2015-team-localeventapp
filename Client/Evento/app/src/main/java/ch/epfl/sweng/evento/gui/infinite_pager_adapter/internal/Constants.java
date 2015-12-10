@@ -16,7 +16,8 @@
 
 package ch.epfl.sweng.evento.gui.infinite_pager_adapter.internal;
 
-public final class Constants {
+public final class Constants
+{
 
     public static final int PAGE_POSITION_LEFT = 0;
     public static final int PAGE_POSITION_CENTER = 1;
@@ -27,7 +28,8 @@ public final class Constants {
     public static final String LOG_TAG = "InfiniteViewPager";
     public static boolean DEBUG = false;
 
-    private Constants() {
+    private Constants()
+    {
         // nop
     }
 }

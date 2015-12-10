@@ -2,7 +2,6 @@ package ch.epfl.sweng.evento.gui;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.TextView;
@@ -22,7 +21,8 @@ import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 public class ListOfParticipantListener implements
         View.OnClickListener,
         GetUserListCallback,
-        Refreshable {
+        Refreshable
+{
     private static final String PARTICIPANT = "Number of participants : ";
     private final Activity mActivity;
     private final RestApi mRestApi;
@@ -30,7 +30,8 @@ public class ListOfParticipantListener implements
     private TextView mParentListOfParent;
     private int mCurrentEventId;
 
-    public ListOfParticipantListener(Activity parentActivity, int currentEventId, TextView parentListOfParticipant) {
+    public ListOfParticipantListener(Activity parentActivity, int currentEventId, TextView parentListOfParticipant)
+    {
         mActivity = parentActivity;
         mParentListOfParent = parentListOfParticipant;
         //mParentListOfParent.setClickable(true);
@@ -45,46 +46,56 @@ public class ListOfParticipantListener implements
         updateState();
     }
 
-    private void updateState() {
-        if (mParticipant == null || mParticipant.size() == 0) {
+    private void updateState()
+    {
+        if (mParticipant == null || mParticipant.size() == 0)
+        {
             mParentListOfParent.setEnabled(false);
             mParentListOfParent.setText(PARTICIPANT + 0);
-        } else {
+        } else
+        {
             mParentListOfParent.setEnabled(true);
             mParentListOfParent.setText(PARTICIPANT + mParticipant.size());
         }
     }
 
-    private void getParticipant() {
+    private void getParticipant()
+    {
         mRestApi.getParticipant(this, mCurrentEventId);
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
 
         CharSequence[] participantName = new CharSequence[mParticipant.size()];
-        for (int i = 0; i < mParticipant.size(); i++) {
+        for (int i = 0; i < mParticipant.size(); i++)
+        {
             participantName[i] = mParticipant.get(i).getUsername();
         }
 
         builder.setTitle("Touch a participant to see his profile")
-                .setItems(participantName, new DialogInterface.OnClickListener() {
+                .setItems(participantName, new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
                     }
                 });
         builder.create().show();
     }
 
     @Override
-    public void onUserListReceived(List<User> userArrayList) {
+    public void onUserListReceived(List<User> userArrayList)
+    {
         mParticipant = userArrayList;
         updateState();
     }
 
     @Override
-    public void refresh() {
+    public void refresh()
+    {
         getParticipant();
     }
 }

@@ -24,7 +24,8 @@ import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
  * List view adapter for a conversation
  */
 public class ConversationAdapter extends BaseAdapter
-        implements Refreshable, GetCommentListCallback {
+        implements Refreshable, GetCommentListCallback
+{
     private static final String TAG = "ConversationAdpt";
 
     private int mCurrentEventId;
@@ -33,7 +34,8 @@ public class ConversationAdapter extends BaseAdapter
 
     private RestApi mRestApi;
 
-    public ConversationAdapter(Context context, int currentEventId) {
+    public ConversationAdapter(Context context, int currentEventId)
+    {
         mContext = context;
         mCurrentEventId = currentEventId;
 
@@ -45,24 +47,29 @@ public class ConversationAdapter extends BaseAdapter
     }
 
     @Override
-    public int getCount() {
+    public int getCount()
+    {
         return mListOfComment.size();
     }
 
     @Override
-    public Object getItem(int position) {
+    public Object getItem(int position)
+    {
         return mListOfComment.get(position);
     }
 
     @Override
-    public long getItemId(int position) {
+    public long getItemId(int position)
+    {
         return mListOfComment.get(position).getID();
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
 
-        if (convertView == null) {
+        if (convertView == null)
+        {
             LayoutInflater inflater = (LayoutInflater.from(mContext));
             convertView = inflater.inflate(R.layout.list_comment, parent, false);
         }
@@ -79,16 +86,20 @@ public class ConversationAdapter extends BaseAdapter
     }
 
     @Override
-    public void refresh() {
+    public void refresh()
+    {
         mRestApi.getComment(mCurrentEventId, this);
     }
 
     @Override
-    public void onCommentListReceived(List<Comment> commentList) {
-        if (commentList != null) {
+    public void onCommentListReceived(List<Comment> commentList)
+    {
+        if (commentList != null)
+        {
             mListOfComment = commentList;
             notifyDataSetChanged();
-        } else {
+        } else
+        {
             Toast.makeText(mContext, "Error while parsing the comment(s)", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "RestAPI return a null list");
         }

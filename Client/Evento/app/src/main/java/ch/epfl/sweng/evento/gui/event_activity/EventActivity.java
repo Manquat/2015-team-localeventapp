@@ -13,7 +13,8 @@ import ch.epfl.sweng.evento.gui.CreatingEventActivity;
 import ch.epfl.sweng.evento.gui.infinite_pager_adapter.EventInfinitePageAdapter;
 import ch.epfl.sweng.evento.gui.infinite_pager_adapter.InfiniteViewPager;
 
-public class EventActivity extends AppCompatActivity {
+public class EventActivity extends AppCompatActivity
+{
 
     public static final String CURRENT_EVENT_KEY = "CurrentEventKey";
 
@@ -22,7 +23,8 @@ public class EventActivity extends AppCompatActivity {
     private EventInfinitePageAdapter mAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_event);
@@ -35,7 +37,8 @@ public class EventActivity extends AppCompatActivity {
 
         int currentEventSignature = EventDatabase.INSTANCE.getFirstEvent().getID();
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
+        if (bundle != null)
+        {
             currentEventSignature = bundle.getInt(CURRENT_EVENT_KEY);
         }
 
@@ -48,30 +51,35 @@ public class EventActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
 
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
         int id = item.getItemId();
 
-        if (id == R.id.action_createAnEvent) {
+        if (id == R.id.action_createAnEvent)
+        {
             Intent intent = new Intent(this, CreatingEventActivity.class);
             startActivity(intent);
-        } else if (id == R.id.action_logout) {
+        } else if (id == R.id.action_logout)
+        {
 
         }
 

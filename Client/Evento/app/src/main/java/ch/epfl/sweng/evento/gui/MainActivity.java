@@ -21,7 +21,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -41,10 +40,7 @@ import java.util.TimerTask;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
-import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
-import ch.epfl.sweng.evento.rest_api.RestApi;
-import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
@@ -57,7 +53,8 @@ import ch.epfl.sweng.evento.tabs_layout.SlidingTabLayout;
  * For devices with displays with a width of 720dp or greater, the sample log is always visible,
  * on other devices it's visibility is controlled by an item on the Action Bar.
  */
-public class MainActivity extends AppCompatActivity implements Refreshable {
+public class MainActivity extends AppCompatActivity implements Refreshable
+{
 
     public static final String LOGOUT_TAG = "LOGOUT";
     private static final int NOTIFICATION_ID = 1234567890;
@@ -75,7 +72,8 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, Settings.getUser().getUsername());
@@ -99,9 +97,11 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
         mTabs.setDistributeEvenly(true); // This makes the tabs Space Evenly in Available width
 
         // Setting Custom Color for the Scroll bar indicator of the Tab View
-        mTabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+        mTabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer()
+        {
             @Override
-            public int getIndicatorColor(int position) {
+            public int getIndicatorColor(int position)
+            {
                 return ContextCompat.getColor(getApplicationContext(), R.color.tabsScrollColor);
             }
         });
@@ -109,16 +109,19 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
         mTabs.setViewPager(mPager);
 
         //to refresh every 10 minutes
-        new Timer().scheduleAtFixedRate(new TimerTask() {
+        new Timer().scheduleAtFixedRate(new TimerTask()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 EventDatabase.INSTANCE.refresh();
             }
         }, 0, 10 * 60 * 1000);
     }
 
     @Override
-    public void onStart() {
+    public void onStart()
+    {
         super.onStart();
 
         //adding the mainActivity to the observer of the eventDatabase
@@ -126,7 +129,8 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
     }
 
     @Override
-    public void onStop() {
+    public void onStop()
+    {
         super.onStop();
 
         //removing the mainActivity to the observer of the eventDatabase
@@ -135,20 +139,23 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
 
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -156,20 +163,25 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
         int id = item.getItemId();
         // based on the current position you can then cast the page to the correct
         // class and call the method:
-        if (id == R.id.action_createAnEvent) {
+        if (id == R.id.action_createAnEvent)
+        {
             Intent intent = new Intent(this, CreatingEventActivity.class);
             startActivity(intent);
-        } else if (id == R.id.action_search) {
+        } else if (id == R.id.action_search)
+        {
             Intent intent = new Intent(this, SearchActivity.class);
             startActivity(intent);
-        } else if (id == R.id.action_refresh) {
+        } else if (id == R.id.action_refresh)
+        {
             EventDatabase.INSTANCE.refresh();
-        } else if (id == R.id.action_logout) {
+        } else if (id == R.id.action_logout)
+        {
             Intent intent = new Intent(this, LoginActivity.class);
             intent.putExtra(LOGOUT_TAG, true);
             startActivity(intent);
             finish();
-        } else if (id == R.id.action_manageYourEvent) {
+        } else if (id == R.id.action_manageYourEvent)
+        {
             Intent intent = new Intent(this, ManageActivity.class);
             startActivity(intent);
         }
@@ -179,25 +191,30 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
     }
 
 
-    public void makeNotifications(List<Event> eventArrayList) {
-        if (eventArrayList != null) {
+    public void makeNotifications(List<Event> eventArrayList)
+    {
+        if (eventArrayList != null)
+        {
             Calendar currentDate = Calendar.getInstance();
 
             boolean notif_needed = false;
             String notif_description = "";
-            for (Event event : eventArrayList) {
+            for (Event event : eventArrayList)
+            {
                 double diffTime = (event.getStartDate().getTimeInMillis() - currentDate.getTimeInMillis())
                         / (1000 * 3600 * 24);
 
 
-                if (diffTime < 1.0) {
+                if (diffTime < 1.0)
+                {
                     notif_needed = true;
                     notif_description += "The event " + event.getTitle() + " is starting tomorrow. \n";
 
                     //Toast.makeText(getApplicationContext(), "Notified event : " + event.getTitle(), Toast.LENGTH_SHORT).show();
                 }
             }
-            if (notif_needed) {
+            if (notif_needed)
+            {
                 notif_description += "Don't forget to attend !";
                 Notification n = new Notification.Builder(this)
                         .setContentTitle("You've got events soon !")
@@ -215,7 +232,8 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
 
 
     @Override
-    public void refresh() {
+    public void refresh()
+    {
         makeNotifications(EventDatabase.INSTANCE.getAllEvents());
         Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
     }

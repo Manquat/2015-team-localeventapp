@@ -11,14 +11,17 @@ import ch.epfl.sweng.evento.event.Event;
 /**
  * Created by thomas on 28/11/15.
  */
-public class ParserEvent {
+public class ParserEvent
+{
     private static final String TAG = "ParserEvent";
 
-    public static ArrayList<Event> events(String s) {
+    public static ArrayList<Event> events(String s)
+    {
         return null;
     }
 
-    public static Event parseFromJSON(JSONObject jsonObject) throws JSONException {
+    public static Event parseFromJSON(JSONObject jsonObject) throws JSONException
+    {
 
 
         // when the tag to Event will be added ;)
@@ -38,7 +41,8 @@ public class ParserEvent {
 
     //new HashSet<String>(){{ add(json.getString("tags"));}});
 
-    public static List<Event> parseFromJSONMultiple(String response) throws JSONException {
+    public static List<Event> parseFromJSONMultiple(String response) throws JSONException
+    {
 
         return null;
     }

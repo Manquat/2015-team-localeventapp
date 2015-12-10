@@ -18,7 +18,8 @@ import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 /**
  * Created by joachimmuth on 30.11.15.
  */
-public abstract class RestTask extends AsyncTask<String, Void, String> {
+public abstract class RestTask extends AsyncTask<String, Void, String>
+{
     private static final String TAG = "RestTask";
     private static final int HTTP_SUCCESS_START = 200;
     private static final int HTTP_SUCCESS_END = 299;
@@ -30,7 +31,8 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
 
 
     public RestTask(String methodType, String restUrl, NetworkProvider networkProvider, RestTaskCallback callback,
-                    String requestBody) {
+                    String requestBody)
+    {
         this.mRestUrl = restUrl;
         this.mCallback = callback;
         this.mNetworkProvider = networkProvider;
@@ -38,15 +40,18 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
         this.mMethodType = methodType;
     }
 
-    public RestTask(String methodType, String restUrl, NetworkProvider networkProvider, RestTaskCallback callback) {
+    public RestTask(String methodType, String restUrl, NetworkProvider networkProvider, RestTaskCallback callback)
+    {
         this(methodType, restUrl, networkProvider, callback, null);
     }
 
 
     @Override
-    protected String doInBackground(String... params) {
+    protected String doInBackground(String... params)
+    {
         String response = null;
-        try {
+        try
+        {
             // prepare URL and parameter
             HttpURLConnection conn = setHttpUrlConnection();
             // set server connection
@@ -54,15 +59,18 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
             // get HTTP response code and get the event ONLY in case of success
             int responseCode = getResponseCode(conn);
             // test if response code is indicate success
-            if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END) {
+            if (responseCode < HTTP_SUCCESS_START || responseCode > HTTP_SUCCESS_END)
+            {
                 throw new RestException("Http Response Code: " + Integer.toString(responseCode));
             }
             // get the event
             response = setResponse(responseCode, conn);
 
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             Log.e(TAG, "Server connection failed", e);
-        } catch (RestException e) {
+        } catch (RestException e)
+        {
             Log.e(TAG, e.toString(), e);
         }
         return response;
@@ -70,19 +78,22 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
 
 
     @Override
-    protected void onPostExecute(String result) {
+    protected void onPostExecute(String result)
+    {
         mCallback.onTaskComplete(result);
         super.onPostExecute(result);
     }
 
 
-    protected int getResponseCode(HttpURLConnection conn) throws IOException {
+    protected int getResponseCode(HttpURLConnection conn) throws IOException
+    {
         int responseCode = conn.getResponseCode();
         return responseCode;
     }
 
 
-    protected HttpURLConnection setHttpUrlConnection() throws IOException {
+    protected HttpURLConnection setHttpUrlConnection() throws IOException
+    {
         URL url = new URL(mRestUrl);
         HttpURLConnection conn = mNetworkProvider.getConnection(url);
         conn.setRequestProperty("token", Settings.getIdToken());
@@ -100,7 +111,8 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
      * @return
      * @throws IOException
      */
-    protected String setResponse(int responseCode, HttpURLConnection conn) throws IOException {
+    protected String setResponse(int responseCode, HttpURLConnection conn) throws IOException
+    {
         String response = Integer.toString(responseCode);
         return response;
     }
@@ -121,27 +133,33 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
      * @return
      * @throws IOException
      */
-    protected String fetchContent(HttpURLConnection conn) throws IOException {
+    protected String fetchContent(HttpURLConnection conn) throws IOException
+    {
         StringBuilder out = new StringBuilder();
         BufferedReader reader = null;
 
-        try {
+        try
+        {
             reader = new BufferedReader(new InputStreamReader(
                     conn.getInputStream()));
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null)
+            {
                 out.append(line).append("\n");
             }
 
             return out.toString();
-        } finally {
-            if (reader != null) {
+        } finally
+        {
+            if (reader != null)
+            {
                 reader.close();
             }
         }
     }
 
-    protected void requestWithBody(HttpURLConnection conn) throws IOException {
+    protected void requestWithBody(HttpURLConnection conn) throws IOException
+    {
         // set connexion
         int postDataLength = mRequestBody.length();
         conn.setDoOutput(true);
@@ -154,17 +172,21 @@ public abstract class RestTask extends AsyncTask<String, Void, String> {
 
         OutputStreamWriter wr = null;
         // send data
-        try {
+        try
+        {
             wr = new OutputStreamWriter(conn.getOutputStream());
             wr.write(mRequestBody);
-        } finally {
-            if (wr != null) {
+        } finally
+        {
+            if (wr != null)
+            {
                 wr.close();
             }
         }
     }
 
-    protected void requestWithoutBody(HttpURLConnection conn) throws IOException {
+    protected void requestWithoutBody(HttpURLConnection conn) throws IOException
+    {
         conn.setRequestMethod(mMethodType);
         conn.setDoInput(true);
         conn.connect();

@@ -26,7 +26,8 @@ import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 /**
  * Adapter for the GridView that display the CalendarCells
  */
-public class GridCalendarAdapter extends BaseAdapter implements View.OnClickListener, Refreshable {
+public class GridCalendarAdapter extends BaseAdapter implements View.OnClickListener, Refreshable
+{
     private static final String TAG = "GridCalendarAdapter";
     private static final int NUMBER_OF_CELLS = 7 * 7; // the line for the day of the week, and 6 lines for all the day of the month
 
@@ -45,7 +46,8 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
      * @param updatableParent the parent that holds the grid and will be update when something
      *                        changed in the adapter.
      */
-    public GridCalendarAdapter(Context context, Refreshable updatableParent, Calendar focusedDate) {
+    public GridCalendarAdapter(Context context, Refreshable updatableParent, Calendar focusedDate)
+    {
         super();
         mContext = context;
         mUpdatableParent = updatableParent;
@@ -58,7 +60,8 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         EventDatabase.INSTANCE.addObserver(this);
     }
 
-    public void finalize() throws Throwable {
+    public void finalize() throws Throwable
+    {
         super.finalize();
         //adding as an observer of the EventDatabase
         EventDatabase.INSTANCE.removeObserver(this);
@@ -71,13 +74,16 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
      * @return the number of cells including the first row that display the days of the week
      */
     @Override
-    public int getCount() {
+    public int getCount()
+    {
         return NUMBER_OF_CELLS;
     }
 
     @Override
-    public Object getItem(int position) {
-        if (position < 7) {
+    public Object getItem(int position)
+    {
+        if (position < 7)
+        {
             GregorianCalendar calendar = new GregorianCalendar();
 
             // backtrack to the beginning of the current week
@@ -89,7 +95,8 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
             return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT,
                     Locale.getDefault());
-        } else {
+        } else
+        {
             position = position - 7;
             return String.valueOf(mCalendarGrid.getDay(position));
         }
@@ -102,8 +109,10 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
      * @return if it's a day return the date in millisecond, otherwise return 0
      */
     @Override
-    public long getItemId(int position) {
-        if (position > 7) {
+    public long getItemId(int position)
+    {
+        if (position > 7)
+        {
             Calendar calendar = mCalendarGrid.getDateFromPosition(position - 7);
             return calendar.getTimeInMillis();
         }
@@ -120,12 +129,15 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
      * @return An ImageView for this day
      */
     @Override
-    public View getView(int gridPosition, View convertView, ViewGroup parent) {
+    public View getView(int gridPosition, View convertView, ViewGroup parent)
+    {
 
         View rootView = convertView;
 
-        if (gridPosition < 7) {
-            if (rootView == null) {
+        if (gridPosition < 7)
+        {
+            if (rootView == null)
+            {
                 GregorianCalendar calendar = new GregorianCalendar();
 
                 // backtrack to the beginning of the current week
@@ -145,10 +157,12 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
                 textView.setTextColor(mContext.getResources().getColor(R.color.dayOfWeek));
                 rootView = textView;
             }
-        } else {
+        } else
+        {
             int position = gridPosition - 7; // remove the first row of the calendar
 
-            if (rootView == null) {
+            if (rootView == null)
+            {
                 LayoutInflater inflater = (LayoutInflater.from(mContext));
                 rootView = inflater.inflate(R.layout.day_cell, parent, false);
             }
@@ -156,7 +170,8 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
             // get a reference of the day button
             CalendarDay day = (CalendarDay) rootView.findViewById(R.id.cell_button_view);
 
-            if (day == null) {
+            if (day == null)
+            {
                 Log.e(TAG, "No button in the view");
                 throw new NullPointerException("No button in the view");
             }
@@ -173,12 +188,14 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
             day.setStateCurrentMonth(false);
             day.setStateHaveEvents(false);
 
-            if (mCalendarGrid.isCurrentMonth(position)) {
+            if (mCalendarGrid.isCurrentMonth(position))
+            {
                 day.setStateCurrentMonth(true);
                 day.setTextColor(ContextCompat.getColor(mContext, R.color.currentDay));
             }
 
-            if (mCalendarGrid.isCurrentDay(position)) {
+            if (mCalendarGrid.isCurrentDay(position))
+            {
                 day.setStateCurrentDay(true);
             }
 
@@ -186,16 +203,19 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
             GregorianCalendar calendar = new GregorianCalendar();
             if (mCalendarGrid.getDayOfYear(position) == calendar.get(Calendar.DAY_OF_YEAR) &&
                     mCalendarGrid.getCurrentMonth() == calendar.get(Calendar.MONTH) &&
-                    mCalendarGrid.getCurrentYear() == calendar.get(Calendar.YEAR)) {
+                    mCalendarGrid.getCurrentYear() == calendar.get(Calendar.YEAR))
+            {
                 day.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
             }
 
             List<Event> events = EventDatabase.INSTANCE.filterOnDay(mCalendarGrid.getDateFromPosition(position)).toArrayList();
 
-            if (events.size() != 0) {
+            if (events.size() != 0)
+            {
                 day.setStateHaveEvents(true);
 
-                if (day.getStateCurrentDay()) {
+                if (day.getStateCurrentDay())
+                {
                     mEvents = events;
                     mUpdatableParent.refresh();
                 }
@@ -210,7 +230,8 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
      *
      * @return the date format as th default local convention
      */
-    public String getStringDate() {
+    public String getStringDate()
+    {
         return mCalendarGrid.getStringDate();
     }
 
@@ -219,11 +240,13 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
      *
      * @return Collection of event order as ID
      */
-    public List<Event> getCurrentEvents() {
+    public List<Event> getCurrentEvents()
+    {
         return mEvents;
     }
 
-    public void setFocusedDate(Calendar focusedDate) {
+    public void setFocusedDate(Calendar focusedDate)
+    {
         mCalendarGrid.setFocusedDay(focusedDate);
         notifyDataSetChanged();
         mUpdatableParent.refresh();
@@ -231,7 +254,8 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         int position = Integer.valueOf((String) v.getTag(R.id.position_tag));
 
         mCalendarGrid.setFocusedDay(position);
@@ -242,20 +266,23 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
     }
 
 
-    public void nextMonth() {
+    public void nextMonth()
+    {
         mCalendarGrid.nextMonth();
         mEvents = null;
         notifyDataSetChanged();
     }
 
-    public void prevMonth() {
+    public void prevMonth()
+    {
         mCalendarGrid.prevMonth();
         mEvents = null;
         notifyDataSetChanged();
     }
 
     @Override
-    public void refresh() {
+    public void refresh()
+    {
         notifyDataSetChanged();
     }
 }

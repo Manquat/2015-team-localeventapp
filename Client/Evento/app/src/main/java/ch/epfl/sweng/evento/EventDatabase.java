@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -21,7 +20,8 @@ import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 /**
  * Created by Val on 28.10.2015.
  */
-public enum EventDatabase implements Refreshable {
+public enum EventDatabase implements Refreshable
+{
     INSTANCE;
 
     private static final String TAG = "EventDatabase";
@@ -35,7 +35,8 @@ public enum EventDatabase implements Refreshable {
      */
     private EventSet mEventSet;
 
-    EventDatabase() {
+    EventDatabase()
+    {
         mEventSet = new EventSet();
         mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
         mObserver = new HashSet<>();
@@ -44,29 +45,37 @@ public enum EventDatabase implements Refreshable {
     }
 
 
-    public void loadNewEvents() {
-        mRestAPI.getAll(new GetEventListCallback() {
+    public void loadNewEvents()
+    {
+        mRestAPI.getAll(new GetEventListCallback()
+        {
             @Override
-            public void onEventListReceived(List<Event> events) {
+            public void onEventListReceived(List<Event> events)
+            {
                 addAll(events);
             }
         });
     }
 
-    public boolean addObserver(Refreshable observer) {
+    public boolean addObserver(Refreshable observer)
+    {
         return mObserver.add(observer);
     }
 
 
-    public boolean removeObserver(Refreshable observer) {
+    public boolean removeObserver(Refreshable observer)
+    {
         return mObserver.remove(observer);
     }
 
-    public void addAll(List<Event> events) {
-        if (events == null) {
+    public void addAll(List<Event> events)
+    {
+        if (events == null)
+        {
             return;
         }
-        for (Event e : events) {
+        for (Event e : events)
+        {
             mEventSet.addEvent(e);
             Log.i(TAG, "EVENT LOADED " + e.getTitle());
         }
@@ -75,8 +84,10 @@ public enum EventDatabase implements Refreshable {
     }
 
 
-    public void addOne(Event e) {
-        if (e == null) {
+    public void addOne(Event e)
+    {
+        if (e == null)
+        {
             return;
         }
         mEventSet.addEvent(e);
@@ -84,10 +95,13 @@ public enum EventDatabase implements Refreshable {
     }
 
 
-    public void loadByDate(GregorianCalendar start, GregorianCalendar end) {
-        mRestAPI.getMultiplesEventByDate(start, end, new GetEventListCallback() {
+    public void loadByDate(GregorianCalendar start, GregorianCalendar end)
+    {
+        mRestAPI.getMultiplesEventByDate(start, end, new GetEventListCallback()
+        {
             @Override
-            public void onEventListReceived(List<Event> eventArrayList) {
+            public void onEventListReceived(List<Event> eventArrayList)
+            {
                 mEventSet.clear();
                 addAll(eventArrayList);
             }
@@ -100,15 +114,18 @@ public enum EventDatabase implements Refreshable {
      * @param id the ID of the desired Event
      * @return the Event corresponding to the Signature.
      */
-    public Event getEvent(int id) {
+    public Event getEvent(int id)
+    {
         return mEventSet.get(id);
     }
 
-    public Event getFirstEvent() {
+    public Event getFirstEvent()
+    {
         return mEventSet.getFirst();
     }
 
-    public List<Event> getAllEvents() {
+    public List<Event> getAllEvents()
+    {
         return mEventSet.toArrayList();
     }
 
@@ -119,7 +136,8 @@ public enum EventDatabase implements Refreshable {
      * @param current the current Event which is the reference to get the next Event
      * @return the Event that is right after the 'current' Event in the starting CustomDate order
      */
-    public Event getNextEvent(Event current) {
+    public Event getNextEvent(Event current)
+    {
         return mEventSet.getNext(current);
     }
 
@@ -130,59 +148,74 @@ public enum EventDatabase implements Refreshable {
      * @param current the current Event which is the reference to get the previous Event
      * @return the Event that is right before the 'current' Event in the starting CustomDate order
      */
-    public Event getPreviousEvent(Event current) {
+    public Event getPreviousEvent(Event current)
+    {
         return mEventSet.getPrevious(current);
     }
 
-    public Event get(int position) {
+    public Event get(int position)
+    {
         Event currentEvent = getFirstEvent();
-        for (int i = 0; i <= position; i++) {
+        for (int i = 0; i <= position; i++)
+        {
             currentEvent = getNextEvent(currentEvent);
         }
         return currentEvent;
     }
 
-    public EventSet filter(LatLng latLng, double distance) {
+    public EventSet filter(LatLng latLng, double distance)
+    {
         return mEventSet.filter(latLng, distance);
     }
 
-    public EventSet filter(Set<String> tags) {
+    public EventSet filter(Set<String> tags)
+    {
         return mEventSet.filter(tags);
     }
 
-    public EventSet filter(String tag) {
+    public EventSet filter(String tag)
+    {
         return mEventSet.filter(tag);
     }
 
-    public EventSet filter(Calendar startDate) {
+    public EventSet filter(Calendar startDate)
+    {
         return mEventSet.filter(startDate);
     }
 
-    public EventSet filterOnDay(Calendar calendar) {
+    public EventSet filterOnDay(Calendar calendar)
+    {
         return mEventSet.filterOnDay(calendar);
     }
 
 
-    public void refresh() {
+    public void refresh()
+    {
         mEventSet.clear();
         loadNewEvents();
     }
 
-    private void updateObserver() {
-        for (Refreshable observer : mObserver) {
+    private void updateObserver()
+    {
+        for (Refreshable observer : mObserver)
+        {
             observer.refresh();
         }
     }
 
-    public void clear() {
+    public void clear()
+    {
         mEventSet.clear();
     }
 
 
-    public int getNumberOfEvent() {
-        if (mEventSet == null) {
+    public int getNumberOfEvent()
+    {
+        if (mEventSet == null)
+        {
             return 0;
-        } else {
+        } else
+        {
             return mEventSet.size();
         }
     }
