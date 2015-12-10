@@ -10,8 +10,7 @@
         android:layout_width="@dimen/list_event_height"
         android:layout_height="@dimen/list_event_height"
         android:cropToPadding="true"
-        android:src="@drawable/football"
-        />
+        android:src="@drawable/football" />
 
     <TextView
         android:id="@+id/list_event_title"
@@ -22,6 +21,6 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:gravity="center_vertical"
         android:paddingStart="5dp"
-        android:textColor="@color/secondaryText"/>
+        android:textColor="@color/secondaryText" />
 
 </LinearLayout>

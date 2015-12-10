@@ -18,7 +18,7 @@
     <string name="title_activity_search">Looking for something ?</string>
     <string name="ownEventLabel">Your own event(s) :</string>
     <string name="otherEventLabel">Matched Event(s) :</string>
-    <string name="menu_manage_event">Manage</string>
+    <string name="menu_manage_event">User</string>
     <string name="autocomplete_hint">Enter place name or address</string>
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
     <string name="event_title">Title</string>
