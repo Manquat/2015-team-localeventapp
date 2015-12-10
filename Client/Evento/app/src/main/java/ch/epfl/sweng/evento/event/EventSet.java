@@ -43,6 +43,17 @@ public class EventSet {
      *
      * @return an error event
      */
+    public static Event getErrorEvent() {
+        return new Event(0,
+                "ERROR",
+                "The Event doesn't exist or wasn't there",
+                0.0, 0.0,
+                "",
+                0,
+                new HashSet<String>(),
+                new GregorianCalendar(),
+                new GregorianCalendar());
+    }
 
     public void clear() {
         mEvents.clear();
@@ -271,24 +282,6 @@ public class EventSet {
         }
 
         return numberOfEvents;
-    }
-
-    /**
-     * This method returns an error Event.
-     * This is just temporary before implementing good exception handling
-     *
-     * @return an error event
-     */
-    public static Event getErrorEvent() {
-        return new Event(0,
-                "ERROR",
-                "The Event doesn't exist or wasn't there",
-                0.0, 0.0,
-                "",
-                0,
-                new HashSet<String>(),
-                new GregorianCalendar(),
-                new GregorianCalendar());
     }
 
     public int getPosition(int id) {

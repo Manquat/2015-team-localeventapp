@@ -57,7 +57,7 @@ import ch.epfl.sweng.evento.tabs_layout.SlidingTabLayout;
  * For devices with displays with a width of 720dp or greater, the sample log is always visible,
  * on other devices it's visibility is controlled by an item on the Action Bar.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Refreshable {
 
     public static final String LOGOUT_TAG = "LOGOUT";
     private static final int NOTIFICATION_ID = 1234567890;
@@ -65,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
     private static final String urlServer = Settings.getServerUrl();
-    private static User user1;
-    private static User user2;
     private Toolbar mToolbar;
     private ViewPager mPager;
     private ViewPageAdapter mAdapter;
@@ -115,9 +113,25 @@ public class MainActivity extends AppCompatActivity {
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                refreshFromServer();
+                EventDatabase.INSTANCE.refresh();
             }
         }, 0, 10 * 60 * 1000);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        //adding the mainActivity to the observer of the eventDatabase
+        EventDatabase.INSTANCE.addObserver(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        //removing the mainActivity to the observer of the eventDatabase
+        EventDatabase.INSTANCE.removeObserver(this);
     }
 
 
@@ -150,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SearchActivity.class);
             startActivity(intent);
         } else if (id == R.id.action_refresh) {
-            refreshFromServer();
+            EventDatabase.INSTANCE.refresh();
         } else if (id == R.id.action_logout) {
             Intent intent = new Intent(this, LoginActivity.class);
             intent.putExtra(LOGOUT_TAG, true);
@@ -165,28 +179,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    public void refreshFromServer() {
-        RestApi mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-
-        mRestApi.getAll(new GetEventListCallback() {
-            @Override
-            public void onEventListReceived(List<Event> eventArrayList) {
-                EventDatabase.INSTANCE.clear();
-                EventDatabase.INSTANCE.addAll(eventArrayList);
-                Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + mPager.getCurrentItem());
-                if (page instanceof Refreshable) {
-                    ((Refreshable) page).refresh();
-                }
-                Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
-                makeNotifications(eventArrayList);
-            }
-
-            public void onUserListReceived(List<User> userArrayList) {
-
-            }
-        });
-    }
 
     public void makeNotifications(List<Event> eventArrayList) {
         if (eventArrayList != null) {
@@ -223,4 +215,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void refresh() {
+        makeNotifications(EventDatabase.INSTANCE.getAllEvents());
+        Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
+    }
 }

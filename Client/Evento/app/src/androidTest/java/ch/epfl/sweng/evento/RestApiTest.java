@@ -43,12 +43,9 @@ import static org.junit.Assert.assertNotNull;
 @LargeTest
 public class RestApiTest {
     private static final int MOCK_USER_ID = 1;
-    private HttpURLConnection connection;
-    private NetworkProvider networkProviderMockito;
     private static final String wrongUrl = "http://mock.com";
     private static final String JSON_CONTENT_TYPE = "application/json; charset=utf-8";
     private static final String urlServer = "https://protected-hamlet-4797.herokuapp.com/";
-
     private static final Event event = new Event(
             17005,
             "My football game",
@@ -89,10 +86,11 @@ public class RestApiTest {
             + "  \"duration\":\"00:00:00\",\n"
             + "  \"owner\":\"" + MOCK_USER_ID + "\"\n"
             + "}\n";
-
     private static final String eventStringReceived = "{\n"
             + "  \"id\": 17005,\n"
             + eventStringSent.substring(2);
+    private HttpURLConnection connection;
+    private NetworkProvider networkProviderMockito;
 
     @Before
     public void setUp() throws Exception {

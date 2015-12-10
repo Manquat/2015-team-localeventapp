@@ -26,7 +26,7 @@ import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 /**
  * Adapter for the GridView that display the CalendarCells
  */
-public class GridCalendarAdapter extends BaseAdapter implements View.OnClickListener {
+public class GridCalendarAdapter extends BaseAdapter implements View.OnClickListener, Refreshable {
     private static final String TAG = "GridCalendarAdapter";
     private static final int NUMBER_OF_CELLS = 7 * 7; // the line for the day of the week, and 6 lines for all the day of the month
 
@@ -45,10 +45,6 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
      * @param updatableParent the parent that holds the grid and will be update when something
      *                        changed in the adapter.
      */
-    public GridCalendarAdapter(Context context, Refreshable updatableParent) {
-        this(context, updatableParent, new GregorianCalendar());
-    }
-
     public GridCalendarAdapter(Context context, Refreshable updatableParent, Calendar focusedDate) {
         super();
         mContext = context;
@@ -57,6 +53,15 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         // Initialize the calendar grid at the given date
         mCalendarGrid = new CalendarGrid(focusedDate);
         mEvents = EventDatabase.INSTANCE.filter(focusedDate).toArrayList();
+
+        //adding as an observer of the EventDatabase
+        EventDatabase.INSTANCE.addObserver(this);
+    }
+
+    public void finalize() throws Throwable {
+        super.finalize();
+        //adding as an observer of the EventDatabase
+        EventDatabase.INSTANCE.removeObserver(this);
     }
 
 
@@ -243,6 +248,11 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
     public void prevMonth() {
         mCalendarGrid.prevMonth();
         mEvents = null;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void refresh() {
         notifyDataSetChanged();
     }
 }
