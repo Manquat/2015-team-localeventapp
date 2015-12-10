@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.gui.EventListViewAdapter;
@@ -89,6 +90,22 @@ public class CalendarTabs extends Fragment implements
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        //adding the mainActivity to the observer of the eventDatabase
+        EventDatabase.INSTANCE.addObserver(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        //removing the mainActivity to the observer of the eventDatabase
+        EventDatabase.INSTANCE.removeObserver(this);
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.nextButton:
@@ -111,6 +128,8 @@ public class CalendarTabs extends Fragment implements
 
     public void refresh() {
         updateDate();
+
+        mGridCalendarAdapter.notifyDataSetChanged();
 
         List<Event> events = mGridCalendarAdapter.getCurrentEvents();
         mEventListAdapter.setEvents(events);
