@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
             Intent intent = new Intent(this, SearchActivity.class);
             startActivity(intent);
         } else if (id == R.id.action_refresh) {
-            refreshFromServer();
+            EventDatabase.INSTANCE.refresh();
         } else if (id == R.id.action_manageYourEvent) {
             Intent intent = new Intent(this, ManageActivity.class);
             startActivity(intent);
@@ -164,27 +164,6 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
 
     }
 
-
-    public void refreshFromServer() {
-        /*RestApi mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-
-        mRestApi.getAll(new GetEventListCallback() {
-            @Override
-            public void onEventListReceived(List<Event> eventArrayList) {
-                EventDatabase.INSTANCE.clear();
-                EventDatabase.INSTANCE.addAll(eventArrayList);
-                Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + mPager.getCurrentItem());
-                if (page instanceof Refreshable) {
-                    ((Refreshable) page).refresh();
-                }
-                Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
-                makeNotifications(eventArrayList);
-            }
-        });*/
-
-        EventDatabase.INSTANCE.refresh();
-        refresh();
-    }
 
     public void makeNotifications(List<Event> eventArrayList) {
         Calendar currentDate = Calendar.getInstance();
@@ -220,7 +199,6 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
 
     @Override
     public void refresh() {
-        //recreate();
         makeNotifications(EventDatabase.INSTANCE.getAllEvents());
         Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
     }
