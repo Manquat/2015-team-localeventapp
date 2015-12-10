@@ -4,8 +4,10 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,16 +16,19 @@ import ch.epfl.sweng.evento.event.EventSet;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
+import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 
 /**
  * Created by Val on 28.10.2015.
  */
-public enum EventDatabase {
+public enum EventDatabase implements Refreshable {
     INSTANCE;
 
     private static final String TAG = "EventDatabase";
 
     private RestApi mRestAPI;
+
+    private Set<Refreshable> mObserver;
 
     /**
      * This EventSet represents all the Events currently stored on the device
@@ -33,6 +38,7 @@ public enum EventDatabase {
     EventDatabase() {
         mEventSet = new EventSet();
         mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+        mObserver = new HashSet<>();
 
         loadNewEvents();
     }
@@ -44,13 +50,17 @@ public enum EventDatabase {
             public void onEventListReceived(List<Event> events) {
                 addAll(events);
             }
-
-            public void onUserListReceived(List<User> userArrayList) {
-
-            }
         });
     }
 
+    public boolean addObserver(Refreshable observer) {
+        return mObserver.add(observer);
+    }
+
+
+    public boolean removeObserver(Refreshable observer) {
+        return mObserver.remove(observer);
+    }
 
     public void addAll(List<Event> events) {
         if (events == null) {
@@ -60,6 +70,8 @@ public enum EventDatabase {
             mEventSet.addEvent(e);
             Log.i(TAG, "EVENT LOADED " + e.getTitle());
         }
+
+        updateObserver();
     }
 
 
@@ -68,6 +80,7 @@ public enum EventDatabase {
             return;
         }
         mEventSet.addEvent(e);
+        updateObserver();
     }
 
 
@@ -77,10 +90,6 @@ public enum EventDatabase {
             public void onEventListReceived(List<Event> eventArrayList) {
                 mEventSet.clear();
                 addAll(eventArrayList);
-            }
-
-            public void onUserListReceived(List<User> userArrayList) {
-
             }
         });
     }
@@ -159,12 +168,18 @@ public enum EventDatabase {
         loadNewEvents();
     }
 
+    private void updateObserver() {
+        for (Refreshable observer : mObserver) {
+            observer.refresh();
+        }
+    }
+
     public void clear() {
         mEventSet.clear();
     }
 
 
-    public int getSize() {
+    public int getNumberOfEvent() {
         if (mEventSet == null) {
             return 0;
         } else {
