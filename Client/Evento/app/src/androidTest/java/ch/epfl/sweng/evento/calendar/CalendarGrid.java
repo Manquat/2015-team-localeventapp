@@ -21,6 +21,7 @@ public class CalendarGrid {
     private int mIndexOfCurrentDay; // the index of the current day in the list of mDays and mCurrent
     private int mCurrentMonth;      // the current month (0 for january, ...)
     private int mCurrentYear;       // the current year
+
     /**
      * Create a grid focused on the day given by the actual position of the calendar
      *
@@ -50,6 +51,10 @@ public class CalendarGrid {
         setFocusedDay(day, month, year);
     }
 
+    /**
+     * gets a Calendar containing the data of the focused date
+     * @return a GregorianCalendar containing the data
+     */
     public Calendar getFocusedDate() {
         return new GregorianCalendar(mCurrentYear, mCurrentMonth, mDays.get(mIndexOfCurrentDay));
     }

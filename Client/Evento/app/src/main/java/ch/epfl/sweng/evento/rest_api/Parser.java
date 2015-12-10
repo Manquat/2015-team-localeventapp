@@ -31,6 +31,12 @@ public class Parser {
         return null;
     }
 
+    /**
+     * converts a JSONObject into an Event
+     * @param jsonObject the jsonObject to be converted
+     * @return an Event corresponding to the jsonObject passed in argument
+     * @throws JSONException
+     */
     public static Event toEvent(JSONObject jsonObject) throws JSONException {
 
         final JSONObject json = jsonObject;
@@ -81,7 +87,12 @@ public class Parser {
         }
     }
 
-
+    /**
+     * converts a JSONObject into an Comment
+     * @param jsonObject the jsonObject to be converted
+     * @return the comment corresponding to the jsonObject passed in argument
+     * @throws JSONException
+     */
     private static Comment toComment(JSONObject jsonObject) throws JSONException {
         Comment c = new Comment(
                 jsonObject.getInt("creator"),
@@ -91,6 +102,12 @@ public class Parser {
         return c;
     }
 
+    /**
+     * Converts a String containing data for a list of Event into an actual List of Events
+     * @param response the json-formatted string containing the data
+     * @return a List of Events created from the data passed in argument
+     * @throws JSONException
+     */
     public static List<Event> toEventList(String response) throws JSONException {
         ArrayList<Event> eventArrayList = new ArrayList<>();
         JSONArray jsonArray = new JSONArray(response);
@@ -101,6 +118,12 @@ public class Parser {
         return eventArrayList;
     }
 
+    /**
+     * Converts a jsonObject containing the data of a User into an actual User
+     * @param jsonObject the jsonObject containing the data
+     * @return a User based on the data contained in the jsonObject
+     * @throws JSONException
+     */
     public static User toUser(JSONObject jsonObject) throws JSONException {
         final JSONObject json = jsonObject;
 
@@ -115,6 +138,12 @@ public class Parser {
         }
     }
 
+    /**
+     * converts a JSONObject into a List of Comment
+     * @param result the jsonObject to be converted
+     * @return a List of Comments corresponding to the data contained in the jsonObject
+     * @throws JSONException
+     */
     public static List<Comment> toCommentList(String result) throws JSONException {
         JSONArray jsonArray = new JSONArray(result);
         List<Comment> commentList = new ArrayList<>();
@@ -125,6 +154,12 @@ public class Parser {
         return commentList;
     }
 
+    /**
+     * converts a JSONObject into a List of Users
+     * @param response the String containing the data of the Users
+     * @return a List of Users corresponding to the data contained in the String passed in argument
+     * @throws JSONException
+     */
     public static List<User> toUserList(String response) throws JSONException {
         JSONArray jsonArray = new JSONArray(response);
         List<User> userList = new ArrayList<>();
@@ -137,6 +172,12 @@ public class Parser {
     }
 
 
+    /**
+     * interprets a formatted String into a Calendar
+     * @param s the String containing the Calendar data
+     * @return a Calendar with the same data as the String passed in argument
+     * @throws ParseException
+     */
     public static Calendar fromStringToCalendar(String s) throws ParseException {
         Calendar cal = new GregorianCalendar();
         cal.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));

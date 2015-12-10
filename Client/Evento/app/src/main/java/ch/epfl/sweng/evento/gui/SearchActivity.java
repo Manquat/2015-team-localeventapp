@@ -191,6 +191,10 @@ public class SearchActivity extends AppCompatActivity
         mFilterPersonalEvent = ((CheckBox) view).isChecked();
     }
 
+    /**
+     * Sets up the "validate" button
+     * @param validateButton
+     */
     private void setValidateButtonAndSend(Button validateButton) {
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override

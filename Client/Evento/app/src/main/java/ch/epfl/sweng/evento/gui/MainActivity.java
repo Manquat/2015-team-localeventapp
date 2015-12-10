@@ -180,6 +180,11 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
     }
 
 
+    /**
+     * Creates a system notification containing the title of all Events
+     * that are starting within the next 24 hours
+     * @param eventArrayList the Events to scan to find the ones starting within 24 hours
+     */
     public void makeNotifications(List<Event> eventArrayList) {
         if (eventArrayList != null) {
             Calendar currentDate = Calendar.getInstance();

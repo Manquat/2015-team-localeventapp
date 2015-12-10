@@ -78,6 +78,11 @@ public class RestApi {
         }).execute();
     }
 
+    /**
+     * Gets a String containing the data of ALL Events stored on the server, parses them and forwards
+     * them to the Callback function passed in argument
+     * @param callback the callback function supposed to actually add the Events to the EventDatabase
+     */
     public void getAll(final GetEventListCallback callback) {
         String restUrl = UrlMaker.getAll(mUrlServer);
         new GetTask(restUrl, mNetworkProvider, new RestTaskCallback() {
@@ -95,6 +100,7 @@ public class RestApi {
             }
         }).execute();
     }
+
 
     public void getParticipant(final GetUserListCallback callback, int idEvent) {
         String restUrl = UrlMaker.getUsers(mUrlServer, idEvent);

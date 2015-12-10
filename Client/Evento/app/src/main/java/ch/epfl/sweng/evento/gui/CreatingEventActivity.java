@@ -400,10 +400,13 @@ public class CreatingEventActivity extends AppCompatActivity
         });
     }
 
-    // Construct a GoogleApiClient for the {@link Places#GEO_DATA_API} using AutoManage
-    // functionality, which automatically sets up the API client to handle Activity lifecycle
-    // events. If your activity does not extend FragmentActivity, make sure to call connect()
-    // and disconnect() explicitly.
+    /**
+     * Construct a GoogleApiClient for the {@link Places#GEO_DATA_API} using AutoManage
+     * functionality, which automatically sets up the API client to handle Activity lifecycle
+     * events. If your activity does not extend FragmentActivity, make sure to call connect()
+     * and disconnect() explicitly.
+     */
+
     private void setPlacePickerField() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, 0 /* clientId */, this)

@@ -62,6 +62,10 @@ public enum EventDatabase implements Refreshable {
         return mObserver.remove(observer);
     }
 
+    /**
+     * Adds to the main EventSet all Events of the List that are  not already in the EventSet
+     * @param events the List of Events to be added
+     */
     public void addAll(List<Event> events) {
         if (events == null) {
             return;

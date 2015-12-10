@@ -89,10 +89,16 @@ public class EventSet {
         }
     }
 
+
     public Event getLast() {
         return mEvents.lastEntry().getValue();
     }
 
+    /**
+     * Gets the Event with the closest higher signature from the one passed in argument
+     * @param current the reference Event
+     * @return the Event with the closest higher signature from the one passed in argument
+     */
     public Event getNext(Event current) {
         if (mEvents.size() > 1) {
             return getNext(current.getID());
@@ -122,6 +128,11 @@ public class EventSet {
         }
     }
 
+    /**
+     * Gets the Event with the closest lower signature from the one passed in argument
+     * @param current the reference Event
+     * @return the Event with the closest lower signature from the one passed in argument
+     */
     public Event getPrevious(Event current) {
         if (mEvents.size() > 1) {
             return getPrevious(current.getID());
