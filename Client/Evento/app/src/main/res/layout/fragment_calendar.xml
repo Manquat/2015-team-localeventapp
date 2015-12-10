@@ -12,8 +12,15 @@
         <Button
             android:id="@+id/prevButton"
             android:layout_width="@dimen/calendar_button_width"
-            android:layout_height="match_parent"
-            android:text="@string/prev" />
+            android:layout_height="40dp"
+            android:text="@string/prev"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:background="@drawable/buttonshape"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"/>
 
         <TextView
             android:id="@+id/dayTitle"
@@ -26,8 +33,15 @@
         <Button
             android:id="@+id/nextButton"
             android:layout_width="@dimen/calendar_button_width"
-            android:layout_height="match_parent"
-            android:text="@string/next" />
+            android:layout_height="40dp"
+            android:text="@string/next"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:background="@drawable/buttonshape"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"/>
 
     </LinearLayout>
 

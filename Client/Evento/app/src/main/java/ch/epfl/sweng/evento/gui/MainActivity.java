@@ -105,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
                 return ContextCompat.getColor(getApplicationContext(), R.color.tabsScrollColor);
             }
         });
-
         // Setting the ViewPager For the SlidingTabsLayout
         mTabs.setViewPager(mPager);
 

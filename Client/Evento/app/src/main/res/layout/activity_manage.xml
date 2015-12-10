@@ -5,7 +5,8 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     tools:context=".gui.ManageActivity"
-    android:weightSum = "1">
+    android:weightSum = "1"
+    android:background="@color/backgroundMain">
 
     <LinearLayout
         android:orientation="vertical"

@@ -17,7 +17,9 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:textColor="@color/fontTitleFrag"
+    android:background="@color/backgroundMain">
 
     <include
         android:id="@+id/tool_bar"
@@ -27,13 +29,15 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/fontTitleFrag"
+        android:background="@color/backgroundTitleFrag"
         android:elevation="2dp" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/fontTitleFrag"
         android:layout_weight="1" />
 
 </LinearLayout>
