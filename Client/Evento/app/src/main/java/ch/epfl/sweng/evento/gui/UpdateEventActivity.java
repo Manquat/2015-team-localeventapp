@@ -76,8 +76,7 @@ public class UpdateEventActivity extends CreatingEventActivity
                 event.getTags(),
                 event.getStartDate(),
                 event.getEndDate(),
-                event.getPictureAsString(),
-                mCurrentEvent.getAllParticipant());
+                event.getPictureAsString());
 
         restApi.updateEvent(eventWithTheGoodId, new HttpResponseCodeCallback()
         {

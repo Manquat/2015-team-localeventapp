@@ -64,8 +64,7 @@ public class Parser
                     new HashSet<String>(Arrays.asList(json.getString("tags").split(";"))),
                     startDate,
                     endDate,
-                    jsonObject.getString("image"),
-                    new HashSet<User>());
+                    jsonObject.getString("image"));
 
         } catch (IllegalArgumentException e)
         {
