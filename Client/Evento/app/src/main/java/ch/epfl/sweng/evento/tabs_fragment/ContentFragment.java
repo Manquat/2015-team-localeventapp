@@ -18,7 +18,14 @@ package ch.epfl.sweng.evento.tabs_fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -171,12 +179,33 @@ public class ContentFragment extends Fragment implements Refreshable
                         mActivity.startActivity(intent);
                     }
                 });
-                if (mDisplayOrNot.get(yPos)[xPos])
-                {
-                    //to draw the Event's own picture instead of one based on its tags
-                    tView.setImageBitmap(mEvents.get(countEvent).getPicture());
+                if (mDisplayOrNot.get(yPos)[xPos]) {
+                    if (mEvents.get(countEvent).getTags().contains("Foot!") ||
+                            mEvents.get(countEvent).getTags().contains("Football")) {
+                        tmpSpanSmtgOrNot = Span.NOTHING;
+                        //tView.setImageResource(R.drawable.football);
+                        Bitmap bitmap = mEvents.get(countEvent).getPicture();
+                        Point size = new Point();
+                        mActivity.getWindowManager().getDefaultDisplay().getSize(size);
+                        tView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, size.x / 3 - 2 * PADDING, size.y / 6 - 2 * PADDING));
+                    } else if (mEvents.get(countEvent).getTags().contains("Basketball")) {
+                        tmpSpanSmtgOrNot = Span.TWO_ROWS;
+                        Bitmap bitmap = mEvents.get(countEvent).getPicture();
+                        Point size = new Point();
+                        mActivity.getWindowManager().getDefaultDisplay().getSize(size);
+                        tView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, size.x / 3 - 2 * PADDING, size.y / 3 - 2 * PADDING));
+                        ++spanning;
+                        mDisplayOrNot.get(yPos + 1)[xPos] = false;
+                    } else {
+                        tmpSpanSmtgOrNot = Span.NOTHING;
+                        Bitmap bitmap = mEvents.get(countEvent).getPicture();
+                        Point size = new Point();
+                        mActivity.getWindowManager().getDefaultDisplay().getSize(size);
+                        tView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, size.x / 3 - 2 * PADDING, size.y / 6 - 2 * PADDING));
+                    }
 
-                    tView.setAdjustViewBounds(true);
+
+                    tView.setAdjustViewBounds(false);
                     mMyViews.add(tView);
 
                     switch (tmpSpanSmtgOrNot)
