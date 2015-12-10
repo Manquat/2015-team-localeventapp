@@ -34,8 +34,6 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
     public static final String TAG = "EventInfPageAdapter";
     Activity mActivity;
     private RestApi mRestApi;
-    private ConversationAdapter mConversationAdapter;
-
 
     public EventInfinitePageAdapter(Integer initialEventId, Activity activity) {
         super(initialEventId);
