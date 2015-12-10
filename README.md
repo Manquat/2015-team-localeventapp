@@ -34,5 +34,5 @@ https://sweng-forum.epfl.ch/t/android-emulator-with-google-play-services/191
 
 
 ## Credits 
-This application was realized as part of Software Engineering project at EPFL, in 2015 by
+This application was realized as part of Software Engineering project at EPFL, in 2015, by
 Ben Gaffinet, Valentin Nigolian, Christophe Schäfer, Gautier Manquat, Thomas Eslier & Joachim Muth
