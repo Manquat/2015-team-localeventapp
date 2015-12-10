@@ -108,6 +108,22 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
         mTabs.setViewPager(mPager);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        //adding the mainActivity to the observer of the eventDatabase
+        EventDatabase.INSTANCE.addObserver(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        //removing the mainActivity to the observer of the eventDatabase
+        EventDatabase.INSTANCE.removeObserver(this);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -205,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
     @Override
     public void refresh() {
         recreate();
+        makeNotifications(EventDatabase.INSTANCE.getAllEvents());
         Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
     }
 }
