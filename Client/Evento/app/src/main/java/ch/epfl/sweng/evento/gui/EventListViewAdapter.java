@@ -3,6 +3,8 @@ package ch.epfl.sweng.evento.gui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,8 +80,12 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
 
             // setting a default image as the image in the list
             ImageView imageView = (ImageView) rootView.findViewById(R.id.list_event_image);
-            imageView.setImageBitmap(mEvents.get(position).getPicture());
-            //imageView.setImageResource(R.drawable.basket);
+
+            int dimension = mActivity.getResources().getDimensionPixelSize(R.dimen.list_event_height);
+            Bitmap bitmap = ThumbnailUtils.extractThumbnail(mEvents.get(position).getPicture(),
+                    dimension, dimension);
+
+            imageView.setImageBitmap(bitmap);
         }
 
         return rootView;
