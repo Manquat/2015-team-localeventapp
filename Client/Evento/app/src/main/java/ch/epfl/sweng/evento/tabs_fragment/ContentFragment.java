@@ -101,6 +101,7 @@ public class ContentFragment extends Fragment implements Refreshable
         mMyViews = new Vector<MyView>();
         mEvents = new ArrayList<Event>();
         mNumberOfEvent = 0;
+        mHeightRow = 0;
     }
 
     @Override
@@ -180,28 +181,28 @@ public class ContentFragment extends Fragment implements Refreshable
                     }
                 });
                 if (mDisplayOrNot.get(yPos)[xPos]) {
+                    Point size = new Point();
+                    mActivity.getWindowManager().getDefaultDisplay().getSize(size);
+                    mWidthColumn = size.x / 3 - 4 * PADDING;
                     if (mEvents.get(countEvent).getTags().contains("Foot!") ||
                             mEvents.get(countEvent).getTags().contains("Football")) {
                         tmpSpanSmtgOrNot = Span.NOTHING;
                         //tView.setImageResource(R.drawable.football);
                         Bitmap bitmap = mEvents.get(countEvent).getPicture();
-                        Point size = new Point();
-                        mActivity.getWindowManager().getDefaultDisplay().getSize(size);
-                        tView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, size.x / 3 - 2 * PADDING, size.y / 6 - 2 * PADDING));
+                        mHeightRow = size.y / 6 - 4 * PADDING;
+                        tView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap,mWidthColumn , mHeightRow));
                     } else if (mEvents.get(countEvent).getTags().contains("Basketball")) {
                         tmpSpanSmtgOrNot = Span.TWO_ROWS;
                         Bitmap bitmap = mEvents.get(countEvent).getPicture();
-                        Point size = new Point();
-                        mActivity.getWindowManager().getDefaultDisplay().getSize(size);
-                        tView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, size.x / 3 - 2 * PADDING, size.y / 3 - 2 * PADDING));
+                        mHeightRow = size.y / 3 - 6 * PADDING;
+                        tView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, mWidthColumn, mHeightRow));
                         ++spanning;
                         mDisplayOrNot.get(yPos + 1)[xPos] = false;
                     } else {
                         tmpSpanSmtgOrNot = Span.NOTHING;
                         Bitmap bitmap = mEvents.get(countEvent).getPicture();
-                        Point size = new Point();
-                        mActivity.getWindowManager().getDefaultDisplay().getSize(size);
-                        tView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, size.x / 3 - 2 * PADDING, size.y / 6 - 2 * PADDING));
+                        mHeightRow = size.y / 6 - 4 * PADDING;
+                        tView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, mWidthColumn, mHeightRow));
                     }
 
 
@@ -216,7 +217,7 @@ public class ContentFragment extends Fragment implements Refreshable
                                 ++mNumberOfRow;
                                 mGridLayout.setRowCount(mNumberOfRow);
                             }
-                            addViewToGridLayout(tView, yPos, xPos, 1, 1);
+                            addViewToGridLayout(tView, yPos, xPos, 1, 1, mHeightRow, mWidthColumn);
                             break;
                         case TWO_ROWS:
                             while ((yPos + 1) >= mNumberOfRow)
@@ -224,10 +225,10 @@ public class ContentFragment extends Fragment implements Refreshable
                                 ++mNumberOfRow;
                                 mGridLayout.setRowCount(mNumberOfRow);
                             }
-                            addViewToGridLayout(tView, yPos, xPos, 2, 1);
+                            addViewToGridLayout(tView, yPos, xPos, 2, 1, mHeightRow, mWidthColumn);
                             break;
                         case TWO_COLUMNS:
-                            addViewToGridLayout(tView, yPos, xPos, 1, 2);
+                            addViewToGridLayout(tView, yPos, xPos, 1, 2, mHeightRow, mWidthColumn);
                             break;
                     }
                 } else
@@ -238,7 +239,7 @@ public class ContentFragment extends Fragment implements Refreshable
         }
     }
 
-    private void addViewToGridLayout(View view, int row, int column, int rowSpan, int columnSpan)
+    public void addViewToGridLayout(View view, int row, int column, int rowSpan, int columnSpan, int height, int width)
     {
         int pWidth = mGridLayout.getWidth();
         int pHeight = mGridLayout.getHeight();
@@ -251,9 +252,7 @@ public class ContentFragment extends Fragment implements Refreshable
         int screenHeight = size.y;
         int halfScreenWidth = (int) (screenWidth * 0.5);
         int quarterScreenWidth = (int) (halfScreenWidth * 0.5);
-        params.width = screenWidth / 3 - 2 * PADDING;
-        //params.width = mWidthColumn - 2 * PADDING;
-        //params.height = mHeightRow - 2 * PADDING;
+        params.width = width + 2 * PADDING;
         params.setMargins(PADDING, PADDING, PADDING, PADDING);
         params.columnSpec = GridLayout.spec(column, columnSpan);
         params.rowSpec = GridLayout.spec(row, rowSpan);
