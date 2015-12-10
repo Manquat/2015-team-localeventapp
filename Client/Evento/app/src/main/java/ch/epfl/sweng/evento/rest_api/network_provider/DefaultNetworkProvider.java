@@ -13,16 +13,19 @@ import java.net.URL;
  * the mechanism available in the {@link URL} object to create
  * {@link HttpURLConnection} objects.
  */
-public class DefaultNetworkProvider implements NetworkProvider {
+public class DefaultNetworkProvider implements NetworkProvider
+{
 
     /**
      * The default constructor.
      */
-    public DefaultNetworkProvider() {
+    public DefaultNetworkProvider()
+    {
     }
 
     @Override
-    public HttpURLConnection getConnection(URL url) throws IOException {
+    public HttpURLConnection getConnection(URL url) throws IOException
+    {
         return (HttpURLConnection) url.openConnection();
     }
 

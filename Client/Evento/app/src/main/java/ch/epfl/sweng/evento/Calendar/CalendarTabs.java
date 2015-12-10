@@ -30,7 +30,8 @@ import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 public class CalendarTabs extends Fragment implements
         Button.OnClickListener,
         Refreshable,
-        DatePickerDialog.OnDateSetListener {
+        DatePickerDialog.OnDateSetListener
+{
 
 
     private GridInfinitePageAdapter mGridCalendarAdapter;
@@ -42,7 +43,8 @@ public class CalendarTabs extends Fragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceState)
+    {
         // create the calendar centred on the actual date
         GregorianCalendar actualDate = new GregorianCalendar();
 
@@ -70,9 +72,11 @@ public class CalendarTabs extends Fragment implements
         // show a date picker when click on the date
         mDatePicker = new DatePickerDialog(getContext(), this, actualDate.get(Calendar.YEAR),
                 actualDate.get(Calendar.MONTH), actualDate.get(Calendar.DAY_OF_MONTH));
-        mCurrentDate.setOnClickListener(new View.OnClickListener() {
+        mCurrentDate.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 mDatePicker.show();
             }
         });
@@ -90,8 +94,10 @@ public class CalendarTabs extends Fragment implements
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
             case R.id.nextButton:
                 mGridCalendarAdapter.nextMonth();
                 refresh();
@@ -105,12 +111,14 @@ public class CalendarTabs extends Fragment implements
     }
 
     @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
+    {
         mGridCalendarAdapter.setFocusedDate(new GregorianCalendar(year, monthOfYear, dayOfMonth));
     }
 
 
-    public void refresh() {
+    public void refresh()
+    {
         updateDate();
 
         List<Event> events = mGridCalendarAdapter.getCurrentEvents();
@@ -120,7 +128,8 @@ public class CalendarTabs extends Fragment implements
         mBaseView.invalidate();
     }
 
-    private void updateDate() {
+    private void updateDate()
+    {
         mCurrentDate.setText(mGridCalendarAdapter.getStringDate());
     }
 }

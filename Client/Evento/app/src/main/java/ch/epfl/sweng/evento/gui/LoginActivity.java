@@ -32,7 +32,8 @@ import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
-        View.OnClickListener {
+        View.OnClickListener
+{
 
     private static final String TAG = "LoginActivity";
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
@@ -42,7 +43,8 @@ public class LoginActivity extends AppCompatActivity implements
     private GoogleApiClient mGoogleApiClient;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // make sure there is a valid server client ID.
@@ -73,13 +75,15 @@ public class LoginActivity extends AppCompatActivity implements
 
         if (getIntent() != null &&
                 getIntent().getExtras() != null &&
-                getIntent().getExtras().getBoolean(MainActivity.LOGOUT_TAG, false)) {
+                getIntent().getExtras().getBoolean(MainActivity.LOGOUT_TAG, false))
+        {
             logout();
         }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_login, menu);
         return true;
@@ -87,14 +91,16 @@ public class LoginActivity extends AppCompatActivity implements
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings)
+        {
             return true;
         }
 
@@ -102,13 +108,16 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult result) {
+    public void onConnectionFailed(ConnectionResult result)
+    {
         Log.d(TAG, "onConnectionFailed:" + result);
     }
 
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
 
-        if (v.getId() == R.id.sign_in_button) {
+        if (v.getId() == R.id.sign_in_button)
+        {
             //Call sign in function
             Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
             startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -117,30 +126,37 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
 
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-        if (opr.isDone()) {
+        if (opr.isDone())
+        {
             // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
             // and the GoogleSignInResult will be available instantly.
             Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
-            if (result.isSuccess()) {
+            if (result.isSuccess())
+            {
                 storingTheUserOnServerAndInTheSettings(result);
 
                 //Intent intent = new Intent(this, MainActivity.class);
                 //startActivity(intent);
-            } else {
+            } else
+            {
                 Toast.makeText(this, "Could not connect, please try again", Toast.LENGTH_SHORT).show();
             }
-        } else {
+        } else
+        {
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
             // single sign-on will occur in this branch.
-            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+            opr.setResultCallback(new ResultCallback<GoogleSignInResult>()
+            {
                 @Override
-                public void onResult(GoogleSignInResult googleSignInResult) {
+                public void onResult(GoogleSignInResult googleSignInResult)
+                {
 
                 }
             });
@@ -148,29 +164,35 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     @Override
-    protected void onStop() {
+    protected void onStop()
+    {
         mGoogleApiClient.disconnect();
         super.onStop();
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN)
+        {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if (result.isSuccess()) {
+            if (result.isSuccess())
+            {
                 storingTheUserOnServerAndInTheSettings(result);
                 //Intent intent = new Intent(this, MainActivity.class);
                 //startActivity(intent);
 
-            } else {
+            } else
+            {
                 Toast.makeText(this, "Could not connect, please try again", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private void storingTheUserOnServerAndInTheSettings(GoogleSignInResult googleSignInResult) {
+    private void storingTheUserOnServerAndInTheSettings(GoogleSignInResult googleSignInResult)
+    {
         GoogleSignInAccount acct = googleSignInResult.getSignInAccount();
         String idToken = acct.getIdToken();
         Log.d(TAG, "idToken:" + idToken);
@@ -183,12 +205,15 @@ public class LoginActivity extends AppCompatActivity implements
         Settings.setUser(user);
         final Activity loginActivity = this;
         RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
-        restApi.postUser(personName, personEmail, personGoogleId, new GetUserCallback() {
+        restApi.postUser(personName, personEmail, personGoogleId, new GetUserCallback()
+        {
             @Override
-            public void onDataReceived(User user) {
+            public void onDataReceived(User user)
+            {
                 Settings.setUser(user);
 
-                if (user == null) {
+                if (user == null)
+                {
                     throw new NullPointerException("User null!");
                 }
 
@@ -204,10 +229,12 @@ public class LoginActivity extends AppCompatActivity implements
         });
     }
 
-    private void validateServerClientID() {
+    private void validateServerClientID()
+    {
         String serverClientId = getString(R.string.server_client_id);
         String suffix = ".apps.googleusercontent.com";
-        if (!serverClientId.trim().endsWith(suffix)) {
+        if (!serverClientId.trim().endsWith(suffix))
+        {
             String message = "Invalid server client ID in strings.xml, must end with " + suffix;
 
             Log.w(TAG, message);
@@ -215,8 +242,10 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
-    public void logout() {
-        if (mGoogleApiClient.isConnected()) {
+    public void logout()
+    {
+        if (mGoogleApiClient.isConnected())
+        {
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
             mGoogleApiClient.disconnect();
             mGoogleApiClient.connect();

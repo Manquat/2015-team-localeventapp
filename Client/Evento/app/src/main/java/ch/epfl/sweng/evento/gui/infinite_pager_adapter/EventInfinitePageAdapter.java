@@ -30,31 +30,36 @@ import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 /**
  * An infinite page adapter for the event activity
  */
-public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
+public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer>
+{
     public static final String TAG = "EventInfPageAdapter";
     Activity mActivity;
     private RestApi mRestApi;
 
-    public EventInfinitePageAdapter(Integer initialEventId, Activity activity) {
+    public EventInfinitePageAdapter(Integer initialEventId, Activity activity)
+    {
         super(initialEventId);
         mActivity = activity;
         mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
     }
 
     @Override
-    public Integer getNextIndicator() {
+    public Integer getNextIndicator()
+    {
         Event currentEvent = EventDatabase.INSTANCE.getEvent(getCurrentIndicator());
         return EventDatabase.INSTANCE.getNextEvent(currentEvent).getID();
     }
 
     @Override
-    public Integer getPreviousIndicator() {
+    public Integer getPreviousIndicator()
+    {
         Event currentEvent = EventDatabase.INSTANCE.getEvent(getCurrentIndicator());
         return EventDatabase.INSTANCE.getPreviousEvent(currentEvent).getID();
     }
 
     @Override
-    public ViewGroup instantiateItem(Integer currentEventId) {
+    public ViewGroup instantiateItem(Integer currentEventId)
+    {
         // getting the event
         Event event = EventDatabase.INSTANCE.getEvent(currentEventId);
 
@@ -80,11 +85,14 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         return rootLayout;
     }
 
-    private void getHost(Event event, View view) {
+    private void getHost(Event event, View view)
+    {
         final View innerView = view;
 
-        mRestApi.getUser(new GetUserCallback() {
-            public void onDataReceived(User user) {
+        mRestApi.getUser(new GetUserCallback()
+        {
+            public void onDataReceived(User user)
+            {
                 TextView creatorView = (TextView) innerView.findViewById(R.id.event_creator_view);
                 creatorView.setText(user.getUsername());
 
@@ -93,7 +101,8 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
     }
 
 
-    private void updateFields(ViewGroup rootView, final Event currentEvent) {
+    private void updateFields(ViewGroup rootView, final Event currentEvent)
+    {
         TextView titleView = (TextView) rootView.findViewById(R.id.event_title_view);
         TextView creatorView = (TextView) rootView.findViewById(R.id.event_creator_view);
         TextView startDateView = (TextView) rootView.findViewById(R.id.event_start_date_view);
@@ -142,7 +151,8 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer> {
         Log.d(TAG, "is currentOwner : creator " + currentEvent.getCreator());
         Log.d(TAG, "is currentOwner : user " + Settings.getUser().getUserId());
         Log.d(TAG, "current event : " + currentEvent.getTitle());
-        if (isTheCurrentUserTheOwner) {
+        if (isTheCurrentUserTheOwner)
+        {
             deleteEvent.setVisibility(View.VISIBLE);
             updateEvent.setVisibility(View.VISIBLE);
         }

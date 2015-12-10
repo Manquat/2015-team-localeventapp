@@ -39,7 +39,8 @@ public class EventClusterManager extends ClusterManager<Event> implements
         ClusterManager.OnClusterItemClickListener<Event>,
         ClusterManager.OnClusterItemInfoWindowClickListener<Event>,
         GoogleMap.InfoWindowAdapter,
-        GoogleMap.OnInfoWindowClickListener {
+        GoogleMap.OnInfoWindowClickListener
+{
     final static String TAG = "EventClusterManager";
 
 
@@ -49,7 +50,8 @@ public class EventClusterManager extends ClusterManager<Event> implements
     private GoogleMap mMap;
 
 
-    public EventClusterManager(Context context, GoogleMap map, Activity parentActivity) {
+    public EventClusterManager(Context context, GoogleMap map, Activity parentActivity)
+    {
         super(context, map);
         mContext = context;
         mMap = map;
@@ -57,7 +59,8 @@ public class EventClusterManager extends ClusterManager<Event> implements
         init();
     }
 
-    public EventClusterManager(Context context, GoogleMap map, Activity parentActivity, MarkerManager markerManager) {
+    public EventClusterManager(Context context, GoogleMap map, Activity parentActivity, MarkerManager markerManager)
+    {
         super(context, map, markerManager);
         mContext = context;
         mMap = map;
@@ -68,7 +71,8 @@ public class EventClusterManager extends ClusterManager<Event> implements
     /**
      * Initialize the class
      */
-    private void init() {
+    private void init()
+    {
         setOnClusterClickListener(this);
         setOnClusterInfoWindowClickListener(this);
         setOnClusterItemClickListener(this);
@@ -82,12 +86,15 @@ public class EventClusterManager extends ClusterManager<Event> implements
      * @return false to let the normal callback function for a marker execute
      */
     @Override
-    public boolean onClusterClick(Cluster<Event> cluster) {
+    public boolean onClusterClick(Cluster<Event> cluster)
+    {
         Collection<Event> events = new ArrayList<>(cluster.getItems()); //defensive copy to avoid the border effect
-        if (events.size() == 0) {
+        if (events.size() == 0)
+        {
             Log.e(TAG, "this cluster is empty");
             throw new OutOfMemoryError();
-        } else {
+        } else
+        {
             // Show a toast with some info when the cluster is clicked.
             Event event = events.iterator().next();
             String firstName = event.getTitle();
@@ -106,7 +113,8 @@ public class EventClusterManager extends ClusterManager<Event> implements
      * @param cluster the cluster of whom the infoWindows have been click
      */
     @Override
-    public void onClusterInfoWindowClick(Cluster<Event> cluster) {
+    public void onClusterInfoWindowClick(Cluster<Event> cluster)
+    {
         // TODO Does nothing, but you could go to a list of the events.
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -123,8 +131,10 @@ public class EventClusterManager extends ClusterManager<Event> implements
      * @return false to let the normal callback function for a marker execute
      */
     @Override
-    public boolean onClusterItemClick(Event event) {
-        if (mEventsClick == null) {
+    public boolean onClusterItemClick(Event event)
+    {
+        if (mEventsClick == null)
+        {
             mEventsClick = new ArrayList<>();
         }
 
@@ -140,7 +150,8 @@ public class EventClusterManager extends ClusterManager<Event> implements
      * @param event the event of which the infoWindows have been click
      */
     @Override
-    public void onClusterItemInfoWindowClick(Event event) {
+    public void onClusterItemInfoWindowClick(Event event)
+    {
         // TODO Does nothing, but you could go into the event's page, for example.
 
         Intent intent = new Intent(mContext, EventActivity.class);
@@ -153,7 +164,8 @@ public class EventClusterManager extends ClusterManager<Event> implements
      *
      * @return a new collection containing the events currently (or last previous) click
      */
-    public Collection<Event> getEventsClick() {
+    public Collection<Event> getEventsClick()
+    {
         // defensive copy
         return new ArrayList<>(mEventsClick);
     }
@@ -165,7 +177,8 @@ public class EventClusterManager extends ClusterManager<Event> implements
      * @return null to let's the default view display or a view that will be used instead
      */
     @Override
-    public View getInfoWindow(Marker marker) {
+    public View getInfoWindow(Marker marker)
+    {
         // return null to let's the default view display or a view that will be used instead
         return null;
     }
@@ -177,13 +190,15 @@ public class EventClusterManager extends ClusterManager<Event> implements
      * @return The view that represent the info bubble
      */
     @Override
-    public View getInfoContents(Marker marker) {
+    public View getInfoContents(Marker marker)
+    {
         // return null to let's the default view display or a view that will be display inside the
         // default view
 
         View view;
 
-        switch (mEventsClick.size()) {
+        switch (mEventsClick.size())
+        {
             case 0:
                 view = null;
                 Log.e(TAG, "No actual event clicked");
@@ -207,7 +222,8 @@ public class EventClusterManager extends ClusterManager<Event> implements
                 view = ViewGroup.inflate(mContext, R.layout.infomarker_cluster, null);
 
                 LinearLayout layout = (LinearLayout) view.findViewById(R.id.list_event);
-                for (Event iEvent : mEventsClick) {
+                for (Event iEvent : mEventsClick)
+                {
                     View subView = ViewGroup.inflate(mContext, R.layout.list_event, null);
 
                     TextView textView = (TextView) subView.findViewById(R.id.list_event_title);

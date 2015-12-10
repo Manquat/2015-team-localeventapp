@@ -27,7 +27,8 @@ public class JoinEvent implements
         View.OnClickListener,
         HttpResponseCodeCallback,
         GetUserListCallback,
-        Refreshable {
+        Refreshable
+{
     private static final String TAG = "JoinEvent";
 
     private Activity mActivity;
@@ -41,7 +42,8 @@ public class JoinEvent implements
 
     private JoinEvent(Activity parentActivity, int currentEventId,
                       Button joinEventButton, Button unJoinEventButton,
-                      Refreshable parentRefreshable) {
+                      Refreshable parentRefreshable)
+    {
         mActivity = parentActivity;
         mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
         mCurrentEvent = EventDatabase.INSTANCE.getEvent(currentEventId);
@@ -60,32 +62,41 @@ public class JoinEvent implements
 
     public static void initialize(Activity parentActivity, int currentEventId,
                                   Button joinEventButton, Button unJoinEventButton,
-                                  Refreshable listOfParticipant) {
+                                  Refreshable listOfParticipant)
+    {
         new JoinEvent(parentActivity, currentEventId, joinEventButton, unJoinEventButton,
                 listOfParticipant);
     }
 
     @Override
-    public void onClick(View view) {
-        if (mIsTheEventJoined) {
+    public void onClick(View view)
+    {
+        if (mIsTheEventJoined)
+        {
             Log.d(TAG, Settings.getUser().getUsername() + " unjoin");
-            if (!mCurrentEvent.removeParticipant(Settings.getUser())) {
+            if (!mCurrentEvent.removeParticipant(Settings.getUser()))
+            {
                 Log.d(TAG, "addParticipant just returned false");
                 mActivity.finish();
-            } else {
+            } else
+            {
                 Toast.makeText(mActivity.getApplicationContext(), "UnJoined", Toast.LENGTH_SHORT).show();
 
                 mRestApi.removeParticipant(mCurrentEvent.getID(), Settings.getUser().getUserId(), this);
             }
 
-        } else {
+        } else
+        {
             Log.d(TAG, Settings.getUser().getUsername() + " join");
-            if (!mCurrentEvent.addParticipant(Settings.getUser())) {
+            if (!mCurrentEvent.addParticipant(Settings.getUser()))
+            {
                 Log.d(TAG, "addParticipant just returned false");
                 mActivity.finish();
-            } else {
+            } else
+            {
                 Toast.makeText(mActivity.getApplicationContext(), "Joined", Toast.LENGTH_SHORT).show();
-                if (Settings.getUser().addMatchedEvent(mCurrentEvent)) {
+                if (Settings.getUser().addMatchedEvent(mCurrentEvent))
+                {
                     mRestApi.addParticipant(mCurrentEvent.getID(),
                             Settings.getUser().getUserId(), this);
                 }
@@ -96,7 +107,8 @@ public class JoinEvent implements
         getParticipant();
     }
 
-    private void updateButtonState() {
+    private void updateButtonState()
+    {
         mIsTheEventJoined = mParticipant.contains(Settings.getUser());
 
         mJoinEventButton.setEnabled(!mIsTheEventJoined);
@@ -106,20 +118,24 @@ public class JoinEvent implements
     }
 
     @Override
-    public void onSuccess(String httpResponseCode) {
+    public void onSuccess(String httpResponseCode)
+    {
         Log.d(TAG, "Response" + httpResponseCode);
         refresh();
     }
 
-    private void getParticipant() {
+    private void getParticipant()
+    {
         Log.d(TAG, "getParticipant");
         mRestApi.getParticipant(this, mCurrentEvent.getID());
     }
 
     @Override
-    public void onUserListReceived(List<User> userArrayList) {
+    public void onUserListReceived(List<User> userArrayList)
+    {
         Log.d(TAG, "user list received for event " + mCurrentEvent.getTitle());
-        if (userArrayList != null) {
+        if (userArrayList != null)
+        {
             mParticipant.clear();
             mParticipant.addAll(userArrayList);
         }
@@ -128,7 +144,8 @@ public class JoinEvent implements
     }
 
     @Override
-    public void refresh() {
+    public void refresh()
+    {
         getParticipant();
     }
 }

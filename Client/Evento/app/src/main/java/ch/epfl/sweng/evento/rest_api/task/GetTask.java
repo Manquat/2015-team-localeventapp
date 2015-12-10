@@ -13,21 +13,25 @@ import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 /**
  * An AsyncTask implementation for performing GETs.
  */
-public class GetTask extends RestTask {
+public class GetTask extends RestTask
+{
     private static final String TAG = "GetTask";
 
-    public GetTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback) {
+    public GetTask(String restUrl, NetworkProvider networkProvider, RestTaskCallback callback)
+    {
         super("GET", restUrl, networkProvider, callback);
     }
 
     @Override
-    protected String setResponse(int responseCode, HttpURLConnection conn) throws IOException {
+    protected String setResponse(int responseCode, HttpURLConnection conn) throws IOException
+    {
         String response = fetchContent(conn);
         return response;
     }
 
     @Override
-    protected void communicateWithServer(HttpURLConnection connection) throws IOException {
+    protected void communicateWithServer(HttpURLConnection connection) throws IOException
+    {
         requestWithoutBody(connection);
     }
 

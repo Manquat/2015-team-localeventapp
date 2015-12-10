@@ -29,7 +29,8 @@ import ch.epfl.sweng.evento.rest_api.callback.GetUserCallback;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
-public class ManageActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class ManageActivity extends AppCompatActivity implements AdapterView.OnItemClickListener
+{
 
     private static final String TAG = "ManageActivity";
     private ArrayList<ListEntryAdapter.Item> mItems = new ArrayList<ListEntryAdapter.Item>();
@@ -40,7 +41,8 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
     private Activity mActivity;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage);
 
@@ -54,21 +56,29 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
         mHostedEvent = new ArrayList<Event>();
         ;
         mItems.add(new ListEntryAdapter.Section("Hosted Events"));
-        mRestAPI.getHostedEvent(new GetEventListCallback() {
-            public void onEventListReceived(List<Event> eventArrayList) {
-                if (eventArrayList != null) {
+        mRestAPI.getHostedEvent(new GetEventListCallback()
+        {
+            public void onEventListReceived(List<Event> eventArrayList)
+            {
+                if (eventArrayList != null)
+                {
                     mHostedEvent = eventArrayList;
                     int i = 1;
-                    for (Event event : mHostedEvent) {
+                    for (Event event : mHostedEvent)
+                    {
                         mItems.add(new ListEntryAdapter.Entry(Integer.toString(i++) + "/ " + event.getTitle(), "        " + event.getDescription()));
                     }
                     mItems.add(new ListEntryAdapter.Section("Joined Events"));
-                    mRestAPI.getMatchedEvent(new GetEventListCallback() {
-                        public void onEventListReceived(List<Event> eventArrayList) {
-                            if (eventArrayList != null) {
+                    mRestAPI.getMatchedEvent(new GetEventListCallback()
+                    {
+                        public void onEventListReceived(List<Event> eventArrayList)
+                        {
+                            if (eventArrayList != null)
+                            {
                                 mMatchedEvent = eventArrayList;
                                 int i = 1;
-                                for (Event event : mMatchedEvent) {
+                                for (Event event : mMatchedEvent)
+                                {
                                     mItems.add(new ListEntryAdapter.Entry(Integer.toString(i++) + "/ " + event.getTitle(), "        " + event.getDescription()));
                                 }
                                 ListEntryAdapter adapter = new ListEntryAdapter(mActivity, mItems);
@@ -90,7 +100,8 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
 
 
     @Override
-    public void onItemClick(AdapterView arg0, View arg1, int position, long arg3) {
+    public void onItemClick(AdapterView arg0, View arg1, int position, long arg3)
+    {
 
         ListEntryAdapter.Entry item = (ListEntryAdapter.Entry) mItems.get(position);
         Toast.makeText(this, "You clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
@@ -113,28 +124,38 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
 
         Button addUserButton = (Button) dialog.findViewById(R.id.add_user);
         // if decline button is clicked, close the custom dialog
-        addUserButton.setOnClickListener(new View.OnClickListener() {
+        addUserButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                mRestAPI.getUserByName(new GetUserCallback() {
+            public void onClick(View view)
+            {
+                mRestAPI.getUserByName(new GetUserCallback()
+                {
                     @Override
-                    public void onDataReceived(User user) {
-                        if (user != null) {
+                    public void onDataReceived(User user)
+                    {
+                        if (user != null)
+                        {
                             int id = 0;
-                            if (innerPosition < mHostedEvent.size() + 1) {
+                            if (innerPosition < mHostedEvent.size() + 1)
+                            {
                                 id = mHostedEvent.get(innerPosition - 1).getID();
                                 Log.d(TAG, Integer.toString(id));
-                                mRestAPI.addParticipant(id, user.getUserId(), new HttpResponseCodeCallback() {
+                                mRestAPI.addParticipant(id, user.getUserId(), new HttpResponseCodeCallback()
+                                {
                                     @Override
-                                    public void onSuccess(String response) {
+                                    public void onSuccess(String response)
+                                    {
                                         Log.d(TAG, "Response" + response);
                                         dialog.dismiss();
                                     }
                                 });
-                            } else {
+                            } else
+                            {
                                 Toast.makeText(mActivity.getApplicationContext(), "You can't add a user if you are not the host !", Toast.LENGTH_LONG).show();
                             }
-                        } else {
+                        } else
+                        {
                             Toast.makeText(mActivity.getApplicationContext(), "No user called " + text.getText().toString().replace(" ", "%20"), Toast.LENGTH_LONG).show();
                         }
                     }
@@ -145,13 +166,17 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
 
         Button getEventPageButton = (Button) dialog.findViewById(R.id.get_event_page);
         // if decline button is clicked, close the custom dialog
-        getEventPageButton.setOnClickListener(new View.OnClickListener() {
+        getEventPageButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                if (innerPosition < mHostedEvent.size() + 1) {
+            public void onClick(View view)
+            {
+                if (innerPosition < mHostedEvent.size() + 1)
+                {
                     intent.putExtra(EventActivity.CURRENT_EVENT_KEY, mHostedEvent.get(innerPosition - 1).getID());
                 }
-                if (innerPosition > mHostedEvent.size() + 1) {
+                if (innerPosition > mHostedEvent.size() + 1)
+                {
                     intent.putExtra(EventActivity.CURRENT_EVENT_KEY, mMatchedEvent.get(innerPosition - mHostedEvent.size() - 2).getID());
                 }
 

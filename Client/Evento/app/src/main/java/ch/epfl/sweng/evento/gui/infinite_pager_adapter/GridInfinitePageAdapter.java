@@ -22,7 +22,8 @@ import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 /**
  * An infinite page adapter for the grid of the calendar
  */
-public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> implements Refreshable, InfiniteViewPager.OnInfinitePageChangeListener {
+public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> implements Refreshable, InfiniteViewPager.OnInfinitePageChangeListener
+{
     private Context mContext;
     private int mDayOfMonth;
     private int mYear;
@@ -33,7 +34,8 @@ public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> imple
      *
      * @param targetedMonth the initial month the calendar should start at.
      */
-    public GridInfinitePageAdapter(int targetedDayOfMonth, Integer targetedMonth, int targetedYear, Context context, Refreshable updatableParent) {
+    public GridInfinitePageAdapter(int targetedDayOfMonth, Integer targetedMonth, int targetedYear, Context context, Refreshable updatableParent)
+    {
         super(targetedMonth);
         mContext = context;
         mDayOfMonth = targetedDayOfMonth;
@@ -42,17 +44,20 @@ public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> imple
     }
 
     @Override
-    public Integer getNextIndicator() {
+    public Integer getNextIndicator()
+    {
         return getCurrentIndicator() + 1;
     }
 
     @Override
-    public Integer getPreviousIndicator() {
+    public Integer getPreviousIndicator()
+    {
         return getCurrentIndicator() - 1;
     }
 
     @Override
-    public ViewGroup instantiateItem(Integer indicator) {
+    public ViewGroup instantiateItem(Integer indicator)
+    {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.calendar_gridview,
                 (ViewGroup) ((Activity) mContext).getWindow().getDecorView().getRootView(), false);
@@ -68,34 +73,40 @@ public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> imple
     }
 
     @Override
-    public String getStringRepresentation(Integer currentIndicator) {
+    public String getStringRepresentation(Integer currentIndicator)
+    {
         return Integer.toString(currentIndicator);
     }
 
     @Override
-    public Integer convertToIndicator(String representation) {
+    public Integer convertToIndicator(String representation)
+    {
         return Integer.valueOf(representation);
     }
 
     @Override
-    public void refresh() {
+    public void refresh()
+    {
         mParent.refresh();
         notifyDataSetChanged();
     }
 
-    public void nextMonth() {
+    public void nextMonth()
+    {
         setCurrentIndicator(getNextIndicator());
         fillPage(Constants.PAGE_POSITION_CENTER);
         refresh();
     }
 
-    public void prevMonth() {
+    public void prevMonth()
+    {
         setCurrentIndicator(getPreviousIndicator());
         fillPage(Constants.PAGE_POSITION_CENTER);
         refresh();
     }
 
-    public void setFocusedDate(Calendar focusedDate) {
+    public void setFocusedDate(Calendar focusedDate)
+    {
         mYear = focusedDate.get(Calendar.YEAR);
         mDayOfMonth = focusedDate.get(Calendar.DAY_OF_MONTH);
         setCurrentIndicator(focusedDate.get(Calendar.MONTH));
@@ -103,29 +114,34 @@ public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> imple
         refresh();
     }
 
-    public List<Event> getCurrentEvents() {
+    public List<Event> getCurrentEvents()
+    {
         Calendar focusedDate = new GregorianCalendar(mYear, getCurrentIndicator(), mDayOfMonth);
         return EventDatabase.INSTANCE.filterOnDay(focusedDate).toArrayList();
     }
 
-    public String getStringDate() {
+    public String getStringDate()
+    {
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL);
         Calendar focusedDate = new GregorianCalendar(mYear, getCurrentIndicator(), mDayOfMonth);
         return dateFormat.format(focusedDate.getTime());
     }
 
     @Override
-    public void onPageScrolled(Object indicator, float positionOffset, int positionOffsetPixels) {
+    public void onPageScrolled(Object indicator, float positionOffset, int positionOffsetPixels)
+    {
         refresh();
     }
 
     @Override
-    public void onPageSelected(Object indicator) {
+    public void onPageSelected(Object indicator)
+    {
         refresh();
     }
 
     @Override
-    public void onPageScrollStateChanged(int state) {
+    public void onPageScrollStateChanged(int state)
+    {
         refresh();
     }
 }

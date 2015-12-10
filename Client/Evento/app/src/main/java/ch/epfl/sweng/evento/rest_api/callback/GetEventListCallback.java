@@ -7,7 +7,8 @@ import ch.epfl.sweng.evento.event.Event;
 /**
  * Created by joachimmuth on 13.11.15.
  */
-public abstract class GetEventListCallback {
+public abstract class GetEventListCallback
+{
 
     public abstract void onEventListReceived(List<Event> eventArrayList);
 }

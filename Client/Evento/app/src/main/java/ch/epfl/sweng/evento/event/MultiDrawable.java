@@ -25,17 +25,21 @@ import java.util.List;
 /**
  * Draws up to four other drawables.
  */
-public class MultiDrawable extends Drawable {
+public class MultiDrawable extends Drawable
+{
 
     private final List<Drawable> mDrawables;
 
-    public MultiDrawable(List<Drawable> drawables) {
+    public MultiDrawable(List<Drawable> drawables)
+    {
         mDrawables = drawables;
     }
 
     @Override
-    public void draw(Canvas canvas) {
-        if (mDrawables.size() == 1) {
+    public void draw(Canvas canvas)
+    {
+        if (mDrawables.size() == 1)
+        {
             mDrawables.get(0).draw(canvas);
             return;
         }
@@ -45,7 +49,8 @@ public class MultiDrawable extends Drawable {
         canvas.save();
         canvas.clipRect(0, 0, width, height);
 
-        if (mDrawables.size() == 2 || mDrawables.size() == 3) {
+        if (mDrawables.size() == 2 || mDrawables.size() == 3)
+        {
             // Paint left half
             canvas.save();
             canvas.clipRect(0, 0, width / 2, height);
@@ -53,14 +58,16 @@ public class MultiDrawable extends Drawable {
             mDrawables.get(0).draw(canvas);
             canvas.restore();
         }
-        if (mDrawables.size() == 2) {
+        if (mDrawables.size() == 2)
+        {
             // Paint right half
             canvas.save();
             canvas.clipRect(width / 2, 0, width, height);
             canvas.translate(width / 4, 0);
             mDrawables.get(1).draw(canvas);
             canvas.restore();
-        } else {
+        } else
+        {
             // Paint top right
             canvas.save();
             canvas.scale(.5f, .5f);
@@ -73,7 +80,8 @@ public class MultiDrawable extends Drawable {
             canvas.restore();
         }
 
-        if (mDrawables.size() >= 4) {
+        if (mDrawables.size() >= 4)
+        {
             // Paint top left
             canvas.save();
             canvas.scale(.5f, .5f);
@@ -89,17 +97,20 @@ public class MultiDrawable extends Drawable {
     }
 
     @Override
-    public void setAlpha(int i) {
+    public void setAlpha(int i)
+    {
 
     }
 
     @Override
-    public void setColorFilter(ColorFilter colorFilter) {
+    public void setColorFilter(ColorFilter colorFilter)
+    {
 
     }
 
     @Override
-    public int getOpacity() {
+    public int getOpacity()
+    {
         return 0;
     }
 }
