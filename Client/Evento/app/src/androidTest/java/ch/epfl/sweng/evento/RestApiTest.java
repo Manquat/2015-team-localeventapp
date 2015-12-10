@@ -28,7 +28,6 @@ import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.Serializer;
 import ch.epfl.sweng.evento.rest_api.callback.GetEventCallback;
 import ch.epfl.sweng.evento.rest_api.callback.RestTaskCallback;
-import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 import ch.epfl.sweng.evento.rest_api.task.GetTask;
 
@@ -163,7 +162,7 @@ public class RestApiTest {
             }
         });
 
-        Thread.sleep(500);
+        Thread.sleep(1000);
 
         assertNotNull("Event is not null", eventArrayList);
         junit.framework.Assert.assertEquals("We get one event after requesting once", eventArrayList.size(), 1);
