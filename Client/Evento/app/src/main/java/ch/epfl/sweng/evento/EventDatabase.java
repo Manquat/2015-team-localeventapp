@@ -47,11 +47,9 @@ public enum EventDatabase implements Refreshable
 
     public void loadNewEvents()
     {
-        mRestAPI.getAll(new GetEventListCallback()
-        {
+        mRestAPI.getAll(new GetEventListCallback() {
             @Override
-            public void onEventListReceived(List<Event> events)
-            {
+            public void onEventListReceived(List<Event> events) {
                 addAll(events);
             }
         });
@@ -97,11 +95,9 @@ public enum EventDatabase implements Refreshable
 
     public void loadByDate(GregorianCalendar start, GregorianCalendar end)
     {
-        mRestAPI.getMultiplesEventByDate(start, end, new GetEventListCallback()
-        {
+        mRestAPI.getMultiplesEventByDate(start, end, new GetEventListCallback() {
             @Override
-            public void onEventListReceived(List<Event> eventArrayList)
-            {
+            public void onEventListReceived(List<Event> eventArrayList) {
                 mEventSet.clear();
                 addAll(eventArrayList);
             }
@@ -216,6 +212,14 @@ public enum EventDatabase implements Refreshable
             return 0;
         } else
         {
+            return mEventSet.size();
+        }
+    }
+
+    public int getSize() {
+        if(mEventSet== null){
+            return 0;
+        } else {
             return mEventSet.size();
         }
     }
