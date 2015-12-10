@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.rest_api.RestApi;
@@ -50,6 +51,9 @@ public class AddingComment implements OnClickListener, Refreshable {
 
 
         mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+
+        //adding as observer of the EventDatabase
+        EventDatabase.INSTANCE.addObserver(this);
     }
 
     public static void initialize(Activity parentActivity, ListView commentListView,
@@ -59,9 +63,14 @@ public class AddingComment implements OnClickListener, Refreshable {
 
     @Override
     public void onClick(View v) {
-        mListView.removeFooterView(v);
+        mCurrentlyAddingAComment = !mCurrentlyAddingAComment;
+        update();
+    }
 
-        if (mCurrentlyAddingAComment) {
+    private void update() {
+        updateFooterListOfComment();
+
+        if (!mCurrentlyAddingAComment) {
             String message = mMessageBox.getText().toString();
 
             // creating the new Comment
@@ -73,7 +82,7 @@ public class AddingComment implements OnClickListener, Refreshable {
                             Log.d(TAG, "Successful post the comment : " + httpResponseCode);
                             Toast.makeText(mActivity, "Success on posting the comment", Toast.LENGTH_LONG)
                                     .show();
-                            refresh();
+                            updateParent();
                         } else {
                             Log.e(TAG, "Error while posting the comment, error code : " + httpResponseCode);
                             Toast.makeText(mActivity, "Error while posting the comment", Toast.LENGTH_LONG)
@@ -83,34 +92,36 @@ public class AddingComment implements OnClickListener, Refreshable {
                     }
                 });
             }
-
-            mListView.removeFooterView(mMessageBox);
         }
-
-        addingFooterOfTheListView();
     }
 
-    private void addingFooterOfTheListView() {
+    private void updateParent() {
+        mRefreshableParent.refresh();
+    }
+
+    private void updateFooterListOfComment() {
+
         if (mCurrentlyAddingAComment) {
-            mAddCommentButton.setText(mActivity.getResources().getString(R.string.conversation_add_comment));
-        } else {
+            mListView.removeFooterView(mAddCommentButton);
             EditText message = new EditText(mActivity);
             message.setHint(mActivity.getResources().getString(R.string.comment_message_hint));
             mListView.addFooterView(message);
 
             mMessageBox = message;
 
+            mListView.addFooterView(mAddCommentButton);
             mAddCommentButton.setText(mActivity.getResources().getString(R.string.event_validate));
+        } else {
+            mListView.removeFooterView(mMessageBox);
+            mAddCommentButton.setText(mActivity.getResources().getString(R.string.conversation_add_comment));
         }
 
-        mCurrentlyAddingAComment = !mCurrentlyAddingAComment;
-        mAddCommentButton.setOnClickListener(this);
-
-        mListView.addFooterView(mAddCommentButton);
+        //mListView.addFooterView(mAddCommentButton);
     }
 
     @Override
     public void refresh() {
-        mRefreshableParent.refresh();
+        updateParent();
+        update();
     }
 }
