@@ -8,8 +8,8 @@ import android.support.v4.app.Fragment;
  */
 public class EventFragment extends Fragment {
 
-    private static final String TAG = "EventFragment";
     public static final String KEYCURRENTEVENT = "CurrentEvent";
+    private static final String TAG = "EventFragment";
    /* private RestApi mRestAPI;
     private Event mEvent;
     private ArrayList<String> mListDataHeader;

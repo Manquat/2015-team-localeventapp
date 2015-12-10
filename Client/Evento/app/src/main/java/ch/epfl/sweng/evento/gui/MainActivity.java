@@ -59,16 +59,15 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
 
     private static final int NOTIFICATION_ID = 1234567890;
     private static final String TAG = "MainActivity";
+    private static final int MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
+    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
+    private static final String urlServer = Settings.getServerUrl();
     private Toolbar mToolbar;
     private ViewPager mPager;
     private ViewPageAdapter mAdapter;
     private SlidingTabLayout mTabs;
     private List<CharSequence> mTitles = new ArrayList<CharSequence>(
             Arrays.asList("Maps", "Events", "Calendar"));
-    private static final int MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
-    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-
-    private static final String urlServer = Settings.getServerUrl();
     private ArrayList<Event> mEventArrayList = new ArrayList<>();
 
 

@@ -14,22 +14,13 @@ import java.util.List;
 public class CalendarGrid {
     private static final String TAG = "CalendarGrid";
     private static final int NUMBER_OF_CELLS = 6 * 7; // the minimal size for displaying all the day of a month
-
-    private enum Current {
-        CURRENT, NEXT, PREVIOUS
-    }
-
-
     // Number of the days in the month for the actual calendar display
     private List<Integer> mDays = new ArrayList<>(NUMBER_OF_CELLS);
-
     // Is the days associate in the current month
     private List<Current> mCurrent = new ArrayList<>(NUMBER_OF_CELLS);
     private int mIndexOfCurrentDay; // the index of the current day in the list of mDays and mCurrent
     private int mCurrentMonth;      // the current month (0 for january, ...)
     private int mCurrentYear;       // the current year
-
-
     /**
      * Create a grid focused on the day given by the actual position of the calendar
      *
@@ -39,6 +30,7 @@ public class CalendarGrid {
         this(focusedDay.get(Calendar.DAY_OF_MONTH), focusedDay.get(Calendar.MONTH),
                 focusedDay.get(Calendar.YEAR));
     }
+
 
     /**
      * Create a grid focused on the given day
@@ -57,7 +49,6 @@ public class CalendarGrid {
 
         setFocusedDay(day, month, year);
     }
-
 
     public Calendar getFocusedDate() {
         return new GregorianCalendar(mCurrentYear, mCurrentMonth, mDays.get(mIndexOfCurrentDay));
@@ -214,7 +205,6 @@ public class CalendarGrid {
         return iFind;
     }
 
-
     /**
      * Set the current month display
      *
@@ -311,7 +301,6 @@ public class CalendarGrid {
         setFocusedDay(getDateFromPosition(position));
     }
 
-
     /**
      * Is the position pointed a day in the current month or not
      *
@@ -344,5 +333,9 @@ public class CalendarGrid {
      */
     public void prevMonth() {
         setFocusedDay(mDays.get(mIndexOfCurrentDay), mCurrentMonth - 1, mCurrentYear);
+    }
+
+    private enum Current {
+        CURRENT, NEXT, PREVIOUS
     }
 }
