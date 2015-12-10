@@ -204,14 +204,14 @@ public class SearchActivity extends AppCompatActivity
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                           int dayOfMonth) {
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
+        GregorianCalendar date = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
+        String s = dateFormat.format(date.getTime());
 
         if (!mStartOrEndDate) {
-            startDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
-            String s = dateFormat.format(startDate);
+            startDate = date;
             mStartDateView.setText(s);
         } else {
-            endDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
-            String s = dateFormat.format(endDate);
+            endDate = date;
             mEndDateView.setText(s);
         }
     }
