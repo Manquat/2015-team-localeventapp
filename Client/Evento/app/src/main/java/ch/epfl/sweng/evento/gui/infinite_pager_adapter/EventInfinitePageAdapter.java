@@ -97,7 +97,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer>
                 creatorView.setText(user.getUsername());
 
             }
-        }, event.getCreator());
+        }, event.getOwner());
     }
 
 
@@ -113,7 +113,7 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer>
         getHost(currentEvent, rootView);
 
         titleView.setText(currentEvent.getTitle());
-        creatorView.setText(Integer.toString(currentEvent.getCreator()));
+        creatorView.setText(Integer.toString(currentEvent.getOwner()));
         startDateView.setText(currentEvent.getStartDateAsString());
         endDateView.setText(currentEvent.getEndDateAsString());
         addressView.setText(currentEvent.getAddress());
@@ -147,8 +147,8 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer>
         updateEvent.setOnClickListener(new UpdateEventListener(mActivity, currentEvent.getID()));
 
         boolean isTheCurrentUserTheOwner =
-                (currentEvent.getCreator() == Settings.getUser().getUserId());
-        Log.d(TAG, "is currentOwner : creator " + currentEvent.getCreator());
+                (currentEvent.getOwner() == Settings.getUser().getUserId());
+        Log.d(TAG, "is currentOwner : creator " + currentEvent.getOwner());
         Log.d(TAG, "is currentOwner : user " + Settings.getUser().getUserId());
         Log.d(TAG, "current event : " + currentEvent.getTitle());
         if (isTheCurrentUserTheOwner)

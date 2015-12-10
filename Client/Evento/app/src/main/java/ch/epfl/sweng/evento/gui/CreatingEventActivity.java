@@ -319,7 +319,7 @@ public class CreatingEventActivity extends AppCompatActivity
                     picture = ((BitmapDrawable) drawable).getBitmap();
                 }
 
-                // mock getCreator and random id (ID will be assigned server side)
+                // mock getOwner and random id (ID will be assigned server side)
 
                 int creator = Settings.getUser().getUserId();
 

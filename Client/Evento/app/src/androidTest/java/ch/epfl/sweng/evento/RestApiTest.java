@@ -126,7 +126,7 @@ public class RestApiTest {
         junit.framework.Assert.assertEquals("xLoc correctly parsed", event.getLatitude(), eventFromJson.getLatitude());
         junit.framework.Assert.assertEquals("yLoc correctly parsed", event.getLongitude(), eventFromJson.getLongitude());
         junit.framework.Assert.assertEquals("address correctly parsed", event.getAddress(), eventFromJson.getAddress());
-        junit.framework.Assert.assertEquals("creator correctly parsed", event.getCreator(), eventFromJson.getCreator());
+        junit.framework.Assert.assertEquals("creator correctly parsed", event.getOwner(), eventFromJson.getOwner());
     }
 
     /**
