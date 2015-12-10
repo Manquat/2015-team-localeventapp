@@ -55,7 +55,7 @@ import ch.epfl.sweng.evento.tabs_layout.SlidingTabLayout;
  * For devices with displays with a width of 720dp or greater, the sample log is always visible,
  * on other devices it's visibility is controlled by an item on the Action Bar.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Refreshable {
 
     private static final int NOTIFICATION_ID = 1234567890;
     private static final String TAG = "MainActivity";
@@ -167,8 +167,7 @@ public class MainActivity extends AppCompatActivity {
         });*/
 
         EventDatabase.INSTANCE.refresh();
-        recreate();
-        Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
+        refresh();
     }
 
     public void makeNotifications(List<Event> eventArrayList) {
@@ -203,4 +202,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void refresh() {
+        recreate();
+        Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
+    }
 }
