@@ -42,6 +42,7 @@ public class ListEntryAdapter extends ArrayAdapter<ListEntryAdapter.Item> {
                 TextView sectionView = (TextView) mView.findViewById(R.id.list_item_section_text);
                 sectionView.setText(section.getTitle());
 
+
             } else {
                 Entry entry = (Entry) item;
                 mView = mInflater.inflate(R.layout.list_item_manage_entry, null);
@@ -49,6 +50,8 @@ public class ListEntryAdapter extends ArrayAdapter<ListEntryAdapter.Item> {
                 TextView subtitle = (TextView) mView.findViewById(R.id.list_item_entry_summary);
                 title.setText(entry.getTitle());
                 subtitle.setText(entry.getEntry());
+                title.setTextColor(getContext().getResources().getColor(R.color.secondaryText));
+                subtitle.setTextColor(getContext().getResources().getColor(R.color.secondaryText));
             }
         }
         return mView;
