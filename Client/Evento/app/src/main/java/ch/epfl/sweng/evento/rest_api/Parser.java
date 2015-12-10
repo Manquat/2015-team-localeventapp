@@ -20,6 +20,7 @@ import java.util.TimeZone;
 import ch.epfl.sweng.evento.Comment;
 import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.gui.infinite_pager_adapter.InfinitePagerAdapter;
 
 /**
  * Created by joachimmuth on 16.10.15.
@@ -156,6 +157,7 @@ public class Parser {
     public static void addTime(Calendar c, String s) {
         c.add(Calendar.HOUR_OF_DAY, getHour(s));
         c.add(Calendar.MINUTE, getMinutes(s));
+        c.add(Calendar.DAY_OF_YEAR, getDays(s));
     }
 
     private static int getMinutes(String s) {
@@ -165,10 +167,25 @@ public class Parser {
 
     private static int getHour(String s) {
         //Log.d(TAG, "getHour : " + s);
-        s = s.split(":")[0];
-        s = s.split(" ")[0];
-        int h = Integer.parseInt(s);
+        String res = s;
+        if(res.contains(" ")){
+            res = res.split(" |:")[1];
+        } else {
+            res = res.split(":")[0];
+        }
+        int h = Integer.parseInt(res);
         return h;
+    }
+
+    private static int getDays(String s) {
+        String res = s;
+        if(res.contains(" ")){
+            res = res.split(" ")[0];
+        } else {
+            res = "0";
+        }
+        int d = Integer.parseInt(res);
+        return d;
     }
 
 

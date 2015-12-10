@@ -61,11 +61,6 @@ public class CreatingEventActivity extends AppCompatActivity
         GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "CreatingEventActivity";
 
-
-    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = Settings.getServerUrl();
-
-
     protected TextView mStartDateView;
     protected TextView mEndDateView;
     protected Calendar mStartDate;
