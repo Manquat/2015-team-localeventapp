@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#7b7a7a</color>
+    <color name="colorPrimaryDark">#393938</color>
     <color name="colorAccent">#e4dd08</color>
     <color name="red">#ff3831</color>
     <color name="white">#ffffff</color>
@@ -19,4 +19,5 @@
     <color name="black">#000000</color>
     <color name="dayOfWeek">#ffffff</color>
     <color name="currentDay">#ffffff</color>
+    <color name="textInButton">#ffffff</color>
 </resources>

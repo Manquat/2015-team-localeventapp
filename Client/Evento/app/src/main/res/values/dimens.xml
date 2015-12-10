@@ -33,5 +33,6 @@
     <dimen name="comment_corner_radius">20dp</dimen>
 
     <dimen name="list_event_height">25dp</dimen>
+    <dimen name="event_button_height">40dp</dimen>
 
 </resources>
