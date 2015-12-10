@@ -103,7 +103,6 @@ public class ContentFragment extends Fragment implements Refreshable {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        refreshFromServer();
         mActivity = getActivity();
     }
 
@@ -114,30 +113,26 @@ public class ContentFragment extends Fragment implements Refreshable {
         if (mView != null) refresh();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        //adding content fragment as observer of EventDatabase
+        EventDatabase.INSTANCE.addObserver(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //remove content fragment as observer of EventDatabase
+        EventDatabase.INSTANCE.removeObserver(this);
+    }
+
     public void refresh() {
 
         mEvents = EventDatabase.INSTANCE.getAllEvents();
         mNumberOfEvent = mEvents.size();
         displayMosaic();
         Log.d("LOG_ContentFragment", "Refreshing");
-    }
-
-    public void refreshFromServer() {
-        RestApi mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-
-        mRestAPI.getAll(new GetEventListCallback() {
-            @Override
-            public void onEventListReceived(List<Event> eventArrayList) {
-                EventDatabase.INSTANCE.clear();
-                EventDatabase.INSTANCE.addAll(eventArrayList);
-                refresh();
-                Toast.makeText(mActivity.getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
-            }
-
-            public void onUserListReceived(List<User> userArrayList) {
-
-            }
-        });
     }
 
     @Override

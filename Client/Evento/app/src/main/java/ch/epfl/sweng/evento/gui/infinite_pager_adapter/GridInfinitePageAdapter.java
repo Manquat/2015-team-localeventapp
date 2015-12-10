@@ -80,6 +80,7 @@ public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> imple
     @Override
     public void refresh() {
         mParent.refresh();
+        notifyDataSetChanged();
     }
 
     public void nextMonth() {
