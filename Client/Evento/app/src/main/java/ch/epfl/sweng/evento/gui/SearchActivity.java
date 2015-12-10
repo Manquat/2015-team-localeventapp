@@ -48,8 +48,6 @@ public class SearchActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "SearchActivity";
-    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = Settings.getServerUrl();
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
             new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
     private TextView mStartDateView;
@@ -65,8 +63,8 @@ public class SearchActivity extends AppCompatActivity
     private TextView mPlaceDetailsText;
     private PlaceAutocompleteAdapter mAdapter;
     private RestApi mRestApi;
-    private GoogleApiClient mGoogleApiClient;
     private boolean mFilterPersonalEvent;
+    private GoogleApiClient mGoogleApiClient;
     /**
      * Callback for results from a Places Geo Data API query that shows the first place result in
      * the details view on screen.

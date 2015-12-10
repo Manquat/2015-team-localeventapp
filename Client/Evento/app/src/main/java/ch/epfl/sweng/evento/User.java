@@ -38,6 +38,10 @@ public class User {
         return mHostedEvent;
     }
 
+    public String getmEmail() {
+        return mEmail;
+    }
+
     public int getUserId() {
         return mUserId;
     }

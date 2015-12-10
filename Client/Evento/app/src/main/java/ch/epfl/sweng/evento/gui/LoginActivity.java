@@ -20,6 +20,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.plus.Plus;
 
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
@@ -69,6 +70,12 @@ public class LoginActivity extends AppCompatActivity implements
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setColorScheme(SignInButton.COLOR_DARK);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
+
+        if (getIntent() != null &&
+                getIntent().getExtras() != null &&
+                getIntent().getExtras().getBoolean(MainActivity.LOGOUT_TAG, false)) {
+            logout();
+        }
     }
 
     @Override
@@ -205,6 +212,14 @@ public class LoginActivity extends AppCompatActivity implements
 
             Log.w(TAG, message);
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void logout() {
+        if (mGoogleApiClient.isConnected()) {
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
+            mGoogleApiClient.connect();
         }
     }
 }

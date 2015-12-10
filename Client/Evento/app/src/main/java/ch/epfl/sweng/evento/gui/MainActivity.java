@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
@@ -57,6 +59,7 @@ import ch.epfl.sweng.evento.tabs_layout.SlidingTabLayout;
  */
 public class MainActivity extends AppCompatActivity implements Refreshable {
 
+    public static final String LOGOUT_TAG = "LOGOUT";
     private static final int NOTIFICATION_ID = 1234567890;
     private static final String TAG = "MainActivity";
     private static final int MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
@@ -105,6 +108,14 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
 
         // Setting the ViewPager For the SlidingTabsLayout
         mTabs.setViewPager(mPager);
+
+        //to refresh every 10 minutes
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                EventDatabase.INSTANCE.refresh();
+            }
+        }, 0, 10 * 60 * 1000);
     }
 
     @Override
@@ -154,6 +165,11 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
             startActivity(intent);
         } else if (id == R.id.action_refresh) {
             EventDatabase.INSTANCE.refresh();
+        } else if (id == R.id.action_logout) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.putExtra(LOGOUT_TAG, true);
+            startActivity(intent);
+            finish();
         } else if (id == R.id.action_manageYourEvent) {
             Intent intent = new Intent(this, ManageActivity.class);
             startActivity(intent);
@@ -165,33 +181,36 @@ public class MainActivity extends AppCompatActivity implements Refreshable {
 
 
     public void makeNotifications(List<Event> eventArrayList) {
-        Calendar currentDate = Calendar.getInstance();
+        if (eventArrayList != null) {
+            Calendar currentDate = Calendar.getInstance();
 
-        boolean notif_needed = false;
-        String notif_description = "";
-        for (Event event : eventArrayList) {
-            double diffTime = (event.getStartDate().getTimeInMillis() - currentDate.getTimeInMillis())
-                    / (1000 * 3600 * 24);
+            boolean notif_needed = false;
+            String notif_description = "";
+            for (Event event : eventArrayList) {
+                double diffTime = (event.getStartDate().getTimeInMillis() - currentDate.getTimeInMillis())
+                        / (1000 * 3600 * 24);
 
-            if (diffTime < 1.0) {
-                notif_needed = true;
-                notif_description += "The event " + event.getTitle() + " is starting tomorrow. \n";
 
-                //Toast.makeText(getApplicationContext(), "Notified event : " + event.getTitle(), Toast.LENGTH_SHORT).show();
+                if (diffTime < 1.0) {
+                    notif_needed = true;
+                    notif_description += "The event " + event.getTitle() + " is starting tomorrow. \n";
+
+                    //Toast.makeText(getApplicationContext(), "Notified event : " + event.getTitle(), Toast.LENGTH_SHORT).show();
+                }
             }
-        }
-        if (notif_needed) {
-            notif_description += "Don't forget to attend !";
-            Notification n = new Notification.Builder(this)
-                    .setContentTitle("You've got events soon !")
-                    .setContentText(notif_description)
-                    .setSmallIcon(R.drawable.notification)
-                    .setAutoCancel(true).build();
+            if (notif_needed) {
+                notif_description += "Don't forget to attend !";
+                Notification n = new Notification.Builder(this)
+                        .setContentTitle("You've got events soon !")
+                        .setContentText(notif_description)
+                        .setSmallIcon(R.drawable.notification)
+                        .setAutoCancel(true).build();
 
-            NotificationManager notificationManager =
-                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                NotificationManager notificationManager =
+                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-            notificationManager.notify(NOTIFICATION_ID, n);
+                notificationManager.notify(NOTIFICATION_ID, n);
+            }
         }
     }
 

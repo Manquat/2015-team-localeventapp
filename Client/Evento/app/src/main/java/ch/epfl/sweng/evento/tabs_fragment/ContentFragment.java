@@ -160,22 +160,9 @@ public class ContentFragment extends Fragment implements Refreshable {
                     }
                 });
                 if (mDisplayOrNot.get(yPos)[xPos]) {
-                    if (mEvents.get(countEvent).getTags().contains("Foot!") ||
-                            mEvents.get(countEvent).getTags().contains("Football")) {
-                        tmpSpanSmtgOrNot = Span.NOTHING;
-                        //tView.setImageResource(R.drawable.football);
-                        tView.setImageBitmap(mEvents.get(countEvent).getPicture());
-                    } else if (mEvents.get(countEvent).getTags().contains("Basketball")) {
-                        tmpSpanSmtgOrNot = Span.TWO_ROWS;
-                        //tView.setImageResource(R.drawable.basket);
-                        tView.setImageBitmap(mEvents.get(countEvent).getPicture());
-                        ++spanning;
-                        mDisplayOrNot.get(yPos + 1)[xPos] = false;
-                    } else {
-                        tmpSpanSmtgOrNot = Span.NOTHING;
-                        //tView.setImageResource(R.drawable.unknown);
-                        tView.setImageBitmap(mEvents.get(countEvent).getPicture());
-                    }
+                    //to draw the Event's own picture instead of one based on its tags
+                    tView.setImageBitmap(mEvents.get(countEvent).getPicture());
+
                     tView.setAdjustViewBounds(true);
                     mMyViews.add(tView);
 

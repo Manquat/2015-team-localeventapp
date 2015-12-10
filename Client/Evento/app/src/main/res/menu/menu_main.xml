@@ -20,21 +20,22 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/action_refresh"
-        android:orderInCategory="100"
+        android:icon="@drawable/refresh"
+        android:orderInCategory="400"
         android:title="@string/menu_refresh"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_search"
+        android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
         android:orderInCategory="200"
         android:title="@string/menu_search"
-        android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_user"
+        android:icon="@drawable/ic_action_user"
         android:orderInCategory="300"
         android:title="@string/menu_user"
-        android:icon="@drawable/ic_action_user"
         app:showAsAction="ifRoom" />
 
 

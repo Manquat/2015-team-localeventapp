@@ -81,6 +81,7 @@
         <activity
             android:name=".gui.UpdateEventActivity"
             android:label="@string/title_activity_update_event" />
+
     </application>
 
 </manifest>

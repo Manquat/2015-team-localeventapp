@@ -96,17 +96,6 @@ public class Event implements ClusterItem {
         return Base64.encodeToString(b, Base64.DEFAULT).replace(System.getProperty("line.separator"), "");
     }
 
-    public static Bitmap stringToBitMap(String encodedString) {
-        try {
-            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
-            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-        } catch (Exception e) {
-            e.getMessage();
-            return null;
-        }
-
-    }
-
     public static String asNiceString(Calendar calendar) {
         DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
         return dateFormat.format(calendar.getTime());
@@ -160,8 +149,14 @@ public class Event implements ClusterItem {
         return mParticipants.contains(participant);
     }
 
-    public void setPicture(String picture) {
-        mPicture = picture;
+    public static Bitmap stringToBitMap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
+        }
     }
 
     public boolean isFull() {

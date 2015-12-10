@@ -205,5 +205,3 @@
         android:text="@string/event_fragment_join" />
 
 </GridLayout>
-
-
