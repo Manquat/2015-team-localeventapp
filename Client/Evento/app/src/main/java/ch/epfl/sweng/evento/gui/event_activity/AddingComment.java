@@ -75,7 +75,7 @@ public class AddingComment implements OnClickListener, Refreshable {
     private void update() {
         updateFooterListOfComment();
 
-        if (!mCurrentlyAddingAComment) {
+        if (!mCurrentlyAddingAComment && mMessageBox != null) {
             String message = mMessageBox.getText().toString();
 
             // creating the new Comment

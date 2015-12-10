@@ -53,7 +53,7 @@ public class JoinEvent implements
         mJoinEventButton.setOnClickListener(this);
         mUnJoinEventButton.setOnClickListener(this);
 
-        //getParticipant();
+        getParticipant();
 
         updateButtonState();
     }
@@ -74,9 +74,8 @@ public class JoinEvent implements
                 mActivity.finish();
             } else {
                 Toast.makeText(mActivity.getApplicationContext(), "UnJoined", Toast.LENGTH_SHORT).show();
-                //if (Settings.getUser().removeMatchedEvent(mCurrentEvent)) {
+
                 mRestApi.removeParticipant(mCurrentEvent.getID(), Settings.getUser().getUserId(), this);
-                //}
             }
 
         } else {
@@ -98,7 +97,7 @@ public class JoinEvent implements
     }
 
     private void updateButtonState() {
-        mIsTheEventJoined = mCurrentEvent.checkIfParticipantIsIn(Settings.getUser());
+        mIsTheEventJoined = mParticipant.contains(Settings.getUser());
 
         mJoinEventButton.setEnabled(!mIsTheEventJoined);
         mUnJoinEventButton.setEnabled(mIsTheEventJoined);

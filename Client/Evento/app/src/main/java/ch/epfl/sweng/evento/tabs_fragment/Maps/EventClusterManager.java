@@ -3,6 +3,8 @@ package ch.epfl.sweng.evento.tabs_fragment.Maps;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
@@ -206,10 +208,19 @@ public class EventClusterManager extends ClusterManager<Event> implements
 
                 LinearLayout layout = (LinearLayout) view.findViewById(R.id.list_event);
                 for (Event iEvent : mEventsClick) {
-                    TextView textView = new TextView(mContext);
+                    View subView = ViewGroup.inflate(mContext, R.layout.list_event, null);
+
+                    TextView textView = (TextView) subView.findViewById(R.id.list_event_title);
                     textView.setText(iEvent.getTitle());
-                    textView.setTextColor(ContextCompat.getColor(mContext, R.color.defaultTextColor));
-                    layout.addView(textView);
+
+                    ImageView imageEvent = (ImageView) subView.findViewById(R.id.list_event_image);
+                    int dimension = mContext.getResources()
+                            .getDimensionPixelSize(R.dimen.list_event_height);
+                    Bitmap bitmap = ThumbnailUtils.extractThumbnail(iEvent.getPicture(),
+                            dimension, dimension);
+                    imageEvent.setImageBitmap(bitmap);
+
+                    layout.addView(subView);
                 }
         }
 

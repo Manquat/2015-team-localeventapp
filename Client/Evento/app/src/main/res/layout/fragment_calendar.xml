@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="5"
             android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textSize="@dimen/calendar_date_text_size" />
 
         <Button
             android:id="@+id/nextButton"
@@ -48,7 +48,7 @@
     <ch.epfl.sweng.evento.gui.infinite_pager_adapter.InfiniteViewPager
         android:id="@+id/calendar_infinite_pager"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/calendar_grid_view_height" />
+        android:layout_height="250dp" />
 
     <ListView
         android:id="@+id/calendar_list_event"
