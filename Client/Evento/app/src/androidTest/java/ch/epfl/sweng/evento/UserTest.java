@@ -7,8 +7,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.TimeZone;
 
 import ch.epfl.sweng.evento.event.Event;
@@ -55,6 +57,8 @@ public class UserTest {
     @Test
     public void testAddMatchedEvent() {
         mUser.addMatchedEvent(mEventjoined);
-        assertEquals(mEventjoined, mUser.getMatchedEvent());
+        List<Event> events = new ArrayList<>();
+        events.add(mEventjoined);
+        assertEquals(events, mUser.getMatchedEvent());
     }
 }

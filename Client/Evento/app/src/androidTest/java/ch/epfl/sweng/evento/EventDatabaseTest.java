@@ -91,10 +91,6 @@ public class EventDatabaseTest {
         assertEquals(mEvent3, EventDatabase.INSTANCE.get(1));
     }
     @Test
-    public void testGetSize() {
-        assertEquals(3, EventDatabase.INSTANCE.getSize());
-    }
-    @Test
     public void testFilterDate() {
         List<Event> events = new ArrayList<>();
         events.add(mEvent3);
