@@ -3,8 +3,12 @@ package ch.epfl.sweng.evento.gui;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -104,6 +108,7 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
     {
 
         ListEntryAdapter.Entry item = (ListEntryAdapter.Entry) mItems.get(position);
+
         Toast.makeText(this, "You clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
         final int innerPosition = position;
         final Intent intent = new Intent(mActivity, EventActivity.class);
@@ -113,7 +118,12 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
         // Include dialog.xml file
         dialog.setContentView(R.layout.dialog_manage);
         // Set dialog title
-        dialog.setTitle(item.getTitle());
+        String chars = item.getTitle();
+        SpannableString str = new SpannableString(chars);
+        str.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.fontTitleFrag)), 0, chars.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        dialog.setTitle(str);
+        dialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.dialog_box));
+        //dialog.setTitle(item.getTitle());
 
         // set values for custom dialog components - text, image and button
         final TextView text = (TextView) dialog.findViewById(R.id.text_manage_dialog);
