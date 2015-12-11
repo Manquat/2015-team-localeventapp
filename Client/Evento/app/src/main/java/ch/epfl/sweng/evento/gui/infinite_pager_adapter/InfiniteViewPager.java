@@ -36,30 +36,25 @@ import static ch.epfl.sweng.evento.gui.infinite_pager_adapter.internal.Constants
 /**
  * ViewPager that allows infinite scrolling.
  */
-public class InfiniteViewPager extends ViewPager
-{
+public class InfiniteViewPager extends ViewPager {
 
     private static final String TAG = "InfiniteViewPager";
 
     private int mCurrPosition = PAGE_POSITION_CENTER;
     private OnInfinitePageChangeListener mListener;
 
-    public InfiniteViewPager(Context context)
-    {
+    public InfiniteViewPager(Context context) {
         this(context, null);
     }
 
-    public InfiniteViewPager(Context context, AttributeSet attrs)
-    {
+    public InfiniteViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
-    public Parcelable onSaveInstanceState()
-    {
+    public Parcelable onSaveInstanceState() {
         final InfinitePagerAdapter adapter = (InfinitePagerAdapter) getAdapter();
-        if (adapter == null)
-        {
+        if (adapter == null) {
             Log.d(LOG_TAG, " onSaveInstanceState adapter == null");
             return super.onSaveInstanceState();
         }
@@ -71,20 +66,16 @@ public class InfiniteViewPager extends ViewPager
     }
 
     @Override
-    public void onRestoreInstanceState(final Parcelable state)
-    {
+    public void onRestoreInstanceState(final Parcelable state) {
         final InfinitePagerAdapter adapter = (InfinitePagerAdapter) getAdapter();
-        if (adapter == null)
-        {
-            if (Constants.DEBUG)
-            {
+        if (adapter == null) {
+            if (Constants.DEBUG) {
                 Log.w(LOG_TAG, "onRestoreInstanceState adapter == null");
             }
             super.onRestoreInstanceState(state);
             return;
         }
-        if (state instanceof Bundle)
-        {
+        if (state instanceof Bundle) {
             Bundle bundle = (Bundle) state;
             final String representation = bundle.getString(ADAPTER_STATE);
             final Object c = adapter.convertToIndicator(representation);
@@ -95,60 +86,47 @@ public class InfiniteViewPager extends ViewPager
         super.onRestoreInstanceState(state);
     }
 
-    private void initInfiniteViewPager()
-    {
+    private void initInfiniteViewPager() {
         setCurrentItem(PAGE_POSITION_CENTER);
         clearOnPageChangeListeners();
-        addOnPageChangeListener(new OnPageChangeListener()
-        {
+        addOnPageChangeListener(new OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int i, float positionOffset, int positionOffsetPixels)
-            {
-                if (mListener != null && getAdapter() != null)
-                {
+            public void onPageScrolled(int i, float positionOffset, int positionOffsetPixels) {
+                if (mListener != null && getAdapter() != null) {
                     final InfinitePagerAdapter adapter = (InfinitePagerAdapter) getAdapter();
                     mListener.onPageScrolled(adapter.getCurrentIndicator(), positionOffset, positionOffsetPixels);
                 }
             }
 
             @Override
-            public void onPageSelected(int position)
-            {
+            public void onPageSelected(int position) {
                 mCurrPosition = position;
-                if (Constants.DEBUG)
-                {
+                if (Constants.DEBUG) {
                     Log.d(TAG, "on page " + position);
                 }
-                if (mListener != null && getAdapter() != null)
-                {
+                if (mListener != null && getAdapter() != null) {
                     final InfinitePagerAdapter adapter = (InfinitePagerAdapter) getAdapter();
                     mListener.onPageSelected(adapter.getCurrentIndicator());
                 }
             }
 
             @Override
-            public void onPageScrollStateChanged(final int state)
-            {
-                if (mListener != null)
-                {
+            public void onPageScrollStateChanged(final int state) {
+                if (mListener != null) {
                     mListener.onPageScrollStateChanged(state);
                 }
                 final InfinitePagerAdapter adapter = (InfinitePagerAdapter) getAdapter();
-                if (adapter == null)
-                {
+                if (adapter == null) {
                     return;
                 }
 
-                if (state == ViewPager.SCROLL_STATE_IDLE)
-                {
-                    if (mCurrPosition == PAGE_POSITION_LEFT)
-                    {
+                if (state == ViewPager.SCROLL_STATE_IDLE) {
+                    if (mCurrPosition == PAGE_POSITION_LEFT) {
                         adapter.movePageContents(PAGE_POSITION_CENTER, PAGE_POSITION_RIGHT);
                         adapter.movePageContents(PAGE_POSITION_LEFT, PAGE_POSITION_CENTER);
                         adapter.setCurrentIndicator(adapter.getPreviousIndicator());
                         adapter.fillPage(PAGE_POSITION_LEFT);
-                    } else if (mCurrPosition == PAGE_POSITION_RIGHT)
-                    {
+                    } else if (mCurrPosition == PAGE_POSITION_RIGHT) {
                         adapter.movePageContents(PAGE_POSITION_CENTER, PAGE_POSITION_LEFT);
                         adapter.movePageContents(PAGE_POSITION_RIGHT, PAGE_POSITION_CENTER);
                         adapter.setCurrentIndicator(adapter.getNextIndicator());
@@ -161,10 +139,8 @@ public class InfiniteViewPager extends ViewPager
     }
 
     @Override
-    public final void setCurrentItem(final int item)
-    {
-        if (item != PAGE_POSITION_CENTER)
-        {
+    public final void setCurrentItem(final int item) {
+        if (item != PAGE_POSITION_CENTER) {
             throw new RuntimeException("Cannot change page index unless its 1.");
         }
         super.setCurrentItem(item);
@@ -175,60 +151,49 @@ public class InfiniteViewPager extends ViewPager
      *
      * @param indicator the new indicator to set.
      */
-    public final void setCurrentIndicator(final Object indicator)
-    {
+    public final void setCurrentIndicator(final Object indicator) {
         final PagerAdapter adapter = getAdapter();
-        if (adapter == null)
-        {
+        if (adapter == null) {
             return;
         }
         final InfinitePagerAdapter infinitePagerAdapter = (InfinitePagerAdapter) adapter;
         final Object currentIndicator = infinitePagerAdapter.getCurrentIndicator();
-        if (currentIndicator.getClass() != indicator.getClass())
-        {
+        if (currentIndicator.getClass() != indicator.getClass()) {
             return;
         }
         infinitePagerAdapter.reset();
         infinitePagerAdapter.setCurrentIndicator(indicator);
-        for (int i = 0; i < Constants.PAGE_COUNT; i++)
-        {
+        for (int i = 0; i < Constants.PAGE_COUNT; i++) {
             infinitePagerAdapter.fillPage(i);
         }
     }
 
     @Override
-    public final void setOffscreenPageLimit(final int limit)
-    {
-        if (limit != getOffscreenPageLimit())
-        {
+    public final void setOffscreenPageLimit(final int limit) {
+        if (limit != getOffscreenPageLimit()) {
             throw new RuntimeException("OffscreenPageLimit cannot be changed.");
         }
         super.setOffscreenPageLimit(limit);
     }
 
     @Override
-    public void setAdapter(final PagerAdapter adapter)
-    {
-        if (adapter instanceof InfinitePagerAdapter)
-        {
+    public void setAdapter(final PagerAdapter adapter) {
+        if (adapter instanceof InfinitePagerAdapter) {
             super.setAdapter(adapter);
             initInfiniteViewPager();
-        } else
-        {
+        } else {
             throw new IllegalArgumentException("Adapter should be an instance of InfinitePagerAdapter.");
         }
     }
 
-    public void setOnInfinitePageChangeListener(OnInfinitePageChangeListener listener)
-    {
+    public void setOnInfinitePageChangeListener(OnInfinitePageChangeListener listener) {
         mListener = listener;
     }
 
     /**
      * Callback interface for responding to changing state of the selected indicator.
      */
-    public interface OnInfinitePageChangeListener
-    {
+    public interface OnInfinitePageChangeListener {
 
         /**
          * This method will be invoked when the current page is scrolled, either as part

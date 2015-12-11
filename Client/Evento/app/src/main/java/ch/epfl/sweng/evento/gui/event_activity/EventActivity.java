@@ -17,8 +17,7 @@ import ch.epfl.sweng.evento.gui.SearchActivity;
 import ch.epfl.sweng.evento.gui.infinite_pager_adapter.EventInfinitePageAdapter;
 import ch.epfl.sweng.evento.gui.infinite_pager_adapter.InfiniteViewPager;
 
-public class EventActivity extends AppCompatActivity
-{
+public class EventActivity extends AppCompatActivity {
 
     public static final String CURRENT_EVENT_KEY = "CurrentEventKey";
 
@@ -27,8 +26,7 @@ public class EventActivity extends AppCompatActivity
     private EventInfinitePageAdapter mAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_event);
@@ -41,8 +39,7 @@ public class EventActivity extends AppCompatActivity
 
         int currentEventSignature = EventDatabase.INSTANCE.getFirstEvent().getID();
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null)
-        {
+        if (bundle != null) {
             currentEventSignature = bundle.getInt(CURRENT_EVENT_KEY);
         }
 
@@ -55,8 +52,7 @@ public class EventActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }

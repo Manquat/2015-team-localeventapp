@@ -10,8 +10,7 @@ import ch.epfl.sweng.evento.event.Event;
 /**
  * Created by Gaffinet on 30/11/2015.
  */
-public class User
-{
+public class User {
 
     private static final String TAG = "User";
 
@@ -23,8 +22,7 @@ public class User
     private List<Event> mHostedEvent;
 
 
-    public User(int id, String username, String email)
-    {
+    public User(int id, String username, String email) {
         mUserId = id;
         mUsername = username;
         mEmail = email;
@@ -32,63 +30,50 @@ public class User
         mHostedEvent = new ArrayList<>();
     }
 
-    public List<Event> getMatchedEvent()
-    {
+    public List<Event> getMatchedEvent() {
         return mMatchedEvent;
     }
 
-    public void setMatchedEvent(List<Event> mMatchedEvent)
-    {
+    public void setMatchedEvent(List<Event> mMatchedEvent) {
         this.mMatchedEvent = mMatchedEvent;
     }
 
-    public List<Event> getHostedEvent()
-    {
+    public List<Event> getHostedEvent() {
         return mHostedEvent;
     }
 
-    public void setHostedEvent(List<Event> mHostedEvent)
-    {
+    public void setHostedEvent(List<Event> mHostedEvent) {
         this.mHostedEvent = mHostedEvent;
     }
 
-    public String getmEmail()
-    {
+    public String getmEmail() {
         return mEmail;
     }
 
-    public int getUserId()
-    {
+    public int getUserId() {
         return mUserId;
     }
 
-    public String getUsername()
-    {
+    public String getUsername() {
         return mUsername;
     }
 
-    public String getEmail()
-    {
+    public String getEmail() {
         return mEmail;
     }
 
-    public boolean addMatchedEvent(Event event)
-    {
+    public boolean addMatchedEvent(Event event) {
         final String message = "Cannot add a null event as a matched event";
-        if (event != null)
-        {
+        if (event != null) {
             return mMatchedEvent.add(event);
-        } else
-        {
+        } else {
             throw new NullPointerException(message);
         }
     }
 
     @Override
-    public boolean equals(Object object)
-    {
-        if (object instanceof User)
-        {
+    public boolean equals(Object object) {
+        if (object instanceof User) {
             User user = (User) object;
             return mUserId == user.getUserId();
         }
@@ -96,8 +81,7 @@ public class User
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return mUserId;
     }
 

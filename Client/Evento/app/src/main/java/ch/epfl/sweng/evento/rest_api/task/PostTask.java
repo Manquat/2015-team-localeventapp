@@ -13,20 +13,17 @@ import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 /**
  * An AsyncTask implementation for performing POSTs.
  */
-public class PostTask extends RestTask
-{
+public class PostTask extends RestTask {
     private static final String TAG = "PostTask";
 
 
-    public PostTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback)
-    {
+    public PostTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback) {
         super("POST", restUrl, networkProvider, callback, requestBody);
     }
 
 
     @Override
-    protected void communicateWithServer(HttpURLConnection connection) throws IOException
-    {
+    protected void communicateWithServer(HttpURLConnection connection) throws IOException {
         requestWithBody(connection);
     }
 }

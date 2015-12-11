@@ -22,8 +22,7 @@ import ch.epfl.sweng.evento.gui.event_activity.EventActivity;
 /**
  * List view adapter that can be used to display the list of event given in the constructor
  */
-public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnItemClickListener
-{
+public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
 
 
     Context mContext;
@@ -38,8 +37,7 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
      * @param events         the events that compose the list
      * @param parentActivity the activity where the list adapter is used
      */
-    public EventListViewAdapter(Context context, List<Event> events, Activity parentActivity)
-    {
+    public EventListViewAdapter(Context context, List<Event> events, Activity parentActivity) {
         super();
 
         mContext = context;
@@ -49,40 +47,33 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
 
 
     @Override
-    public int getCount()
-    {
-        if (mEvents != null)
-        {
+    public int getCount() {
+        if (mEvents != null) {
             return mEvents.size();
         }
         return 0;
     }
 
     @Override
-    public Object getItem(int position)
-    {
+    public Object getItem(int position) {
         return mEvents.get(position);
     }
 
     @Override
-    public long getItemId(int position)
-    {
+    public long getItemId(int position) {
         return mEvents.get(position).getID();
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
-    {
+    public View getView(int position, View convertView, ViewGroup parent) {
         View rootView = convertView;
 
-        if (rootView == null)
-        {
+        if (rootView == null) {
             LayoutInflater inflater = (LayoutInflater.from(mContext));
             rootView = inflater.inflate(R.layout.list_event, parent, false);
         }
 
-        if (mEvents != null)
-        {
+        if (mEvents != null) {
             // setting the title of the event as the text in the list
             TextView titleText = (TextView) rootView.findViewById(R.id.list_event_title);
             titleText.setText(mEvents.get(position).getTitle());
@@ -106,16 +97,14 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
      *
      * @param events the events display in the list adapter
      */
-    public void setEvents(List<Event> events)
-    {
+    public void setEvents(List<Event> events) {
         mEvents = events;
         notifyDataSetChanged();
     }
 
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-    {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(mContext, EventActivity.class);
         intent.putExtra(EventActivity.CURRENT_EVENT_KEY, ((Long) id).intValue());
         mActivity.startActivity(intent);

@@ -11,25 +11,20 @@ import java.util.Calendar;
 /**
  * Created by thomas on 09/11/15.
  */
-public class DatePickerDialogFragment extends DialogFragment
-{
+public class DatePickerDialogFragment extends DialogFragment {
     private String TAG = "DatePickerDialogFragment";
     private DatePickerDialog.OnDateSetListener listener;
 
-    public DatePickerDialogFragment()
-    {
+    public DatePickerDialogFragment() {
     }
 
-    public void setListener(DatePickerDialog.OnDateSetListener listener)
-    {
+    public void setListener(DatePickerDialog.OnDateSetListener listener) {
         this.listener = listener;
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState)
-    {
-        if (listener == null)
-        {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        if (listener == null) {
             Log.e(TAG, "listener is null");
         }
         // Use the current date as the default date in the picker

@@ -15,18 +15,15 @@ import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
  * An AsyncTask implementation for performing PUTs.
  */
 
-public class PutTask extends RestTask
-{
+public class PutTask extends RestTask {
     private static final String TAG = "PutTask";
 
-    public PutTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback)
-    {
+    public PutTask(String restUrl, NetworkProvider networkProvider, String requestBody, RestTaskCallback callback) {
         super("PUT", restUrl, networkProvider, callback, requestBody);
     }
 
     @Override
-    protected void communicateWithServer(HttpURLConnection connection) throws IOException
-    {
+    protected void communicateWithServer(HttpURLConnection connection) throws IOException {
         requestWithBody(connection);
     }
 }

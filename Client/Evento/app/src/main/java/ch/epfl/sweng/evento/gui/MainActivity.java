@@ -49,8 +49,7 @@ import ch.epfl.sweng.evento.tabs_layout.SlidingTabLayout;
  * For devices with displays with a width of 720dp or greater, the sample log is always visible,
  * on other devices it's visibility is controlled by an item on the Action Bar.
  */
-public class MainActivity extends AppCompatActivity implements Refreshable
-{
+public class MainActivity extends AppCompatActivity implements Refreshable {
 
     private static final int NOTIFICATION_ID = 1234567890;
     private static final String TAG = "MainActivity";
@@ -66,8 +65,7 @@ public class MainActivity extends AppCompatActivity implements Refreshable
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -104,8 +102,7 @@ public class MainActivity extends AppCompatActivity implements Refreshable
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
 
         //adding the mainActivity to the observer of the eventDatabase
@@ -113,8 +110,7 @@ public class MainActivity extends AppCompatActivity implements Refreshable
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
 
         //removing the mainActivity to the observer of the eventDatabase
@@ -123,37 +119,31 @@ public class MainActivity extends AppCompatActivity implements Refreshable
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
 
-    public void makeNotifications(List<Event> eventArrayList)
-    {
-        if (eventArrayList != null)
-        {
+    public void makeNotifications(List<Event> eventArrayList) {
+        if (eventArrayList != null) {
             Calendar currentDate = Calendar.getInstance();
 
             boolean notif_needed = false;
             String notif_description = "";
-            for (Event event : eventArrayList)
-            {
+            for (Event event : eventArrayList) {
                 double diffTime = (event.getStartDate().getTimeInMillis() - currentDate.getTimeInMillis())
                         / (1000 * 3600 * 24);
 
 
-                if (diffTime < 1.0)
-                {
+                if (diffTime < 1.0) {
                     notif_needed = true;
                     notif_description += "The event " + event.getTitle() + " is starting tomorrow. \n";
 
                     //Toast.makeText(getApplicationContext(), "Notified event : " + event.getTitle(), Toast.LENGTH_SHORT).show();
                 }
             }
-            if (notif_needed)
-            {
+            if (notif_needed) {
                 notif_description += "Don't forget to attend !";
                 Notification n = new Notification.Builder(this)
                         .setContentTitle("You've got events soon !")
@@ -171,8 +161,7 @@ public class MainActivity extends AppCompatActivity implements Refreshable
 
 
     @Override
-    public void refresh()
-    {
+    public void refresh() {
         makeNotifications(EventDatabase.INSTANCE.getAllEvents());
         Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
     }

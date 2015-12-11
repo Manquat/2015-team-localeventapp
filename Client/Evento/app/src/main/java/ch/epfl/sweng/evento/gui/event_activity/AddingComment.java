@@ -20,8 +20,7 @@ import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 /**
  * Class that handle the commenting part in the event activity
  */
-public class AddingComment implements OnClickListener, Refreshable
-{
+public class AddingComment implements OnClickListener, Refreshable {
     private static final String TAG = "AddingComment";
     private static final String SUCCESSFULLY_POST_COMMENT = "201";
     private Activity mActivity;
@@ -34,8 +33,7 @@ public class AddingComment implements OnClickListener, Refreshable
     private Refreshable mRefreshableParent;
 
     private AddingComment(Activity parentActivity, ListView commentListView, int currentEventId,
-                          Refreshable refreshableParent)
-    {
+                          Refreshable refreshableParent) {
         mActivity = parentActivity;
         mListView = commentListView;
         mCurrentlyAddingAComment = false;
@@ -61,48 +59,38 @@ public class AddingComment implements OnClickListener, Refreshable
     }
 
     public static void initialize(Activity parentActivity, ListView commentListView,
-                                  int currentEventId, Refreshable refreshableParent)
-    {
+                                  int currentEventId, Refreshable refreshableParent) {
         new AddingComment(parentActivity, commentListView, currentEventId, refreshableParent);
     }
 
-    public void finalize()
-    {
+    public void finalize() {
         //remove as observer of the EventDatabase
         EventDatabase.INSTANCE.removeObserver(this);
     }
 
     @Override
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         mCurrentlyAddingAComment = !mCurrentlyAddingAComment;
         update();
     }
 
-    private void update()
-    {
+    private void update() {
         updateFooterListOfComment();
 
-        if (!mCurrentlyAddingAComment && mMessageBox != null)
-        {
+        if (!mCurrentlyAddingAComment && mMessageBox != null) {
             String message = mMessageBox.getText().toString();
 
             // creating the new Comment
-            if (!message.isEmpty())
-            {
-                mRestApi.postComment(mCurrentEventId, message, new HttpResponseCodeCallback()
-                {
+            if (!message.isEmpty()) {
+                mRestApi.postComment(mCurrentEventId, message, new HttpResponseCodeCallback() {
                     @Override
-                    public void onSuccess(String httpResponseCode)
-                    {
-                        if (httpResponseCode != null && httpResponseCode.equals(SUCCESSFULLY_POST_COMMENT))
-                        {
+                    public void onSuccess(String httpResponseCode) {
+                        if (httpResponseCode != null && httpResponseCode.equals(SUCCESSFULLY_POST_COMMENT)) {
                             Log.d(TAG, "Successful post the comment : " + httpResponseCode);
                             Toast.makeText(mActivity, "Success on posting the comment", Toast.LENGTH_LONG)
                                     .show();
                             updateParent();
-                        } else
-                        {
+                        } else {
                             Log.e(TAG, "Error while posting the comment, error code : " + httpResponseCode);
                             Toast.makeText(mActivity, "Error while posting the comment", Toast.LENGTH_LONG)
                                     .show();
@@ -116,16 +104,13 @@ public class AddingComment implements OnClickListener, Refreshable
         }
     }
 
-    private void updateParent()
-    {
+    private void updateParent() {
         mRefreshableParent.refresh();
     }
 
-    private void updateFooterListOfComment()
-    {
+    private void updateFooterListOfComment() {
 
-        if (mCurrentlyAddingAComment)
-        {
+        if (mCurrentlyAddingAComment) {
             mListView.removeFooterView(mAddCommentButton);
             EditText message = new EditText(mActivity);
             message.setHint(mActivity.getResources().getString(R.string.comment_message_hint));
@@ -135,16 +120,14 @@ public class AddingComment implements OnClickListener, Refreshable
 
             mListView.addFooterView(mAddCommentButton);
             mAddCommentButton.setText(mActivity.getResources().getString(R.string.event_validate));
-        } else
-        {
+        } else {
             mListView.removeFooterView(mMessageBox);
             mAddCommentButton.setText(mActivity.getResources().getString(R.string.conversation_add_comment));
         }
     }
 
     @Override
-    public void refresh()
-    {
+    public void refresh() {
         updateParent();
         update();
     }

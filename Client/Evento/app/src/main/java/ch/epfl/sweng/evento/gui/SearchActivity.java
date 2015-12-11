@@ -44,8 +44,7 @@ import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
 public class SearchActivity extends AppCompatActivity
-        implements DatePickerDialog.OnDateSetListener, GoogleApiClient.OnConnectionFailedListener
-{
+        implements DatePickerDialog.OnDateSetListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "SearchActivity";
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
@@ -70,13 +69,10 @@ public class SearchActivity extends AppCompatActivity
      * the details view on screen.
      */
     private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
-            = new ResultCallback<PlaceBuffer>()
-    {
+            = new ResultCallback<PlaceBuffer>() {
         @Override
-        public void onResult(PlaceBuffer places)
-        {
-            if (!places.getStatus().isSuccess())
-            {
+        public void onResult(PlaceBuffer places) {
+            if (!places.getStatus().isSuccess()) {
                 // Request did not complete successfully
                 Log.e(TAG, "Place query did not complete. Error: " + places.getStatus().toString());
                 places.release();
@@ -96,11 +92,9 @@ public class SearchActivity extends AppCompatActivity
 
             // Display the third party attributions if set.
             final CharSequence thirdPartyAttribution = places.getAttributions();
-            if (thirdPartyAttribution == null)
-            {
+            if (thirdPartyAttribution == null) {
                 mPlaceDetailsAttribution.setVisibility(View.GONE);
-            } else
-            {
+            } else {
                 mPlaceDetailsAttribution.setVisibility(View.VISIBLE);
                 mPlaceDetailsAttribution.setText(Html.fromHtml(thirdPartyAttribution.toString()));
             }
@@ -120,11 +114,9 @@ public class SearchActivity extends AppCompatActivity
      * String...)
      */
     private AdapterView.OnItemClickListener mAutocompleteClickListener
-            = new AdapterView.OnItemClickListener()
-    {
+            = new AdapterView.OnItemClickListener() {
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-        {
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             /*
              Retrieve the place ID of the selected item from the Adapter.
              The adapter stores each Place suggestion in a AutocompletePrediction from which we
@@ -151,8 +143,7 @@ public class SearchActivity extends AppCompatActivity
     };
 
     private static Spanned formatPlaceDetails(Resources res, CharSequence name, String id,
-                                              CharSequence address, CharSequence phoneNumber, Uri websiteUri)
-    {
+                                              CharSequence address, CharSequence phoneNumber, Uri websiteUri) {
         Log.e(TAG, res.getString(R.string.place_details, name, id, address, phoneNumber,
                 websiteUri));
         return Html.fromHtml(res.getString(R.string.place_details, name, id, address, phoneNumber,
@@ -161,8 +152,7 @@ public class SearchActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
@@ -172,11 +162,9 @@ public class SearchActivity extends AppCompatActivity
 
         // set date picker for startDate
         mStartDateView = (TextView) findViewById(R.id.startDate_search);
-        mStartDateView.setOnClickListener(new View.OnClickListener()
-        {
+        mStartDateView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 mStartOrEndDate = false;
                 mDateFragment.show(getFragmentManager(), "datePicker");
             }
@@ -184,11 +172,9 @@ public class SearchActivity extends AppCompatActivity
 
         // set date picker for endDate
         mEndDateView = (TextView) findViewById(R.id.endDate_search);
-        mEndDateView.setOnClickListener(new View.OnClickListener()
-        {
+        mEndDateView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 mStartOrEndDate = true;
                 mDateFragment.show(getFragmentManager(), "datePicker");
             }
@@ -200,26 +186,20 @@ public class SearchActivity extends AppCompatActivity
         setValidateButtonAndSend(validateButton);
     }
 
-    public void onCheckboxClicked(View view)
-    {
+    public void onCheckboxClicked(View view) {
         mFilterPersonalEvent = ((CheckBox) view).isChecked();
     }
 
-    private void setValidateButtonAndSend(Button validateButton)
-    {
-        validateButton.setOnClickListener(new View.OnClickListener()
-        {
+    private void setValidateButtonAndSend(Button validateButton) {
+        validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 Log.d(TAG, Boolean.toString(mFilterPersonalEvent));
 
-                if (startDate == null)
-                {
+                if (startDate == null) {
                     startDate = new GregorianCalendar(1990, 1, 1, 0, 0);
                 }
-                if (endDate == null)
-                {
+                if (endDate == null) {
                     endDate = new GregorianCalendar(2020, 1, 1, 0, 0);
                 }
 
@@ -230,18 +210,14 @@ public class SearchActivity extends AppCompatActivity
 
                         endDate.get(Calendar.MONTH), endDate.get(Calendar.DAY_OF_MONTH));
 
-                mRestApi.getWithFilter(startTime, endTime, latitude, longitude, radius, new GetEventListCallback()
-                {
+                mRestApi.getWithFilter(startTime, endTime, latitude, longitude, radius, new GetEventListCallback() {
                     @Override
-                    public void onEventListReceived(List<Event> eventArrayList)
-                    {
+                    public void onEventListReceived(List<Event> eventArrayList) {
                         EventDatabase.INSTANCE.clear();
-                        if (!mFilterPersonalEvent)
-                        {
+                        if (!mFilterPersonalEvent) {
                             EventDatabase.INSTANCE.addAll(eventArrayList);
                             finish();
-                        } else
-                        {
+                        } else {
                             List<Event> personalEvent = new ArrayList<Event>();
                             Log.d(TAG, Integer.toString(personalEvent.size()));
                             selectPersonalEvent(personalEvent, eventArrayList);
@@ -251,8 +227,7 @@ public class SearchActivity extends AppCompatActivity
 
                     }
 
-                    public void onUserListReceived(List<User> userArrayList)
-                    {
+                    public void onUserListReceived(List<User> userArrayList) {
 
                     }
                 });
@@ -262,23 +237,16 @@ public class SearchActivity extends AppCompatActivity
         });
     }
 
-    private void selectPersonalEvent(List<Event> event, List<Event> input)
-    {
+    private void selectPersonalEvent(List<Event> event, List<Event> input) {
         final List<Event> innerEvent = event;
         final List<Event> innerInput = input;
-        mRestApi.getHostedEvent(new GetEventListCallback()
-        {
-            public void onEventListReceived(List<Event> eventArrayList)
-            {
-                if (eventArrayList != null)
-                {
+        mRestApi.getHostedEvent(new GetEventListCallback() {
+            public void onEventListReceived(List<Event> eventArrayList) {
+                if (eventArrayList != null) {
                     innerEvent.addAll(eventArrayList);
-                    mRestApi.getMatchedEvent(new GetEventListCallback()
-                    {
-                        public void onEventListReceived(List<Event> eventArrayList)
-                        {
-                            if (eventArrayList != null)
-                            {
+                    mRestApi.getMatchedEvent(new GetEventListCallback() {
+                        public void onEventListReceived(List<Event> eventArrayList) {
+                            if (eventArrayList != null) {
                                 innerEvent.addAll(eventArrayList);
                                 Log.d(TAG, Integer.toString(innerEvent.size()));
                                 Log.d(TAG, Integer.toString(innerInput.size()));
@@ -298,13 +266,10 @@ public class SearchActivity extends AppCompatActivity
         }, Settings.getUser().getUserId());
     }
 
-    private void retainAll(List<Event> input, List<Event> filter, List<Event> res)
-    {
+    private void retainAll(List<Event> input, List<Event> filter, List<Event> res) {
         boolean isInside = false;
-        for (Event event : input)
-        {
-            for (Event filterIter : filter)
-            {
+        for (Event event : input) {
+            for (Event filterIter : filter) {
                 if (event.getID() == filterIter.getID()) isInside = true;
             }
             if (isInside) res.add(event);
@@ -314,18 +279,15 @@ public class SearchActivity extends AppCompatActivity
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear,
-                          int dayOfMonth)
-    {
+                          int dayOfMonth) {
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
         GregorianCalendar date = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
         String s = dateFormat.format(date.getTime());
 
-        if (!mStartOrEndDate)
-        {
+        if (!mStartOrEndDate) {
             startDate = date;
             mStartDateView.setText(s);
-        } else
-        {
+        } else {
             endDate = date;
             mEndDateView.setText(s);
         }
@@ -335,8 +297,7 @@ public class SearchActivity extends AppCompatActivity
     // functionality, which automatically sets up the API client to handle Activity lifecycle
     // events. If your activity does not extend FragmentActivity, make sure to call connect()
     // and disconnect() explicitly.
-    private void setPlacePickerField()
-    {
+    private void setPlacePickerField() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, 0 /* clientId */, this)
                 .addApi(Places.GEO_DATA_API)
@@ -370,8 +331,7 @@ public class SearchActivity extends AppCompatActivity
      * @param connectionResult can be inspected to determine the cause of the failure
      */
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult)
-    {
+    public void onConnectionFailed(ConnectionResult connectionResult) {
 
         Log.e(TAG, "onConnectionFailed: ConnectionResult.getErrorCode() = "
                 + connectionResult.getErrorCode());

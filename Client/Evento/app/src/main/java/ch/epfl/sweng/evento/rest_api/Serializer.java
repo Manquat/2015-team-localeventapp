@@ -14,17 +14,14 @@ import static java.lang.Math.max;
  * <p/>
  * Provide the serialization method to transform android class into string understandable by the server
  */
-public final class Serializer
-{
+public final class Serializer {
     private static final String TAG = "Serializer";
 
-    private Serializer()
-    {
+    private Serializer() {
         // private constructor
     }
 
-    public static String event(Event e)
-    {
+    public static String event(Event e) {
         long duration = e.getEndDate().getTimeInMillis() - e.getStartDate().getTimeInMillis();
 
 
@@ -45,8 +42,7 @@ public final class Serializer
         return res;
     }
 
-    public static String user(String name, String email, String googleid)
-    {
+    public static String user(String name, String email, String googleid) {
         String res = "{\n"
                 + "  \"name\": \"" + name + "\", \n"
                 + "  \"email\": \"" + email + "\", \n"
@@ -58,8 +54,7 @@ public final class Serializer
         return res;
     }
 
-    public static String comment(int userId, String userName, int eventId, String commentBody)
-    {
+    public static String comment(int userId, String userName, int eventId, String commentBody) {
         String res = "{\n"
                 + "\"body\": \"" + commentBody + "\",\n"
                 + "\"creator\": " + userId + ",\n"
@@ -69,8 +64,7 @@ public final class Serializer
         return res;
     }
 
-    public static String fromMillisToHHMMSS(long millis)
-    {
+    public static String fromMillisToHHMMSS(long millis) {
         long millisNonNegative = max(millis, 0);
         String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millisNonNegative),
                 TimeUnit.MILLISECONDS.toMinutes(millisNonNegative) % TimeUnit.HOURS.toMinutes(1),

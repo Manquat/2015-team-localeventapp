@@ -58,8 +58,7 @@ import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 public class CreatingEventActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener,
-        GoogleApiClient.OnConnectionFailedListener
-{
+        GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "CreatingEventActivity";
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
             new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
@@ -67,7 +66,9 @@ public class CreatingEventActivity extends AppCompatActivity
     protected Calendar mEndDate;
     protected TextView mStartDateView;
     protected TextView mEndDateView;
-    protected Set<String> mTag = new HashSet<String>(){{add("Football");}};
+    protected Set<String> mTag = new HashSet<String>() {{
+        add("Football");
+    }};
     private boolean mStartOrEndDate;
     private boolean mDisplayTimeFragment;
     private DatePickerDialogFragment mDateFragment;
@@ -81,15 +82,15 @@ public class CreatingEventActivity extends AppCompatActivity
     private double longitude = 0.0;
     private TimePickerDialogFragment mTimeFragment;
     private final static List<String> mSport = new ArrayList<String>(Arrays.asList("Football",
-    "Basketball",
-    "Badminton",
-    "Ping-Pong"));
+            "Basketball",
+            "Badminton",
+            "Ping-Pong"));
 
 
     private final static List<String> mParty = new ArrayList<String>(Arrays.asList(
-            "Birthday", "Dinner","Surprise","Garden","Tea","Beer-Pong",
-    "Dance and Ball",
-   "Go for Hang-over"));
+            "Birthday", "Dinner", "Surprise", "Garden", "Tea", "Beer-Pong",
+            "Dance and Ball",
+            "Go for Hang-over"));
 
 
     private final static List<String> mStuff = new ArrayList<String>(Arrays.asList(
@@ -98,9 +99,17 @@ public class CreatingEventActivity extends AppCompatActivity
             "Role Play Game",
             "Trekking"));
 
-    public static List<String> getSport(){return mSport;}
-    public static List<String> getParty(){return mParty;}
-    public static List<String> getStuff(){return mStuff;}
+    public static List<String> getSport() {
+        return mSport;
+    }
+
+    public static List<String> getParty() {
+        return mParty;
+    }
+
+    public static List<String> getStuff() {
+        return mStuff;
+    }
 
     /**
      * Callback for results from a Places Geo Data API query that shows the first place result in
@@ -108,13 +117,10 @@ public class CreatingEventActivity extends AppCompatActivity
      */
 
     private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
-            = new ResultCallback<PlaceBuffer>()
-    {
+            = new ResultCallback<PlaceBuffer>() {
         @Override
-        public void onResult(PlaceBuffer places)
-        {
-            if (!places.getStatus().isSuccess())
-            {
+        public void onResult(PlaceBuffer places) {
+            if (!places.getStatus().isSuccess()) {
                 // Request did not complete successfully
                 Log.e(TAG, "Place query did not complete. Error: " + places.getStatus().toString());
                 places.release();
@@ -134,11 +140,9 @@ public class CreatingEventActivity extends AppCompatActivity
 
             // Display the third party attributions if set.
             final CharSequence thirdPartyAttribution = places.getAttributions();
-            if (thirdPartyAttribution == null)
-            {
+            if (thirdPartyAttribution == null) {
                 mPlaceDetailsAttribution.setVisibility(View.GONE);
-            } else
-            {
+            } else {
                 mPlaceDetailsAttribution.setVisibility(View.VISIBLE);
                 mPlaceDetailsAttribution.setText(Html.fromHtml(thirdPartyAttribution.toString()));
             }
@@ -158,11 +162,9 @@ public class CreatingEventActivity extends AppCompatActivity
      * String...)
      */
     private AdapterView.OnItemClickListener mAutocompleteClickListener
-            = new AdapterView.OnItemClickListener()
-    {
+            = new AdapterView.OnItemClickListener() {
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-        {
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             /*
              Retrieve the place ID of the selected item from the Adapter.
              The adapter stores each Place suggestion in a AutocompletePrediction from which we
@@ -189,8 +191,7 @@ public class CreatingEventActivity extends AppCompatActivity
     };
 
     private static Spanned formatPlaceDetails(Resources res, CharSequence name, String id,
-                                              CharSequence address, CharSequence phoneNumber, Uri websiteUri)
-    {
+                                              CharSequence address, CharSequence phoneNumber, Uri websiteUri) {
         Log.e(TAG, res.getString(R.string.place_details, name, id, address, phoneNumber,
                 websiteUri));
         return Html.fromHtml(res.getString(R.string.place_details, name, id, address, phoneNumber,
@@ -200,8 +201,7 @@ public class CreatingEventActivity extends AppCompatActivity
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear,
-                          int dayOfMonth)
-    {
+                          int dayOfMonth) {
         if (!mStartOrEndDate)
             mStartDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
         else mEndDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
@@ -210,16 +210,13 @@ public class CreatingEventActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute)
-    {
-        if (!mStartOrEndDate)
-        {
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        if (!mStartOrEndDate) {
             mStartDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
             mStartDate.set(Calendar.MINUTE, minute);
             String s = Event.asNiceString(mStartDate);
             mStartDateView.setText(s);
-        } else
-        {
+        } else {
             mEndDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
             mEndDate.set(Calendar.MINUTE, minute);
             String s = Event.asNiceString(mEndDate);
@@ -229,8 +226,7 @@ public class CreatingEventActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // display the layout and prepare the configuration
@@ -243,11 +239,9 @@ public class CreatingEventActivity extends AppCompatActivity
 
         // listener for date picker mStartDate
         mStartDateView = (TextView) findViewById(R.id.startDate);
-        mStartDateView.setOnClickListener(new View.OnClickListener()
-        {
+        mStartDateView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 mDisplayTimeFragment = true;
                 mStartOrEndDate = false;
                 mDateFragment.show(getFragmentManager(), "datePicker");
@@ -256,11 +250,9 @@ public class CreatingEventActivity extends AppCompatActivity
 
         // listener for date picker mEndDate
         mEndDateView = (TextView) findViewById(R.id.endDate);
-        mEndDateView.setOnClickListener(new View.OnClickListener()
-        {
+        mEndDateView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 mDisplayTimeFragment = true;
                 mStartOrEndDate = true;
                 mDateFragment.show(getFragmentManager(), "datePicker");
@@ -287,14 +279,11 @@ public class CreatingEventActivity extends AppCompatActivity
      *
      * @param validateButton
      */
-    private void setValidateButtonAndSend(Button validateButton)
-    {
-        validateButton.setOnClickListener(new View.OnClickListener()
-        {
+    private void setValidateButtonAndSend(Button validateButton) {
+        validateButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 TextView title = (TextView) findViewById(R.id.title);
                 TextView description = (TextView) findViewById(R.id.eventDescription);
                 TextView address = (TextView) findViewById(R.id.eventAddress);
@@ -306,38 +295,30 @@ public class CreatingEventActivity extends AppCompatActivity
                 Bitmap picture;
 
                 // default value completion
-                if (mStartDate == null)
-                {
+                if (mStartDate == null) {
                     mStartDate = new GregorianCalendar();
                 }
-                if (mEndDate == null)
-                {
+                if (mEndDate == null) {
                     mEndDate = new GregorianCalendar();
                 }
 
-                if (mEndDate.compareTo(mStartDate) < 0)
-                {
+                if (mEndDate.compareTo(mStartDate) < 0) {
                     Toast.makeText(getApplicationContext(), "Please pick a date of end after the starting time ", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (titleString.isEmpty())
-                {
+                if (titleString.isEmpty()) {
                     titleString = "No Title";
                 }
-                if (descriptionString.isEmpty())
-                {
+                if (descriptionString.isEmpty()) {
                     descriptionString = "No description";
                 }
-                if (addressString.isEmpty())
-                {
+                if (addressString.isEmpty()) {
                     addressString = "No address";
                 }
-                if (drawable == null)
-                {
+                if (drawable == null) {
                     //Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
                     picture = Event.stringToBitMap(Event.samplePicture());
-                } else
-                {
+                } else {
                     picture = ((BitmapDrawable) drawable).getBitmap();
                 }
 
@@ -362,14 +343,11 @@ public class CreatingEventActivity extends AppCompatActivity
         });
     }
 
-    protected void sendToServer(Event e)
-    {
+    protected void sendToServer(Event e) {
         RestApi restApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-        restApi.postEvent(e, new HttpResponseCodeCallback()
-        {
+        restApi.postEvent(e, new HttpResponseCodeCallback() {
             @Override
-            public void onSuccess(String response)
-            {
+            public void onSuccess(String response) {
                 // assert submission
                 Toast.makeText(getApplicationContext(), "Submitted", Toast.LENGTH_SHORT).show();
             }
@@ -377,14 +355,11 @@ public class CreatingEventActivity extends AppCompatActivity
         Toast.makeText(getApplicationContext(), "Submitting " + e.getTitle(), Toast.LENGTH_SHORT).show();
     }
 
-    private void setPictureButton(Button pictureButton)
-    {
-        pictureButton.setOnClickListener(new View.OnClickListener()
-                                         {
+    private void setPictureButton(Button pictureButton) {
+        pictureButton.setOnClickListener(new View.OnClickListener() {
 
                                              @Override
-                                             public void onClick(View view)
-                                             {
+                                             public void onClick(View view) {
                                                  Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                                                  startActivityForResult(intent, 2);
                                              }
@@ -392,8 +367,7 @@ public class CreatingEventActivity extends AppCompatActivity
         );
     }
 
-    private void setTagExpandableList()
-    {
+    private void setTagExpandableList() {
         // get the list_view
         ExpandableListView mExpListView = (ExpandableListView) findViewById(R.id.lvExp);
 
@@ -405,13 +379,11 @@ public class CreatingEventActivity extends AppCompatActivity
         mExpListView.setAdapter(mListAdapter);
 
         // list_view Group click listener
-        mExpListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener()
-        {
+        mExpListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v,
-                                        int groupPosition, long id)
-            {
+                                        int groupPosition, long id) {
                 // Toast.makeText(getApplicationContext(),
                 // "Group Clicked " + listDataHeader.get(groupPosition),
                 // Toast.LENGTH_SHORT).show();
@@ -420,12 +392,10 @@ public class CreatingEventActivity extends AppCompatActivity
         });
 
         // list_view Group expanded listener
-        mExpListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener()
-        {
+        mExpListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
-            public void onGroupExpand(int groupPosition)
-            {
+            public void onGroupExpand(int groupPosition) {
                 Toast.makeText(getApplicationContext(),
                         mListDataHeader.get(groupPosition) + " Expanded",
                         Toast.LENGTH_SHORT).show();
@@ -433,21 +403,18 @@ public class CreatingEventActivity extends AppCompatActivity
         });
 
         // list_view on child click listener
-        mExpListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener()
-        {
+        mExpListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id)
-            {
+                                        int groupPosition, int childPosition, long id) {
                 final int groupPosTmp = groupPosition;
                 final int childPosTmp = childPosition;
-                mTag = new HashSet<String>()
-                {{
-                        add(mListDataChild.get(
-                                mListDataHeader.get(groupPosTmp)).get(
-                                childPosTmp));
-                    }};
+                mTag = new HashSet<String>() {{
+                    add(mListDataChild.get(
+                            mListDataHeader.get(groupPosTmp)).get(
+                            childPosTmp));
+                }};
 
                 Toast.makeText(
                         getApplicationContext(),
@@ -466,8 +433,7 @@ public class CreatingEventActivity extends AppCompatActivity
     // functionality, which automatically sets up the API client to handle Activity lifecycle
     // events. If your activity does not extend FragmentActivity, make sure to call connect()
     // and disconnect() explicitly.
-    private void setPlacePickerField()
-    {
+    private void setPlacePickerField() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, 0 /* clientId */, this)
                 .addApi(Places.GEO_DATA_API)
@@ -494,8 +460,7 @@ public class CreatingEventActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         ImageView viewImage = (ImageView) findViewById(R.id.pictureView);
         Uri selectedImage = data.getData();
@@ -515,8 +480,7 @@ public class CreatingEventActivity extends AppCompatActivity
         viewImage.setImageBitmap(scaledPicture);
     }
 
-    private void prepareListData()
-    {
+    private void prepareListData() {
         mListDataHeader = new ArrayList<String>();
         mListDataChild = new HashMap<String, List<String>>();
 
@@ -539,8 +503,7 @@ public class CreatingEventActivity extends AppCompatActivity
      * @param connectionResult can be inspected to determine the cause of the failure
      */
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult)
-    {
+    public void onConnectionFailed(ConnectionResult connectionResult) {
 
         Log.e(TAG, "onConnectionFailed: ConnectionResult.getErrorCode() = "
                 + connectionResult.getErrorCode());

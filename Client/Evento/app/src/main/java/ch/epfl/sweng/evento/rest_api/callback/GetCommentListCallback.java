@@ -7,8 +7,7 @@ import ch.epfl.sweng.evento.Comment;
 /**
  * Created by joachimmuth on 30.11.15.
  */
-public interface GetCommentListCallback
-{
+public interface GetCommentListCallback {
 
     void onCommentListReceived(List<Comment> commentList);
 }

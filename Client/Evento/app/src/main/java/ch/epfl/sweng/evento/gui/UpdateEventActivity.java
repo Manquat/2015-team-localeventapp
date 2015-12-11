@@ -17,24 +17,20 @@ import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 /**
  * Created by gautier on 07/12/2015.
  */
-public class UpdateEventActivity extends CreatingEventActivity
-{
+public class UpdateEventActivity extends CreatingEventActivity {
     public static final String EVENT_TO_UPDATE = "event_to_update";
 
     private Event mCurrentEvent;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         int currentEventId;
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null)
-        {
+        if (bundle != null) {
             currentEventId = bundle.getInt(EVENT_TO_UPDATE);
-        } else
-        {
+        } else {
             throw new IllegalArgumentException("You must pass as extra a valid Event id");
         }
 
@@ -62,8 +58,7 @@ public class UpdateEventActivity extends CreatingEventActivity
     }
 
     @Override
-    protected void sendToServer(Event event)
-    {
+    protected void sendToServer(Event event) {
         RestApi restApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
 
         Event eventWithTheGoodId = new Event(mCurrentEvent.getID(),
@@ -78,11 +73,9 @@ public class UpdateEventActivity extends CreatingEventActivity
                 event.getEndDate(),
                 event.getPictureAsString());
 
-        restApi.updateEvent(eventWithTheGoodId, new HttpResponseCodeCallback()
-        {
+        restApi.updateEvent(eventWithTheGoodId, new HttpResponseCodeCallback() {
             @Override
-            public void onSuccess(String httpResponseCode)
-            {
+            public void onSuccess(String httpResponseCode) {
                 Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
             }
         });

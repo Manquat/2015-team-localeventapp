@@ -10,8 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.widget.ImageView;
 
-public class MyView extends ImageView
-{
+public class MyView extends ImageView {
     final int PADDING = 5;
     int midX = 0; //default
     int midY = 0; //default
@@ -31,8 +30,8 @@ public class MyView extends ImageView
         super.onDraw(canvas);
         canvas.drawRect(PADDING, PADDING, getWidth() - PADDING, getHeight() - PADDING, mBorderPaint);
     }
-    public MyView(Context context, int x, int y)
-    {
+
+    public MyView(Context context, int x, int y) {
         super(context);
         midX = x;
         midY = y;
@@ -40,18 +39,15 @@ public class MyView extends ImageView
     }
 
 
-    public MyView(Context context)
-    {
+    public MyView(Context context) {
         super(context);
     }
 
-    public int getIdX()
-    {
+    public int getIdX() {
         return midX;
     }
 
-    public int getIdY()
-    {
+    public int getIdY() {
         return midY;
     }
 

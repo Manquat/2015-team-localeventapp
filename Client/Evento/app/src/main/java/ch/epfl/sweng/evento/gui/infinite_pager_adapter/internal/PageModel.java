@@ -27,23 +27,20 @@ import java.util.List;
  *
  * @param <T> the datatype of the {@link ch.epfl.sweng.evento.gui.infinite_pager_adapter} indicator.
  */
-public final class PageModel<T>
-{
+public final class PageModel<T> {
     private T mIndicator;
 
     private ViewGroup mParentView;
 
     private List<View> mChildren;
 
-    public PageModel(final ViewGroup parent, final T indicator)
-    {
+    public PageModel(final ViewGroup parent, final T indicator) {
         mParentView = parent;
         mIndicator = indicator;
         final int size = parent.getChildCount();
         mChildren = new ArrayList<View>(size);
 
-        for (int i = 0; i < size; i++)
-        {
+        for (int i = 0; i < size; i++) {
             mChildren.add(parent.getChildAt(i));
         }
     }
@@ -51,59 +48,48 @@ public final class PageModel<T>
     /**
      * @return {@code true} if the model has child views.
      */
-    public boolean hasChildren()
-    {
+    public boolean hasChildren() {
         return mChildren != null && mChildren.size() != 0;
     }
 
 
-    private void emptyChildren()
-    {
-        if (hasChildren())
-        {
+    private void emptyChildren() {
+        if (hasChildren()) {
             mChildren.clear();
         }
     }
 
-    public List<View> getChildren()
-    {
+    public List<View> getChildren() {
         return mChildren;
     }
 
-    public void removeAllChildren()
-    {
+    public void removeAllChildren() {
         mParentView.removeAllViews();
         emptyChildren();
     }
 
-    public void addChild(final View child)
-    {
+    public void addChild(final View child) {
         addViewToParent(child);
         mChildren.add(child);
     }
 
-    public void removeViewFromParent(final View view)
-    {
+    public void removeViewFromParent(final View view) {
         mParentView.removeView(view);
     }
 
-    public void addViewToParent(final View view)
-    {
+    public void addViewToParent(final View view) {
         mParentView.addView(view);
     }
 
-    public ViewGroup getParentView()
-    {
+    public ViewGroup getParentView() {
         return mParentView;
     }
 
-    public T getIndicator()
-    {
+    public T getIndicator() {
         return mIndicator;
     }
 
-    public void setIndicator(final T indicator)
-    {
+    public void setIndicator(final T indicator) {
         mIndicator = indicator;
     }
 }

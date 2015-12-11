@@ -15,28 +15,23 @@ import ch.epfl.sweng.evento.R;
  * Created by thomas on 03/12/15.
  * inspired from http://sunil-android.blogspot.ch
  */
-public class ListEntryAdapter extends ArrayAdapter<ListEntryAdapter.Item>
-{
+public class ListEntryAdapter extends ArrayAdapter<ListEntryAdapter.Item> {
     private ArrayList<Item> mListItems;
     private LayoutInflater mInflater;
 
-    public ListEntryAdapter(Context context, ArrayList<Item> items)
-    {
+    public ListEntryAdapter(Context context, ArrayList<Item> items) {
         super(context, 0, items);
         this.mListItems = items;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
-    {
+    public View getView(int position, View convertView, ViewGroup parent) {
         View mView = convertView;
 
         Item item = mListItems.get(position);
-        if (item != null)
-        {
-            if (item.isSection())
-            {
+        if (item != null) {
+            if (item.isSection()) {
                 Section section = (Section) item;
                 mView = mInflater.inflate(R.layout.list_item_manage_section, null);
 
@@ -63,57 +58,47 @@ public class ListEntryAdapter extends ArrayAdapter<ListEntryAdapter.Item>
 
     }
 
-    public interface Item
-    {
+    public interface Item {
         boolean isSection();
     }
 
-    public static class Entry implements Item
-    {
+    public static class Entry implements Item {
         private final String mTitle;
         private final String mEntry;
 
-        public Entry(String title, String entry)
-        {
+        public Entry(String title, String entry) {
             mTitle = title;
             mEntry = entry;
         }
 
-        public String getTitle()
-        {
+        public String getTitle() {
             return mTitle;
         }
 
-        public String getEntry()
-        {
+        public String getEntry() {
             return mEntry;
         }
 
         @Override
-        public boolean isSection()
-        {
+        public boolean isSection() {
             return false;
         }
 
     }
 
-    public static class Section implements Item
-    {
+    public static class Section implements Item {
         private final String mTitle;
 
-        public Section(String title)
-        {
+        public Section(String title) {
             mTitle = title;
         }
 
-        public String getTitle()
-        {
+        public String getTitle() {
             return mTitle;
         }
 
         @Override
-        public boolean isSection()
-        {
+        public boolean isSection() {
             return true;
         }
     }

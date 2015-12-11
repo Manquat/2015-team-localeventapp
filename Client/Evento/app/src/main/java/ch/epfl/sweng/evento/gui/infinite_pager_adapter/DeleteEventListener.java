@@ -12,14 +12,12 @@ import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 /**
  * Created by gautier on 07/12/2015.
  */
-public class DeleteEventListener implements View.OnClickListener
-{
+public class DeleteEventListener implements View.OnClickListener {
     private Activity mActivity;
     private int mCurrentEventId;
     private RestApi mRestApi;
 
-    public DeleteEventListener(Activity activityParent, int currentEventId)
-    {
+    public DeleteEventListener(Activity activityParent, int currentEventId) {
         mActivity = activityParent;
         mCurrentEventId = currentEventId;
 
@@ -27,13 +25,10 @@ public class DeleteEventListener implements View.OnClickListener
     }
 
     @Override
-    public void onClick(View v)
-    {
-        mRestApi.deleteEvent(mCurrentEventId, new HttpResponseCodeCallback()
-        {
+    public void onClick(View v) {
+        mRestApi.deleteEvent(mCurrentEventId, new HttpResponseCodeCallback() {
             @Override
-            public void onSuccess(String httpResponseCode)
-            {
+            public void onSuccess(String httpResponseCode) {
                 Toast.makeText(mActivity, "Successfully delete the event : " + httpResponseCode,
                         Toast.LENGTH_LONG).show();
             }

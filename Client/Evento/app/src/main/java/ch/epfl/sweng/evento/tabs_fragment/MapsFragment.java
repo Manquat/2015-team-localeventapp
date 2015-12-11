@@ -36,8 +36,7 @@ public class MapsFragment extends SupportMapFragment implements
         ConnectionCallbacks,
         OnConnectionFailedListener,
         OnMyLocationButtonClickListener,
-        Refreshable
-{
+        Refreshable {
 
     private static final String TAG = "MapsFragment";   // LogCat tag
     private static final float ZOOM_LEVEL = 15.0f;                          // Zoom level of the map at the beginning
@@ -56,27 +55,23 @@ public class MapsFragment extends SupportMapFragment implements
     /**
      * Constructor by default mandatory for fragment class
      */
-    public MapsFragment()
-    {
+    public MapsFragment() {
         super();
     }
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = getActivity();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        if (view == null)
-        {
+        if (view == null) {
             Log.e(TAG, "The maps view cannot be created");
             throw new NullPointerException();
         }
@@ -85,8 +80,7 @@ public class MapsFragment extends SupportMapFragment implements
 
         Context context = view.getContext();
 
-        if (context == null)
-        {
+        if (context == null) {
             Log.e(TAG, "The actual context don't exist");
             throw new NullPointerException();
         }
@@ -104,8 +98,7 @@ public class MapsFragment extends SupportMapFragment implements
      * Call at the start of the fragment
      */
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
 
@@ -117,11 +110,9 @@ public class MapsFragment extends SupportMapFragment implements
      * Call at the stop of the fragment
      */
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
-        if (mGoogleApiClient.isConnected())
-        {
+        if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
 
@@ -135,8 +126,7 @@ public class MapsFragment extends SupportMapFragment implements
      * @param googleMap the map that will be displayed
      */
     @Override
-    public void onMapReady(GoogleMap googleMap)
-    {
+    public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
         mMap.setMyLocationEnabled(true);
@@ -152,8 +142,7 @@ public class MapsFragment extends SupportMapFragment implements
         mMap.setOnMarkerClickListener(mClusterManager);
         mMap.setInfoWindowAdapter(mClusterManager);
 
-        if (mGoogleApiClient.isConnected())
-        {
+        if (mGoogleApiClient.isConnected()) {
             zoomOnUser();
             addEventsMarker();
         }
@@ -165,10 +154,8 @@ public class MapsFragment extends SupportMapFragment implements
      * @param bundle
      */
     @Override
-    public void onConnected(Bundle bundle)
-    {
-        if (mMap != null)
-        {
+    public void onConnected(Bundle bundle) {
+        if (mMap != null) {
             zoomOnUser();
             addEventsMarker();
         }
@@ -180,8 +167,7 @@ public class MapsFragment extends SupportMapFragment implements
      * @param i
      */
     @Override
-    public void onConnectionSuspended(int i)
-    {
+    public void onConnectionSuspended(int i) {
         mGoogleApiClient.connect();
     }
 
@@ -191,10 +177,8 @@ public class MapsFragment extends SupportMapFragment implements
      * @param connectionResult the error return by the google API
      */
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult)
-    {
-        if (!connectionResult.hasResolution())
-        {
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        if (!connectionResult.hasResolution()) {
             GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(),
                     mActivity, 0).show();
             Log.e(TAG, "" + connectionResult.getErrorCode());
@@ -207,10 +191,8 @@ public class MapsFragment extends SupportMapFragment implements
      * @return null to conserve the normal behavior (zoom on the user)
      */
     @Override
-    public boolean onMyLocationButtonClick()
-    {
-        if (mGoogleApiClient.isConnected())
-        {
+    public boolean onMyLocationButtonClick() {
+        if (mGoogleApiClient.isConnected()) {
             zoomOnUser();
             addEventsMarker();
         }
@@ -224,12 +206,10 @@ public class MapsFragment extends SupportMapFragment implements
     /**
      * Zoom on the the position of the user and draw some markers
      */
-    private void zoomOnUser()
-    {
+    private void zoomOnUser() {
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-        if (mLastLocation != null)
-        {
+        if (mLastLocation != null) {
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
                     .zoom(ZOOM_LEVEL)
@@ -241,19 +221,15 @@ public class MapsFragment extends SupportMapFragment implements
     /**
      * Add the marker of the events to the cluster
      */
-    private void addEventsMarker()
-    {
-        if (mLastLocation == null)
-        {
+    private void addEventsMarker() {
+        if (mLastLocation == null) {
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient); //may return null in case of non connected device
         }
 
-        if (mMap != null)
-        {
+        if (mMap != null) {
             mMap.clear();
         }
-        if (mClusterManager != null)
-        {
+        if (mClusterManager != null) {
             mClusterManager.clearItems();
 
             // add all event to the cluster manager of map
@@ -263,8 +239,7 @@ public class MapsFragment extends SupportMapFragment implements
     }
 
     @Override
-    public void refresh()
-    {
+    public void refresh() {
         addEventsMarker();
     }
 

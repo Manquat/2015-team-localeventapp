@@ -42,8 +42,7 @@ import static ch.epfl.sweng.evento.gui.infinite_pager_adapter.internal.Constants
  *
  * @param <T> an indicator datatype to distinguish the pages.
  */
-public abstract class InfinitePagerAdapter<T> extends PagerAdapter
-{
+public abstract class InfinitePagerAdapter<T> extends PagerAdapter {
 
     private PageModel<T>[] mPageModels;
 
@@ -54,8 +53,7 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter
      *
      * @param initValue the initial indicator value the ViewPager should start with.
      */
-    public InfinitePagerAdapter(T initValue)
-    {
+    public InfinitePagerAdapter(T initValue) {
         mCurrentIndicator = initValue;
 
         mPageModels = new PageModel[PAGE_COUNT];
@@ -65,10 +63,8 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter
      * This method is only called, when this pagerAdapter is initialized.
      */
     @Override
-    public final Object instantiateItem(final ViewGroup container, final int position)
-    {
-        if (Constants.DEBUG)
-        {
+    public final Object instantiateItem(final ViewGroup container, final int position) {
+        if (Constants.DEBUG) {
             Log.i("InfiniteViewPager", String.format("instantiating position %s", position));
         }
         final PageModel<T> model = createPageModel(position);
@@ -82,24 +78,20 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter
      *
      * @param position the page index to fill the page.
      */
-    void fillPage(final int position)
-    {
-        if (Constants.DEBUG)
-        {
+    void fillPage(final int position) {
+        if (Constants.DEBUG) {
             Log.d("InfiniteViewPager", "setup Page " + position);
             printPageModels("before newPage");
         }
         final PageModel<T> oldModel = mPageModels[position];
         final PageModel<T> newModel = createPageModel(position);
-        if (oldModel == null || newModel == null)
-        {
+        if (oldModel == null || newModel == null) {
             Log.w(Constants.LOG_TAG, "fillPage no model found " + oldModel + " " + newModel);
             return;
         }
         // moving the new created views to the page of the viewpager
         oldModel.removeAllChildren();
-        for (final View newChild : newModel.getChildren())
-        {
+        for (final View newChild : newModel.getChildren()) {
             newModel.removeViewFromParent(newChild);
             oldModel.addChild(newChild);
         }
@@ -114,16 +106,14 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter
      * @param pagePosition the position in the pageModel array between [0..2]
      * @return a new instance of a page model.
      */
-    private PageModel<T> createPageModel(final int pagePosition)
-    {
+    private PageModel<T> createPageModel(final int pagePosition) {
         final T indicator = getIndicatorFromPagePosition(pagePosition);
         final ViewGroup view = instantiateItem(indicator);
 
         return new PageModel<T>(view, indicator);
     }
 
-    protected final T getCurrentIndicator()
-    {
+    protected final T getCurrentIndicator() {
         return mCurrentIndicator;
     }
 
@@ -132,16 +122,13 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter
      *
      * @param indicator a indicator value.
      */
-    void setCurrentIndicator(final T indicator)
-    {
+    void setCurrentIndicator(final T indicator) {
         mCurrentIndicator = indicator;
     }
 
-    private T getIndicatorFromPagePosition(final int pagePosition)
-    {
+    private T getIndicatorFromPagePosition(final int pagePosition) {
         T indicator = null;
-        switch (pagePosition)
-        {
+        switch (pagePosition) {
             case Constants.PAGE_POSITION_LEFT:
                 indicator = getPreviousIndicator();
                 break;
@@ -161,17 +148,14 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter
      * @param from page index to move contents from.
      * @param to   page index to move contents to.
      */
-    void movePageContents(final int from, final int to)
-    {
+    void movePageContents(final int from, final int to) {
         final PageModel<T> fromModel = mPageModels[from];
         final PageModel<T> toModel = mPageModels[to];
-        if (fromModel == null || toModel == null)
-        {
+        if (fromModel == null || toModel == null) {
             Log.w(Constants.LOG_TAG, "fillPage no model found " + fromModel + " " + toModel);
             return;
         }
-        if (Constants.DEBUG)
-        {
+        if (Constants.DEBUG) {
             Log.d("InfiniteViewPager",
                     String.format("Moving page %s to %s, indicator from %s to %s", from, to,
                             fromModel.getIndicator(), toModel.getIndicator()));
@@ -180,27 +164,22 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter
 
 
         toModel.removeAllChildren();
-        for (View view : fromModel.getChildren())
-        {
+        for (View view : fromModel.getChildren()) {
             fromModel.removeViewFromParent(view);
             toModel.addChild(view);
         }
 
-        if (Constants.DEBUG)
-        {
+        if (Constants.DEBUG) {
             printPageModels("transfer");
         }
         mPageModels[to].setIndicator(fromModel.getIndicator());
-        if (Constants.DEBUG)
-        {
+        if (Constants.DEBUG) {
             printPageModels("after");
         }
     }
 
-    void reset()
-    {
-        for (PageModel<T> pageModel : mPageModels)
-        {
+    void reset() {
+        for (PageModel<T> pageModel : mPageModels) {
             pageModel.removeAllChildren();
         }
     }
@@ -229,8 +208,7 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter
      * @return a string representation of the current indicator.
      * @see #convertToIndicator(String)
      */
-    public String getStringRepresentation(final T currentIndicator)
-    {
+    public String getStringRepresentation(final T currentIndicator) {
         return "";
     }
 
@@ -240,42 +218,35 @@ public abstract class InfinitePagerAdapter<T> extends PagerAdapter
      * @param representation the string representation of the current indicator.
      * @return the indicator.
      */
-    public T convertToIndicator(final String representation)
-    {
+    public T convertToIndicator(final String representation) {
         return getCurrentIndicator();
     }
 
     @Override
-    public final int getCount()
-    {
+    public final int getCount() {
         return PAGE_COUNT;
     }
 
     @Override
-    public void destroyItem(final ViewGroup container, final int position, final Object object)
-    {
+    public void destroyItem(final ViewGroup container, final int position, final Object object) {
         final PageModel model = (PageModel) object;
         container.removeView(model.getParentView());
     }
 
     @Override
-    public final boolean isViewFromObject(final View view, final Object o)
-    {
+    public final boolean isViewFromObject(final View view, final Object o) {
         return view == ((PageModel) o).getParentView();
     }
 
     // Debug related methods
 
-    private void printPageModels(final String tag)
-    {
-        for (int i = 0; i < PAGE_COUNT; i++)
-        {
+    private void printPageModels(final String tag) {
+        for (int i = 0; i < PAGE_COUNT; i++) {
             printPageModel(tag, mPageModels[i], i);
         }
     }
 
-    private void printPageModel(final String tag, final PageModel model, int modelPos)
-    {
+    private void printPageModel(final String tag, final PageModel model, int modelPos) {
         final String builder = String.format("%s: ModelPos %s, indicator %s, " +
                         "Childcount %s viewChildCount %s tag %s",
                 tag, modelPos,

@@ -11,8 +11,7 @@ import ch.epfl.sweng.evento.R;
  * the day of the calendar : is the day the current day, is it in the displayed month, is there
  * some event at that date
  */
-public class CalendarDay extends Button
-{
+public class CalendarDay extends Button {
     public static final int[] STATE_CURRENT_DAY = {R.attr.state_current_day};
     public static final int[] STATE_CURRENT_MONTH = {R.attr.state_current_month};
     public static final int[] STATE_HAVE_EVENTS = {R.attr.state_have_events};
@@ -30,8 +29,7 @@ public class CalendarDay extends Button
      * @param context context where the button is used
      * @param attrs   attributes of the button
      */
-    public CalendarDay(Context context, AttributeSet attrs)
-    {
+    public CalendarDay(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -41,8 +39,7 @@ public class CalendarDay extends Button
      *
      * @return the state of the CurrentDay state
      */
-    public boolean getStateCurrentDay()
-    {
+    public boolean getStateCurrentDay() {
         return mIsCurrentDay;
     }
 
@@ -51,8 +48,7 @@ public class CalendarDay extends Button
      *
      * @param isCurrentDay the state wanted for the CurrentDay state
      */
-    public void setStateCurrentDay(boolean isCurrentDay)
-    {
+    public void setStateCurrentDay(boolean isCurrentDay) {
         mIsCurrentDay = isCurrentDay;
         refreshDrawableState();
     }
@@ -62,8 +58,7 @@ public class CalendarDay extends Button
      *
      * @return the state of the CurrentMonth state
      */
-    public boolean getStateCurrentMonth()
-    {
+    public boolean getStateCurrentMonth() {
         return mIsCurrentMonth;
     }
 
@@ -72,8 +67,7 @@ public class CalendarDay extends Button
      *
      * @param isCurrentMonth the state wanted for the CurrentMonth state
      */
-    public void setStateCurrentMonth(boolean isCurrentMonth)
-    {
+    public void setStateCurrentMonth(boolean isCurrentMonth) {
         mIsCurrentMonth = isCurrentMonth;
         refreshDrawableState();
     }
@@ -83,8 +77,7 @@ public class CalendarDay extends Button
      *
      * @return the state of the HaveEvents state
      */
-    public boolean getStateHaveEvents()
-    {
+    public boolean getStateHaveEvents() {
         return mHaveEvents;
     }
 
@@ -93,8 +86,7 @@ public class CalendarDay extends Button
      *
      * @param haveEvents the state wanted for the HaveEvents state
      */
-    public void setStateHaveEvents(boolean haveEvents)
-    {
+    public void setStateHaveEvents(boolean haveEvents) {
         mHaveEvents = haveEvents;
         refreshDrawableState();
     }
@@ -103,25 +95,22 @@ public class CalendarDay extends Button
     /**
      * Generate the new Drawable state for this view. This is called by the view system when the
      * cached Drawable state is determined to be invalid. To retrieve the current state, you should use getDrawableState().
+     *
      * @param extraSpace if non-zero, this is the number of extra entries you would like in the
      *                   returned array in which you can place your own states.
      * @return Returns an array holding the current Drawable state of the view.
      */
     @Override
-    protected int[] onCreateDrawableState(int extraSpace)
-    {
+    protected int[] onCreateDrawableState(int extraSpace) {
         final int[] drawableState = super.onCreateDrawableState(extraSpace + NUMBER_OF_STATES);
 
-        if (mIsCurrentDay)
-        {
+        if (mIsCurrentDay) {
             mergeDrawableStates(drawableState, STATE_CURRENT_DAY);
         }
-        if (mIsCurrentMonth)
-        {
+        if (mIsCurrentMonth) {
             mergeDrawableStates(drawableState, STATE_CURRENT_MONTH);
         }
-        if (mHaveEvents)
-        {
+        if (mHaveEvents) {
             mergeDrawableStates(drawableState, STATE_HAVE_EVENTS);
         }
 

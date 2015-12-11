@@ -57,8 +57,7 @@ import ch.epfl.sweng.evento.tabs_fragment.MyView.MyView;
  * Simple Fragment used to display some meaningful content for each page in the sample's
  * {@link android.support.v4.view.ViewPager}.
  */
-public class ContentFragment extends Fragment implements Refreshable
-{
+public class ContentFragment extends Fragment implements Refreshable {
 
 
     private static final int MAX_NUMBER_OF_EVENT = 50;
@@ -85,17 +84,14 @@ public class ContentFragment extends Fragment implements Refreshable
      * Create a new instance of {@link ContentFragment}, adding the parameters into a bundle and
      * setting them as arguments.
      */
-    public ContentFragment()
-    {
+    public ContentFragment() {
         super();
         mNumberOfColumn = 3;
         mNumberOfRow = 4;
         mDisplayOrNot = new Vector<boolean[]>();
-        for (int i = 0; i < 2 * MAX_NUMBER_OF_EVENT / mNumberOfColumn + 1; ++i)
-        {
+        for (int i = 0; i < 2 * MAX_NUMBER_OF_EVENT / mNumberOfColumn + 1; ++i) {
             boolean[] tmpBooleanRow = new boolean[mNumberOfColumn];
-            for (int j = 0; j < mNumberOfColumn; ++j)
-            {
+            for (int j = 0; j < mNumberOfColumn; ++j) {
                 tmpBooleanRow[j] = true;
             }
             mDisplayOrNot.add(tmpBooleanRow);
@@ -107,37 +103,32 @@ public class ContentFragment extends Fragment implements Refreshable
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = getActivity();
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         if (mView != null) refresh();
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
         //adding content fragment as observer of EventDatabase
         EventDatabase.INSTANCE.addObserver(this);
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
         //remove content fragment as observer of EventDatabase
         EventDatabase.INSTANCE.removeObserver(this);
     }
 
-    public void refresh()
-    {
+    public void refresh() {
 
         mEvents = EventDatabase.INSTANCE.getAllEvents();
         mNumberOfEvent = mEvents.size();
@@ -147,8 +138,7 @@ public class ContentFragment extends Fragment implements Refreshable
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_mosaic, container, false);
 
         refresh();
@@ -156,8 +146,7 @@ public class ContentFragment extends Fragment implements Refreshable
         return mView;
     }
 
-    private void displayMosaic()
-    {
+    private void displayMosaic() {
         mGridLayout = (GridLayout) mView.findViewById(R.id.gridLayout);
         mGridLayout.setRowCount(mNumberOfRow);
         mGridLayout.setColumnCount(mNumberOfColumn);
@@ -170,17 +159,13 @@ public class ContentFragment extends Fragment implements Refreshable
         boolean[] tmpBooleanRow = new boolean[mNumberOfColumn];
         Span tmpSpanSmtgOrNot = Span.NOTHING;
         int spanning = 0;
-        for (int yPos = 0, countEvent = 0; countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; yPos++)
-        {
-            for (int xPos = 0; xPos < mNumberOfColumn && countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; xPos++, countEvent++)
-            {
+        for (int yPos = 0, countEvent = 0; countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; yPos++) {
+            for (int xPos = 0; xPos < mNumberOfColumn && countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; xPos++, countEvent++) {
                 final MyView tView = new MyView(mView.getContext(), xPos, yPos);
                 final int count = countEvent;
-                tView.setOnClickListener(new View.OnClickListener()
-                {
+                tView.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view)
-                    {
+                    public void onClick(View view) {
                         Intent intent = new Intent(mActivity, EventActivity.class);
                         intent.putExtra(EventActivity.CURRENT_EVENT_KEY, mEvents.get(count).getID());
                         mActivity.startActivity(intent);
@@ -198,7 +183,7 @@ public class ContentFragment extends Fragment implements Refreshable
                         //tView.setImageResource(R.drawable.football);
                         Bitmap bitmap = mEvents.get(countEvent).getPicture();
                         mHeightRow = size.y / 6 - 4 * PADDING;
-                        tView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap,mWidthColumn , mHeightRow));
+                        tView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, mWidthColumn, mHeightRow));
                     } else if (mParty.contains(mEvents.get(countEvent).getTags().toString().replace("]", "").replace("[", ""))) {
                         tmpSpanSmtgOrNot = Span.TWO_ROWS;
                         Bitmap bitmap = mEvents.get(countEvent).getPicture();
@@ -217,19 +202,16 @@ public class ContentFragment extends Fragment implements Refreshable
                     tView.setAdjustViewBounds(false);
                     mMyViews.add(tView);
 
-                    switch (tmpSpanSmtgOrNot)
-                    {
+                    switch (tmpSpanSmtgOrNot) {
                         case NOTHING:
-                            while (yPos >= mNumberOfRow)
-                            {
+                            while (yPos >= mNumberOfRow) {
                                 ++mNumberOfRow;
                                 mGridLayout.setRowCount(mNumberOfRow);
                             }
                             addViewToGridLayout(tView, yPos, xPos, 1, 1, mWidthColumn);
                             break;
                         case TWO_ROWS:
-                            while ((yPos + 1) >= mNumberOfRow)
-                            {
+                            while ((yPos + 1) >= mNumberOfRow) {
                                 ++mNumberOfRow;
                                 mGridLayout.setRowCount(mNumberOfRow);
                             }
@@ -239,16 +221,14 @@ public class ContentFragment extends Fragment implements Refreshable
                             addViewToGridLayout(tView, yPos, xPos, 1, 2, mWidthColumn);
                             break;
                     }
-                } else
-                {
+                } else {
                     countEvent--;
                 }
             }
         }
     }
 
-    public void addViewToGridLayout(View view, int row, int column, int rowSpan, int columnSpan, int width)
-    {
+    public void addViewToGridLayout(View view, int row, int column, int rowSpan, int columnSpan, int width) {
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
         params.width = width + 2 * PADDING;
         params.setMargins(PADDING, PADDING, PADDING, PADDING);
@@ -259,13 +239,11 @@ public class ContentFragment extends Fragment implements Refreshable
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState)
-    {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public enum Span
-    {
+    public enum Span {
         NOTHING, TWO_ROWS, TWO_COLUMNS
     }
 

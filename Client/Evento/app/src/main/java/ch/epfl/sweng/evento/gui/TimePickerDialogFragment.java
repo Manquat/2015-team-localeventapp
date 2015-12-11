@@ -11,12 +11,10 @@ import java.util.Calendar;
 /**
  * Created by thomas on 09/11/15.
  */
-public class TimePickerDialogFragment extends DialogFragment
-{
+public class TimePickerDialogFragment extends DialogFragment {
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState)
-    {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current time as the default values for the picker
         final Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);

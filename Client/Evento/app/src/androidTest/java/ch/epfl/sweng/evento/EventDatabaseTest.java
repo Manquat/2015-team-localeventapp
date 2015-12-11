@@ -85,14 +85,17 @@ public class EventDatabaseTest {
     public void testGetNextEvent() {
         assertEquals(mEvent2, EventDatabase.INSTANCE.getNextEvent(mEvent1));
     }
+
     @Test
     public void testGetPreviousEvent() {
         assertEquals(mEvent2, EventDatabase.INSTANCE.getPreviousEvent(mEvent3));
     }
+
     @Test
     public void testGet() {
         assertEquals(mEvent3, EventDatabase.INSTANCE.get(1));
     }
+
     @Test
     public void testFilterDate() {
         List<Event> events = new ArrayList<>();
