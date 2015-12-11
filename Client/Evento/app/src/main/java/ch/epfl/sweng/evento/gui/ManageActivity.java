@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.User;
@@ -32,8 +35,11 @@ import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.callback.GetUserCallback;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
+import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 
-public class ManageActivity extends AppCompatActivity implements AdapterView.OnItemClickListener
+public class ManageActivity extends AppCompatActivity implements
+        AdapterView.OnItemClickListener,
+        Refreshable
 {
 
     private static final String TAG = "ManageActivity";
@@ -49,6 +55,9 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        new AutoRefreshToolbar(this, toolbar);
 
         TextView WelcomeView = (TextView) (findViewById(R.id.Welcome));
         WelcomeView.setText("Welcome " + Settings.getUser().getUsername() + ".");
@@ -100,6 +109,24 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
         }, Settings.getUser().getUserId());
 
         mListView.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+
+        //adding the ManageActivity to the observer of the eventDatabase
+        EventDatabase.INSTANCE.addObserver(this);
+    }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+
+        //removing the ManageActivity to the observer of the eventDatabase
+        EventDatabase.INSTANCE.removeObserver(this);
     }
 
 
@@ -194,9 +221,18 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
                 mActivity.finish();
             }
         });
+    }
 
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
 
+    @Override
+    public void refresh() {
+        Toast.makeText(this, "Refreshed", Toast.LENGTH_SHORT);
+    }
 }
