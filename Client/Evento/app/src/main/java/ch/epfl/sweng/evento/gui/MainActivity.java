@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements Refreshable
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        assert (Settings.getUser() != null);
         Log.d(TAG, Settings.getUser().getUsername());
 
         // Creating the Toolbar and setting it as the Toolbar for the activity

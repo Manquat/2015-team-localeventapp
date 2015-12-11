@@ -74,6 +74,7 @@ public enum EventDatabase implements Refreshable
         }
         for (Event e : events)
         {
+            mEventSet.clear();
             mEventSet.addEvent(e);
             Log.i(TAG, "EVENT LOADED " + e.getTitle());
         }
@@ -187,7 +188,6 @@ public enum EventDatabase implements Refreshable
 
     public void refresh()
     {
-        mEventSet.clear();
         loadNewEvents();
     }
 

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
@@ -94,8 +95,11 @@ public class EventInfinitePageAdapter extends InfinitePagerAdapter<Integer>
             public void onDataReceived(User user)
             {
                 TextView creatorView = (TextView) innerView.findViewById(R.id.event_creator_view);
-                creatorView.setText(user.getUsername());
-
+                if (user != null) {
+                    creatorView.setText(user.getUsername());
+                } else {
+                    Toast.makeText(mActivity, "The owner don't exist", Toast.LENGTH_SHORT);
+                }
             }
         }, event.getOwner());
     }
