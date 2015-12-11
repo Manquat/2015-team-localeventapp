@@ -110,6 +110,8 @@ public class AddingComment implements OnClickListener, Refreshable
                         }
                     }
                 });
+
+                mMessageBox = null;
             }
         }
     }
