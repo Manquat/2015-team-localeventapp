@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.gui.CreatingEventActivity;
+import ch.epfl.sweng.evento.gui.LoginActivity;
+import ch.epfl.sweng.evento.gui.ManageActivity;
+import ch.epfl.sweng.evento.gui.SearchActivity;
 import ch.epfl.sweng.evento.gui.infinite_pager_adapter.EventInfinitePageAdapter;
 import ch.epfl.sweng.evento.gui.infinite_pager_adapter.InfiniteViewPager;
 
@@ -73,14 +76,29 @@ public class EventActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
 
         int id = item.getItemId();
-
+        // based on the current position you can then cast the page to the correct
+        // class and call the method:
         if (id == R.id.action_createAnEvent)
         {
             Intent intent = new Intent(this, CreatingEventActivity.class);
             startActivity(intent);
+        } else if (id == R.id.action_search)
+        {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.action_refresh)
+        {
+            EventDatabase.INSTANCE.refresh();
         } else if (id == R.id.action_logout)
         {
-
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.putExtra(LoginActivity.LOGOUT_TAG, true);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.action_manageYourEvent)
+        {
+            Intent intent = new Intent(this, ManageActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

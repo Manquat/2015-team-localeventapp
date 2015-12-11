@@ -56,7 +56,6 @@ import ch.epfl.sweng.evento.tabs_layout.SlidingTabLayout;
 public class MainActivity extends AppCompatActivity implements Refreshable
 {
 
-    public static final String LOGOUT_TAG = "LOGOUT";
     private static final int NOTIFICATION_ID = 1234567890;
     private static final String TAG = "MainActivity";
     private static final int MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
@@ -177,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements Refreshable
         } else if (id == R.id.action_logout)
         {
             Intent intent = new Intent(this, LoginActivity.class);
-            intent.putExtra(LOGOUT_TAG, true);
+            intent.putExtra(LoginActivity.LOGOUT_TAG, true);
             startActivity(intent);
             finish();
         } else if (id == R.id.action_manageYourEvent)

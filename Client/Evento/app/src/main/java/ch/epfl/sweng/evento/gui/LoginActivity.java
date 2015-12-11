@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener
 {
+    public static final String LOGOUT_TAG = "LOGOUT";
 
     private static final String TAG = "LoginActivity";
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
@@ -75,7 +76,7 @@ public class LoginActivity extends AppCompatActivity implements
 
         if (getIntent() != null &&
                 getIntent().getExtras() != null &&
-                getIntent().getExtras().getBoolean(MainActivity.LOGOUT_TAG, false))
+                getIntent().getExtras().getBoolean(LOGOUT_TAG, false))
         {
             logout();
         }
