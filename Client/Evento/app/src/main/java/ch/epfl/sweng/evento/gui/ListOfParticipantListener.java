@@ -80,7 +80,7 @@ public class ListOfParticipantListener implements
             participantName[i] = mParticipant.get(i).getUsername();
         }
 
-        String chars = "Touch a participant to see his profile";
+        String chars = "This all the user joined in this event";
         SpannableString str = new SpannableString(chars);
         str.setSpan(new ForegroundColorSpan(Color.BLACK), 0, chars.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
