@@ -308,7 +308,7 @@ public class Event implements ClusterItem
      */
     public String getTagsString()
     {
-        String res = "";
+        String res = " ";
         for (String str: mTags){
             res = str + ";";
         }

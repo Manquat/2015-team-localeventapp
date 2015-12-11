@@ -67,7 +67,7 @@ public class CreatingEventActivity extends AppCompatActivity
     protected Calendar mEndDate;
     protected TextView mStartDateView;
     protected TextView mEndDateView;
-    protected Set<String> mTag = new HashSet<>();
+    protected Set<String> mTag = new HashSet<String>(){{add("Football");}};
     private boolean mStartOrEndDate;
     private boolean mDisplayTimeFragment;
     private DatePickerDialogFragment mDateFragment;
