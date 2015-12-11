@@ -22,10 +22,10 @@ public class AutoRefreshToolbar implements Toolbar.OnMenuItemClickListener {
     /**
      * Constructor that make this object as the listener of the click on the menu and
      * start the Timer to automatically refresh every 10min
-     * @param activityParent
-     * @param toolbar
+     * @param activityParent the parentActivity that must be an AppCompatActivity (to accept a Toolbar)
+     * @param toolbar the toolbar in the current activity
      */
-    AutoRefreshToolbar(AppCompatActivity activityParent, Toolbar toolbar) {
+    public AutoRefreshToolbar(AppCompatActivity activityParent, Toolbar toolbar) {
         mActivity = activityParent;
 
         mActivity.setSupportActionBar(toolbar);

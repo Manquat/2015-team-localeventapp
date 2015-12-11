@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.gui.AutoRefreshToolbar;
 import ch.epfl.sweng.evento.gui.CreatingEventActivity;
 import ch.epfl.sweng.evento.gui.LoginActivity;
 import ch.epfl.sweng.evento.gui.ManageActivity;
@@ -34,7 +35,7 @@ public class EventActivity extends AppCompatActivity
 
         // Creating the Toolbar and setting it as the Toolbar for the activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        setSupportActionBar(toolbar);
+        new AutoRefreshToolbar(this, toolbar);
 
         // get the signature of the current event
 
@@ -58,50 +59,5 @@ public class EventActivity extends AppCompatActivity
     {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu)
-    {
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-        int id = item.getItemId();
-        // based on the current position you can then cast the page to the correct
-        // class and call the method:
-        if (id == R.id.action_createAnEvent)
-        {
-            Intent intent = new Intent(this, CreatingEventActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.action_search)
-        {
-            Intent intent = new Intent(this, SearchActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.action_refresh)
-        {
-            EventDatabase.INSTANCE.refresh();
-        } else if (id == R.id.action_logout)
-        {
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.putExtra(LoginActivity.LOGOUT_TAG, true);
-            startActivity(intent);
-            finish();
-        } else if (id == R.id.action_manageYourEvent)
-        {
-            Intent intent = new Intent(this, ManageActivity.class);
-            startActivity(intent);
-        }
-
-        return super.onOptionsItemSelected(item);
-
     }
 }
