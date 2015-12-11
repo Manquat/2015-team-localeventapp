@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements Refreshable
         // Creating the Toolbar and setting it as the Toolbar for the activity
         mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);
+        mToolbar.setOnMenuItemClickListener(new RefreshToolbar(this));
 
         // Creating the ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs.
         mAdapter = new ViewPageAdapter(getSupportFragmentManager(), mTitles);
