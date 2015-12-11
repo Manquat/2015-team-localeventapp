@@ -38,6 +38,7 @@ import android.widget.ImageButton;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Vector;
@@ -46,6 +47,7 @@ import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.gui.CreatingEventActivity;
 import ch.epfl.sweng.evento.gui.event_activity.EventActivity;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
@@ -160,6 +162,10 @@ public class ContentFragment extends Fragment implements Refreshable
         mGridLayout.setRowCount(mNumberOfRow);
         mGridLayout.setColumnCount(mNumberOfColumn);
         mGridLayout.removeAllViews();
+        List<String> mParty = new ArrayList<String>(Arrays.asList(
+                "Birthday", "Dinner", "Surprise", "Garden", "Tea", "Beer-Pong",
+                "Dance and Ball",
+                "Go for Hang-over"));
 
         boolean[] tmpBooleanRow = new boolean[mNumberOfColumn];
         Span tmpSpanSmtgOrNot = Span.NOTHING;
@@ -185,13 +191,15 @@ public class ContentFragment extends Fragment implements Refreshable
                     mActivity.getWindowManager().getDefaultDisplay().getSize(size);
                     mWidthColumn = size.x / 3 - 4 * PADDING;
                     if (mEvents.get(countEvent).getTags().contains("Foot!") ||
-                            mEvents.get(countEvent).getTags().contains("Football")) {
+                            CreatingEventActivity.getSport().contains(mEvents.get(countEvent).getTags().toString().replace("]", "").replace("[", "")) ||
+                            CreatingEventActivity.getStuff().contains(mEvents.get(countEvent).getTags().toString().replace("]", "").replace("[", ""))
+                            ) {
                         tmpSpanSmtgOrNot = Span.NOTHING;
                         //tView.setImageResource(R.drawable.football);
                         Bitmap bitmap = mEvents.get(countEvent).getPicture();
                         mHeightRow = size.y / 6 - 4 * PADDING;
                         tView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap,mWidthColumn , mHeightRow));
-                    } else if (mEvents.get(countEvent).getTags().contains("Basketball")) {
+                    } else if (mParty.contains(mEvents.get(countEvent).getTags().toString().replace("]", "").replace("[", ""))) {
                         tmpSpanSmtgOrNot = Span.TWO_ROWS;
                         Bitmap bitmap = mEvents.get(countEvent).getPicture();
                         mHeightRow = size.y / 3 - 6 * PADDING;
