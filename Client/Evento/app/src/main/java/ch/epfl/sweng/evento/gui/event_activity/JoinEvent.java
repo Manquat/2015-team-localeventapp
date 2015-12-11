@@ -111,8 +111,14 @@ public class JoinEvent implements
     {
         mIsTheEventJoined = mParticipant.contains(Settings.getUser());
 
-        mJoinEventButton.setEnabled(!mIsTheEventJoined);
-        mUnJoinEventButton.setEnabled(mIsTheEventJoined);
+        if (mIsTheEventJoined)
+        {
+            mJoinEventButton.setVisibility(View.INVISIBLE);
+            mUnJoinEventButton.setVisibility(View.VISIBLE);
+        } else {
+            mJoinEventButton.setVisibility(View.VISIBLE);
+            mUnJoinEventButton.setVisibility(View.INVISIBLE);
+        }
 
         mParentRefreshable.refresh();
     }
