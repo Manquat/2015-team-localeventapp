@@ -19,7 +19,6 @@ package ch.epfl.sweng.evento.gui;
 
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -27,16 +26,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
@@ -62,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements Refreshable
     private static final int MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
     private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
     private static final String urlServer = Settings.getServerUrl();
-    private Toolbar mToolbar;
     private ViewPager mPager;
     private ViewPageAdapter mAdapter;
     private SlidingTabLayout mTabs;
@@ -79,9 +73,8 @@ public class MainActivity extends AppCompatActivity implements Refreshable
         Log.d(TAG, Settings.getUser().getUsername());
 
         // Creating the Toolbar and setting it as the Toolbar for the activity
-        mToolbar = (Toolbar) findViewById(R.id.tool_bar);
-        setSupportActionBar(mToolbar);
-        mToolbar.setOnMenuItemClickListener(new RefreshToolbar(this));
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        new AutoRefreshToolbar(this, toolbar);
 
         // Creating the ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs.
         mAdapter = new ViewPageAdapter(getSupportFragmentManager(), mTitles);
@@ -98,26 +91,14 @@ public class MainActivity extends AppCompatActivity implements Refreshable
         mTabs.setDistributeEvenly(true); // This makes the tabs Space Evenly in Available width
 
         // Setting Custom Color for the Scroll bar indicator of the Tab View
-        mTabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer()
-        {
+        mTabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
-            public int getIndicatorColor(int position)
-            {
+            public int getIndicatorColor(int position) {
                 return ContextCompat.getColor(getApplicationContext(), R.color.tabsScrollColor);
             }
         });
         // Setting the ViewPager For the SlidingTabsLayout
         mTabs.setViewPager(mPager);
-
-        //to refresh every 10 minutes
-        new Timer().scheduleAtFixedRate(new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                EventDatabase.INSTANCE.refresh();
-            }
-        }, 0, 10 * 60 * 1000);
     }
 
     @Override
@@ -145,52 +126,6 @@ public class MainActivity extends AppCompatActivity implements Refreshable
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu)
-    {
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-        int id = item.getItemId();
-        // based on the current position you can then cast the page to the correct
-        // class and call the method:
-        if (id == R.id.action_createAnEvent)
-        {
-            Intent intent = new Intent(this, CreatingEventActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.action_search)
-        {
-            Intent intent = new Intent(this, SearchActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.action_refresh)
-        {
-            EventDatabase.INSTANCE.refresh();
-        } else if (id == R.id.action_logout)
-        {
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.putExtra(LoginActivity.LOGOUT_TAG, true);
-            startActivity(intent);
-            finish();
-        } else if (id == R.id.action_manageYourEvent)
-        {
-            Intent intent = new Intent(this, ManageActivity.class);
-            startActivity(intent);
-        }
-
-        return super.onOptionsItemSelected(item);
-
-    }
-
 
 
     public void makeNotifications(List<Event> eventArrayList)

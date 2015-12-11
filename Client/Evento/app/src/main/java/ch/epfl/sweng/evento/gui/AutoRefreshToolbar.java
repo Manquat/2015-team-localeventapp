@@ -1,23 +1,51 @@
 package ch.epfl.sweng.evento.gui;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 
 /**
- * Manage all the aspect of the toolbar and the automatic refresh
+ * Manage all the aspect of the toolbar except the creation
+ * Manage the automatic refresh
  */
-public class RefreshToolbar implements Toolbar.OnMenuItemClickListener {
-    private Activity mActivity;
+public class AutoRefreshToolbar implements Toolbar.OnMenuItemClickListener {
+    private AppCompatActivity mActivity;
 
-    RefreshToolbar(Activity activityParent) {
+    /**
+     * Constructor that make this object as the listener of the click on the menu and
+     * start the Timer to automatically refresh every 10min
+     * @param activityParent
+     * @param toolbar
+     */
+    AutoRefreshToolbar(AppCompatActivity activityParent, Toolbar toolbar) {
         mActivity = activityParent;
+
+        mActivity.setSupportActionBar(toolbar);
+        toolbar.setOnMenuItemClickListener(this);
+
+        //to refresh every 10 minutes
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                EventDatabase.INSTANCE.refresh();
+            }
+        }, 0, 10 * 60 * 1000);
     }
 
+    /**
+     * Call when a click on the menu is made
+     * Implements the OnMenuItemClickListener interface
+     * @param item the item that have been click by the user
+     * @return true to eventually inflate the menu if the click is on 3 dots
+     */
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
