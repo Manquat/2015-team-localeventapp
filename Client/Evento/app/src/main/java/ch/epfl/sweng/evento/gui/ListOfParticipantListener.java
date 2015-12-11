@@ -90,6 +90,7 @@ public class ListOfParticipantListener implements
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
+
                     }
                 });
         builder.create().show();

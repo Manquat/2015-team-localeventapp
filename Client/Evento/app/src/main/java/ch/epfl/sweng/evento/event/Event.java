@@ -3,6 +3,7 @@ package ch.epfl.sweng.evento.event;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
@@ -307,17 +308,11 @@ public class Event implements ClusterItem
      */
     public String getTagsString()
     {
-        if (mTags.contains("Foot!") ||
-                mTags.contains("Football"))
-        {
-            return "Football";
-        } else if (mTags.contains("Basketball"))
-        {
-            return "Basketball";
-        } else
-        {
-            return "Unknown";
+        String res = "";
+        for (String str: mTags){
+            res = str + ";";
         }
+        return res;
     }
 
     /**

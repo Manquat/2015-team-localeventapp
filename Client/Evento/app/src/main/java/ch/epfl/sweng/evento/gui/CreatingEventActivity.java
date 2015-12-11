@@ -39,6 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -79,12 +80,33 @@ public class CreatingEventActivity extends AppCompatActivity
     private double latitude = 0.0;
     private double longitude = 0.0;
     private TimePickerDialogFragment mTimeFragment;
+    private final static List<String> mSport = new ArrayList<String>(Arrays.asList("Football",
+    "Basketball",
+    "Badminton",
+    "Ping-Pong"));
 
+
+    private final static List<String> mParty = new ArrayList<String>(Arrays.asList(
+            "Birthday", "Dinner","Surprise","Garden","Tea","Beer-Pong",
+    "Dance and Ball",
+   "Go for Hang-over"));
+
+
+    private final static List<String> mStuff = new ArrayList<String>(Arrays.asList(
+            "Cinema",
+            "Cleaning",
+            "Role Play Game",
+            "Trekking"));
+
+    public static List<String> getSport(){return mSport;}
+    public static List<String> getParty(){return mParty;}
+    public static List<String> getStuff(){return mStuff;}
 
     /**
      * Callback for results from a Places Geo Data API query that shows the first place result in
      * the details view on screen.
      */
+
     private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
             = new ResultCallback<PlaceBuffer>()
     {
@@ -501,26 +523,12 @@ public class CreatingEventActivity extends AppCompatActivity
         // Adding child data
         mListDataHeader.add("Sport");
         mListDataHeader.add("Party");
-        mListDataHeader.add("Stuff");
-
-        // Adding child data
-        List<String> sport = new ArrayList<String>();
-        sport.add("Football");
-        sport.add("Basketball");
-
-        List<String> party = new ArrayList<String>();
-        party.add("Bal");
-        party.add("Boule");
-        party.add("Bill");
-
-        List<String> stuff = new ArrayList<String>();
-        stuff.add("Penguin");
-        stuff.add("Smurfs");
+        mListDataHeader.add("Travel");
 
 
-        mListDataChild.put(mListDataHeader.get(0), sport);
-        mListDataChild.put(mListDataHeader.get(1), party);
-        mListDataChild.put(mListDataHeader.get(2), stuff);
+        mListDataChild.put(mListDataHeader.get(0), mSport);
+        mListDataChild.put(mListDataHeader.get(1), mParty);
+        mListDataChild.put(mListDataHeader.get(2), mStuff);
     }
 
     /**
