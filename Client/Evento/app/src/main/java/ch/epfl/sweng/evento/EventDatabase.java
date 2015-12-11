@@ -72,9 +72,10 @@ public enum EventDatabase implements Refreshable
         {
             return;
         }
+        mEventSet.clear();
+        
         for (Event e : events)
         {
-            mEventSet.clear();
             mEventSet.addEvent(e);
             Log.i(TAG, "EVENT LOADED " + e.getTitle());
         }
