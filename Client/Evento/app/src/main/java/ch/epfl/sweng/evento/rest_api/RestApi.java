@@ -147,10 +147,10 @@ public class RestApi
             @Override
             public void onTaskComplete(String response)
             {
-                Log.d(TAG, response);
                 User user = null;
                 if (response != null)
                 {
+                    Log.d(TAG, response);
                     try
                     {
                         JSONObject JsonResponse = new JSONObject(response);
