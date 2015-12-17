@@ -1,8 +1,8 @@
 package ch.epfl.sweng.evento;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -11,9 +11,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.epfl.sweng.evento.list_view.ListEntryAdapter;
-
 import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.list_view.ListEntryAdapter;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 
@@ -33,7 +32,7 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
         setContentView(R.layout.activity_manage);
         mActivity = this;
         mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-        mListView=(ListView)findViewById(R.id.listViewManage);
+        mListView = (ListView) findViewById(R.id.listViewManage);
 
         mItems.add(new ListEntryAdapter.Section("Hosted Event"));
         for (Event event : mHostedEvent) {
@@ -54,7 +53,7 @@ public class ManageActivity extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onItemClick(AdapterView arg0, View arg1, int position, long arg3) {
 
-        ListEntryAdapter.Entry item = (ListEntryAdapter.Entry)mItems.get(position);
+        ListEntryAdapter.Entry item = (ListEntryAdapter.Entry) mItems.get(position);
         Toast.makeText(this, "You clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
     }
 

@@ -7,8 +7,9 @@ import android.widget.Button;
 import ch.epfl.sweng.evento.R;
 
 /**
- * Extension of the base button class to add some custom features : new stats that are specify for
- * the day of the calendar
+ * Extension of the base button class to add some custom features, new stats that are specify for
+ * the day of the calendar : is the day the current day, is it in the displayed month, is there
+ * some event at that date
  */
 public class CalendarDay extends Button {
     public static final int[] STATE_CURRENT_DAY = {R.attr.state_current_day};
@@ -43,25 +44,6 @@ public class CalendarDay extends Button {
     }
 
     /**
-     * Getter for the CurrentMonth state
-     *
-     * @return the state of the CurrentMonth state
-     */
-    public boolean getStateCurrentMonth() {
-        return mIsCurrentMonth;
-    }
-
-    /**
-     * Getter for the HaveEvents state
-     *
-     * @return the state of the HaveEvents state
-     */
-    public boolean getStateHaveEvents() {
-        return mHaveEvents;
-    }
-
-
-    /**
      * Setter for the CurrentDay state
      *
      * @param isCurrentDay the state wanted for the CurrentDay state
@@ -69,6 +51,15 @@ public class CalendarDay extends Button {
     public void setStateCurrentDay(boolean isCurrentDay) {
         mIsCurrentDay = isCurrentDay;
         refreshDrawableState();
+    }
+
+    /**
+     * Getter for the CurrentMonth state
+     *
+     * @return the state of the CurrentMonth state
+     */
+    public boolean getStateCurrentMonth() {
+        return mIsCurrentMonth;
     }
 
     /**
@@ -82,6 +73,15 @@ public class CalendarDay extends Button {
     }
 
     /**
+     * Getter for the HaveEvents state
+     *
+     * @return the state of the HaveEvents state
+     */
+    public boolean getStateHaveEvents() {
+        return mHaveEvents;
+    }
+
+    /**
      * Setter for the HaveEvents state
      *
      * @param haveEvents the state wanted for the HaveEvents state
@@ -92,6 +92,14 @@ public class CalendarDay extends Button {
     }
 
 
+    /**
+     * Generate the new Drawable state for this view. This is called by the view system when the
+     * cached Drawable state is determined to be invalid. To retrieve the current state, you should use getDrawableState().
+     *
+     * @param extraSpace if non-zero, this is the number of extra entries you would like in the
+     *                   returned array in which you can place your own states.
+     * @return Returns an array holding the current Drawable state of the view.
+     */
     @Override
     protected int[] onCreateDrawableState(int extraSpace) {
         final int[] drawableState = super.onCreateDrawableState(extraSpace + NUMBER_OF_STATES);

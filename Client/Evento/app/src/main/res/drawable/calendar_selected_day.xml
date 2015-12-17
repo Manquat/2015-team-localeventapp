@@ -5,9 +5,9 @@
 
     <item
         android:bottom="@dimen/calendar_grid_item_selected_padding"
-        android:left="@dimen/calendar_grid_item_selected_padding"
-        android:right="@dimen/calendar_grid_item_selected_padding"
-        android:top="@dimen/calendar_grid_item_selected_padding"
-        android:drawable="@drawable/calendar_selected_day_shape" />
+        android:drawable="@drawable/calendar_selected_day_shape"
+        android:left="@dimen/calendar_grid_item_selected_padding_side"
+        android:right="@dimen/calendar_grid_item_selected_padding_side"
+        android:top="@dimen/calendar_grid_item_selected_padding" />
 
 </layer-list>

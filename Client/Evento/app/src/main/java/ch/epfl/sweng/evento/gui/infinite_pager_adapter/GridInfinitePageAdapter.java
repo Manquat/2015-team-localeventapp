@@ -1,4 +1,4 @@
-package ch.epfl.sweng.evento.infinite_pager_adapter;
+package ch.epfl.sweng.evento.gui.infinite_pager_adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,7 +16,7 @@ import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.calendar.GridCalendarAdapter;
 import ch.epfl.sweng.evento.event.Event;
-import ch.epfl.sweng.evento.infinite_pager_adapter.internal.Constants;
+import ch.epfl.sweng.evento.gui.infinite_pager_adapter.internal.Constants;
 import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 
 /**
@@ -80,6 +80,7 @@ public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> imple
     @Override
     public void refresh() {
         mParent.refresh();
+        notifyDataSetChanged();
     }
 
     public void nextMonth() {
@@ -102,11 +103,21 @@ public class GridInfinitePageAdapter extends InfinitePagerAdapter<Integer> imple
         refresh();
     }
 
+    /**
+     * Return the events at the current selected day
+     *
+     * @return Collection of event order as ID
+     */
     public List<Event> getCurrentEvents() {
         Calendar focusedDate = new GregorianCalendar(mYear, getCurrentIndicator(), mDayOfMonth);
         return EventDatabase.INSTANCE.filterOnDay(focusedDate).toArrayList();
     }
 
+    /**
+     * Return a string with the date of the current day focused
+     *
+     * @return the date format as th default local convention
+     */
     public String getStringDate() {
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL);
         Calendar focusedDate = new GregorianCalendar(mYear, getCurrentIndicator(), mDayOfMonth);

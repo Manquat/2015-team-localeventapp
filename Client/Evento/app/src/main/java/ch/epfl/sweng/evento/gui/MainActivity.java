@@ -19,33 +19,24 @@ package ch.epfl.sweng.evento.gui;
 
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import ch.epfl.sweng.evento.EventDatabase;
-import ch.epfl.sweng.evento.ManageActivity;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
-import ch.epfl.sweng.evento.User;
 import ch.epfl.sweng.evento.event.Event;
-import ch.epfl.sweng.evento.rest_api.RestApi;
-import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
@@ -58,47 +49,32 @@ import ch.epfl.sweng.evento.tabs_layout.SlidingTabLayout;
  * For devices with displays with a width of 720dp or greater, the sample log is always visible,
  * on other devices it's visibility is controlled by an item on the Action Bar.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Refreshable {
 
     private static final int NOTIFICATION_ID = 1234567890;
     private static final String TAG = "MainActivity";
-    private Toolbar mToolbar;
+    private static final int MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
+    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
+    private static final String urlServer = Settings.getServerUrl();
     private ViewPager mPager;
     private ViewPageAdapter mAdapter;
     private SlidingTabLayout mTabs;
     private List<CharSequence> mTitles = new ArrayList<CharSequence>(
             Arrays.asList("Maps", "Events", "Calendar"));
-    private static final int MOSAIC_POSITION = 1; // The mosaic position in the tabs (from 0 to 3)
-    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-
-    private static final String urlServer = Settings.getServerUrl();
     private ArrayList<Event> mEventArrayList = new ArrayList<>();
-    private static User user1;
-    private static User user2;
 
-    public static User getUser(int user){
-        switch(user){
-            case 1:
-                return user1;
-            case 2:
-                return user2;
-            default:
-                return user1;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        user1 = new User(1, "Tom", "thomas@epfl.ch");
-        user2 = new User(2, "Ben", "ben@epfl.ch");
-
+        assert (Settings.getUser() != null);
+        Log.d(TAG, Settings.getUser().getUsername());
 
         // Creating the Toolbar and setting it as the Toolbar for the activity
-        mToolbar = (Toolbar) findViewById(R.id.tool_bar);
-        setSupportActionBar(mToolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        new AutoRefreshToolbar(this, toolbar);
 
         // Creating the ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs.
         mAdapter = new ViewPageAdapter(getSupportFragmentManager(), mTitles);
@@ -121,9 +97,24 @@ public class MainActivity extends AppCompatActivity {
                 return ContextCompat.getColor(getApplicationContext(), R.color.tabsScrollColor);
             }
         });
-
         // Setting the ViewPager For the SlidingTabsLayout
         mTabs.setViewPager(mPager);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        //adding the mainActivity to the observer of the eventDatabase
+        EventDatabase.INSTANCE.addObserver(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        //removing the mainActivity to the observer of the eventDatabase
+        EventDatabase.INSTANCE.removeObserver(this);
     }
 
 
@@ -134,87 +125,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-        int id = item.getItemId();
-        // based on the current position you can then cast the page to the correct
-        // class and call the method:
-        if (id == R.id.action_createAnEvent) {
-            Intent intent = new Intent(this, CreatingEventActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.action_search) {
-            Intent intent = new Intent(this, SearchActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.action_refresh) {
-            refreshFromServer();
-        } else if (id == R.id.action_manageYourEvent) {
-            Intent intent = new Intent(this, ManageActivity.class);
-            startActivity(intent);
-        }
-
-        return super.onOptionsItemSelected(item);
-
-    }
-
-
-    public void refreshFromServer() {
-        RestApi mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-
-        mRestApi.getAll(new GetEventListCallback() {
-            @Override
-            public void onEventListReceived(List<Event> eventArrayList) {
-                EventDatabase.INSTANCE.clear();
-                EventDatabase.INSTANCE.addAll(eventArrayList);
-                Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + mPager.getCurrentItem());
-                if (page instanceof Refreshable) {
-                    ((Refreshable) page).refresh();
-                }
-                Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
-                makeNotifications(eventArrayList);
-            }
-        });
-    }
-
     public void makeNotifications(List<Event> eventArrayList) {
-        Calendar currentDate = Calendar.getInstance();
+        if (eventArrayList != null) {
+            Calendar currentDate = Calendar.getInstance();
 
-        boolean notif_needed = false;
-        String notif_description="";
-        for (Event event: eventArrayList) {
-            double diffTime = (event.getStartDate().getTimeInMillis() - currentDate.getTimeInMillis())
-                    / (1000 * 3600 * 24);
+            boolean notif_needed = false;
+            String notif_description = "";
+            for (Event event : eventArrayList) {
+                double diffTime = (event.getStartDate().getTimeInMillis() - currentDate.getTimeInMillis())
+                        / (1000 * 3600 * 24);
 
-            if (diffTime < 1.0) {
-                notif_needed = true;
-                notif_description += "The event " + event.getTitle() + " is starting tomorrow. \n";
 
-                //Toast.makeText(getApplicationContext(), "Notified event : " + event.getTitle(), Toast.LENGTH_SHORT).show();
+                if (diffTime < 1.0) {
+                    notif_needed = true;
+                    notif_description += "The event " + event.getTitle() + " is starting tomorrow. \n";
+
+                    //Toast.makeText(getApplicationContext(), "Notified event : " + event.getTitle(), Toast.LENGTH_SHORT).show();
+                }
             }
-        }
-        if(notif_needed){
-            notif_description+="Don't forget to attend !";
-            Notification n  = new Notification.Builder(this)
-                    .setContentTitle("You've got events soon !")
-                    .setContentText(notif_description)
-                    .setSmallIcon(R.drawable.notification)
-                    .setAutoCancel(true).build();
+            if (notif_needed) {
+                notif_description += "Don't forget to attend !";
+                Notification n = new Notification.Builder(this)
+                        .setContentTitle("You've got events soon !")
+                        .setContentText(notif_description)
+                        .setSmallIcon(R.drawable.notification)
+                        .setAutoCancel(true).build();
 
-            NotificationManager notificationManager =
-                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                NotificationManager notificationManager =
+                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-            notificationManager.notify(NOTIFICATION_ID, n);
+                notificationManager.notify(NOTIFICATION_ID, n);
+            }
         }
     }
 
 
+    @Override
+    public void refresh() {
+        makeNotifications(EventDatabase.INSTANCE.getAllEvents());
+        Toast.makeText(getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
+    }
 }

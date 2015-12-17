@@ -1,8 +1,10 @@
 package ch.epfl.sweng.evento.gui;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -19,15 +21,24 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.plus.Plus;
 
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
+import ch.epfl.sweng.evento.User;
+import ch.epfl.sweng.evento.rest_api.RestApi;
+import ch.epfl.sweng.evento.rest_api.callback.GetUserCallback;
+import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
+import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
+    public static final String LOGOUT_TAG = "LOGOUT";
 
     private static final String TAG = "LoginActivity";
+    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
+    private static final String urlServer = Settings.getServerUrl();
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 0;
     private GoogleApiClient mGoogleApiClient;
@@ -35,6 +46,7 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
         // make sure there is a valid server client ID.
         validateServerClientID();
@@ -54,11 +66,19 @@ public class LoginActivity extends AppCompatActivity implements
                 .addOnConnectionFailedListener(this)
                 .build();
 
+        mGoogleApiClient.disconnect();
+
 
         // The Color Scheme of the sign in button and setup of the OnClickListener to Sign in if clicked.
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setColorScheme(SignInButton.COLOR_DARK);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
+
+        if (getIntent() != null &&
+                getIntent().getExtras() != null &&
+                getIntent().getExtras().getBoolean(LOGOUT_TAG, false)) {
+            logout();
+        }
     }
 
     @Override
@@ -89,7 +109,6 @@ public class LoginActivity extends AppCompatActivity implements
         Log.d(TAG, "onConnectionFailed:" + result);
     }
 
-    //@Override
     public void onClick(View v) {
 
         if (v.getId() == R.id.sign_in_button) {
@@ -111,12 +130,10 @@ public class LoginActivity extends AppCompatActivity implements
             Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
             if (result.isSuccess()) {
-                GoogleSignInAccount acct = result.getSignInAccount();
-                String idToken = acct.getIdToken();
-                Log.d(TAG, "idToken:" + idToken);
-                Settings.INSTANCE.setIdToken(idToken);
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
+                storingTheUserOnServerAndInTheSettings(result);
+
+                //Intent intent = new Intent(this, MainActivity.class);
+                //startActivity(intent);
             } else {
                 Toast.makeText(this, "Could not connect, please try again", Toast.LENGTH_SHORT).show();
             }
@@ -146,16 +163,48 @@ public class LoginActivity extends AppCompatActivity implements
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
-                GoogleSignInAccount acct = result.getSignInAccount();
-                String idToken = acct.getIdToken();
-                Log.d(TAG, "idToken:" + idToken);
-                Settings.INSTANCE.setIdToken(idToken);
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
+                storingTheUserOnServerAndInTheSettings(result);
+                //Intent intent = new Intent(this, MainActivity.class);
+                //startActivity(intent);
+
             } else {
                 Toast.makeText(this, "Could not connect, please try again", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void storingTheUserOnServerAndInTheSettings(GoogleSignInResult googleSignInResult) {
+        GoogleSignInAccount acct = googleSignInResult.getSignInAccount();
+        String idToken = acct.getIdToken();
+        Log.d(TAG, "idToken:" + idToken);
+        Settings.setIdToken(idToken);
+
+        String personName = acct.getDisplayName();
+        String personEmail = acct.getEmail();
+        String personGoogleId = acct.getId();
+        User user = new User(-1, personName, personEmail);
+        Settings.setUser(user);
+        final Activity loginActivity = this;
+        RestApi restApi = new RestApi(new DefaultNetworkProvider(), urlServer);
+        restApi.postUser(personName, personEmail, personGoogleId, new GetUserCallback() {
+            @Override
+            public void onDataReceived(User user) {
+                Settings.setUser(user);
+
+                if (user == null) {
+                    throw new NullPointerException("User null!");
+                }
+
+                Settings.setUser(user);
+                // assert submission
+                Toast.makeText(getApplicationContext(), "User Information sent to Server.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "User information sent to server");
+                Log.d(TAG, "Active User with attributed Id: " + Settings.getUser().getUsername() + " , " + Settings.getUser().getEmail() + " , UserId: " + Settings.getUser().getUserId());
+
+                Intent intent = new Intent(loginActivity, MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void validateServerClientID() {
@@ -168,4 +217,15 @@ public class LoginActivity extends AppCompatActivity implements
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         }
     }
+
+    public void logout() {
+        if (mGoogleApiClient.isConnected()) {
+            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().clear().commit();
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
+            mGoogleApiClient.connect();
+
+        }
+    }
+
 }

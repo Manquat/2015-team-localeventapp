@@ -19,14 +19,14 @@ import java.util.Locale;
 import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.event.Event;
-import ch.epfl.sweng.evento.infinite_pager_adapter.GridInfinitePageAdapter;
+import ch.epfl.sweng.evento.gui.infinite_pager_adapter.GridInfinitePageAdapter;
 import ch.epfl.sweng.evento.tabs_fragment.Refreshable;
 
 
 /**
- * Adapter for the GridView that display the CalendarCells
+ * Adapter for the GridView that display the CalendarDays
  */
-public class GridCalendarAdapter extends BaseAdapter implements View.OnClickListener {
+public class GridCalendarAdapter extends BaseAdapter implements View.OnClickListener, Refreshable {
     private static final String TAG = "GridCalendarAdapter";
     private static final int NUMBER_OF_CELLS = 7 * 7; // the line for the day of the week, and 6 lines for all the day of the month
 
@@ -34,8 +34,8 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
     private Context mContext;               // the context where the adapter is used
     private CalendarGrid mCalendarGrid;     // the container of all the information
     private List<Event> mEvents;            // the events at the current day
-    private Refreshable mUpdatableParent;   // the parent that holds the grid and will be update when something
-    // changed in the adapter.
+    private Refreshable mUpdatableParent;   /*  the parent that holds the grid and will be update when something
+                                                changed in the adapter.*/
 
 
     /**
@@ -45,10 +45,6 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
      * @param updatableParent the parent that holds the grid and will be update when something
      *                        changed in the adapter.
      */
-    public GridCalendarAdapter(Context context, Refreshable updatableParent) {
-        this(context, updatableParent, new GregorianCalendar());
-    }
-
     public GridCalendarAdapter(Context context, Refreshable updatableParent, Calendar focusedDate) {
         super();
         mContext = context;
@@ -57,6 +53,20 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         // Initialize the calendar grid at the given date
         mCalendarGrid = new CalendarGrid(focusedDate);
         mEvents = EventDatabase.INSTANCE.filter(focusedDate).toArrayList();
+
+        //adding as an observer of the EventDatabase
+        EventDatabase.INSTANCE.addObserver(this);
+    }
+
+    /**
+     * Destructor
+     *
+     * @throws Throwable
+     */
+    public void finalize() throws Throwable {
+        super.finalize();
+        //adding as an observer of the EventDatabase
+        EventDatabase.INSTANCE.removeObserver(this);
     }
 
 
@@ -98,6 +108,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
      */
     @Override
     public long getItemId(int position) {
+        // if this is a day of the month and not a display of the day of the week
         if (position > 7) {
             Calendar calendar = mCalendarGrid.getDateFromPosition(position - 7);
             return calendar.getTimeInMillis();
@@ -110,7 +121,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
      * Create a new ImageView for each item referenced by the Adapter
      *
      * @param gridPosition Position in the grid, counting from the first cell on the top left
-     * @param convertView
+     * @param convertView  old view
      * @param parent
      * @return An ImageView for this day
      */
@@ -119,6 +130,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
         View rootView = convertView;
 
+        // this is the day of the week
         if (gridPosition < 7) {
             if (rootView == null) {
                 GregorianCalendar calendar = new GregorianCalendar();
@@ -130,14 +142,19 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
                 // go to the corresponding day of the week for this column
                 calendar.add(Calendar.DAY_OF_YEAR, gridPosition);
 
+                // initialize the text as the day of the week using the
                 TextView textView = new TextView(mContext);
                 textView.setText(calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT,
                         Locale.getDefault()));
                 textView.setGravity(Gravity.CENTER);
 
+                int dimension = mContext.getResources().getDimensionPixelSize(R.dimen.calendar_grid_item_height);
+                textView.setHeight(dimension);
+                textView.setTextColor(ContextCompat.getColor(mContext, R.color.dayOfWeek));
                 rootView = textView;
             }
-        } else {
+        } else // this is all the day of the month
+        {
             int position = gridPosition - 7; // remove the first row of the calendar
 
             if (rootView == null) {
@@ -167,7 +184,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
             if (mCalendarGrid.isCurrentMonth(position)) {
                 day.setStateCurrentMonth(true);
-                day.setTextColor(ContextCompat.getColor(mContext, R.color.defaultTextColor));
+                day.setTextColor(ContextCompat.getColor(mContext, R.color.currentDay));
             }
 
             if (mCalendarGrid.isCurrentDay(position)) {
@@ -184,6 +201,7 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
 
             List<Event> events = EventDatabase.INSTANCE.filterOnDay(mCalendarGrid.getDateFromPosition(position)).toArrayList();
 
+            // updating the current event
             if (events.size() != 0) {
                 day.setStateHaveEvents(true);
 
@@ -197,35 +215,17 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
         return rootView;
     }
 
-    /**
-     * Return a string with the date of the current day focused
-     *
-     * @return the date format as th default local convention
-     */
-    public String getStringDate() {
-        return mCalendarGrid.getStringDate();
-    }
 
     /**
-     * Return the events at the current selected day
+     * Called when a view is clicked
      *
-     * @return Collection of event order as ID
+     * @param v the view that was clicked
      */
-    public List<Event> getCurrentEvents() {
-        return mEvents;
-    }
-
-    public void setFocusedDate(Calendar focusedDate) {
-        mCalendarGrid.setFocusedDay(focusedDate);
-        notifyDataSetChanged();
-        mUpdatableParent.refresh();
-    }
-
-
     @Override
     public void onClick(View v) {
         int position = Integer.valueOf((String) v.getTag(R.id.position_tag));
 
+        //updating all the fields
         mCalendarGrid.setFocusedDay(position);
         mEvents = Collections.EMPTY_LIST;
         ((GridInfinitePageAdapter) mUpdatableParent).setFocusedDate(mCalendarGrid.getFocusedDate());
@@ -234,15 +234,12 @@ public class GridCalendarAdapter extends BaseAdapter implements View.OnClickList
     }
 
 
-    public void nextMonth() {
-        mCalendarGrid.nextMonth();
-        mEvents = null;
-        notifyDataSetChanged();
-    }
-
-    public void prevMonth() {
-        mCalendarGrid.prevMonth();
-        mEvents = null;
+    /**
+     * Implementation of the interface Refreshable
+     * Call when the calendar needs to update
+     */
+    @Override
+    public void refresh() {
         notifyDataSetChanged();
     }
 }

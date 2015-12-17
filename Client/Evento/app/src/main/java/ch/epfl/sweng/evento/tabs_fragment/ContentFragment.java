@@ -18,7 +18,14 @@ package ch.epfl.sweng.evento.tabs_fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -28,10 +35,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
+
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Vector;
@@ -40,9 +47,9 @@ import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.Settings;
 import ch.epfl.sweng.evento.event.Event;
-import ch.epfl.sweng.evento.gui.EventActivity;
+import ch.epfl.sweng.evento.gui.CreatingEventActivity;
+import ch.epfl.sweng.evento.gui.event_activity.EventActivity;
 import ch.epfl.sweng.evento.rest_api.RestApi;
-import ch.epfl.sweng.evento.rest_api.callback.GetEventListCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
 import ch.epfl.sweng.evento.tabs_fragment.MyView.MyView;
 
@@ -53,15 +60,14 @@ import ch.epfl.sweng.evento.tabs_fragment.MyView.MyView;
 public class ContentFragment extends Fragment implements Refreshable {
 
 
-    final int PADDING = 5;
     private static final int MAX_NUMBER_OF_EVENT = 50;
-    private int mNumberOfEvent;
     private static final String TAG = "ContentFragment";
-
     private static Vector<ImageButton> mMosaicVector = new Vector<ImageButton>();
+    final int PADDING = 5;
+    public Calendar dateFilter;
+    private int mNumberOfEvent;
     private List<Event> mEvents;
     private RestApi mRestAPI = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-
     private GridLayout mGridLayout;
     private Activity mActivity;
     private int mNumberOfRow;
@@ -72,7 +78,6 @@ public class ContentFragment extends Fragment implements Refreshable {
     private Vector<MyView> mMyViews;
     private View mView;
     private Toolbar mToolbar;
-    public Calendar dateFilter;
 
 
     /**
@@ -94,24 +99,33 @@ public class ContentFragment extends Fragment implements Refreshable {
         mMyViews = new Vector<MyView>();
         mEvents = new ArrayList<Event>();
         mNumberOfEvent = 0;
+        mHeightRow = 0;
     }
-
-
-    public enum Span {NOTHING, TWO_ROWS, TWO_COLUMNS}
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        refreshFromServer();
         mActivity = getActivity();
     }
-
 
     @Override
     public void onResume() {
         super.onResume();
         if (mView != null) refresh();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //adding content fragment as observer of EventDatabase
+        EventDatabase.INSTANCE.addObserver(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //remove content fragment as observer of EventDatabase
+        EventDatabase.INSTANCE.removeObserver(this);
     }
 
     public void refresh() {
@@ -120,20 +134,6 @@ public class ContentFragment extends Fragment implements Refreshable {
         mNumberOfEvent = mEvents.size();
         displayMosaic();
         Log.d("LOG_ContentFragment", "Refreshing");
-    }
-
-    public void refreshFromServer() {
-        RestApi mRestApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
-
-        mRestAPI.getAll(new GetEventListCallback() {
-            @Override
-            public void onEventListReceived(List<Event> eventArrayList) {
-                EventDatabase.INSTANCE.clear();
-                EventDatabase.INSTANCE.addAll(eventArrayList);
-                refresh();
-                Toast.makeText(mActivity.getApplicationContext(), "Refreshed", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
@@ -151,6 +151,10 @@ public class ContentFragment extends Fragment implements Refreshable {
         mGridLayout.setRowCount(mNumberOfRow);
         mGridLayout.setColumnCount(mNumberOfColumn);
         mGridLayout.removeAllViews();
+        List<String> mParty = new ArrayList<String>(Arrays.asList(
+                "Birthday", "Dinner", "Surprise", "Garden", "Tea", "Beer-Pong",
+                "Dance and Ball",
+                "Go for Hang-over"));
 
         boolean[] tmpBooleanRow = new boolean[mNumberOfColumn];
         Span tmpSpanSmtgOrNot = Span.NOTHING;
@@ -158,30 +162,44 @@ public class ContentFragment extends Fragment implements Refreshable {
         for (int yPos = 0, countEvent = 0; countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; yPos++) {
             for (int xPos = 0; xPos < mNumberOfColumn && countEvent < MAX_NUMBER_OF_EVENT && countEvent < mNumberOfEvent; xPos++, countEvent++) {
                 final MyView tView = new MyView(mView.getContext(), xPos, yPos);
-                final int spanningView = spanning;
+                final int count = countEvent;
                 tView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(mActivity, EventActivity.class);
-                        intent.putExtra(EventActivity.KEYCURRENTEVENT, mEvents.get(tView.getIdX() + tView.getIdY() * mNumberOfColumn-spanningView).getID());
+                        intent.putExtra(EventActivity.CURRENT_EVENT_KEY, mEvents.get(count).getID());
                         mActivity.startActivity(intent);
                     }
                 });
                 if (mDisplayOrNot.get(yPos)[xPos]) {
+                    Point size = new Point();
+                    mActivity.getWindowManager().getDefaultDisplay().getSize(size);
+                    mWidthColumn = size.x / 3 - 4 * PADDING;
                     if (mEvents.get(countEvent).getTags().contains("Foot!") ||
-                            mEvents.get(countEvent).getTags().contains("Football")) {
+                            CreatingEventActivity.getSport().contains(mEvents.get(countEvent).getTags().toString().replace("]", "").replace("[", "")) ||
+                            CreatingEventActivity.getStuff().contains(mEvents.get(countEvent).getTags().toString().replace("]", "").replace("[", ""))
+                            ) {
                         tmpSpanSmtgOrNot = Span.NOTHING;
-                        tView.setImageResource(R.drawable.football);
-                    } else if (mEvents.get(countEvent).getTags().contains("Basketball")) {
+                        //tView.setImageResource(R.drawable.football);
+                        Bitmap bitmap = mEvents.get(countEvent).getPicture();
+                        mHeightRow = size.y / 6 - 4 * PADDING;
+                        tView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, mWidthColumn, mHeightRow));
+                    } else if (mParty.contains(mEvents.get(countEvent).getTags().toString().replace("]", "").replace("[", ""))) {
                         tmpSpanSmtgOrNot = Span.TWO_ROWS;
-                        tView.setImageResource(R.drawable.basket);
+                        Bitmap bitmap = mEvents.get(countEvent).getPicture();
+                        mHeightRow = size.y / 3 - 6 * PADDING;
+                        tView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, mWidthColumn, mHeightRow));
                         ++spanning;
                         mDisplayOrNot.get(yPos + 1)[xPos] = false;
                     } else {
                         tmpSpanSmtgOrNot = Span.NOTHING;
-                        tView.setImageResource(R.drawable.unknown);
+                        Bitmap bitmap = mEvents.get(countEvent).getPicture();
+                        mHeightRow = size.y / 6 - 4 * PADDING;
+                        tView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, mWidthColumn, mHeightRow));
                     }
-                    tView.setAdjustViewBounds(true);
+
+
+                    tView.setAdjustViewBounds(false);
                     mMyViews.add(tView);
 
                     switch (tmpSpanSmtgOrNot) {
@@ -190,17 +208,17 @@ public class ContentFragment extends Fragment implements Refreshable {
                                 ++mNumberOfRow;
                                 mGridLayout.setRowCount(mNumberOfRow);
                             }
-                            addViewToGridLayout(tView, yPos, xPos, 1, 1);
+                            addViewToGridLayout(tView, yPos, xPos, 1, 1, mWidthColumn);
                             break;
                         case TWO_ROWS:
                             while ((yPos + 1) >= mNumberOfRow) {
                                 ++mNumberOfRow;
                                 mGridLayout.setRowCount(mNumberOfRow);
                             }
-                            addViewToGridLayout(tView, yPos, xPos, 2, 1);
+                            addViewToGridLayout(tView, yPos, xPos, 2, 1, mWidthColumn);
                             break;
                         case TWO_COLUMNS:
-                            addViewToGridLayout(tView, yPos, xPos, 1, 2);
+                            addViewToGridLayout(tView, yPos, xPos, 1, 2, mWidthColumn);
                             break;
                     }
                 } else {
@@ -210,21 +228,9 @@ public class ContentFragment extends Fragment implements Refreshable {
         }
     }
 
-    private void addViewToGridLayout(View view, int row, int column, int rowSpan, int columnSpan) {
-        int pWidth = mGridLayout.getWidth();
-        int pHeight = mGridLayout.getHeight();
-        mWidthColumn = 0;
-        mHeightRow = 0;
+    public void addViewToGridLayout(View view, int row, int column, int rowSpan, int columnSpan, int width) {
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-        Point size = new Point();
-        mActivity.getWindowManager().getDefaultDisplay().getSize(size);
-        int screenWidth = size.x;
-        int screenHeight = size.y;
-        int halfScreenWidth = (int)(screenWidth *0.5);
-        int quarterScreenWidth = (int)(halfScreenWidth * 0.5);
-        params.width = screenWidth/3-2*PADDING;
-        //params.width = mWidthColumn - 2 * PADDING;
-        //params.height = mHeightRow - 2 * PADDING;
+        params.width = width + 2 * PADDING;
         params.setMargins(PADDING, PADDING, PADDING, PADDING);
         params.columnSpec = GridLayout.spec(column, columnSpan);
         params.rowSpec = GridLayout.spec(row, rowSpan);
@@ -235,6 +241,10 @@ public class ContentFragment extends Fragment implements Refreshable {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    public enum Span {
+        NOTHING, TWO_ROWS, TWO_COLUMNS
     }
 
 }

@@ -41,6 +41,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import ch.epfl.sweng.evento.R;
+
 /**
  * Adapter that handles Autocomplete requests from the Places Geo Data API.
  * {@link AutocompletePrediction} results from the API are frozen and stored directly in this
@@ -115,6 +117,7 @@ public class PlaceAutocompleteAdapter
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = super.getView(position, convertView, parent);
 
+
         // Sets the primary and secondary text for a row.
         // Note that getPrimaryText() and getSecondaryText() return a CharSequence that may contain
         // styling based on the given CharacterStyle.
@@ -125,6 +128,8 @@ public class PlaceAutocompleteAdapter
         TextView textView2 = (TextView) row.findViewById(android.R.id.text2);
         textView1.setText(item.getPrimaryText(STYLE_BOLD));
         textView2.setText(item.getSecondaryText(STYLE_BOLD));
+        textView1.setTextColor(getContext().getResources().getColor(R.color.black));
+        textView2.setTextColor(getContext().getResources().getColor(R.color.black));
 
         return row;
     }

@@ -16,11 +16,12 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import ch.epfl.sweng.evento.EventDatabase;
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.event.Event;
-import ch.epfl.sweng.evento.event.EventListViewAdapter;
-import ch.epfl.sweng.evento.infinite_pager_adapter.GridInfinitePageAdapter;
-import ch.epfl.sweng.evento.infinite_pager_adapter.InfiniteViewPager;
+import ch.epfl.sweng.evento.gui.EventListViewAdapter;
+import ch.epfl.sweng.evento.gui.infinite_pager_adapter.GridInfinitePageAdapter;
+import ch.epfl.sweng.evento.gui.infinite_pager_adapter.InfiniteViewPager;
 
 /**
  * The fragment that holds the calendar and the listView that display the events at the current
@@ -65,6 +66,7 @@ public class CalendarTabs extends Fragment implements
         prevButton.setOnClickListener(this);
 
         mCurrentDate = (TextView) view.findViewById(R.id.dayTitle);
+        mCurrentDate.setTextColor(getResources().getColor(R.color.currentDay));
 
         // show a date picker when click on the date
         mDatePicker = new DatePickerDialog(getContext(), this, actualDate.get(Calendar.YEAR),
@@ -86,6 +88,22 @@ public class CalendarTabs extends Fragment implements
         refresh();
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        //adding the mainActivity to the observer of the eventDatabase
+        EventDatabase.INSTANCE.addObserver(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        //removing the mainActivity to the observer of the eventDatabase
+        EventDatabase.INSTANCE.removeObserver(this);
     }
 
     @Override
@@ -111,6 +129,8 @@ public class CalendarTabs extends Fragment implements
 
     public void refresh() {
         updateDate();
+
+        mGridCalendarAdapter.notifyDataSetChanged();
 
         List<Event> events = mGridCalendarAdapter.getCurrentEvents();
         mEventListAdapter.setEvents(events);

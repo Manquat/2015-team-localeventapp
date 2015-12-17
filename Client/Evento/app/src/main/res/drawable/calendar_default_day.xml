@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <size
-        android:height="@dimen/calendar_grid_item_size"
-        android:width="@dimen/calendar_grid_item_size" />
+        android:width="@dimen/calendar_grid_item_width"
+        android:height="@dimen/calendar_grid_item_height" />
 
 </shape>

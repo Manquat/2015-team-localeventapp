@@ -1,44 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/calendar_date_height">
+        android:layout_height="@dimen/calendar_date_height"
+        android:orientation="horizontal">
 
         <Button
+            android:id="@+id/prevButton"
             android:layout_width="@dimen/calendar_button_width"
-            android:layout_height="match_parent"
+            android:layout_height="40dp"
             android:text="@string/prev"
-            android:id="@+id/prevButton" />
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:background="@drawable/buttonshape"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"/>
 
         <TextView
+            android:id="@+id/dayTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/dayTitle"
             android:layout_weight="5"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textSize="@dimen/calendar_date_text_size" />
 
         <Button
+            android:id="@+id/nextButton"
             android:layout_width="@dimen/calendar_button_width"
-            android:layout_height="match_parent"
+            android:layout_height="40dp"
             android:text="@string/next"
-            android:id="@+id/nextButton" />
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:background="@drawable/buttonshape"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"/>
 
     </LinearLayout>
 
-    <ch.epfl.sweng.evento.infinite_pager_adapter.InfiniteViewPager
+    <ch.epfl.sweng.evento.gui.infinite_pager_adapter.InfiniteViewPager
+        android:id="@+id/calendar_infinite_pager"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/calendar_grid_view_height"
-        android:id="@+id/calendar_infinite_pager" />
+        android:layout_height="250dp" />
 
     <ListView
+        android:id="@+id/calendar_list_event"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/calendar_list_event"/>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

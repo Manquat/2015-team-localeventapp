@@ -1,9 +1,9 @@
-package ch.epfl.sweng.evento.event;
+package ch.epfl.sweng.evento.gui;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.evento.R;
+import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.event.MultiDrawable;
 
 /**
  * Control the way the event are clustered on the map
@@ -75,7 +77,8 @@ public class EventsClusterRenderer extends DefaultClusterRenderer<Event> {
     @Override
     protected void onBeforeClusterItemRendered(Event event, MarkerOptions markerOptions) {
         // Draw a single event icon
-        mIconEventView.setImageResource(R.drawable.football); // TODO replace the mock image by the real one of the event
+        mIconEventView.setImageBitmap(event.getPicture());
+        //mIconEventView.setImageResource(R.drawable.football); // TODO replace the mock image by the real one of the event
 
         Bitmap icon = mEventIconGenerator.makeIcon();
 
@@ -89,7 +92,8 @@ public class EventsClusterRenderer extends DefaultClusterRenderer<Event> {
         List<Drawable> eventsImage = new ArrayList<>(Math.min(MAX_NUMBER_OF_IMAGE, cluster.getSize()));
 
         for (Event event : cluster.getItems()) {
-            Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.football); // TODO replace the mock image by the real one of the event
+            Drawable drawable = new BitmapDrawable(mContext.getResources(), event.getPicture());
+            //Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.football); // TODO replace the mock image by the real one of the event
             drawable.setBounds(0, 0, mDimension, mDimension);
             eventsImage.add(drawable);
         }

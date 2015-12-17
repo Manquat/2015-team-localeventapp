@@ -39,6 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -53,23 +54,21 @@ import ch.epfl.sweng.evento.event.Event;
 import ch.epfl.sweng.evento.rest_api.RestApi;
 import ch.epfl.sweng.evento.rest_api.callback.HttpResponseCodeCallback;
 import ch.epfl.sweng.evento.rest_api.network_provider.DefaultNetworkProvider;
-import ch.epfl.sweng.evento.rest_api.network_provider.NetworkProvider;
 
 public class CreatingEventActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener,
         GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "CreatingEventActivity";
-
-
-    private static final NetworkProvider networkProvider = new DefaultNetworkProvider();
-    private static final String urlServer = Settings.getServerUrl();
-
-
-    private TextView mStartDateView;
-    private TextView mEndDateView;
-    private Calendar startDate;
-    private Calendar endDate;
+    private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
+            new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
+    protected Calendar mStartDate;
+    protected Calendar mEndDate;
+    protected TextView mStartDateView;
+    protected TextView mEndDateView;
+    protected Set<String> mTag = new HashSet<String>() {{
+        add("Football");
+    }};
     private boolean mStartOrEndDate;
     private boolean mDisplayTimeFragment;
     private DatePickerDialogFragment mDateFragment;
@@ -79,19 +78,133 @@ public class CreatingEventActivity extends AppCompatActivity
     private TextView mPlaceDetailsText;
     private TextView mPlaceDetailsAttribution;
     private PlaceAutocompleteAdapter mAdapter;
-    private Set<String> mTag;
     private double latitude = 0.0;
     private double longitude = 0.0;
-    private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
-            new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
     private TimePickerDialogFragment mTimeFragment;
+    private final static List<String> mSport = new ArrayList<String>(Arrays.asList("Football",
+            "Basketball",
+            "Badminton",
+            "Ping-Pong"));
+
+
+    private final static List<String> mParty = new ArrayList<String>(Arrays.asList(
+            "Birthday", "Dinner", "Surprise", "Garden", "Tea", "Beer-Pong",
+            "Dance and Ball",
+            "Go for Hang-over"));
+
+
+    private final static List<String> mStuff = new ArrayList<String>(Arrays.asList(
+            "Cinema",
+            "Cleaning",
+            "Role Play Game",
+            "Trekking"));
+
+    public static List<String> getSport() {
+        return mSport;
+    }
+
+    public static List<String> getParty() {
+        return mParty;
+    }
+
+    public static List<String> getStuff() {
+        return mStuff;
+    }
+
+    /**
+     * Callback for results from a Places Geo Data API query that shows the first place result in
+     * the details view on screen.
+     */
+
+    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
+            = new ResultCallback<PlaceBuffer>() {
+        @Override
+        public void onResult(PlaceBuffer places) {
+            if (!places.getStatus().isSuccess()) {
+                // Request did not complete successfully
+                Log.e(TAG, "Place query did not complete. Error: " + places.getStatus().toString());
+                places.release();
+                return;
+            }
+            // Get the Place object from the buffer.
+            final Place place = places.get(0);
+
+            // set longitude and latitude
+            latitude = place.getLatLng().latitude;
+            longitude = place.getLatLng().longitude;
+
+            // Format details of the place for display and show it in a TextView.
+            mPlaceDetailsText.setText(formatPlaceDetails(getResources(), place.getName(),
+                    place.getId(), place.getAddress(), place.getPhoneNumber(),
+                    place.getWebsiteUri()));
+
+            // Display the third party attributions if set.
+            final CharSequence thirdPartyAttribution = places.getAttributions();
+            if (thirdPartyAttribution == null) {
+                mPlaceDetailsAttribution.setVisibility(View.GONE);
+            } else {
+                mPlaceDetailsAttribution.setVisibility(View.VISIBLE);
+                mPlaceDetailsAttribution.setText(Html.fromHtml(thirdPartyAttribution.toString()));
+            }
+
+            Log.i(TAG, "Place details received: " + place.getName());
+
+            places.release();
+        }
+    };
+    /**
+     * Listener that handles selections from suggestions from the AutoCompleteTextView that
+     * displays Place suggestions.
+     * Gets the place id of the selected item and issues a request to the Places Geo Data API
+     * to retrieve more details about the place.
+     *
+     * @see com.google.android.gms.location.places.GeoDataApi#getPlaceById(com.google.android.gms.common.api.GoogleApiClient,
+     * String...)
+     */
+    private AdapterView.OnItemClickListener mAutocompleteClickListener
+            = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            /*
+             Retrieve the place ID of the selected item from the Adapter.
+             The adapter stores each Place suggestion in a AutocompletePrediction from which we
+             read the place ID and title.
+              */
+            final AutocompletePrediction item = mAdapter.getItem(position);
+            final String placeId = item.getPlaceId();
+            final CharSequence primaryText = item.getPrimaryText(null);
+
+            Log.i(TAG, "Autocomplete item selected: " + primaryText);
+
+            /*
+             Issue a request to the Places Geo Data API to retrieve a Place object with additional
+             details about the place.
+              */
+            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
+                    .getPlaceById(mGoogleApiClient, placeId);
+            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+
+//            Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
+//                    Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "Called getPlaceById to get Place details for " + placeId);
+        }
+    };
+
+    private static Spanned formatPlaceDetails(Resources res, CharSequence name, String id,
+                                              CharSequence address, CharSequence phoneNumber, Uri websiteUri) {
+        Log.e(TAG, res.getString(R.string.place_details, name, id, address, phoneNumber,
+                websiteUri));
+        return Html.fromHtml(res.getString(R.string.place_details, name, id, address, phoneNumber,
+                websiteUri));
+
+    }
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear,
                           int dayOfMonth) {
         if (!mStartOrEndDate)
-            startDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
-        else endDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
+            mStartDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
+        else mEndDate = new GregorianCalendar(year, monthOfYear, dayOfMonth, 0, 0);
         mTimeFragment = new TimePickerDialogFragment();
         mTimeFragment.show(getFragmentManager(), "timePicker");
     }
@@ -99,14 +212,14 @@ public class CreatingEventActivity extends AppCompatActivity
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         if (!mStartOrEndDate) {
-            startDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            startDate.set(Calendar.MINUTE, minute);
-            String s = Event.asNiceString(startDate);
+            mStartDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            mStartDate.set(Calendar.MINUTE, minute);
+            String s = Event.asNiceString(mStartDate);
             mStartDateView.setText(s);
         } else {
-            endDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            endDate.set(Calendar.MINUTE, minute);
-            String s = Event.asNiceString(endDate);
+            mEndDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            mEndDate.set(Calendar.MINUTE, minute);
+            String s = Event.asNiceString(mEndDate);
             mEndDateView.setText(s);
         }
 
@@ -124,7 +237,7 @@ public class CreatingEventActivity extends AppCompatActivity
         mDateFragment.setListener(this);
         final Button pictureButton = (Button) findViewById(R.id.pictureButton);
 
-        // listener for date picker startDate
+        // listener for date picker mStartDate
         mStartDateView = (TextView) findViewById(R.id.startDate);
         mStartDateView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +248,7 @@ public class CreatingEventActivity extends AppCompatActivity
             }
         });
 
-        // listener for date picker endDate
+        // listener for date picker mEndDate
         mEndDateView = (TextView) findViewById(R.id.endDate);
         mEndDateView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,7 +284,6 @@ public class CreatingEventActivity extends AppCompatActivity
 
             @Override
             public void onClick(View view) {
-                RestApi restApi = new RestApi(networkProvider, urlServer);
                 TextView title = (TextView) findViewById(R.id.title);
                 TextView description = (TextView) findViewById(R.id.eventDescription);
                 TextView address = (TextView) findViewById(R.id.eventAddress);
@@ -183,14 +295,19 @@ public class CreatingEventActivity extends AppCompatActivity
                 Bitmap picture;
 
                 // default value completion
-                if (startDate == null) {
-                    startDate = new GregorianCalendar(1990, 12, 16, 0, 0);
+                if (mStartDate == null) {
+                    mStartDate = new GregorianCalendar();
                 }
-                if (endDate == null) {
-                    endDate = new GregorianCalendar(1992, 1, 16, 0, 0);
+                if (mEndDate == null) {
+                    mEndDate = new GregorianCalendar();
+                }
+
+                if (mEndDate.compareTo(mStartDate) < 0) {
+                    Toast.makeText(getApplicationContext(), "Please pick a date of end after the starting time ", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 if (titleString.isEmpty()) {
-                    titleString = "No title";
+                    titleString = "No Title";
                 }
                 if (descriptionString.isEmpty()) {
                     descriptionString = "No description";
@@ -199,36 +316,43 @@ public class CreatingEventActivity extends AppCompatActivity
                     addressString = "No address";
                 }
                 if (drawable == null) {
-                    Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-                    picture = Bitmap.createBitmap(100, 100, conf);
+                    //Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+                    picture = Event.stringToBitMap(Event.samplePicture());
                 } else {
                     picture = ((BitmapDrawable) drawable).getBitmap();
                 }
 
-                // mock creator and random id (ID will be assigned server side)
-                String creator = "Jack Henri";
+                // mock getOwner and random id (ID will be assigned server side)
+
+                int creator = Settings.getUser().getUserId();
+
                 Random rand = new Random();
                 int id = rand.nextInt(10000);
 
                 // event creation and send
                 Event e = new Event(id, titleString, descriptionString, latitude,
-                        longitude, addressString, creator,
-                        mTag, startDate, endDate, picture);
+                        longitude, addressString, Settings.getUser().getUserId(),
+                        mTag, mStartDate, mEndDate, picture);
 
 
-                restApi.postEvent(e, new HttpResponseCodeCallback() {
-                    @Override
-                    public void onSuccess(String response) {
-                        // assert submission
-                        Toast.makeText(getApplicationContext(), "Submitted", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                Toast.makeText(getApplicationContext(), "Submitting " + titleString, Toast.LENGTH_SHORT).show();
+                sendToServer(e);
 
                 finish();
 
             }
         });
+    }
+
+    protected void sendToServer(Event e) {
+        RestApi restApi = new RestApi(new DefaultNetworkProvider(), Settings.getServerUrl());
+        restApi.postEvent(e, new HttpResponseCodeCallback() {
+            @Override
+            public void onSuccess(String response) {
+                // assert submission
+                Toast.makeText(getApplicationContext(), "Submitted", Toast.LENGTH_SHORT).show();
+            }
+        });
+        Toast.makeText(getApplicationContext(), "Submitting " + e.getTitle(), Toast.LENGTH_SHORT).show();
     }
 
     private void setPictureButton(Button pictureButton) {
@@ -242,7 +366,6 @@ public class CreatingEventActivity extends AppCompatActivity
                                          }
         );
     }
-
 
     private void setTagExpandableList() {
         // get the list_view
@@ -357,7 +480,6 @@ public class CreatingEventActivity extends AppCompatActivity
         viewImage.setImageBitmap(scaledPicture);
     }
 
-
     private void prepareListData() {
         mListDataHeader = new ArrayList<String>();
         mListDataChild = new HashMap<String, List<String>>();
@@ -365,114 +487,12 @@ public class CreatingEventActivity extends AppCompatActivity
         // Adding child data
         mListDataHeader.add("Sport");
         mListDataHeader.add("Party");
-        mListDataHeader.add("Stuff");
-
-        // Adding child data
-        List<String> sport = new ArrayList<String>();
-        sport.add("Football");
-        sport.add("Basketball");
-
-        List<String> party = new ArrayList<String>();
-        party.add("Bal");
-        party.add("Boule");
-        party.add("Bill");
-
-        List<String> stuff = new ArrayList<String>();
-        stuff.add("Penguin");
-        stuff.add("Smurfs");
+        mListDataHeader.add("Travel");
 
 
-        mListDataChild.put(mListDataHeader.get(0), sport);
-        mListDataChild.put(mListDataHeader.get(1), party);
-        mListDataChild.put(mListDataHeader.get(2), stuff);
-    }
-
-    /**
-     * Listener that handles selections from suggestions from the AutoCompleteTextView that
-     * displays Place suggestions.
-     * Gets the place id of the selected item and issues a request to the Places Geo Data API
-     * to retrieve more details about the place.
-     *
-     * @see com.google.android.gms.location.places.GeoDataApi#getPlaceById(com.google.android.gms.common.api.GoogleApiClient,
-     * String...)
-     */
-    private AdapterView.OnItemClickListener mAutocompleteClickListener
-            = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            /*
-             Retrieve the place ID of the selected item from the Adapter.
-             The adapter stores each Place suggestion in a AutocompletePrediction from which we
-             read the place ID and title.
-              */
-            final AutocompletePrediction item = mAdapter.getItem(position);
-            final String placeId = item.getPlaceId();
-            final CharSequence primaryText = item.getPrimaryText(null);
-
-            Log.i(TAG, "Autocomplete item selected: " + primaryText);
-
-            /*
-             Issue a request to the Places Geo Data API to retrieve a Place object with additional
-             details about the place.
-              */
-            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
-                    .getPlaceById(mGoogleApiClient, placeId);
-            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
-
-//            Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
-//                    Toast.LENGTH_SHORT).show();
-            Log.i(TAG, "Called getPlaceById to get Place details for " + placeId);
-        }
-    };
-
-    /**
-     * Callback for results from a Places Geo Data API query that shows the first place result in
-     * the details view on screen.
-     */
-    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
-            = new ResultCallback<PlaceBuffer>() {
-        @Override
-        public void onResult(PlaceBuffer places) {
-            if (!places.getStatus().isSuccess()) {
-                // Request did not complete successfully
-                Log.e(TAG, "Place query did not complete. Error: " + places.getStatus().toString());
-                places.release();
-                return;
-            }
-            // Get the Place object from the buffer.
-            final Place place = places.get(0);
-
-            // set longitude and latitude
-            latitude = place.getLatLng().latitude;
-            longitude = place.getLatLng().longitude;
-
-            // Format details of the place for display and show it in a TextView.
-            mPlaceDetailsText.setText(formatPlaceDetails(getResources(), place.getName(),
-                    place.getId(), place.getAddress(), place.getPhoneNumber(),
-                    place.getWebsiteUri()));
-
-            // Display the third party attributions if set.
-            final CharSequence thirdPartyAttribution = places.getAttributions();
-            if (thirdPartyAttribution == null) {
-                mPlaceDetailsAttribution.setVisibility(View.GONE);
-            } else {
-                mPlaceDetailsAttribution.setVisibility(View.VISIBLE);
-                mPlaceDetailsAttribution.setText(Html.fromHtml(thirdPartyAttribution.toString()));
-            }
-
-            Log.i(TAG, "Place details received: " + place.getName());
-
-            places.release();
-        }
-    };
-
-    private static Spanned formatPlaceDetails(Resources res, CharSequence name, String id,
-                                              CharSequence address, CharSequence phoneNumber, Uri websiteUri) {
-        Log.e(TAG, res.getString(R.string.place_details, name, id, address, phoneNumber,
-                websiteUri));
-        return Html.fromHtml(res.getString(R.string.place_details, name, id, address, phoneNumber,
-                websiteUri));
-
+        mListDataChild.put(mListDataHeader.get(0), mSport);
+        mListDataChild.put(mListDataHeader.get(1), mParty);
+        mListDataChild.put(mListDataHeader.get(2), mStuff);
     }
 
     /**

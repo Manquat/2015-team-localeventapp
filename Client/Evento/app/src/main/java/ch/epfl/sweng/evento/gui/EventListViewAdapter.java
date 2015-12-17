@@ -1,8 +1,10 @@
-package ch.epfl.sweng.evento.event;
+package ch.epfl.sweng.evento.gui;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +16,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import ch.epfl.sweng.evento.R;
-import ch.epfl.sweng.evento.gui.EventActivity;
+import ch.epfl.sweng.evento.event.Event;
+import ch.epfl.sweng.evento.gui.event_activity.EventActivity;
 
 /**
  * List view adapter that can be used to display the list of event given in the constructor
@@ -77,7 +80,12 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
 
             // setting a default image as the image in the list
             ImageView imageView = (ImageView) rootView.findViewById(R.id.list_event_image);
-            imageView.setImageResource(R.drawable.basket);
+
+            int dimension = mActivity.getResources().getDimensionPixelSize(R.dimen.list_event_height);
+            Bitmap bitmap = ThumbnailUtils.extractThumbnail(mEvents.get(position).getPicture(),
+                    dimension, dimension);
+
+            imageView.setImageBitmap(bitmap);
         }
 
         return rootView;
@@ -98,7 +106,7 @@ public class EventListViewAdapter extends BaseAdapter implements AdapterView.OnI
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(mContext, EventActivity.class);
-        intent.putExtra(EventActivity.KEYCURRENTEVENT, id);
+        intent.putExtra(EventActivity.CURRENT_EVENT_KEY, ((Long) id).intValue());
         mActivity.startActivity(intent);
     }
 }

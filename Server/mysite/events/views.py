@@ -8,7 +8,9 @@ from events.models import Event, Comment
 from User.models import participant
 from events.serializers import EventSerializer, CommentSerializer
 from User.serializers import ParticipantSerializer
+from User.serializers import ParticipantSerializer
 from oauth2client import client, crypt
+
 import datetime
 @api_view(['GET', 'POST'])
 def event_list(request, format=None):
@@ -73,7 +75,86 @@ def event_detail(request, pk, format=None):
             return Response(status=status.HTTP_403_FORBIDDEN)
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+@api_view(['GET', 'DELETE'])
+def event_detailuser(request, username, format=None):
+    """
+    Retrieve, update or delete an event.
+    """
+    if 'HTTP_TOKEN' not in request.META:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    token = request.META['HTTP_TOKEN']
 
+    if validate_user(token) is False:
+        return  Response(status=status.HTTP_403_FORBIDDEN)
+
+    try:
+        event = Event.objects.get(creator=username)
+    except Event.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = EventSerializer(event)
+        return Response(serializer.data)
+
+    elif request.method == 'DELETE':
+        event.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+=======
+>>>>>>> refreshEventActivity
+@api_view(['GET'])
+def event_detailParticipant(request, pk, format=None):
+    """
+    Retrieve, update or delete an event.
+    """
+    
+   # if validate_user(token) is False:
+    #    return  Response(status=status.HTTP_403_FORBIDDEN)
+
+    try:
+        part = Event.objects.get(pk=pk).participants.all()
+    except Event.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    print part[0].name
+
+    if request.method == 'GET':
+        serializerUser = ParticipantSerializer(part, many=True)
+        return Response(serializerUser.data)
+
+
+@api_view(['GET', 'DELETE'])
+def event_detailuser(request, username, format=None):
+    """
+    Retrieve, update or delete an event.
+    """
+    if 'HTTP_TOKEN' not in request.META:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    token = request.META['HTTP_TOKEN']
+
+    if validate_user(token) is False:
+        return  Response(status=status.HTTP_403_FORBIDDEN)
+
+<<<<<<< HEAD
+    try:
+        event = Event.objects.get(creator=username)
+    except Event.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = EventSerializer(event)
+        return Response(serializer.data)
+
+    elif request.method == 'DELETE':
+        event.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+>>>>>>> 18a31a380003d9e2c4e0cbfd50d56ec43216c8eb
+
+=======
+>>>>>>> refreshEventActivity
 @api_view(['GET'])
 def event_requestdate(request, fromdate, todate, format=None):
     """

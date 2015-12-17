@@ -1,131 +1,89 @@
 package ch.epfl.sweng.evento;
 
-import android.os.Build;
-import android.util.Log;
 
-import com.google.android.gms.maps.model.LatLng;
-
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import ch.epfl.sweng.evento.event.Event;
 
 
 /**
- * Created by Gaffinet on 23/11/2015.
+ * Created by Gaffinet on 30/11/2015.
  */
 public class User {
 
     private static final String TAG = "User";
 
-    private int mID;//needed for getting the user's information from server
+    private int mUserId;
     private String mUsername;
     private String mEmail;
-    //private Event.CustomDate mDateOfBirth;
-    //A unique Id for each Google Account
 
-    private Set<Event> mMatchedEvent;
-    private Set<Event> mHostedEvent;
-    //private LatLng mHomeAddress;
-    //private Event.CustomDate mStartOfMembership;
+    private List<Event> mMatchedEvent;
+    private List<Event> mHostedEvent;
 
-    public User(int id, String username, String email){
-        mID = id;
+
+    public User(int id, String username, String email) {
+        mUserId = id;
         mUsername = username;
         mEmail = email;
-        mMatchedEvent = new HashSet<>();
-        mHostedEvent = new HashSet<>();
+        mMatchedEvent = new ArrayList<>();
+        mHostedEvent = new ArrayList<>();
     }
 
-    public String getmUsername() {
-        return mUsername;
+    public List<Event> getMatchedEvent() {
+        return mMatchedEvent;
     }
 
-    public Set<Event> getMatchedEvent() { return mMatchedEvent;}
+    public void setMatchedEvent(List<Event> mMatchedEvent) {
+        this.mMatchedEvent = mMatchedEvent;
+    }
 
-    public Set<Event> getHostedEvent() { return mHostedEvent; }
+    public List<Event> getHostedEvent() {
+        return mHostedEvent;
+    }
+
+    public void setHostedEvent(List<Event> mHostedEvent) {
+        this.mHostedEvent = mHostedEvent;
+    }
 
     public String getmEmail() {
         return mEmail;
     }
 
-    /*public Event.CustomDate getmDateOfBirth() {
-        return mDateOfBirth;
-    }*/
-
-
-    /*
-    public LatLng getmHomeAddress() {
-        return mHomeAddress;
+    public int getUserId() {
+        return mUserId;
     }
 
-    public Event.CustomDate getmStartOfMembership() {
-        return mStartOfMembership;
-    }
-    */
-
-    public void addHostedEvent(Event event) {
-        final String message = "Cannot add a null event as a hosted event";
-        if (event != null){
-            mHostedEvent.add(event);
-        } else {
-            throw new NullPointerException(message);
-        }
+    public String getUsername() {
+        return mUsername;
     }
 
-    public void addMatchedEvent(Event event) {
+    public String getEmail() {
+        return mEmail;
+    }
+
+    public boolean addMatchedEvent(Event event) {
         final String message = "Cannot add a null event as a matched event";
-        if (event != null){
-            mMatchedEvent.add(event);
+        if (event != null) {
+            return mMatchedEvent.add(event);
         } else {
             throw new NullPointerException(message);
         }
     }
 
-    /*public String getMatchedEventString(String separator) {
-        String res = "";
-        if(!mMatchedEvent.isEmpty()){
-            for(Event event: mMatchedEvent){
-                res += event.getTitle() + separator;
-            }
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof User) {
+            User user = (User) object;
+            return mUserId == user.getUserId();
         }
-        return res;
+        return false;
     }
 
-    public String getMatchedEventString() {
-        return getMatchedEventString("\n");
+    @Override
+    public int hashCode() {
+        return mUserId;
     }
 
-    public String getHostedEventString(String separator) {
-        String res = "";
-        if(!mHostedEvent.isEmpty()){
-            for(Event event: mHostedEvent){
-                res += event.getTitle() + separator;
-            }
-        }
-        return res;
-    }
 
-    public String getHostedEventString() {
-        return getHostedEventString("\n");
-    }*/
-
-    public void setmEmail(String mEmail) {
-        this.mEmail = mEmail;
-    }
-
-    /*public void setmDateOfBirth(Event.CustomDate mDateOfBirth) {
-        this.mDateOfBirth = mDateOfBirth;
-    }*/
-
-    /*
-    public void setmHomeAddress(LatLng mHomeAddress) {
-        this.mHomeAddress = mHomeAddress;
-    }
-
-    public void setmStartOfMembership(Event.CustomDate mStartOfMembership) {
-        this.mStartOfMembership = mStartOfMembership;
-    }
-    */
 }

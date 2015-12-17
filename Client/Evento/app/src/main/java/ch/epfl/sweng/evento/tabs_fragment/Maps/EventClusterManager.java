@@ -3,10 +3,13 @@ package ch.epfl.sweng.evento.tabs_fragment.Maps;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +27,7 @@ import java.util.Collection;
 
 import ch.epfl.sweng.evento.R;
 import ch.epfl.sweng.evento.event.Event;
-import ch.epfl.sweng.evento.gui.EventActivity;
+import ch.epfl.sweng.evento.gui.event_activity.EventActivity;
 
 /**
  * Extension of the cluster manager class to centralize all the management of the markers of the
@@ -141,7 +144,7 @@ public class EventClusterManager extends ClusterManager<Event> implements
         // TODO Does nothing, but you could go into the event's page, for example.
 
         Intent intent = new Intent(mContext, EventActivity.class);
-        intent.putExtra(EventActivity.KEYCURRENTEVENT, event.getID());
+        intent.putExtra(EventActivity.CURRENT_EVENT_KEY, event.getID());
         mActivity.startActivity(intent);
     }
 
@@ -188,6 +191,10 @@ public class EventClusterManager extends ClusterManager<Event> implements
             case 1:
                 view = ViewGroup.inflate(mContext, R.layout.infomarker_event, null);
                 Event event = mEventsClick.iterator().next();
+
+                ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
+                imageView.setImageBitmap(event.getPicture());
+
                 TextView tvTitle = (TextView) view.findViewById(R.id.info_title);
                 tvTitle.setText(event.getTitle());
                 tvTitle.setTextColor(ContextCompat.getColor(mContext, R.color.defaultTextColor));
@@ -201,10 +208,20 @@ public class EventClusterManager extends ClusterManager<Event> implements
 
                 LinearLayout layout = (LinearLayout) view.findViewById(R.id.list_event);
                 for (Event iEvent : mEventsClick) {
-                    TextView textView = new TextView(mContext);
+                    View subView = ViewGroup.inflate(mContext, R.layout.list_event, null);
+
+                    TextView textView = (TextView) subView.findViewById(R.id.list_event_title);
                     textView.setText(iEvent.getTitle());
-                    textView.setTextColor(ContextCompat.getColor(mContext, R.color.defaultTextColor));
-                    layout.addView(textView);
+                    textView.setTextColor(mContext.getResources().getColor(R.color.black));
+
+                    ImageView imageEvent = (ImageView) subView.findViewById(R.id.list_event_image);
+                    int dimension = mContext.getResources()
+                            .getDimensionPixelSize(R.dimen.list_event_height);
+                    Bitmap bitmap = ThumbnailUtils.extractThumbnail(iEvent.getPicture(),
+                            dimension, dimension);
+                    imageEvent.setImageBitmap(bitmap);
+
+                    layout.addView(subView);
                 }
         }
 

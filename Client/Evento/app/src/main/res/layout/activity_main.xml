@@ -14,26 +14,30 @@
   limitations under the License.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main_layout">
+    android:orientation="vertical"
+    android:textColor="@color/fontTitleFrag"
+    android:background="@color/backgroundMain">
 
     <include
         android:id="@+id/tool_bar"
-        layout="@layout/tool_bar"></include>
+        layout="@layout/tool_bar"/>
 
     <ch.epfl.sweng.evento.tabs_layout.SlidingTabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="2dp"
-        android:background="@color/colorPrimaryDark" />
+        android:textColor="@color/fontTitleFrag"
+        android:background="@color/backgroundTitleFrag"
+        android:elevation="2dp" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/fontTitleFrag"
         android:layout_weight="1" />
 
 </LinearLayout>
